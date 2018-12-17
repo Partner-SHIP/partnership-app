@@ -1,3 +1,6 @@
-android/
+android/*
+!android/app/build.gradle
+!android/app/google-services.json
+!android/build.gradle
 ios/
 build/app
