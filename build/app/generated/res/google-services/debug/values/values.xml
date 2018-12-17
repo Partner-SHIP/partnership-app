@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">511302961700-k70aave4v0rd6giu0el31sivfmdgv7r1.apps.googleusercontent.com</string>
+    <string name="firebase_database_url" translatable="false">https://partnership-app-e8d99.firebaseio.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">511302961700</string>
+    <string name="google_api_key" translatable="false">AIzaSyBPhBzj-i0uuUtFLBGnCkqK_7wo1fypbNQ</string>
+    <string name="google_app_id" translatable="false">1:511302961700:android:24a3153cc6d252d2</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyBPhBzj-i0uuUtFLBGnCkqK_7wo1fypbNQ</string>
+    <string name="google_storage_bucket" translatable="false">partnership-app-e8d99.appspot.com</string>
+    <string name="project_id" translatable="false">partnership-app-e8d99</string>
+</resources>

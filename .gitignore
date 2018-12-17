@@ -1,6 +1,0 @@
-build/
-.gradle/
-ios/
-android/
-pubspec.lock
-.packages

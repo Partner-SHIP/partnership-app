@@ -3,6 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:partnership/style/theme.dart' as Theme;
 import 'package:partnership/utils/bubble_indication_painter.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import '../authentification/auth_email.dart';
+import '../profile/profile_page.dart';
+import '../authentification/auth.dart';
+
+//Auth myAuth;
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
@@ -13,7 +20,6 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage>
     with SingleTickerProviderStateMixin {
-
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   final FocusNode myFocusNodeEmailLogin = FocusNode();
@@ -34,7 +40,7 @@ class _LoginPageState extends State<LoginPage>
   TextEditingController signupNameController = new TextEditingController();
   TextEditingController signupPasswordController = new TextEditingController();
   TextEditingController signupConfirmPasswordController =
-  new TextEditingController();
+      new TextEditingController();
 
   PageController _pageController;
 
@@ -156,6 +162,29 @@ class _LoginPageState extends State<LoginPage>
     ));
   }
 
+//fonction appelée lorsqu'on clique sur le bouton inscription
+//TODO check les inputs, et afficher des messages en conséquence (email invalide, mdp trop court, etc...)
+//si tous les inputs sont bons => on enregistre le user
+  void _signUpWithEmail(
+      String userName, String userEmail, String userPassword) {
+    Auth authHandler = new Auth();
+    authHandler.handleSignUp(userEmail, userPassword);
+    Navigator.push(context, new MaterialPageRoute(builder: (context) => new ProfilePage()));
+  }
+
+//fonction appelée lorsqu'on clique sur le bouton connexion (email)
+//TODO: check les inputs, et affiches des messages en conséquence (email invalide, mdp trop court, etc...)
+//on connecte l'user qu'à partir du moment où on a check que ses credentials sont bons (récupérer)
+//la valeur de retour de la connexion a Firebase)
+  void _loginWithEmail(String userEmail, String userPassword) {
+    Auth authHandler = new Auth();
+    authHandler
+        .handleLoginInEmail(userEmail, userPassword)
+        .then((FirebaseUser user) {
+       Navigator.push(context, new MaterialPageRoute(builder: (context) => new ProfilePage()));
+    }).catchError((e) => print(e));
+  }
+
   Widget _buildMenuBar(BuildContext context) {
     return Container(
       width: 300.0,
@@ -242,7 +271,7 @@ class _LoginPageState extends State<LoginPage>
                               color: Colors.black,
                               size: 22.0,
                             ),
-                            hintText: "Adresse mail",
+                            hintText: "Adresse email",
                             hintStyle: TextStyle(
                                 fontFamily: "WorkSansSemiBold", fontSize: 17.0),
                           ),
@@ -290,32 +319,32 @@ class _LoginPageState extends State<LoginPage>
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: 170.0),
-                decoration: new BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                      color: Theme.Colors.loginGradientStart,
-                      offset: Offset(1.0, 6.0),
-                      blurRadius: 20.0,
-                    ),
-                    BoxShadow(
-                      color: Theme.Colors.loginGradientEnd,
-                      offset: Offset(1.0, 6.0),
-                      blurRadius: 20.0,
-                    ),
-                  ],
-                  gradient: new LinearGradient(
-                      colors: [
-                        Theme.Colors.loginGradientEnd,
-                        Theme.Colors.loginGradientStart
-                      ],
-                      begin: const FractionalOffset(0.2, 0.2),
-                      end: const FractionalOffset(1.0, 1.0),
-                      stops: [0.0, 1.0],
-                      tileMode: TileMode.clamp),
-                ),
-                child: MaterialButton(
+                  margin: EdgeInsets.only(top: 170.0),
+                  decoration: new BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                        color: Theme.Colors.loginGradientStart,
+                        offset: Offset(1.0, 6.0),
+                        blurRadius: 20.0,
+                      ),
+                      BoxShadow(
+                        color: Theme.Colors.loginGradientEnd,
+                        offset: Offset(1.0, 6.0),
+                        blurRadius: 20.0,
+                      ),
+                    ],
+                    gradient: new LinearGradient(
+                        colors: [
+                          Theme.Colors.loginGradientEnd,
+                          Theme.Colors.loginGradientStart
+                        ],
+                        begin: const FractionalOffset(0.2, 0.2),
+                        end: const FractionalOffset(1.0, 1.0),
+                        stops: [0.0, 1.0],
+                        tileMode: TileMode.clamp),
+                  ),
+                  child: MaterialButton(
                     highlightColor: Colors.transparent,
                     splashColor: Theme.Colors.loginGradientEnd,
                     //shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
@@ -331,8 +360,10 @@ class _LoginPageState extends State<LoginPage>
                       ),
                     ),
                     onPressed: () =>
-                        showInSnackBar("Login button pressed")),
-              ),
+                        //showInSnackBar("Login button pressed")),
+                        _loginWithEmail(Text(loginEmailController.text).data,
+                            Text(loginPasswordController.text).data),
+                  )),
             ],
           ),
           Padding(
@@ -629,7 +660,11 @@ class _LoginPageState extends State<LoginPage>
                       ),
                     ),
                     onPressed: () =>
-                        showInSnackBar("SignUp button pressed")),
+                        //showInSnackBar("SignUp button pressed")),
+                        _signUpWithEmail(
+                            Text(signupNameController.text).data,
+                            Text(signupEmailController.text).data,
+                            Text(signupPasswordController.text).data)),
               ),
             ],
           ),
