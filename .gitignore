@@ -4,3 +4,4 @@ android/*
 !android/build.gradle
 ios/
 build/app
+.vscode
