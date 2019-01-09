@@ -4,6 +4,4 @@ android/*
 !android/build.gradle
 ios/
 build/app
-.packages
-/.idea
-/.vscode
+.vscode
