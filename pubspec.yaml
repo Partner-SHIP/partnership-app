@@ -8,7 +8,7 @@ environment:
 
 dependencies:
 
-  cloud_firestore: 
+  cloud_firestore:
 
   flutter:
     sdk: flutter
@@ -17,6 +17,8 @@ dependencies:
   firebase_auth: ^0.6.6
 
   cupertino_icons: ^0.1.2
+
+  fluro: "^1.4.0"
 
 dev_dependencies:
   flutter_test:

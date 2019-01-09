@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:partnership/style/theme.dart' as Theme;
 import 'package:partnership/utils/bubble_indication_painter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import '../coordinator/coordinator.dart';
 import '../authentification/auth_email.dart';
 import '../profile/profile_page.dart';
 import '../authentification/auth.dart';
@@ -177,12 +177,13 @@ class _LoginPageState extends State<LoginPage>
 //on connecte l'user qu'à partir du moment où on a check que ses credentials sont bons (récupérer)
 //la valeur de retour de la connexion a Firebase)
   void _loginWithEmail(String userEmail, String userPassword) {
-    Auth authHandler = new Auth();
+    /*Auth authHandler = new Auth();
     authHandler
         .handleLoginInEmail(userEmail, userPassword)
         .then((FirebaseUser user) {
        Navigator.push(context, new MaterialPageRoute(builder: (context) => new ProfilePage()));
-    }).catchError((e) => print(e));
+    }).catchError((e) => print(e));*/
+    Coordinator.router.navigateTo("/profile_page", context);
   }
 
   Widget _buildMenuBar(BuildContext context) {
