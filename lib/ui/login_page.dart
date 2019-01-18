@@ -3,12 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:partnership/style/theme.dart' as Theme;
 import 'package:partnership/utils/bubble_indication_painter.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import '../coordinator/coordinator.dart';
-import '../authentification/auth_email.dart';
 import '../profile/profile_page.dart';
 import '../authentification/auth.dart';
-
 //Auth myAuth;
 
 class LoginPage extends StatefulWidget {
