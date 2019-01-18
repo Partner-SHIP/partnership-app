@@ -89,7 +89,10 @@ unlinked_spec.ds
 **/ios/Flutter/app.zip
 **/ios/Flutter/flutter_assets/
 **/ios/ServiceDefinitions.json
-*/ios/Runner/GeneratedPluginRegistrant.
+*/ios/Runner/GeneratedPluginRegistrant.m 
+*/ios/Runner/GeneratedPluginRegistrant.h
+ios/Runner/GeneratedPluginRegistrant.m
+ios/Runner/GeneratedPluginRegistrant.h
 
 # Exceptions to above rules.
 !**/ios/**/default.mode1v3
