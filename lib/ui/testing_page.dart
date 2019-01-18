@@ -7,15 +7,16 @@ import 'package:partnership/utils/bubble_indication_painter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:partnership/model/FBStreamWrapper.dart';
 import 'package:partnership/coordinator/coordinator.dart';
+import 'package:partnership/model/FBCollections.dart';
 
-class ProfilePage extends StatefulWidget {
+class TestingPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _ProfilePageState();
+    return _TestingPageState();
   }
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _TestingPageState extends State<TestingPage> {
   bool isOffline = false;
   StreamSubscription<dynamic> sub;
   //StreamSubscription<QuerySnapshot> user_sub;
@@ -27,7 +28,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     FBStreamWrapper wrapper = FBStreamWrapper(
-        collection: Collections.users,
+        collection: FBCollections.users,
         listenCallback: this.listencb,
         pauseCallback: this.pausecb,
         resumeCallback: this.resumecb,
@@ -37,7 +38,7 @@ class _ProfilePageState extends State<ProfilePage> {
       onWillPop: () async => false,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Profile Page'),
+          title: Text('Testing Page'),
         ),
         body: StreamBuilder(
             stream: this.isOffline ? null : wrapper.getStream(),

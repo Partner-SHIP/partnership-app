@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 import 'package:partnership/ui/login_page.dart';
 import 'package:partnership/ui/testing_page.dart';
-
+import 'package:partnership/coordinator/Routes.dart';
 /*
     Handlers:
       Singleton, sum of the Handlers needed by Fluro to map and define the routes of the Application.
@@ -12,14 +12,10 @@ class Handlers {
   final Handler _loginPageHandler = new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params){
     return new LoginPage();
   });
-  final Handler _profilePageHandler = new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params){
-    return new ProfilePage();
+  final Handler _testingPageHandler = new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params){
+    return new TestingPage();
   });
-  static final List<String> routes = [
-    "/",
-    "/login_page",
-    "/profile_page"
-  ];
+  final List<String> routes = Routes.routesList;
   final Map<String, Handler> _handlersMap = <String, Handler>{};
   Router _router;
 
@@ -35,14 +31,14 @@ class Handlers {
     });
     routes.forEach((route) {
       switch (route) {
-        case "/":
+        case Routes.root:
           _handlersMap[route] = _router.notFoundHandler;
           break;
-        case "/login_page":
+        case Routes.loginPage:
           _handlersMap[route] = _loginPageHandler;
           break;
-        case "/profile_page":
-          _handlersMap[route] = _profilePageHandler;
+        case Routes.testingPage:
+          _handlersMap[route] = _testingPageHandler;
           break;
         default:
           break;
