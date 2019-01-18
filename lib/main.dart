@@ -1,4 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:partnership/coordinator/coordinator.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-void main() => runApp(new PartnershipApp());
+void main() {
+  // Timestamp replaces Dates, Persistence for offline use
+  Firestore.instance.settings(
+      timestampsInSnapshotsEnabled: true,
+      persistenceEnabled: true
+  );
+  runApp(new PartnershipApp());
+}
