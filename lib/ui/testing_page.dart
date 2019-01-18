@@ -56,6 +56,7 @@ class _ProfilePageState extends State<ProfilePage> {
   void connectionChanged(dynamic hasConnection) {
     setState(() {
       this.isOffline = !hasConnection;
+      print("[Offline = "+this.isOffline.toString()+"]");
     });
   }
   Widget _buildListUser(BuildContext context, DocumentSnapshot document){

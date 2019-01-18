@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 import 'package:partnership/ui/login_page.dart';
-import 'package:partnership/profile/profile_page.dart';
+import 'package:partnership/ui/testing_page.dart';
 
 /*
     Handlers:
