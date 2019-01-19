@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SignUpPage extends StatefulWidget {
   static String tag = 'sign-up-page';
@@ -20,7 +21,7 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
-  
+
     final topBar = AppBar(
       backgroundColor: Colors.lightBlueAccent.shade100,
       title: Text('Inscription'),
@@ -44,7 +45,7 @@ class _SignUpPageState extends State<SignUpPage> {
             if (_formKey.currentState.validate()) {
               // If the form is valid, we want to show a Snackbar
               //Scaffold.of(context)
-                //  .showSnackBar(SnackBar(content: Text('Processing Data')));
+              //  .showSnackBar(SnackBar(content: Text('Processing Data')));
             }
           },
         ),
@@ -57,6 +58,7 @@ class _SignUpPageState extends State<SignUpPage> {
         child: Form(
           key: this._formKey,
           child: ListView(
+            shrinkWrap: true,
             children: <Widget>[
               Image.asset(
                 'assets/img/logoPartnerSHIP.png',
@@ -68,7 +70,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     return ('Veuillez saisir un pseudo');
                   }
                   //TODO : regex pour le pseudal
-                 /* bool nicknameValid =
+                  /* bool nicknameValid =
                         RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                             .hasMatch(value);
                     if (!nicknameValid) {
@@ -153,12 +155,30 @@ class _SignUpPageState extends State<SignUpPage> {
               '-  Ou inscris-toi avec  -',
               style: TextStyle(color: Colors.blue, fontSize: 20),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                RaisedButton(
+                  child: Icon(FontAwesomeIcons.facebookF),
+                  onPressed: () {},
+                ),
+                RaisedButton(
+                  child: Icon(FontAwesomeIcons.google),
+                  onPressed: () {},
+                )
+              ],
+            ),
           ],
         ),
       ),
     );
 
     return Scaffold(
-        appBar: topBar, backgroundColor: Colors.grey[300], body: formContainer);
+        resizeToAvoidBottomPadding: false,
+        appBar: topBar,
+        backgroundColor: Colors.grey[300],
+        body: Column(
+          children: <Widget>[formContainer, bottomContainer],
+        ));
   }
 }

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
-//import 'package:partnership/ui/login_page.dart';
-//import 'package:partnership/ui/testing_page.dart';
 import 'package:partnership/ui/log_in_page.dart';
 import 'package:partnership/ui/sign_in_page.dart';
 import 'package:partnership/ui/sign_up_page.dart';
@@ -12,14 +10,6 @@ import 'package:partnership/ui/sign_up_page.dart';
 */
 class Handlers {
   static Handlers instance;
-  // final Handler _loginPageHandler = new Handler(
-  //     handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-  //   return new LoginPage();
-  // });
-  // final Handler _profilePageHandler = new Handler(
-  //     handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-  //   return new ProfilePage();
-  // });
 
   final Handler _logInPageHandler = new Handler(
       handlerFunc: (BuildContext context, Map<String, dynamic> params) {
@@ -37,9 +27,6 @@ class Handlers {
   });
 
   static final List<String> routes = [
-    /* "/",
-    "/login_page",
-    "/profile_page", */
     "/",
     "/log_in_page",
     "/sign_up_page",
@@ -60,17 +47,6 @@ class Handlers {
     });
     routes.forEach((route) {
       switch (route) {
-        // case "/":
-        //   _handlersMap[route] = _router.notFoundHandler;
-        //   break;
-        // case "/login_page":
-        //   _handlersMap[route] = _loginPageHandler;
-        //   break;
-        // case "/profile_page":
-        //   _handlersMap[route] = _profilePageHandler;
-        //   break;
-        // default:
-        //   break;
         case "/":
           _handlersMap[route] = _router.notFoundHandler;
           break;
@@ -115,8 +91,8 @@ class RoutingModule {
   }
 
 //  Navigation method expected to be called by the Coordinator after being notified by ViewModels.
-  void navigateTo(String route, BuildContext context) {
-    _router.navigateTo(context, route, clearStack: true);
+  void navigateTo(String route, BuildContext context, [bool popStack = true]) {
+    _router.navigateTo(context, route, clearStack: popStack);
   }
 
   Function generator() {

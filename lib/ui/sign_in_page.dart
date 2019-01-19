@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SignInPage extends StatefulWidget {
   static String tag = 'sign-in-page';
@@ -24,6 +25,7 @@ class _SignInPageState extends State<SignInPage> {
     final topBar = AppBar(
       backgroundColor: Colors.lightBlueAccent.shade100,
       title: Text('Connectez vous'),
+      centerTitle: true,
     );
 
     final signInButton = Padding(
@@ -43,7 +45,7 @@ class _SignInPageState extends State<SignInPage> {
             if (_formKey.currentState.validate()) {
               // If the form is valid, we want to show a Snackbar
               //Scaffold.of(context)
-               //   .showSnackBar(SnackBar(content: Text('Processing Data')));
+              //   .showSnackBar(SnackBar(content: Text('Processing Data')));
               _attemptLogin();
             }
           },
@@ -57,6 +59,7 @@ class _SignInPageState extends State<SignInPage> {
         child: Form(
           key: this._formKey,
           child: ListView(
+            shrinkWrap: true,
             children: <Widget>[
               Image.asset(
                 'assets/img/logoPartnerSHIP.png',
@@ -136,11 +139,25 @@ class _SignInPageState extends State<SignInPage> {
 
     final bottomContainer = Container(
       child: Center(
-        child: ListView(
+        child: Column(
           children: <Widget>[
             Text(
               '-  Ou connecte toi avec  -',
               style: TextStyle(color: Colors.blue, fontSize: 20),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                RaisedButton(
+                  child: Icon(FontAwesomeIcons.facebookF),
+                  onPressed: () {},
+                ),
+                RaisedButton(
+                  child: Icon(FontAwesomeIcons.google),
+                  onPressed: () {
+                  },
+                )
+              ],
             ),
           ],
         ),
@@ -153,9 +170,13 @@ class _SignInPageState extends State<SignInPage> {
         body: formContainer
     );*/
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       appBar: topBar,
       backgroundColor: Colors.grey[300],
-      body: Container(child: formContainer),
+      //body: Container(child: formContainer),
+      body: Column(
+        children: <Widget>[formContainer, bottomContainer],
+      ),
     );
   }
 

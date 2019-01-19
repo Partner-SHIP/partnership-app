@@ -17,12 +17,10 @@ class _LogInPageState extends State<LogInPage> {
 
     final topContainer = Container(
       child: Center(
-          child: Column(
-        children: <Widget>[
-          Image.asset(
-            'assets/img/work-office.png',
-          ),
-        ],
+          child: Align(
+        child: Image.asset(
+          'assets/img/work-office.png',
+        ),
       )),
     );
 
@@ -47,7 +45,7 @@ class _LogInPageState extends State<LogInPage> {
           child: Text('J\'ai déjà un compte',
               style: TextStyle(color: Colors.white)),
           onPressed: () {
-            Coordinator.router.navigateTo("/sign_in_page", context);
+            Coordinator.router.navigateTo("/sign_in_page", context, false);
           },
         ),
       ),
@@ -66,7 +64,7 @@ class _LogInPageState extends State<LogInPage> {
           child: Text('Je veux m\'inscrire',
               style: TextStyle(color: Colors.white)),
           onPressed: () {
-            Coordinator.router.navigateTo("/sign_up_page", context);
+            Coordinator.router.navigateTo("/sign_up_page", context, false);
           },
         ),
       ),
