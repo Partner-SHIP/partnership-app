@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'routing_module.dart';
-import 'connectivity_module.dart';
-
+import 'package:partnership/coordinator/routing_module.dart';
+import 'package:partnership/coordinator/connectivity_module.dart';
+import 'package:partnership/coordinator/Routes.dart';
 /*
     Head of the App, brings severals utility modules like Routing, internet connectivity etc...
     Responsible of ViewModels's management.
@@ -22,7 +22,7 @@ class Coordinator extends State<PartnershipApp>{
         primarySwatch: Colors.blue,
       ),
       onGenerateRoute: Coordinator.router.generator(),
-      initialRoute: Handlers.routes[1],
+      initialRoute: Routes.loginPage,
     );
   }
 }

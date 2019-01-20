@@ -1,4 +1,4 @@
-import 'AViewModelFactory.dart';
+import 'package:partnership/viewmodel/AViewModelFactory.dart';
 
 /*
     Abstract class defining all ViewModels, destined to be instanciated within the Coordinator by AViewModelFactory.

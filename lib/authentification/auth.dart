@@ -1,39 +1,43 @@
 import 'dart:async';
-
 import 'package:firebase_auth/firebase_auth.dart';
 
-class Auth {
-  final FirebaseAuth auth = FirebaseAuth.instance;
+class AuthenticationModule {
+  static final AuthenticationModule instance = AuthenticationModule._internal();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  FirebaseUser       _loggedInUser;
 
-  Auth();
-
-  void _checkEmailCredentials(String email, String password) {}
+  factory AuthenticationModule(){
+      return instance;
+  }
+  AuthenticationModule._internal();
 
   //Email Authentification
-  Future<FirebaseUser> handleLoginInEmail(String email, String password) async {
-    //_checkEmailCredentials(email, password);
-
-    final FirebaseUser user =
-        await auth.signInWithEmailAndPassword(email: email, password: password);
-
-    assert(user != null);
-    assert(await user.getIdToken() != null);
-
-    final FirebaseUser currentUser = await auth.currentUser();
-    assert(user.uid == currentUser.uid);
-
-    print('signInEmail succeeded: $user');
-
-    return (user);
+  Future<bool> loginByEmail(String email, String password) async {
+    try {
+      final FirebaseUser user = await this._auth.signInWithEmailAndPassword(email: email, password: password);
+      final FirebaseUser currentUser = await this._auth.currentUser();
+      assert(user != null);
+      assert(user.uid == currentUser.uid);
+      this._loggedInUser = currentUser;
+      return true;
+    }
+    catch (error){
+      print(error);
+      return false;
+    }
   }
 
-  Future<FirebaseUser> handleSignUp(email, password) async {
-    final FirebaseUser user = await auth.createUserWithEmailAndPassword(
-        email: email, password: password);
-
-    assert(user != null);
-    assert(await user.getIdToken() != null);
-
-    return (user);
+  // Email SignUp
+  Future<FirebaseUser> signUpByEmail(email, password) async {
+    try{
+      final FirebaseUser user = await this._auth.createUserWithEmailAndPassword(email: email, password: password);
+      assert(user != null);
+      assert(await user.getIdToken() != null);
+      return (user);
+    }
+    catch(error){
+      print(error);
+      return null;
+    }
   }
 }

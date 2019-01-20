@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
-import 'package:partnership/ui/log_in_page.dart';
-import 'package:partnership/ui/sign_in_page.dart';
-import 'package:partnership/ui/sign_up_page.dart';
-
+import 'package:partnership/ui/login_page.dart';
+import 'package:partnership/ui/testing_page.dart';
+import 'package:partnership/coordinator/Routes.dart';
 /*
     Handlers:
       Singleton, sum of the Handlers needed by Fluro to map and define the routes of the Application.
@@ -15,23 +14,11 @@ class Handlers {
       handlerFunc: (BuildContext context, Map<String, dynamic> params) {
     return new LogInPage();
   });
-
-  final Handler _signInPageHandler = new Handler(
-      handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-    return new SignInPage();
+  final Handler _testingPageHandler = new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params){
+    return new TestingPage();
   });
+  final List<String> routes = Routes.routesList;
 
-  final Handler _signUpPageHandler = new Handler(
-      handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-    return new SignUpPage();
-  });
-
-  static final List<String> routes = [
-    "/",
-    "/log_in_page",
-    "/sign_up_page",
-    "/sign_in_page"
-  ];
   final Map<String, Handler> _handlersMap = <String, Handler>{};
   Router _router;
 
@@ -47,17 +34,14 @@ class Handlers {
     });
     routes.forEach((route) {
       switch (route) {
-        case "/":
+        case Routes.root:
           _handlersMap[route] = _router.notFoundHandler;
           break;
-        case "/log_in_page":
-          _handlersMap[route] = _logInPageHandler;
+        case Routes.loginPage:
+          _handlersMap[route] = _loginPageHandler;
           break;
-        case "/sign_up_page":
-          _handlersMap[route] = _signUpPageHandler;
-          break;
-        case "/sign_in_page":
-          _handlersMap[route] = _signInPageHandler;
+        case Routes.testingPage:
+          _handlersMap[route] = _testingPageHandler;
           break;
         default:
           break;
