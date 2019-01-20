@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
-import 'package:partnership/ui/login_page.dart';
-import 'package:partnership/ui/testing_page.dart';
+import 'package:partnership/ui/log_in_page.dart';
+import 'package:partnership/ui/sign_in_page.dart';
+import 'package:partnership/ui/sign_up_page.dart';
 
 /*
     Handlers:
@@ -9,28 +10,39 @@ import 'package:partnership/ui/testing_page.dart';
 */
 class Handlers {
   static Handlers instance;
-  final Handler _loginPageHandler = new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params){
-    return new LoginPage();
+
+  final Handler _logInPageHandler = new Handler(
+      handlerFunc: (BuildContext context, Map<String, dynamic> params) {
+    return new LogInPage();
   });
-  final Handler _profilePageHandler = new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params){
-    return new ProfilePage();
+
+  final Handler _signInPageHandler = new Handler(
+      handlerFunc: (BuildContext context, Map<String, dynamic> params) {
+    return new SignInPage();
   });
+
+  final Handler _signUpPageHandler = new Handler(
+      handlerFunc: (BuildContext context, Map<String, dynamic> params) {
+    return new SignUpPage();
+  });
+
   static final List<String> routes = [
     "/",
-    "/login_page",
-    "/profile_page"
+    "/log_in_page",
+    "/sign_up_page",
+    "/sign_in_page"
   ];
   final Map<String, Handler> _handlersMap = <String, Handler>{};
   Router _router;
 
-  factory Handlers(Router router){
-    if (instance == null)
-      instance = Handlers._internal(router);
+  factory Handlers(Router router) {
+    if (instance == null) instance = Handlers._internal(router);
     return instance;
   }
   Handlers._internal(Router router) {
     _router = router;
-    _router.notFoundHandler = new Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    _router.notFoundHandler = new Handler(
+        handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       print("ROUTE WAS NOT FOUND !!!");
     });
     routes.forEach((route) {
@@ -38,11 +50,14 @@ class Handlers {
         case "/":
           _handlersMap[route] = _router.notFoundHandler;
           break;
-        case "/login_page":
-          _handlersMap[route] = _loginPageHandler;
+        case "/log_in_page":
+          _handlersMap[route] = _logInPageHandler;
           break;
-        case "/profile_page":
-          _handlersMap[route] = _profilePageHandler;
+        case "/sign_up_page":
+          _handlersMap[route] = _signUpPageHandler;
+          break;
+        case "/sign_in_page":
+          _handlersMap[route] = _signInPageHandler;
           break;
         default:
           break;
@@ -51,9 +66,12 @@ class Handlers {
   }
 
   void configureRoute() {
-    this._handlersMap.forEach((route, handler) => _router.define(route, handler:handler));
+    this
+        ._handlersMap
+        .forEach((route, handler) => _router.define(route, handler: handler));
   }
 }
+
 /*
 *   RoutingModule:
 *     Singleton, responsible for routing (using library Fluro) in the Application and accessible from the Coordinator.
@@ -63,7 +81,7 @@ class RoutingModule {
   Handlers _handlers;
   static final RoutingModule instance = RoutingModule._internal();
 
-  factory RoutingModule(){
+  factory RoutingModule() {
     return instance;
   }
 
@@ -73,10 +91,11 @@ class RoutingModule {
   }
 
 //  Navigation method expected to be called by the Coordinator after being notified by ViewModels.
-  void navigateTo(String route, BuildContext context){
-    _router.navigateTo(context, route, clearStack: true);
+  void navigateTo(String route, BuildContext context, [bool popStack = true]) {
+    _router.navigateTo(context, route, clearStack: popStack);
   }
-  Function generator(){
+
+  Function generator() {
     return _router.generator;
   }
 }
