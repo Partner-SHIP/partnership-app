@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
-import 'package:partnership/ui/login_page.dart';
+import 'package:partnership/ui/LoginPage.dart';
+import 'package:partnership/ui/SignInPage.dart';
+import 'package:partnership/ui/SignUpPage.dart';
 import 'package:partnership/ui/testing_page.dart';
 import 'package:partnership/coordinator/Routes.dart';
 /*
@@ -10,11 +12,16 @@ import 'package:partnership/coordinator/Routes.dart';
 class Handlers {
   static Handlers instance;
 
-  final Handler _logInPageHandler = new Handler(
-      handlerFunc: (BuildContext context, Map<String, dynamic> params) {
+  final Handler _loginPageHandler = new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
     return new LogInPage();
   });
-  final Handler _testingPageHandler = new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params){
+  final Handler _signInPageHandler = new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
+    return new LogInPage();
+  });
+  final Handler _signUpPageHandler = new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
+    return new LogInPage();
+  });
+  final Handler _testingPageHandler = new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
     return new TestingPage();
   });
   final List<String> routes = Routes.routesList;
@@ -40,6 +47,12 @@ class Handlers {
         case Routes.loginPage:
           _handlersMap[route] = _loginPageHandler;
           break;
+        case Routes.signInPage:
+          _handlersMap[route] = _signInPageHandler;
+          break;
+        case Routes.signUpPage:
+          _handlersMap[route] = _signUpPageHandler;
+          break;
         case Routes.testingPage:
           _handlersMap[route] = _testingPageHandler;
           break;
@@ -50,9 +63,7 @@ class Handlers {
   }
 
   void configureRoute() {
-    this
-        ._handlersMap
-        .forEach((route, handler) => _router.define(route, handler: handler));
+    this._handlersMap.forEach((route, handler) => _router.define(route, handler: handler));
   }
 }
 

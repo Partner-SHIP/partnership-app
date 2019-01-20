@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../coordinator/coordinator.dart';
 
 class LogInPage extends StatefulWidget {
   static String tag = 'log-in-page';
@@ -45,7 +44,8 @@ class _LogInPageState extends State<LogInPage> {
           child: Text('J\'ai déjà un compte',
               style: TextStyle(color: Colors.white)),
           onPressed: () {
-            Coordinator.router.navigateTo("/sign_in_page", context, false);
+            // A changer
+            //Coordinator.router.navigateTo("/sign_in_page", context);
           },
         ),
       ),
@@ -64,7 +64,8 @@ class _LogInPageState extends State<LogInPage> {
           child: Text('Je veux m\'inscrire',
               style: TextStyle(color: Colors.white)),
           onPressed: () {
-            Coordinator.router.navigateTo("/sign_up_page", context, false);
+            // A changer
+            //Coordinator.router.navigateTo("/sign_up_page", context, false);
           },
         ),
       ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:partnership/coordinator/coordinator.dart';
+import 'package:partnership/coordinator/Coordinator.dart';
 import 'package:partnership/main.dart';
 
 void main() {

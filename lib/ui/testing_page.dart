@@ -6,7 +6,7 @@ import 'package:partnership/style/theme.dart' as Theme;
 import 'package:partnership/utils/bubble_indication_painter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:partnership/model/FBStreamWrapper.dart';
-import 'package:partnership/coordinator/coordinator.dart';
+import 'package:partnership/coordinator/Coordinator.dart';
 import 'package:partnership/model/FBCollections.dart';
 
 class TestingPage extends StatefulWidget {
@@ -33,7 +33,7 @@ class _TestingPageState extends State<TestingPage> {
         pauseCallback: this.pausecb,
         resumeCallback: this.resumecb,
         cancelCallback: this.cancelcb);
-    sub = Coordinator.connectivity.connectionChange.listen(connectionChanged);
+    //sub = Coordinator.connectivity.connectionChange.listen(connectionChanged);
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
