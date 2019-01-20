@@ -9,24 +9,27 @@ import 'package:partnership/coordinator/Routes.dart';
 */
 class Handlers {
   static Handlers instance;
-  final Handler _loginPageHandler = new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params){
-    return new LoginPage();
+
+  final Handler _logInPageHandler = new Handler(
+      handlerFunc: (BuildContext context, Map<String, dynamic> params) {
+    return new LogInPage();
   });
   final Handler _testingPageHandler = new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params){
     return new TestingPage();
   });
   final List<String> routes = Routes.routesList;
+
   final Map<String, Handler> _handlersMap = <String, Handler>{};
   Router _router;
 
-  factory Handlers(Router router){
-    if (instance == null)
-      instance = Handlers._internal(router);
+  factory Handlers(Router router) {
+    if (instance == null) instance = Handlers._internal(router);
     return instance;
   }
   Handlers._internal(Router router) {
     _router = router;
-    _router.notFoundHandler = new Handler(handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    _router.notFoundHandler = new Handler(
+        handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       print("ROUTE WAS NOT FOUND !!!");
     });
     routes.forEach((route) {
@@ -47,9 +50,12 @@ class Handlers {
   }
 
   void configureRoute() {
-    this._handlersMap.forEach((route, handler) => _router.define(route, handler:handler));
+    this
+        ._handlersMap
+        .forEach((route, handler) => _router.define(route, handler: handler));
   }
 }
+
 /*
 *   RoutingModule:
 *     Singleton, responsible for routing (using library Fluro) in the Application and accessible from the Coordinator.
@@ -59,7 +65,7 @@ class RoutingModule {
   Handlers _handlers;
   static final RoutingModule instance = RoutingModule._internal();
 
-  factory RoutingModule(){
+  factory RoutingModule() {
     return instance;
   }
 
@@ -69,10 +75,11 @@ class RoutingModule {
   }
 
 //  Navigation method expected to be called by the Coordinator after being notified by ViewModels.
-  void navigateTo(String route, BuildContext context){
-    _router.navigateTo(context, route, clearStack: true);
+  void navigateTo(String route, BuildContext context, [bool popStack = true]) {
+    _router.navigateTo(context, route, clearStack: popStack);
   }
-  Function generator(){
+
+  Function generator() {
     return _router.generator;
   }
 }
