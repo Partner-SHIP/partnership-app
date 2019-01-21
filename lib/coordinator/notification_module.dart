@@ -8,7 +8,6 @@ class NotificationModule {
   NotificationModule._internal();
 
   FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
-  String textValue = 'Hello World !';
 
   void initialize() {
     firebaseMessaging.configure(
@@ -39,7 +38,6 @@ class NotificationModule {
 
   void update(String token) {
     print(token);
-    textValue = token;
   }
 }
 
