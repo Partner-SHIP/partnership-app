@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:partnership/utils/Routes.dart';
+import 'package:partnership/viewmodel/AViewModelFactory.dart';
+import 'package:partnership/viewmodel/SignInPageViewModel.dart';
 
 class SignInPage extends StatefulWidget {
-  static String tag = 'sign-in-page';
 
   @override
   _SignInPageState createState() => _SignInPageState();
@@ -17,6 +19,8 @@ class _SignInData {
 
 class _SignInPageState extends State<SignInPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  SignInPageViewModel get viewModel => AViewModelFactory.register[Routes.signInPage];
 
   @override
   Widget build(BuildContext context) {

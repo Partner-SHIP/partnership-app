@@ -4,7 +4,7 @@ import 'package:partnership/ui/LoginPage.dart';
 import 'package:partnership/ui/SignInPage.dart';
 import 'package:partnership/ui/SignUpPage.dart';
 import 'package:partnership/ui/testing_page.dart';
-import 'package:partnership/coordinator/Routes.dart';
+import 'package:partnership/utils/Routes.dart';
 /*
     Handlers:
       Singleton, sum of the Handlers needed by Fluro to map and define the routes of the Application.
@@ -87,7 +87,12 @@ class RoutingModule {
 
 //  Navigation method expected to be called by the Coordinator after being notified by ViewModels.
   void navigateTo(String route, BuildContext context, [bool popStack = true]) {
-    _router.navigateTo(context, route, clearStack: popStack);
+    try {
+      _router.navigateTo(context, route, clearStack: popStack);
+    }
+    catch(error){
+      rethrow;
+    }
   }
 
   Function generator() {

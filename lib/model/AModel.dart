@@ -1,4 +1,4 @@
-import 'package:partnership/model/FBCollections.dart';
+import 'package:partnership/utils/FBCollections.dart';
 import 'package:partnership/model/FBStreamWrapper.dart';
 import 'package:partnership/model/AModelFactory.dart';
 

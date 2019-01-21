@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
-import 'FBCollections.dart';
+import 'package:partnership/utils/FBCollections.dart';
 
 /*
     A mixin which can be add to a ViewModel in order to let it [subscribe to / manage] a stream of users's data

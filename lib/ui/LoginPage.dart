@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:partnership/utils/Routes.dart';
+import 'package:partnership/viewmodel/AViewModelFactory.dart';
+import 'package:partnership/viewmodel/LoginPageViewModel.dart';
 
 class LogInPage extends StatefulWidget {
-  static String tag = 'log-in-page';
-
   @override
   _LogInPageState createState() => _LogInPageState();
 }
 
 class _LogInPageState extends State<LogInPage> {
   BuildContext _scaffoldContext;
+
+  LoginPageViewModel get viewModel => AViewModelFactory.register[Routes.loginPage];
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +47,7 @@ class _LogInPageState extends State<LogInPage> {
           child: Text('J\'ai déjà un compte',
               style: TextStyle(color: Colors.white)),
           onPressed: () {
-            // A changer
-            //Coordinator.router.navigateTo("/sign_in_page", context);
+            this.viewModel.changeView(route: Routes.signInPage);
           },
         ),
       ),
@@ -64,8 +66,7 @@ class _LogInPageState extends State<LogInPage> {
           child: Text('Je veux m\'inscrire',
               style: TextStyle(color: Colors.white)),
           onPressed: () {
-            // A changer
-            //Coordinator.router.navigateTo("/sign_up_page", context, false);
+            this.viewModel.changeView(route: Routes.signUpPage);
           },
         ),
       ),
