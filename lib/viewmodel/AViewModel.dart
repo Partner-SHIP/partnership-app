@@ -36,7 +36,7 @@ abstract class AViewModel implements AViewModelFactory
   AModel get abstractModel => this._abstractModel;
   String get route => this._route;
 
-  bool changeView({@required String route, bool popStack = true}){
-      return this._coordinator.fetchRegistersToNavigate(route: route, popStack: popStack);
+  bool changeView({@required String route,@required BuildContext widgetContext, bool popStack = true}){
+      return this._coordinator.fetchRegistersToNavigate(route: route, context: widgetContext, popStack: popStack);
   }
 }

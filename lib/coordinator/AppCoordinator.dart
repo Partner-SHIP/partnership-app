@@ -5,6 +5,9 @@ import 'package:partnership/coordinator/AuthenticationModule.dart';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/AViewModel.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
+import 'package:partnership/ui/LoginPage.dart';
+import 'package:partnership/ui/SignInPage.dart';
+import 'package:partnership/ui/SignUpPage.dart';
 /*
     Head of the App, brings severals utility modules like Routing, internet connectivity etc...
     Responsible of ViewModels's management.
@@ -15,7 +18,7 @@ class Coordinator extends State<PartnershipApp>{
   final ConnectivityModule      _connectivity = ConnectivityModule();
   final AuthenticationModule    _authentication = AuthenticationModule();
   final Map<String, AViewModel> _viewModels = AViewModelFactory.register;
-  BuildContext                  _buildContext;
+  //BuildContext                  _buildContext;
 
   Coordinator._internal(){
     _connectivity.initialize();
@@ -26,31 +29,40 @@ class Coordinator extends State<PartnershipApp>{
    }
 
   @override
-  Widget build(BuildContext context) {
-    this._buildContext = context;
-    return new MaterialApp(
-      title: 'PartnerSHIP',
+  Widget build(BuildContext _context) {
+    MaterialApp app = MaterialApp(
+      onGenerateTitle: (context) {
+      return 'PartnerSHIP';
+      },
       theme: new ThemeData(
         primarySwatch: Colors.blue,
       ),
-      onGenerateRoute: this._router.generator(),
+      routes: {
+        Routes.root: (context) => null, // NOtFoundView
+        Routes.loginPage: (context) => LoginPage(),
+        Routes.signInPage: (context) => SignInPage(),
+        Routes.signUpPage: (context) => SignUpPage()
+      },
+      //onGenerateRoute: this._router.generator(),
+      //home: LoginPage(),
       initialRoute: this._setUpInitialRoute(),
     );
+    return app;
   }
 
   String _setUpInitialRoute(){
-    if (this.fetchRegistersToNavigate(route: Routes.loginPage, navigate: false))
+    if (this.fetchRegistersToNavigate(route: Routes.loginPage, context: null, navigate: false))
       return Routes.loginPage;
     return Routes.root;
   }
 
-  bool fetchRegistersToNavigate({@required String route, bool navigate = true, bool popStack = true}) {
+  bool fetchRegistersToNavigate({@required String route, @required BuildContext context, bool navigate = true, bool popStack = true}) {
     try {
       AViewModelFactory(route);
       if (!this._viewModels.containsKey(route) || !(this._viewModels[route] != null))
         throw Exception("Missing ViewModel for "+route);
       if (navigate)
-        this._router.navigateTo(route, this._buildContext, popStack);
+        this._router.navigateTo(route, context, popStack);
       return true;
     }
     catch (error) {
