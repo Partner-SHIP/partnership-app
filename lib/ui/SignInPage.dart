@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:partnership/utils/Routes.dart';
+import 'package:partnership/viewmodel/AViewModel.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/viewmodel/SignInPageViewModel.dart';
 
@@ -9,30 +10,52 @@ class SignInPage extends StatefulWidget {
   _SignInPageState createState() => _SignInPageState();
 }
 
+/*
 class _SignInData {
   String nickname = '';
   String email = '';
   String password = '';
   String confirmPassword = '';
 }
+*/
 
 class _SignInPageState extends State<SignInPage> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  SignInPageViewModel get viewModel =>
-      AViewModelFactory.register[Routes.signInPage];
-
+  SignInPageViewModel viewModel = AViewModelFactory.register[Routes.signInPage];
   @override
   Widget build(BuildContext context) {
-    final Size screenSize = MediaQuery.of(context).size;
+    var elem = AViewModelFactory.register;
+    var test = AViewModelFactory.register[Routes.signInPage];
+    print("ça c'est register : $elem");
+    elem.forEach((String string, AViewModel vm) {
+      print("string = $string");
+      print("vm = $vm");
+    });
+    print("$test");
+    print("ça c'est null : $viewModel");
+    final Widget topBar = buildTopBar();
+    final Widget mailConnectionForm = buildForm();
+    final Widget alternativeConnectionForm = buildAlternativeConnectionForm();
 
-    final topBar = AppBar(
-      backgroundColor: Colors.lightBlueAccent.shade100,
-      title: Text('Connectez vous'),
-      centerTitle: true,
+    return Scaffold(
+      resizeToAvoidBottomPadding: false,
+      appBar: topBar,
+      backgroundColor: Colors.grey[300],
+      body: Column(
+        children: <Widget>[mailConnectionForm, alternativeConnectionForm],
+      ),
     );
+  }
 
-    final signInButton = Padding(
+  Widget buildTopBar() {
+    return (AppBar(
+      backgroundColor: Colors.lightBlueAccent.shade100,
+      title: Text('Connectez-vous'),
+      centerTitle: true,
+    ));
+  }
+
+  Widget buildSignInButton() {
+    return (Padding(
       padding: EdgeInsets.symmetric(vertical: 16.0),
       child: Material(
         borderRadius: BorderRadius.circular(30.0),
@@ -43,25 +66,20 @@ class _SignInPageState extends State<SignInPage> {
           height: 42.0,
           color: Colors.lightBlueAccent,
           child: Text('Je me connecte', style: TextStyle(color: Colors.white)),
-          onPressed: () {
-            // Validate will return true if the form is valid, or false if
-            // the form is invalid.
-            if (_formKey.currentState.validate()) {
-              // If the form is valid, we want to show a Snackbar
-              //Scaffold.of(context)
-              //   .showSnackBar(SnackBar(content: Text('Processing Data')));
-              _attemptLogin();
-            }
-          },
+          onPressed: () => viewModel.attemptLogin(),
         ),
       ),
-    );
+    ));
+  }
 
-    final formContainer = Container(
+  Widget buildForm() {
+    final signInButton = buildSignInButton();
+    final Size screenSize = MediaQuery.of(context).size;
+    return (Container(
         padding: EdgeInsets.all(20.0),
         width: screenSize.width,
         child: Form(
-          key: this._formKey,
+          key: this.viewModel.formKey,
           child: ListView(
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
@@ -140,9 +158,11 @@ class _SignInPageState extends State<SignInPage> {
               )
             ],
           ),
-        ));
+        )));
+  }
 
-    final bottomContainer = Container(
+  Widget buildAlternativeConnectionForm() {
+    return (Container(
       child: Center(
         child: Column(
           children: <Widget>[
@@ -166,26 +186,6 @@ class _SignInPageState extends State<SignInPage> {
           ],
         ),
       ),
-    );
-
-    /* return Scaffold(
-        appBar: topBar,
-        backgroundColor: Colors.grey[300],
-        body: formContainer
-    );*/
-    return Scaffold(
-      resizeToAvoidBottomPadding: true,
-      appBar: topBar,
-      backgroundColor: Colors.grey[300],
-      //body: Container(child: formContainer),
-      body: SingleChildScrollView(
-          child: Column(
-        children: <Widget>[formContainer, bottomContainer],
-      )),
-    );
-  }
-
-  _attemptLogin() {
-    print('login');
+    ));
   }
 }

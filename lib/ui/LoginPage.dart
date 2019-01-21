@@ -10,7 +10,6 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   BuildContext _scaffoldContext;
-
   LoginPageViewModel get viewModel =>
       AViewModelFactory.register[Routes.loginPage];
 

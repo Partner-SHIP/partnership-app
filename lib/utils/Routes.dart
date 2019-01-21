@@ -10,20 +10,5 @@ abstract class Routes {
   static const String signUpPage = "/signup_page";
   static const String profilePage = "/profile_page";
   static const String testingPage = "/testing_page";
-  static final routeMap = {
-    Routes.root:        (BuildContext context) => null, // NOtFoundView
-    Routes.loginPage:   (BuildContext context) => LoginPage(),
-    Routes.signInPage:  (BuildContext context) => SignInPage(),
-    Routes.signUpPage:  (BuildContext context) => SignUpPage()
-  };
-  static List<String> get routesList => const <String>[root, loginPage, signInPage, signUpPage, profilePage, testingPage];
-  /*
-   static get routeMap {
-    return {
-      Routes.root: (context) => null, // NOtFoundView
-      Routes.loginPage: (context) => LoginPage(),
-      Routes.signInPage: (context) => SignInPage(),
-      Routes.signUpPage: (context) => SignUpPage()
-    };
-  }*/
+  static List<String> get routesList => const <String>[root, loginPage, profilePage, testingPage, signInPage, signUpPage];
 }
