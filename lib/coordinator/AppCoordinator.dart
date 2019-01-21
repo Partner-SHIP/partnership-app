@@ -15,6 +15,7 @@ class Coordinator extends State<PartnershipApp>{
   final ConnectivityModule      _connectivity = ConnectivityModule();
   final AuthenticationModule    _authentication = AuthenticationModule();
   final Map<String, AViewModel> _viewModels = AViewModelFactory.register;
+  BuildContext                  _buildContext;
 
   Coordinator._internal(){
     _connectivity.initialize();
@@ -26,6 +27,7 @@ class Coordinator extends State<PartnershipApp>{
 
   @override
   Widget build(BuildContext context) {
+    this._buildContext = context;
     return new MaterialApp(
       title: 'PartnerSHIP',
       theme: new ThemeData(
@@ -37,18 +39,18 @@ class Coordinator extends State<PartnershipApp>{
   }
 
   String _setUpInitialRoute(){
-    if (this.fetchRegistersToNavigate(route: Routes.loginPage, context: null , navigate: false))
+    if (this.fetchRegistersToNavigate(route: Routes.loginPage, navigate: false))
       return Routes.loginPage;
     return Routes.root;
   }
 
-  bool fetchRegistersToNavigate({@required String route, @required BuildContext context, bool navigate = true, bool popStack = true}) {
+  bool fetchRegistersToNavigate({@required String route, bool navigate = true, bool popStack = true}) {
     try {
       AViewModelFactory(route);
       if (!this._viewModels.containsKey(route) || !(this._viewModels[route] != null))
         throw Exception("Missing ViewModel for "+route);
       if (navigate)
-        this._router.navigateTo(route, context, popStack);
+        this._router.navigateTo(route, this._buildContext, popStack);
       return true;
     }
     catch (error) {
@@ -56,7 +58,6 @@ class Coordinator extends State<PartnershipApp>{
       return false;
     }
   }
-
 }
 
 // Main entry of the Application

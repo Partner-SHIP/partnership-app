@@ -16,10 +16,10 @@ class Handlers {
     return new LogInPage();
   });
   final Handler _signInPageHandler = new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-    return new LogInPage();
+    return new SignInPage();
   });
   final Handler _signUpPageHandler = new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-    return new LogInPage();
+    return new SignUpPage();
   });
   final Handler _testingPageHandler = new Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
     return new TestingPage();
@@ -88,6 +88,7 @@ class RoutingModule {
 //  Navigation method expected to be called by the Coordinator after being notified by ViewModels.
   void navigateTo(String route, BuildContext context, [bool popStack = true]) {
     try {
+      print(context);
       _router.navigateTo(context, route, clearStack: popStack);
     }
     catch(error){

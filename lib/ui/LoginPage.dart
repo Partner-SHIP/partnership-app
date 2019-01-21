@@ -47,7 +47,7 @@ class _LogInPageState extends State<LogInPage> {
           child: Text('J\'ai déjà un compte',
               style: TextStyle(color: Colors.white)),
           onPressed: () {
-            this.viewModel.changeView(route: Routes.signInPage, context: this._scaffoldContext);
+            this.viewModel.changeView(route: Routes.signInPage);
           },
         ),
       ),
@@ -66,7 +66,7 @@ class _LogInPageState extends State<LogInPage> {
           child: Text('Je veux m\'inscrire',
               style: TextStyle(color: Colors.white)),
           onPressed: () {
-            this.viewModel.changeView(route: Routes.signUpPage, context: this._scaffoldContext);
+            this.viewModel.changeView(route: Routes.signUpPage);
           },
         ),
       ),
