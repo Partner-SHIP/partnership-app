@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/model/AModelFactory.dart';
 import 'package:partnership/model/AModel.dart';
-import 'package:partnership/coordinator/COORDINATOR.dart';
+import 'package:partnership/coordinator/Coordinator.dart';
 import 'package:partnership/utils/Routes.dart';
 
 /*
