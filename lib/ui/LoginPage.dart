@@ -47,8 +47,8 @@ class _LoginPageState extends State<LoginPage> {
           child: Text('J\'ai déjà un compte',
               style: TextStyle(color: Colors.white)),
           onPressed: () {
-            //this.viewModel.changeView(route: Routes.signInPage, widgetContext: context);
-            Navigator.pushNamed(context, Routes.signInPage);
+            this.viewModel.changeView(route: Routes.signInPage, widgetContext: context);
+            //Navigator.pushNamed(context, Routes.signInPage);
           },
         ),
       ),

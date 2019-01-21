@@ -5,9 +5,6 @@ import 'package:partnership/coordinator/AuthenticationModule.dart';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/AViewModel.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
-import 'package:partnership/ui/LoginPage.dart';
-import 'package:partnership/ui/SignInPage.dart';
-import 'package:partnership/ui/SignUpPage.dart';
 /*
     Head of the App, brings severals utility modules like Routing, internet connectivity etc...
     Responsible of ViewModels's management.
@@ -37,12 +34,7 @@ class Coordinator extends State<PartnershipApp>{
       theme: new ThemeData(
         primarySwatch: Colors.blue,
       ),
-      routes: {
-        Routes.root: (context) => null, // NOtFoundView
-        Routes.loginPage: (context) => LoginPage(),
-        Routes.signInPage: (context) => SignInPage(),
-        Routes.signUpPage: (context) => SignUpPage()
-      },
+      routes: Routes.routeMap,
       //onGenerateRoute: this._router.generator(),
       //home: LoginPage(),
       initialRoute: this._setUpInitialRoute(),
@@ -56,13 +48,13 @@ class Coordinator extends State<PartnershipApp>{
     return Routes.root;
   }
 
-  bool fetchRegistersToNavigate({@required String route, @required BuildContext context, bool navigate = true, bool popStack = true}) {
+  bool fetchRegistersToNavigate({@required String route, @required BuildContext context, bool navigate = true, bool popStack = false}) {
     try {
       AViewModelFactory(route);
       if (!this._viewModels.containsKey(route) || !(this._viewModels[route] != null))
         throw Exception("Missing ViewModel for "+route);
       if (navigate)
-        this._router.navigateTo(route, context, popStack);
+        this._router.navigateTo(route: route, context: context, popStack: popStack);
       return true;
     }
     catch (error) {
