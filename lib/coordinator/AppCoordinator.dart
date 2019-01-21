@@ -37,12 +37,12 @@ class Coordinator extends State<PartnershipApp>{
   }
 
   String _setUpInitialRoute(){
-    if (this.fetchRegistersToNavigate(route: Routes.loginPage, navigate: false))
+    if (this.fetchRegistersToNavigate(route: Routes.loginPage, context: null , navigate: false))
       return Routes.loginPage;
     return Routes.root;
   }
 
-  bool fetchRegistersToNavigate({@required String route, bool navigate = true, bool popStack = true}) {
+  bool fetchRegistersToNavigate({@required String route, @required BuildContext context, bool navigate = true, bool popStack = true}) {
     try {
       AViewModelFactory(route);
       if (!this._viewModels.containsKey(route) || !(this._viewModels[route] != null))

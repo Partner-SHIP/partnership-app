@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:partnership/style/theme.dart' as Theme;
 import 'package:partnership/utils/bubble_indication_painter.dart';
-import '../coordinator/Coordinator.dart';
+import '../coordinator/AppCoordinator.dart';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/ui/testing_page.dart';
 import 'package:partnership/coordinator/AuthenticationModule.dart';

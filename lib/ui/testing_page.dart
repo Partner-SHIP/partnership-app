@@ -6,7 +6,7 @@ import 'package:partnership/style/theme.dart' as Theme;
 import 'package:partnership/utils/bubble_indication_painter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:partnership/model/FBStreamWrapper.dart';
-import 'package:partnership/coordinator/Coordinator.dart';
+import 'package:partnership/coordinator/AppCoordinator.dart';
 import 'package:partnership/utils/FBCollections.dart';
 
 class TestingPage extends StatefulWidget {
