@@ -15,7 +15,6 @@ class Coordinator extends State<PartnershipApp>{
   final ConnectivityModule      _connectivity = ConnectivityModule();
   final AuthenticationModule    _authentication = AuthenticationModule();
   final Map<String, AViewModel> _viewModels = AViewModelFactory.register;
-  //BuildContext                  _buildContext;
 
   Coordinator._internal(){
     _connectivity.initialize();
@@ -43,16 +42,16 @@ class Coordinator extends State<PartnershipApp>{
   }
 
   String _setUpInitialRoute(){
-    if (this.fetchRegistersToNavigate(route: Routes.loginPage, context: null, navigate: false))
+    if (this.fetchRegisterToNavigate(route: Routes.loginPage, context: null, navigate: false))
       return Routes.loginPage;
     return Routes.root;
   }
 
-  bool fetchRegistersToNavigate({@required String route, @required BuildContext context, bool navigate = true, bool popStack = false}) {
+  bool fetchRegisterToNavigate({@required String route, @required BuildContext context, bool navigate = true, bool popStack = false}) {
     try {
       AViewModelFactory(route);
       if (!this._viewModels.containsKey(route) || !(this._viewModels[route] != null))
-        throw Exception("Missing ViewModel for "+route);
+        throw Exception("Missing ViewModel for route \"$route\"");
       if (navigate)
         this._router.navigateTo(route: route, context: context, popStack: popStack);
       return true;

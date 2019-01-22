@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthenticationModule {
@@ -12,12 +13,15 @@ class AuthenticationModule {
   AuthenticationModule._internal();
 
   //Email Authentification
-  Future<bool> loginByEmail(String email, String password) async {
+  Future<bool> loginByEmail({@required String userEmail, @required String userPassword}) async {
     try {
-      final FirebaseUser user = await this._auth.signInWithEmailAndPassword(email: email, password: password);
+      assert(userEmail != null && userEmail.isNotEmpty, "userMail must be a valid Email");
+      assert(userPassword != null && userPassword.isNotEmpty, "userPassword must be a valid Password");
+      final FirebaseUser user = await this._auth.signInWithEmailAndPassword(email: userEmail, password: userPassword);
       final FirebaseUser currentUser = await this._auth.currentUser();
-      assert(user != null);
-      assert(user.uid == currentUser.uid);
+      assert(user != null, "FirebaseUser is null");
+      assert(await user.getIdToken() != null, "FirebaseUser.getIdToken() returned null");
+      assert(user.uid == currentUser.uid, "Mismatch between FirebaseUser.uid and currentUser.uid");
       this._loggedInUser = currentUser;
       return true;
     }
@@ -28,11 +32,13 @@ class AuthenticationModule {
   }
 
   // Email SignUp
-  Future<FirebaseUser> signUpByEmail(email, password) async {
+  Future<FirebaseUser> signUpByEmail({@required String newEmail, @required String newPassword}) async {
     try{
-      final FirebaseUser user = await this._auth.createUserWithEmailAndPassword(email: email, password: password);
-      assert(user != null);
-      assert(await user.getIdToken() != null);
+      assert(newEmail != null && newEmail.isNotEmpty, "newEmail must be a valid Email");
+      assert(newPassword != null && newPassword.isNotEmpty, "newPassword must be a valid Password");
+      final FirebaseUser user = await this._auth.createUserWithEmailAndPassword(email: newEmail, password: newPassword);
+      assert(user != null, "FirebaseUser is null");
+      assert(await user.getIdToken() != null, "FirebaseUser.getIdToken() returned null");
       return (user);
     }
     catch(error){

@@ -36,7 +36,7 @@ abstract class AViewModelFactory
           register[Routes.profilePage] = viewModel;
           break;
         default:
-          viewModel = null;
+          throw Exception("Error while constructing ViewModel: the route \"$route\" provided is unknown !");
           break;
       }
       return viewModel;
