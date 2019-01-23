@@ -3,9 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:partnership/style/theme.dart' as Theme;
 import 'package:partnership/utils/bubble_indication_painter.dart';
-import '../coordinator/coordinator.dart';
+import '../coordinator/AppCoordinator.dart';
+import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/ui/testing_page.dart';
-import '../authentification/auth.dart';
+import 'package:partnership/coordinator/AuthenticationModule.dart';
 //Auth myAuth;
 
 class LoginPage extends StatefulWidget {
@@ -164,9 +165,9 @@ class _LoginPageState extends State<LoginPage>
 //si tous les inputs sont bons => on enregistre le user
   void _signUpWithEmail(
       String userName, String userEmail, String userPassword) {
-    Auth authHandler = new Auth();
-    authHandler.handleSignUp(userEmail, userPassword);
-    Navigator.push(context, new MaterialPageRoute(builder: (context) => new ProfilePage()));
+    //Auth authHandler = new Auth();
+    //authHandler.handleSignUp(userEmail, userPassword);
+    Navigator.push(context, new MaterialPageRoute(builder: (context) => new TestingPage()));
   }
 
 //fonction appelée lorsqu'on clique sur le bouton connexion (email)
@@ -180,7 +181,7 @@ class _LoginPageState extends State<LoginPage>
         .then((FirebaseUser user) {
        Navigator.push(context, new MaterialPageRoute(builder: (context) => new ProfilePage()));
     }).catchError((e) => print(e));*/
-    Coordinator.router.navigateTo("/profile_page", context);
+    //Coordinator.router.navigateTo(Routes.testingPage, context);
   }
 
   Widget _buildMenuBar(BuildContext context) {

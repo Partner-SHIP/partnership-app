@@ -1,24 +1,18 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'package:partnership/utils/FBCollections.dart';
 
 /*
     A mixin which can be add to a ViewModel in order to let it [subscribe to / manage] a stream of users's data
 */
-
-enum Collections {users}
-
 class FBStreamWrapper{
-
-  static const Map<Collections, String>  CollectionsMap = <Collections, String>{
-    Collections.users:"users"
-  };
   StreamController<QuerySnapshot> _streamController;
   Future<dynamic>                 _initDone; // don't delete it, may be useful with heavy streams
 
   FBStreamWrapper(
       {
-        @required Collections  collection,
+        @required String       collection,
         @required Function     listenCallback,
         @required Function     pauseCallback,
         @required Function     resumeCallback,
@@ -38,7 +32,7 @@ class FBStreamWrapper{
           onResume: resumeCallback,
           onCancel: cancelCallback
         );
-      _initDone = this._addStream(Firestore.instance.collection(CollectionsMap[collection]).snapshots())
+      _initDone = this._addStream(Firestore.instance.collection(collection).snapshots())
                       .then((_) => this._streamController.sink.close());
     }
     catch(error){
