@@ -5,7 +5,6 @@ import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/viewmodel/SignUpPageViewModel.dart';
 
 class SignUpPage extends StatefulWidget {
-
   @override
   _SignUpPageState createState() => _SignUpPageState();
 }
@@ -20,7 +19,8 @@ class _SignUpData {
 class _SignUpPageState extends State<SignUpPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  SignUpPageViewModel get viewModel => AViewModelFactory.register[Routes.signUpPage];
+  SignUpPageViewModel get viewModel =>
+      AViewModelFactory.register[Routes.signUpPage];
 
   @override
   Widget build(BuildContext context) {
@@ -181,8 +181,9 @@ class _SignUpPageState extends State<SignUpPage> {
         resizeToAvoidBottomPadding: false,
         appBar: topBar,
         backgroundColor: Colors.grey[300],
-        body: Column(
+        body: SingleChildScrollView(
+            child: Column(
           children: <Widget>[formContainer, bottomContainer],
-        ));
+        )));
   }
 }

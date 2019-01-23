@@ -5,7 +5,6 @@ import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/viewmodel/SignInPageViewModel.dart';
 
 class SignInPage extends StatefulWidget {
-
   @override
   _SignInPageState createState() => _SignInPageState();
 }
@@ -20,7 +19,8 @@ class _SignInData {
 class _SignInPageState extends State<SignInPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  SignInPageViewModel get viewModel => AViewModelFactory.register[Routes.signInPage];
+  SignInPageViewModel get viewModel =>
+      AViewModelFactory.register[Routes.signInPage];
 
   @override
   Widget build(BuildContext context) {
@@ -158,8 +158,7 @@ class _SignInPageState extends State<SignInPage> {
                 ),
                 RaisedButton(
                   child: Icon(FontAwesomeIcons.google),
-                  onPressed: () {
-                  },
+                  onPressed: () {},
                 )
               ],
             ),
@@ -178,9 +177,10 @@ class _SignInPageState extends State<SignInPage> {
       appBar: topBar,
       backgroundColor: Colors.grey[300],
       //body: Container(child: formContainer),
-      body: Column(
+      body: SingleChildScrollView(
+          child: Column(
         children: <Widget>[formContainer, bottomContainer],
-      ),
+      )),
     );
   }
 
