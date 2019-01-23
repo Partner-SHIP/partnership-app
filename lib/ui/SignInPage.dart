@@ -63,6 +63,7 @@ class _SignInPageState extends State<SignInPage> {
         child: Form(
           key: this._formKey,
           child: ListView(
+            physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             children: <Widget>[
               Image.asset(
@@ -173,7 +174,7 @@ class _SignInPageState extends State<SignInPage> {
         body: formContainer
     );*/
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomPadding: true,
       appBar: topBar,
       backgroundColor: Colors.grey[300],
       //body: Container(child: formContainer),
