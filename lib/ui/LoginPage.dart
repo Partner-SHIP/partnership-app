@@ -11,7 +11,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   BuildContext _scaffoldContext;
 
-  LoginPageViewModel get viewModel => AViewModelFactory.register[Routes.loginPage];
+  LoginPageViewModel get viewModel =>
+      AViewModelFactory.register[Routes.loginPage];
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +48,9 @@ class _LoginPageState extends State<LoginPage> {
           child: Text('J\'ai déjà un compte',
               style: TextStyle(color: Colors.white)),
           onPressed: () {
-            this.viewModel.changeView(route: Routes.signInPage, widgetContext: context);
+            this
+                .viewModel
+                .changeView(route: Routes.signInPage, widgetContext: context);
             //Navigator.pushNamed(context, Routes.signInPage);
           },
         ),
@@ -100,7 +103,8 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     return Scaffold(
-        body: Container(
+        body: SingleChildScrollView(
+            child: Container(
       decoration: BoxDecoration(
         // Box decoration takes a gradient
         gradient: LinearGradient(
@@ -122,6 +126,6 @@ class _LoginPageState extends State<LoginPage> {
         children: <Widget>[topContainer, bottomContainer],
       ),
       // backgroundColor: Colors.grey[300],
-    ));
+    )));
   }
 }
