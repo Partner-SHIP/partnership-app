@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:partnership/ui/widgets/LargeButton.dart';
 import 'package:partnership/utils/Routes.dart';
-import 'package:partnership/viewmodel/AViewModel.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/viewmodel/SignInPageViewModel.dart';
 
@@ -20,20 +20,14 @@ class _SignInData {
 */
 
 class _SignInPageState extends State<SignInPage> {
+  GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   SignInPageViewModel viewModel = AViewModelFactory.register[Routes.signInPage];
   @override
   Widget build(BuildContext context) {
-    var elem = AViewModelFactory.register;
-    var test = AViewModelFactory.register[Routes.signInPage];
-    print("ça c'est register : $elem");
-    elem.forEach((String string, AViewModel vm) {
-      print("string = $string");
-      print("vm = $vm");
-    });
-    print("$test");
-    print("ça c'est null : $viewModel");
+    this.viewModel.feedGlobalKey(_formkey);
+
     final Widget topBar = buildTopBar();
-    final Widget mailConnectionForm = buildForm();
+    final Widget mailConnectionForm = buildForm(context);
     final Widget alternativeConnectionForm = buildAlternativeConnectionForm();
 
     return Scaffold(
@@ -55,26 +49,15 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   Widget buildSignInButton() {
-    return (Padding(
-      padding: EdgeInsets.symmetric(vertical: 16.0),
-      child: Material(
-        borderRadius: BorderRadius.circular(30.0),
-        shadowColor: Colors.lightBlueAccent.shade100,
-        elevation: 5.0,
-        child: MaterialButton(
-          minWidth: 200.0,
-          height: 42.0,
-          color: Colors.lightBlueAccent,
-          child: Text('Je me connecte', style: TextStyle(color: Colors.white)),
-          onPressed: () => viewModel.attemptLogin(),
-        ),
-      ),
-    ));
+    return (LargeButton(
+        text: 'Je me connecte',
+        onPressed: () => viewModel.attemptLogin(context: context)));
   }
 
-  Widget buildForm() {
-    final signInButton = buildSignInButton();
+  Widget buildForm(BuildContext context) {
+    Widget signInButton = buildSignInButton();
     final Size screenSize = MediaQuery.of(context).size;
+
     return (Container(
         padding: EdgeInsets.all(20.0),
         width: screenSize.width,
@@ -84,72 +67,20 @@ class _SignInPageState extends State<SignInPage> {
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             children: <Widget>[
-              Image.asset(
-                'assets/img/logo_partnership.png',
-                height: 150,
-              ),
+              Image.asset('assets/img/logoPartnerSHIP.png', height: 150),
               TextFormField(
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return ('Veuillez saisir un pseudo');
-                  }
-                  //TODO : regex pour le pseudal
-                  /* bool nicknameValid =
-                        RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                            .hasMatch(value);
-                    if (!nicknameValid) {
-                      return ('Pseudo invalide');
-                    }*/
-                },
-                decoration: InputDecoration(
-                  icon: Icon(
-                    Icons.supervisor_account,
-                    color: Colors.grey,
-                  ),
-                  hintText: 'Votre pseudo',
-                ),
-              ),
-              TextFormField(
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return ('Veuillez saisir une adresse email valide');
-                    }
-                    bool emailValid =
-                        RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                            .hasMatch(value);
-                    if (!emailValid) {
-                      return ('Email invalide');
-                    }
-                  },
+                  validator: (value) => viewModel.validateEmail(value),
                   keyboardType: TextInputType
                       .emailAddress, // Use email input type for emails.
                   decoration: InputDecoration(
-                    icon: Icon(
-                      Icons.email,
-                      color: Colors.grey,
-                    ),
+                    icon: Icon(Icons.email, color: Colors.grey),
                     hintText: 'Une adresse email valide',
                   )),
               TextFormField(
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return ('Veuillez saisir un mot de passe');
-                    }
-                    //TODO regex pour le mdp
-
-                    /*bool emailValid =
-                        RegExp('r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+"')
-                            .hasMatch(value);
-                    if (!emailValid) {
-                      return ('Mot de passe invalide');
-                    }*/
-                  },
+                  validator: (value) => viewModel.validatePassword(value),
                   obscureText: true, // Use secure text for passwords.
                   decoration: InputDecoration(
-                    icon: Icon(
-                      Icons.vpn_key,
-                      color: Colors.grey,
-                    ),
+                    icon: Icon(Icons.vpn_key, color: Colors.grey),
                     hintText: 'Mot de passe',
                   )),
               Container(

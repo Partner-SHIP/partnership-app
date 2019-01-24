@@ -1,4 +1,5 @@
 import 'package:partnership/viewmodel/AViewModel.dart';
+import 'package:partnership/viewmodel/HomePageViewModel.dart';
 import 'package:partnership/viewmodel/LoginPageViewModel.dart';
 import 'package:partnership/viewmodel/SignInPageViewModel.dart';
 import 'package:partnership/viewmodel/SignUpPageViewModel.dart';
@@ -34,6 +35,10 @@ abstract class AViewModelFactory
         case Routes.profilePage:
           viewModel = ProfilePageViewModel();
           register[Routes.profilePage] = viewModel;
+          break;
+        case Routes.homePage:
+          viewModel = HomePageViewModel();
+          register[Routes.homePage] = viewModel;
           break;
         default:
           throw Exception("Error while constructing ViewModel: the route \"$route\" provided is unknown !");

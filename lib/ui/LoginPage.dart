@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/viewmodel/LoginPageViewModel.dart';
+import 'package:partnership/ui/widgets/LargeButton.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -26,7 +27,7 @@ class _LoginPageState extends State<LoginPage> {
       )),
     );
 
-//snackbar ne s'affiche pas
+    //snackbar ne s'affiche pas
     onPressForgot() {
       Scaffold.of(_scaffoldContext).showSnackBar(new SnackBar(
         content: new Text('Server error'),
@@ -34,45 +35,14 @@ class _LoginPageState extends State<LoginPage> {
       ));
     }
 
-    final alreadyAccountButton = Padding(
-      padding: EdgeInsets.symmetric(vertical: 16.0),
-      child: Material(
-        borderRadius: BorderRadius.circular(30.0),
-        shadowColor: Colors.lightBlueAccent.shade100,
-        elevation: 5.0,
-        child: MaterialButton(
-          minWidth: 200.0,
-          height: 42.0,
-          color: Colors.lightBlueAccent,
-          child: Text('J\'ai déjà un compte',
-              style: TextStyle(color: Colors.white)),
-          onPressed: () {
-            this
-                .viewModel
-                .changeView(route: Routes.signInPage, widgetContext: context);
-            //Navigator.pushNamed(context, Routes.signInPage);
-          },
-        ),
-      ),
+    final alreadyAccountButton = LargeButton(
+      text:"J'ai déjà un compte",
+      onPressed: () => this.viewModel.changeView(route: Routes.signInPage, widgetContext: context)
     );
 
-    final signUpButton = Padding(
-      padding: EdgeInsets.symmetric(vertical: 16.0),
-      child: Material(
-        borderRadius: BorderRadius.circular(30.0),
-        shadowColor: Colors.lightBlueAccent.shade100,
-        elevation: 5.0,
-        child: MaterialButton(
-          minWidth: 200.0,
-          height: 42.0,
-          color: Colors.lightBlueAccent,
-          child: Text('Je veux m\'inscrire',
-              style: TextStyle(color: Colors.white)),
-          onPressed: () {
-            this.viewModel.changeView(route: Routes.signUpPage, widgetContext: context);
-          },
-        ),
-      ),
+    final signUpButton = LargeButton(
+      text:"Je veux m'inscrire",
+      onPressed: () => this.viewModel.changeView(route: Routes.signUpPage, widgetContext: context)
     );
 
     final whatIsButton = FlatButton(
