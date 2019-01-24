@@ -1,5 +1,6 @@
 import 'package:partnership/model/AModel.dart';
+import 'package:partnership/utils/FBCollections.dart';
 
 class SignUpPageModel extends AModel {
-  SignUpPageModel();
+  SignUpPageModel(): super(const <String>[FBCollections.groups/*Collections needed here*/]);
 }

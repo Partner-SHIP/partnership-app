@@ -60,7 +60,7 @@ class FBStreamWrapper{
 
   StreamSubscription<QuerySnapshot> subscribeToStream({@required Function handler}){
     try{
-      assert(handler != null);
+      assert(handler != null, "A handler must be provided");
       return this.getStream().listen(handler);
     }
     catch (_){
