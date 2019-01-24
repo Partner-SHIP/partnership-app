@@ -103,9 +103,10 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     return Scaffold(
+      backgroundColor: Colors.grey[300],
         body: SingleChildScrollView(
             child: Container(
-      decoration: BoxDecoration(
+      /*decoration: BoxDecoration(
         // Box decoration takes a gradient
         gradient: LinearGradient(
           // Where the linear gradient begins and ends
@@ -121,7 +122,7 @@ class _LoginPageState extends State<LoginPage> {
             Colors.lightBlue
           ],
         ),
-      ),
+      ),*/
       child: Column(
         children: <Widget>[topContainer, bottomContainer],
       ),
