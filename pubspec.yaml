@@ -15,10 +15,13 @@ dependencies:
 
   google_sign_in: ^3.2.4
   firebase_auth: ^0.6.6
+  firebase_messaging: ^2.1.0
+  firebase_database:
 
   cupertino_icons: ^0.1.2
 
   fluro: "^1.4.0"
+  tuple: ^1.0.2
   connectivity: ^0.3.2
 
 dev_dependencies:
@@ -31,9 +34,10 @@ flutter:
 
   uses-material-design: true
 
-
   assets:
     - assets/test.png
+    - assets/img/logoPartnerSHIP.png
+    - assets/img/work-office.png
 
 fonts:
     - family: WorkSansSemiBold
