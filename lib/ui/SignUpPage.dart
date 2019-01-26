@@ -13,6 +13,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _mainKey = GlobalKey<ScaffoldState>();
   final SignUpData           _data = SignUpData();
+  bool  busy = false;
 
   SignUpPageViewModel get viewModel =>
       AViewModelFactory.register[Routes.signUpPage];
@@ -40,8 +41,14 @@ class _SignUpPageState extends State<SignUpPage> {
           onPressed: () {
             if (this._formKey.currentState.validate()) {
               this._formKey.currentState.save();
+              setState(() {
+                busy = true;
+              });
               this.viewModel.signUpAction(this._data).then((value){
                 if (value) {
+                  setState(() {
+                    busy = false;
+                  });
                   var snackbar = SnackBar(content: Text("SignUp successful!"), duration: Duration(milliseconds: 5000));
                   this._mainKey.currentState.showSnackBar(snackbar);
                 }
@@ -65,6 +72,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 'assets/img/logoPartnerSHIP.png',
                 height: 150,
               ),
+              busy ? CircularProgressIndicator() : Container(width: 0, height: 0),
               TextFormField(
                 validator: (value) {
                   if (value.isEmpty) {
