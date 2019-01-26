@@ -24,6 +24,9 @@ class Coordinator extends State<PartnershipApp>{
       return instance;
    }
 
+    AuthenticationModule get authentication => this._authentication;
+    ConnectivityModule get connectivity => this._connectivity;
+
   @override
   Widget build(BuildContext _context) {
     MaterialApp app = MaterialApp(

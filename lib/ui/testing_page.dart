@@ -28,7 +28,7 @@ class _TestingPageState extends State<TestingPage> {
   @override
   Widget build(BuildContext context) {
     FBStreamWrapper wrapper = FBStreamWrapper(
-        collection: FBCollections.users,
+        collection: FBCollections.profiles,
         listenCallback: this.listencb,
         pauseCallback: this.pausecb,
         resumeCallback: this.resumecb,
