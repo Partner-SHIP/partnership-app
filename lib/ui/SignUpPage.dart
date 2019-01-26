@@ -46,12 +46,12 @@ class _SignUpPageState extends State<SignUpPage> {
               });
               this.viewModel.signUpAction(this._data).then((value){
                 if (value) {
-                  setState(() {
-                    busy = false;
-                  });
                   var snackbar = SnackBar(content: Text("SignUp successful!"), duration: Duration(milliseconds: 5000));
                   this._mainKey.currentState.showSnackBar(snackbar);
                 }
+                setState(() {
+                  busy = false;
+                });
               });
             }
           },
