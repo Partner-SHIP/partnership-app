@@ -1,10 +1,10 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:tuple/tuple.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:partnership/model/FBStreamWrapper.dart';
 import 'package:partnership/model/AModelFactory.dart';
 import 'package:partnership/utils/PayloadsFactory.dart';
-import 'package:partnership/utils/FBCollections.dart';
 
 abstract class AModel implements AModelFactory{
   final Firestore                                                               _firestore = Firestore.instance;
@@ -39,8 +39,20 @@ abstract class AModel implements AModelFactory{
     _assertCollection(collection);
     return (PayloadsFactory(collection));
   }
-  void pushPayload(String collection, String uid, Payload payload){
-      this._firestore.collection(collection).document(uid).setData(payload.getPayload());
+  void pushPayload({@required String collection, @required Payload payload, String documentID}){
+    _assertCollection(collection);
+    var dataToWrite = payload.getDataToWrite();
+    var dataToUpdate = payload.getDataToUpdate();
+    if (dataToWrite.isNotEmpty){
+      documentID != null && documentID.isNotEmpty ?
+      this._firestore.collection(collection).document(documentID).setData(dataToWrite) :
+      this._firestore.collection(collection).document().setData(dataToWrite);
+    }
+    if (dataToUpdate.isNotEmpty){
+      documentID != null && documentID.isNotEmpty ?
+      this._firestore.collection(collection).document(documentID).updateData(dataToUpdate) :
+      this._firestore.collection(collection).document().updateData(dataToUpdate);
+    }
   }
 }
 
