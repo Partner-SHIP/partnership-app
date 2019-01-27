@@ -91,7 +91,7 @@ class _LoginPageState extends State<LoginPage> {
       child: Column(
         children: <Widget>[
           Image.asset(
-            'assets/img/logoPartnerSHIP.png',
+            'assets/img/logo_partnership.png',
             height: 150,
           ),
           alreadyAccountButton,

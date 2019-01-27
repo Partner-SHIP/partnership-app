@@ -69,7 +69,7 @@ class _SignUpPageState extends State<SignUpPage> {
             shrinkWrap: true,
             children: <Widget>[
               Image.asset(
-                'assets/img/logoPartnerSHIP.png',
+                'assets/img/logo_partnership.png',
                 height: 150,
               ),
               busy ? CircularProgressIndicator() : Container(width: 0, height: 0),
