@@ -67,7 +67,7 @@ class _SignInPageState extends State<SignInPage> {
             shrinkWrap: true,
             children: <Widget>[
               Image.asset(
-                'assets/img/logoPartnerSHIP.png',
+                'assets/img/logo_partnership.png',
                 height: 150,
               ),
               TextFormField(

@@ -4,8 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthenticationModule {
   static final AuthenticationModule instance = AuthenticationModule._internal();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  FirebaseUser       _loggedInUser;
+  final FirebaseAuth  _auth = FirebaseAuth.instance;
+  FirebaseUser        _loggedInUser;
 
   factory AuthenticationModule(){
       return instance;
@@ -13,7 +13,7 @@ class AuthenticationModule {
   AuthenticationModule._internal();
 
   //Email Authentification
-  Future<bool> loginByEmail({@required String userEmail, @required String userPassword}) async {
+  Future<FirebaseUser> loginByEmail({@required String userEmail, @required String userPassword}) async {
     try {
       assert(userEmail != null && userEmail.isNotEmpty, "userMail must be a valid Email");
       assert(userPassword != null && userPassword.isNotEmpty, "userPassword must be a valid Password");
@@ -23,11 +23,11 @@ class AuthenticationModule {
       assert(await user.getIdToken() != null, "FirebaseUser.getIdToken() returned null");
       assert(user.uid == currentUser.uid, "Mismatch between FirebaseUser.uid and currentUser.uid");
       this._loggedInUser = currentUser;
-      return true;
+      return this._loggedInUser;
     }
     catch (error){
       print(error);
-      return false;
+      return null;
     }
   }
 
@@ -37,9 +37,12 @@ class AuthenticationModule {
       assert(newEmail != null && newEmail.isNotEmpty, "newEmail must be a valid Email");
       assert(newPassword != null && newPassword.isNotEmpty, "newPassword must be a valid Password");
       final FirebaseUser user = await this._auth.createUserWithEmailAndPassword(email: newEmail, password: newPassword);
+      final FirebaseUser currentUser = await this._auth.currentUser();
       assert(user != null, "FirebaseUser is null");
       assert(await user.getIdToken() != null, "FirebaseUser.getIdToken() returned null");
-      return (user);
+      assert(user.uid == currentUser.uid, "Mismatch between FirebaseUser.uid and currentUser.uid");
+      this._loggedInUser = currentUser;
+      return this._loggedInUser;
     }
     catch(error){
       print(error);

@@ -1,5 +1,7 @@
 abstract class FBCollections {
-  static const String users = "users";
+  static const String membership = "membership";
   static const String groups = "groups";
-  static List<String> get collectionsList => const <String>[users, groups];
+  static const String projects = "projects";
+  static const String profiles = "profiles";
+  static List<String> get collectionsList => const <String>[membership, groups, projects, profiles];
 }

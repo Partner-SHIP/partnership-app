@@ -9,15 +9,11 @@ class SignUpPage extends StatefulWidget {
   _SignUpPageState createState() => _SignUpPageState();
 }
 
-class _SignUpData {
-  String nickname = '';
-  String email = '';
-  String password = '';
-  String confirmPassword = '';
-}
-
 class _SignUpPageState extends State<SignUpPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> _mainKey = GlobalKey<ScaffoldState>();
+  final SignUpData           _data = SignUpData();
+  bool  busy = false;
 
   SignUpPageViewModel get viewModel =>
       AViewModelFactory.register[Routes.signUpPage];
@@ -43,13 +39,20 @@ class _SignUpPageState extends State<SignUpPage> {
           color: Colors.lightBlueAccent,
           child: Text('Je m\'inscris', style: TextStyle(color: Colors.white)),
           onPressed: () {
-            print('login');
-            // Validate will return true if the form is valid, or false if
-            // the form is invalid.
-            if (_formKey.currentState.validate()) {
-              // If the form is valid, we want to show a Snackbar
-              //Scaffold.of(context)
-              //  .showSnackBar(SnackBar(content: Text('Processing Data')));
+            if (this._formKey.currentState.validate()) {
+              this._formKey.currentState.save();
+              setState(() {
+                busy = true;
+              });
+              this.viewModel.signUpAction(this._data).then((value){
+                if (value) {
+                  var snackbar = SnackBar(content: Text("SignUp successful!"), duration: Duration(milliseconds: 5000));
+                  this._mainKey.currentState.showSnackBar(snackbar);
+                }
+                setState(() {
+                  busy = false;
+                });
+              });
             }
           },
         ),
@@ -66,9 +69,10 @@ class _SignUpPageState extends State<SignUpPage> {
             shrinkWrap: true,
             children: <Widget>[
               Image.asset(
-                'assets/img/logoPartnerSHIP.png',
+                'assets/img/logo_partnership.png',
                 height: 150,
               ),
+              busy ? CircularProgressIndicator() : Container(width: 0, height: 0),
               TextFormField(
                 validator: (value) {
                   if (value.isEmpty) {
@@ -82,6 +86,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       return ('Pseudo invalide');
                     }*/
                 },
+                onSaved: (value) => this._data.nickname = value,
                 decoration: InputDecoration(
                   icon: Icon(
                     Icons.supervisor_account,
@@ -102,6 +107,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       return ('Email invalide');
                     }
                   },
+                  onSaved: (value) => this._data.email = value,
                   keyboardType: TextInputType
                       .emailAddress, // Use email input type for emails.
                   decoration: InputDecoration(
@@ -125,6 +131,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       return ('Mot de passe invalide');
                     }*/
                   },
+                  onSaved: (value) => this._data.password = value,
                   obscureText: true, // Use secure text for passwords.
                   decoration: InputDecoration(
                     icon: Icon(
@@ -139,6 +146,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       return ('Veuillez confirmer votre mot de passe');
                     }
                   },
+                  onSaved: (value) => this._data.confirmPassword = value,
                   obscureText: true,
                   decoration: InputDecoration(
                     icon: Icon(Icons.check_circle_outline, color: Colors.grey),
@@ -182,6 +190,7 @@ class _SignUpPageState extends State<SignUpPage> {
       resizeToAvoidBottomPadding: true,
         appBar: topBar,
         backgroundColor: Colors.grey[300],
+        key: this._mainKey,
         body: SingleChildScrollView(
             child: Column(
           children: <Widget>[formContainer, bottomContainer],

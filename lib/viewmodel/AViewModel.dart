@@ -4,6 +4,7 @@ import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/model/AModelFactory.dart';
 import 'package:partnership/model/AModel.dart';
 import 'package:partnership/coordinator/AppCoordinator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:partnership/utils/Routes.dart';
 
 /*
@@ -38,5 +39,11 @@ abstract class AViewModel implements AViewModelFactory
 
   bool changeView({@required String route,@required BuildContext widgetContext, bool popStack = false}){
       return this._coordinator.fetchRegisterToNavigate(route: route, context: widgetContext, popStack: popStack);
+  }
+  Future<FirebaseUser> signUp({@required String email, @required String password}) {
+    return this._coordinator.authentication.signUpByEmail(newEmail: email, newPassword: password);
+  }
+  Future<FirebaseUser> signIn({@required String email, @required String password}) {
+    return this._coordinator.authentication.loginByEmail(userEmail: email, userPassword: password);
   }
 }

@@ -36,7 +36,7 @@ flutter:
 
   assets:
     - assets/test.png
-    - assets/img/logoPartnerSHIP.png
+    - assets/img/logo_partnership.png
     - assets/img/work-office.png
 
 fonts:

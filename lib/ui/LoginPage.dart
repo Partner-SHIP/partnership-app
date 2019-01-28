@@ -70,8 +70,7 @@ class _LoginPageState extends State<LoginPage> {
           child: Text('Je veux m\'inscrire',
               style: TextStyle(color: Colors.white)),
           onPressed: () {
-            //this.viewModel.changeView(route: Routes.signUpPage, widgetContext: context);
-            Navigator.pushNamed(context, Routes.signUpPage);
+            this.viewModel.changeView(route: Routes.signUpPage, widgetContext: context);
           },
         ),
       ),
@@ -92,7 +91,7 @@ class _LoginPageState extends State<LoginPage> {
       child: Column(
         children: <Widget>[
           Image.asset(
-            'assets/img/logoPartnerSHIP.png',
+            'assets/img/logo_partnership.png',
             height: 150,
           ),
           alreadyAccountButton,
