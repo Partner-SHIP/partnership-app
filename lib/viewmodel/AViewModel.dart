@@ -4,8 +4,7 @@ import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/model/AModelFactory.dart';
 import 'package:partnership/model/AModel.dart';
 import 'package:partnership/coordinator/AppCoordinator.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:partnership/utils/Routes.dart';
+//import 'package:partnership/utils/Routes.dart';
 
 /*
     Abstract class defining all ViewModels, destined to be instanciated within the Coordinator by AViewModelFactory.

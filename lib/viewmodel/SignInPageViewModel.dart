@@ -1,21 +1,21 @@
 import 'package:partnership/viewmodel/AViewModel.dart';
-import 'package:partnership/model/SignInPageModel.dart';
+import 'package:partnership/model/UserModel.dart';
 import 'package:partnership/utils/Routes.dart';
 import 'package:flutter/material.dart';
 
 class SignInPageViewModel extends AViewModel {
   String _email;
   String _pass;
-  SignInPageModel _model;
+  UserModel _model;
   GlobalKey<FormState> _formKey;
   GlobalKey<FormState> get formKey => _formKey;
   SignInPageViewModel() : super(Routes.signInPage) {
     this._model = super.abstractModel;
   }
-  void feedGlobalKey(@required GlobalKey<FormState> key) {
+  void feedGlobalKey({@required GlobalKey<FormState> key}) {
     this._formKey = key;
   }
-  SignInPageModel get model => this._model;
+  UserModel get model => this._model;
   void attemptLogin({@required BuildContext context}) {
     // Validate will return true if the form is valid, or false if
     // the form is invalid.

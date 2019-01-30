@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'dart:async';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:partnership/style/theme.dart' as Theme;
-import 'package:partnership/utils/bubble_indication_painter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:partnership/model/FBStreamWrapper.dart';
-import 'package:partnership/coordinator/AppCoordinator.dart';
 import 'package:partnership/utils/FBCollections.dart';
 
 class TestingPage extends StatefulWidget {

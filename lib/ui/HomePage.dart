@@ -16,6 +16,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   HomePageViewModel _viewModel = AViewModelFactory.register[Routes.homePage];
   bool isOffline = false;
+  GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   StreamSubscription<dynamic> sub;
   //StreamSubscription<QuerySnapshot> user_sub;
   void listencb() {}
@@ -24,84 +25,66 @@ class _HomePageState extends State<HomePage> {
   void cancelcb() {}
 
   Widget buildDisconnectButton() {
-    return LargeButton(text:"Se déconnecter", onPressed: () => this._viewModel.changeView(route: Routes.loginPage, widgetContext: context),);
-/*
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 16.0),
-      child: Material(
-        borderRadius: BorderRadius.circular(30.0),
-        shadowColor: Colors.lightBlueAccent.shade100,
-        elevation: 5.0,
-        child: MaterialButton(
-          minWidth: 200.0,
-          height: 42.0,
-          color: Colors.lightBlueAccent,
-          child: Text('Se déconnecter', style: TextStyle(color: Colors.white)),
-          onPressed: () => this._viewModel.changeView(route: Routes.loginPage, widgetContext: context),
-        ),
-      ),
-    );
-    */
+    return (LargeButton(
+      text: "Se déconnecter",
+      onPressed: () => this
+          ._viewModel
+          .changeView(route: Routes.loginPage, widgetContext: context),
+    ));
+  }
+
+  Widget buildCreateProjectButton() {
+    return (LargeButton(
+        text: 'Je créé un projet',
+        onPressed: () => _viewModel.attemptCreateProject(context: context)));
+  }
+
+  Widget buildForm(BuildContext context) {
+    Widget signInButton = buildCreateProjectButton();
+    final Size screenSize = MediaQuery.of(context).size;
+
+    return (Container(
+        padding: EdgeInsets.all(20.0),
+        width: screenSize.width,
+        child: Form(
+          key: this._viewModel.formKey,
+          child: ListView(
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            children: <Widget>[
+              TextFormField(
+                  validator: (value) => _viewModel.validateName(value),
+                  keyboardType: TextInputType
+                      .emailAddress, // Use email input type for emails.
+                  decoration: InputDecoration(
+                    icon: Icon(Icons.email, color: Colors.grey),
+                    hintText: 'Nom du groupe à créer',
+                  )),
+              Container(
+                width: screenSize.width,
+                child: signInButton,
+              )
+            ],
+          ),
+        )));
   }
 
   @override
   Widget build(BuildContext context) {
+    this._viewModel.feedGlobalKey(key:_formkey);
     final Size screenSize = MediaQuery.of(context).size;
+    Widget form = this.buildForm(context);
     Widget disconnectButton = this.buildDisconnectButton();
     Widget buttonContainer = Scaffold(
       resizeToAvoidBottomPadding: false,
       backgroundColor: Colors.grey[300],
-      body: Column(
-        children: <Widget>[disconnectButton],
-      ),
+      body: Container(
+          padding: EdgeInsets.all(20.0),
+          width: screenSize.width,
+          child: Column(
+            children: <Widget>[disconnectButton, form],
+          )),
     );
-    Widget page = Container(
-      padding: EdgeInsets.all(20.0),
-      width: screenSize.width,
-      child: buttonContainer
-    );
-    return (page);
-    /*
-    return WillPopScope(
-        onWillPop: () async => false,
-        child: Scaffold(
-            body: Container(
-                child: Column(children: <Widget>[
-          Image.asset(
-            'assets/img/logoPartnerSHIP.png',
-            height: 150,
-          ),
-          disconnectButton,
-        ]))));
-        */
-  }
-
-  void connectionChanged(dynamic hasConnection) {
-    setState(() {
-      this.isOffline = !hasConnection;
-      print("[Offline = " + this.isOffline.toString() + "]");
-    });
-  }
-
-  Widget _buildListUser(BuildContext context, DocumentSnapshot document) {
-    return ListTile(
-      title: Row(
-        children: <Widget>[
-          Expanded(
-            child: Text(document['firstname'] + ' ' + document['lastname']),
-          ),
-          Container(
-            decoration: const BoxDecoration(color: Color(0xffddddff)),
-            padding: const EdgeInsets.all(10.0),
-            child: Text(document['email_adress']),
-          ),
-          Container(
-            decoration: const BoxDecoration(color: Color(0xffddddff)),
-            padding: const EdgeInsets.all(10.0),
-            child: Text(document['password']),
-          ),
-        ],
-      ),
-    );
+    return (buttonContainer);
   }
 }
