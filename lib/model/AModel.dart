@@ -22,7 +22,7 @@ abstract class AModel implements AModelFactory{
       });
     }
     catch(error){
-
+      print(error);
     }
   }
   bool _assertCollection(String collection){
@@ -32,6 +32,37 @@ abstract class AModel implements AModelFactory{
     }
     catch(_){
       return false;
+    }
+  }
+
+  FBStreamWrapper createStreamWrapper({@required String collection, @required Function listenCallback, @required Function pauseCallback, @required Function resumeCallback, @required Function cancelCallback}){
+    if (this._streamWrappers[collection].item1 != null) {
+        if (this._streamWrappers[collection].item2 != null)
+          this._streamWrappers[collection].item2.cancel().then((_) => this._streamWrappers[collection].withItem2(null));
+        this._streamWrappers[collection].withItem1(null);
+      }
+    this._streamWrappers[collection].withItem1(FBStreamWrapper(
+        collection: collection,
+        listenCallback: listenCallback,
+        pauseCallback: pauseCallback,
+        resumeCallback: resumeCallback,
+        cancelCallback: cancelCallback));
+    return this._streamWrappers[collection].item1;
+  }
+
+  void deleteDocument({@required String collection, DocumentReference documentRef, String documentID}){
+    _assertCollection(collection);
+    try {
+      if (documentRef != null) {
+        documentRef.delete();
+        return;
+      }
+      if (documentID != null){
+        this._firestore.collection(collection).document(documentID).delete();
+        return;
+      }
+    } catch (error){
+      print(error);
     }
   }
 
@@ -55,4 +86,3 @@ abstract class AModel implements AModelFactory{
     }
   }
 }
-
