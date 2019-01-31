@@ -45,9 +45,8 @@ class Coordinator extends State<PartnershipApp>{
   }
 
   String _setUpInitialRoute(){
-    if (this.fetchRegisterToNavigate(route: Routes.loginPage, context: null, navigate: false))
-      return Routes.loginPage;
-    return Routes.root;
+    if (this.fetchRegisterToNavigate(route: Routes.profilePage, context: null, navigate: false))
+      return Routes.profilePage;
   }
 
   bool fetchRegisterToNavigate({@required String route, @required BuildContext context, bool navigate = true, bool popStack = false}) {

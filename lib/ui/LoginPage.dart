@@ -5,10 +5,10 @@ import 'package:partnership/viewmodel/LoginPageViewModel.dart';
 
 class LoginPage extends StatefulWidget {
   @override
-  _LoginPageState createState() => _LoginPageState();
+  LoginPageState createState() => LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class LoginPageState extends State<LoginPage> {
   BuildContext _scaffoldContext;
 
   LoginPageViewModel get viewModel =>
