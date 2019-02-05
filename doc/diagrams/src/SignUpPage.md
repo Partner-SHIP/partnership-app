@@ -1,7 +1,7 @@
 ```plantuml
 @startuml SignUpPage
 
-package viewmodel {
+package views {
     class   SignUpPage {
         -- methods --
         + SignUpPageState createState() <<Override>>

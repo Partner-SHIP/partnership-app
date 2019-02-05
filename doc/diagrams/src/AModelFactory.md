@@ -1,7 +1,7 @@
 ```plantuml
 @startuml AModelFactory
 
-package models {
+package model {
     abstract class AModelFactory {
         --fields--
         + {static} Map<String, AModel> register
