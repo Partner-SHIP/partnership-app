@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:partnership/coordinator/RoutingModule.dart';
 import 'package:partnership/coordinator/ConnectivityModule.dart';
 import 'package:partnership/coordinator/AuthenticationModule.dart';
+import 'package:partnership/coordinator/notification_module.dart';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/AViewModel.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
@@ -13,6 +14,7 @@ class Coordinator extends State<PartnershipApp>{
   static final Coordinator      instance = Coordinator._internal();
   final RoutingModule           _router = RoutingModule();
   final ConnectivityModule      _connectivity = ConnectivityModule();
+  final NotificationModule      _notification = NotificationModule();
   final AuthenticationModule    _authentication = AuthenticationModule();
   final Map<String, AViewModel> _viewModels = AViewModelFactory.register;
 

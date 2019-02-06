@@ -10,7 +10,6 @@ class RoutingModule {
     return instance;
   }
   RoutingModule._internal();
-  //  Navigation method expected to be called by the Coordinator after being notified by ViewModels.
   void navigateTo({@required String route, @required BuildContext context, bool popStack = false}) {
     try {
       if (!Routes.routesList.contains(route))

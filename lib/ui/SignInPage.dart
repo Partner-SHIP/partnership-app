@@ -9,13 +9,6 @@ class SignInPage extends StatefulWidget {
   _SignInPageState createState() => _SignInPageState();
 }
 
-class _SignInData {
-  String nickname = '';
-  String email = '';
-  String password = '';
-  String confirmPassword = '';
-}
-
 class _SignInPageState extends State<SignInPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -50,7 +43,6 @@ class _SignInPageState extends State<SignInPage> {
               // If the form is valid, we want to show a Snackbar
               //Scaffold.of(context)
               //   .showSnackBar(SnackBar(content: Text('Processing Data')));
-              _attemptLogin();
             }
           },
         ),
@@ -183,9 +175,5 @@ class _SignInPageState extends State<SignInPage> {
         children: <Widget>[formContainer, bottomContainer],
       )),
     );
-  }
-
-  _attemptLogin() {
-    print('login');
   }
 }
