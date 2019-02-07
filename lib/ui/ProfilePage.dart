@@ -9,7 +9,9 @@ class ProfilePage extends StatefulWidget {
 }
 
 class ProfilePageState extends State<ProfilePage>{
-  ProfilePageViewModel _viewModel = AViewModelFactory(Routes.profilePage);
+  IRoutes      _routing = Routes();
+  ProfilePageViewModel get viewModel =>
+      AViewModelFactory.register[_routing.profilePage];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +29,7 @@ class ProfilePageState extends State<ProfilePage>{
                   ),
                 ),
               ),
-              /*
+/*
               ClipPath(
                 child: Container(
                   decoration: BoxDecoration(
@@ -39,7 +41,8 @@ class ProfilePageState extends State<ProfilePage>{
 
                 ),
                 clipper: ProfileClipper(),
-              ),*/
+              ),
+*/
               Positioned(
                 child:Column(
                   children: <Widget>[
@@ -92,9 +95,11 @@ class ProfilePageState extends State<ProfilePage>{
   }
 
   Widget _profileDescriptionWidget(){
-    return SingleChildScrollView(
-      child: Text(
-      """
+    return Expanded(
+        flex: 1,
+        child: SingleChildScrollView(
+          child:       Text(
+            """
       Id, and frappuccino sugar body skinny mocha affogato,
       grinder cappuccino half and half macchiato variety latte java whipped ut robusta.
       French press, froth, cup extra cup aftertaste decaffeinated, grounds filter to go caramelization acerbic extraction grounds cream foam café au lait dark arabica.
@@ -104,13 +109,14 @@ class ProfilePageState extends State<ProfilePage>{
       Lungo skinny single origin extraction foam, eu, cinnamon coffee single shot shop turkish crema frappuccino macchiato crema aged.
       A frappuccino body aftertaste, seasonal instant breve arabica turkish, cream dripper qui java milk spoon dripper.
       """,
-        softWrap: true,
-        style: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.normal,
-          fontFamily: 'MontSerra',
-        ),
-      ),
+            softWrap: true,
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.normal,
+              fontFamily: 'MontSerra',
+            ),
+          )
+        )
     );
   }
 }

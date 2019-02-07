@@ -10,9 +10,9 @@ class LoginPage extends StatefulWidget {
 
 class LoginPageState extends State<LoginPage> {
   BuildContext _scaffoldContext;
-
+  IRoutes      _routing = Routes();
   LoginPageViewModel get viewModel =>
-      AViewModelFactory.register[Routes.loginPage];
+      AViewModelFactory.register[_routing.loginPage];
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +50,7 @@ class LoginPageState extends State<LoginPage> {
           onPressed: () {
             this
                 .viewModel
-                .changeView(route: Routes.signInPage, widgetContext: context);
+                .changeView(route: _routing.signInPage, widgetContext: context);
             //Navigator.pushNamed(context, Routes.signInPage);
           },
         ),
@@ -70,7 +70,7 @@ class LoginPageState extends State<LoginPage> {
           child: Text('Je veux m\'inscrire',
               style: TextStyle(color: Colors.white)),
           onPressed: () {
-            this.viewModel.changeView(route: Routes.signUpPage, widgetContext: context);
+            this.viewModel.changeView(route: _routing.signUpPage, widgetContext: context);
           },
         ),
       ),

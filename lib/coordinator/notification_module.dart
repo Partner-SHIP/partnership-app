@@ -1,15 +1,19 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 
-class NotificationModule {
-  static final NotificationModule instance = NotificationModule._internal();
+abstract class INotification {
+  void initializeNotificationModule();
+}
+
+class NotificationModule implements INotification {
+  static final NotificationModule _instance = NotificationModule._internal();
   factory NotificationModule() {
-    return instance;
+    return _instance;
   }
   NotificationModule._internal();
 
   FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
 
-  void initialize() {
+  void _initialize() {
     firebaseMessaging.configure(
       onLaunch: (Map<String, dynamic> msg) {
         print("onLaunch called");
@@ -38,6 +42,11 @@ class NotificationModule {
 
   void update(String token) {
     print(token);
+  }
+
+  @override
+  void initializeNotificationModule() {
+    this._initialize();
   }
 }
 

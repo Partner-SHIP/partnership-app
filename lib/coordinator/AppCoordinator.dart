@@ -1,33 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:partnership/coordinator/RoutingModule.dart';
 import 'package:partnership/coordinator/ConnectivityModule.dart';
 import 'package:partnership/coordinator/AuthenticationModule.dart';
 import 'package:partnership/coordinator/notification_module.dart';
-import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/AViewModel.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 /*
     Head of the App, brings severals utility modules like Routing, internet connectivity etc...
     Responsible of ViewModels's management.
 */
-class Coordinator extends State<PartnershipApp>{
-  static final Coordinator      instance = Coordinator._internal();
-  final RoutingModule           _router = RoutingModule();
-  final ConnectivityModule      _connectivity = ConnectivityModule();
-  final NotificationModule      _notification = NotificationModule();
-  final AuthenticationModule    _authentication = AuthenticationModule();
+
+abstract class ICoordinator{
+  bool fetchRegisterToNavigate({@required String route, @required BuildContext context, bool navigate = true, bool popStack = false});
+  Future<FirebaseUser> loginByEmail({@required String userEmail, @required String userPassword});
+  Future<FirebaseUser> signUpByEmail({@required String newEmail, @required String newPassword});
+}
+
+class Coordinator extends State<PartnershipApp> implements ICoordinator {
+  static final Coordinator      _instance = Coordinator._internal();
+  final IRouting                _router = RoutingModule();
+  final IConnectivity           _connectivity = ConnectivityModule();
+  final INotification           _notification = NotificationModule();
+  final IAuthentication         _authentication = AuthenticationModule();
   final Map<String, AViewModel> _viewModels = AViewModelFactory.register;
 
   Coordinator._internal(){
-    _connectivity.initialize();
+    _connectivity.initializeConnectivityModule();
+    _notification.initializeNotificationModule();
   }
 
    factory Coordinator(){
-      return instance;
+      return _instance;
    }
 
-    AuthenticationModule get authentication => this._authentication;
-    ConnectivityModule get connectivity => this._connectivity;
+    IAuthentication get authentication => this._authentication;
+    IConnectivity   get connectivity => this._connectivity;
+    INotification   get notification => this._notification;
 
   @override
   Widget build(BuildContext _context) {
@@ -38,7 +47,7 @@ class Coordinator extends State<PartnershipApp>{
       theme: new ThemeData(
         primarySwatch: Colors.blue,
       ),
-      routes: Routes.routeMap,
+      routes: this._router.routeMap(),
       //onGenerateRoute: this._router.generator(),
       //home: LoginPage(),
       initialRoute: this._setUpInitialRoute(),
@@ -47,11 +56,12 @@ class Coordinator extends State<PartnershipApp>{
   }
 
   String _setUpInitialRoute(){
-    if (this.fetchRegisterToNavigate(route: Routes.profilePage, context: null, navigate: false))
-      return Routes.profilePage;
+    if (this.fetchRegisterToNavigate(route: this._router.initialRoute, context: null, navigate: false))
+      return this._router.initialRoute;
+    return null;
   }
 
-  bool fetchRegisterToNavigate({@required String route, @required BuildContext context, bool navigate = true, bool popStack = false}) {
+  bool _fetchRegisterToNavigate({@required String route, @required BuildContext context, bool navigate = true, bool popStack = false}) {
     try {
       AViewModelFactory(route);
       if (!this._viewModels.containsKey(route) || !(this._viewModels[route] != null))
@@ -64,6 +74,21 @@ class Coordinator extends State<PartnershipApp>{
       print(error);
       return false;
     }
+  }
+
+  @override
+  bool fetchRegisterToNavigate({String route, BuildContext context, bool navigate = true, bool popStack = false}) {
+    return this._fetchRegisterToNavigate(route: route, context: context, navigate: navigate, popStack: popStack);
+  }
+
+  @override
+  Future<FirebaseUser> loginByEmail({@required String userEmail, @required String userPassword}) {
+    return this._authentication.loginByEmail(userEmail: userEmail, userPassword: userPassword);
+  }
+
+  @override
+  Future<FirebaseUser> signUpByEmail({@required String newEmail, @required String newPassword}) {
+    return this._authentication.signUpByEmail(newEmail: newEmail, newPassword: newPassword);
   }
 }
 

@@ -4,7 +4,8 @@ import 'package:partnership/utils/Routes.dart';
 
 class SignInPageViewModel extends AViewModel {
   SignInPageModel                 _model;
-  SignInPageViewModel(): super(Routes.signInPage){
+  SignInPageViewModel(String route) {
+    super.initModel(route);
     this._model = super.abstractModel;
   }
   SignInPageModel get model => this._model;

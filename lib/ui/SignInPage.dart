@@ -11,9 +11,9 @@ class SignInPage extends StatefulWidget {
 
 class _SignInPageState extends State<SignInPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
+  IRoutes _routing = Routes();
   SignInPageViewModel get viewModel =>
-      AViewModelFactory.register[Routes.signInPage];
+      AViewModelFactory.register[_routing.signInPage];
 
   @override
   Widget build(BuildContext context) {
