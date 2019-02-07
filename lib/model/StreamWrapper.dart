@@ -6,13 +6,13 @@ import 'package:partnership/utils/FBCollections.dart';
 /*
     A mixin which can be add to a ViewModel in order to let it [subscribe to / manage] a stream of users's data
 */
-class FBStreamWrapper{
-  StreamController<QuerySnapshot> _streamController;
+class StreamWrapper<T>{
+  StreamController<T> _streamController;
   Future<dynamic>                 _initDone; // don't delete it, may be useful with heavy streams
 
-  FBStreamWrapper(
+  StreamWrapper(
       {
-        @required String       collection,
+        @required Stream<T>    stream,
         @required Function     listenCallback,
         @required Function     pauseCallback,
         @required Function     resumeCallback,
@@ -25,14 +25,14 @@ class FBStreamWrapper{
       assert(pauseCallback != null);
       assert(resumeCallback != null);
       assert(cancelCallback != null);
-      this._streamController = StreamController<QuerySnapshot>
+      this._streamController = StreamController<T>
         (
           onListen: listenCallback,
           onPause: pauseCallback,
           onResume: resumeCallback,
           onCancel: cancelCallback
         );
-      _initDone = this._addStream(Firestore.instance.collection(collection).snapshots())
+      _initDone = this._addStream(stream)
                       .then((_) => this._streamController.sink.close());
     }
     catch(error){
@@ -43,7 +43,7 @@ class FBStreamWrapper{
     }
   }
 
-  Future<dynamic> _addStream(Stream<QuerySnapshot> stream) async {
+  Future<dynamic> _addStream(Stream<T> stream) async {
     return await this._streamController.addStream(stream);
   }
 
@@ -54,11 +54,11 @@ class FBStreamWrapper{
   }
 */
 
-  Stream<QuerySnapshot> getStream(){
+  Stream<T> getStream(){
     return this._streamController.stream;
   }
 
-  StreamSubscription<QuerySnapshot> subscribeToStream({@required Function handler}){
+  StreamSubscription<T> subscribeToStream({@required Function handler}){
     try{
       assert(handler != null, "A handler must be provided");
       return this.getStream().listen(handler);

@@ -2,23 +2,23 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:tuple/tuple.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:partnership/model/FBStreamWrapper.dart';
+import 'package:partnership/model/StreamWrapper.dart';
 import 'package:partnership/model/AModelFactory.dart';
 import 'package:partnership/utils/PayloadsFactory.dart';
 
 abstract class AModel implements AModelFactory{
   final Firestore                                                               _firestore = Firestore.instance;
-  final Map<String, Tuple2<FBStreamWrapper, StreamSubscription<QuerySnapshot>>> _streamWrappers = <String, Tuple2<FBStreamWrapper, StreamSubscription<QuerySnapshot>>>{};
+  final Map<String, Tuple2<StreamWrapper, StreamSubscription<QuerySnapshot>>> _streamWrappers = <String, Tuple2<StreamWrapper, StreamSubscription<QuerySnapshot>>>{};
   List<String>                                                                  _collections;
 
-  Map<String, Tuple2<FBStreamWrapper, StreamSubscription<QuerySnapshot>>> get streamWrapper => this._streamWrappers;
+  Map<String, Tuple2<StreamWrapper, StreamSubscription<QuerySnapshot>>> get streamWrapper => this._streamWrappers;
 
   AModel(List<String> collections){
     try {
       assert(collections != null && collections.length > 0, "No firebase collections provided to initialize model");
       this._collections = collections;
       this._collections.forEach((collection) {
-        this._streamWrappers[collection] = Tuple2<FBStreamWrapper, StreamSubscription<QuerySnapshot>>(null, null);
+        this._streamWrappers[collection] = Tuple2<StreamWrapper, StreamSubscription<QuerySnapshot>>(null, null);
       });
     }
     catch(error){
@@ -35,19 +35,19 @@ abstract class AModel implements AModelFactory{
     }
   }
 
-  FBStreamWrapper createStreamWrapper({@required String collection, @required Function listenCallback, @required Function pauseCallback, @required Function resumeCallback, @required Function cancelCallback}){
-    if (this._streamWrappers[collection].item1 != null) {
-        if (this._streamWrappers[collection].item2 != null)
-          this._streamWrappers[collection].item2.cancel().then((_) => this._streamWrappers[collection].withItem2(null));
-        this._streamWrappers[collection].withItem1(null);
+  StreamWrapper createStreamWrapper({@required String id, @required Stream stream, @required Function listenCallback, @required Function pauseCallback, @required Function resumeCallback, @required Function cancelCallback}){
+    if (this._streamWrappers[id].item1 != null) {
+        if (this._streamWrappers[id].item2 != null)
+          this._streamWrappers[id].item2.cancel().then((_) => this._streamWrappers[id].withItem2(null));
+        this._streamWrappers[id].withItem1(null);
       }
-    this._streamWrappers[collection].withItem1(FBStreamWrapper(
-        collection: collection,
+    this._streamWrappers[id].withItem1(StreamWrapper(
+        stream: stream,
         listenCallback: listenCallback,
         pauseCallback: pauseCallback,
         resumeCallback: resumeCallback,
         cancelCallback: cancelCallback));
-    return this._streamWrappers[collection].item1;
+    return this._streamWrappers[id].item1;
   }
 
   void deleteDocument({@required String collection, DocumentReference documentRef, String documentID}){

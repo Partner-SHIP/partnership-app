@@ -5,7 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:partnership/style/theme.dart' as Theme;
 import 'package:partnership/utils/bubble_indication_painter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:partnership/model/FBStreamWrapper.dart';
+import 'package:partnership/model/StreamWrapper.dart';
 import 'package:partnership/coordinator/AppCoordinator.dart';
 import 'package:partnership/utils/FBCollections.dart';
 
@@ -27,8 +27,8 @@ class _TestingPageState extends State<TestingPage> {
 
   @override
   Widget build(BuildContext context) {
-    FBStreamWrapper wrapper = FBStreamWrapper(
-        collection: FBCollections.profiles,
+    StreamWrapper wrapper = StreamWrapper(
+        stream: null,
         listenCallback: this.listencb,
         pauseCallback: this.pausecb,
         resumeCallback: this.resumecb,
