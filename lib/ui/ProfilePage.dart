@@ -15,50 +15,63 @@ class ProfilePageState extends State<ProfilePage>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-          body: Stack(
-            children: <Widget>[
-              Container(color: Colors.lightBlueAccent.shade100),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height / 3,
-                //color: Colors.blue[700],
-                decoration: BoxDecoration(
-                  image:DecorationImage(
-                    image: AssetImage('assets/blue_texture.jpg'),
-                    fit: BoxFit.cover
-                  ),
-                ),
-              ),
-/*
-              ClipPath(
-                child: Container(
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage('assets/bubble_texture.jpg'),
-                          fit: BoxFit.cover
-                      )
-                  ),
-
-                ),
-                clipper: ProfileClipper(),
-              ),
-*/
-              Positioned(
-                child:Column(
+          body: SafeArea(
+              child: SingleChildScrollView(
+                child: Column(
                   children: <Widget>[
-                    this._profileImageWidget(),
-                    SizedBox(height: 20.0),
-                    this._profileNameWidget(),
-                    SizedBox(height: 20.0),
-                    this._profileDescriptionWidget()
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.blue[600]
+                      ),
+                      child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: Stack(
+                            children: <Widget>[
+                              Container(
+                                  width: MediaQuery.of(context).size.width *2,
+                                  height: MediaQuery.of(context).size.height / 4,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(image: AssetImage('assets/blue_texture.jpg'))
+                                  ),
+                              ),
+                              Positioned(
+                                child: _profileImageWidget(),
+                                top: MediaQuery.of(context).size.height / 8,
+                                left: MediaQuery.of(context).size.width / 3,
+                              ),
+                              Column(
+                                children: <Widget>[
+                                  SizedBox(width: 0, height: MediaQuery.of(context).size.height / 2.8),
+                                  _profileNameWidget(),
+                                  SizedBox(width: 0, height: 25),
+                                  _profileDescriptionWidget(),
+                                  _profileDescriptionWidget(),
+                                  _profileDescriptionWidget()
+                                ],
+                              ),
+                            ],
+                          )
+                      )
+                    )
                   ],
                 ),
-                width: 350.0,
-                left: MediaQuery.of(context).size.width / 11,
-                top: MediaQuery.of(context).size.height / 5,
-              ),
-            ],
-          ),
+              )
+          )
+    );
+  }
+
+  Widget _clipPathWidget(){
+    return ClipPath(
+      child: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('assets/blue_texture.jpg'),
+                fit: BoxFit.cover
+            )
+        ),
+
+      ),
+      clipper: ProfileClipper(),
     );
   }
 
@@ -86,6 +99,8 @@ class ProfilePageState extends State<ProfilePage>{
   Widget _profileNameWidget(){
     return Text(
     'Tom Cruise',
+    softWrap: false,
+    overflow: TextOverflow.fade,
     style: TextStyle(
     fontSize: 30.0,
     fontWeight: FontWeight.bold,
@@ -95,11 +110,10 @@ class ProfilePageState extends State<ProfilePage>{
   }
 
   Widget _profileDescriptionWidget(){
-    return Expanded(
-        flex: 1,
-        child: SingleChildScrollView(
-          child:       Text(
-            """
+    return Container(
+      padding: EdgeInsets.all(3),
+        child:Text(
+          """
       Id, and frappuccino sugar body skinny mocha affogato,
       grinder cappuccino half and half macchiato variety latte java whipped ut robusta.
       French press, froth, cup extra cup aftertaste decaffeinated, grounds filter to go caramelization acerbic extraction grounds cream foam café au lait dark arabica.
@@ -109,14 +123,17 @@ class ProfilePageState extends State<ProfilePage>{
       Lungo skinny single origin extraction foam, eu, cinnamon coffee single shot shop turkish crema frappuccino macchiato crema aged.
       A frappuccino body aftertaste, seasonal instant breve arabica turkish, cream dripper qui java milk spoon dripper.
       """,
-            softWrap: true,
-            style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.normal,
-              fontFamily: 'MontSerra',
-            ),
-          )
-        )
+          softWrap: true,
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.normal,
+            fontFamily: 'MontSerra',
+          ),
+        ),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.white, width: 5, style: BorderStyle.solid),
+        borderRadius: BorderRadius.all(Radius.circular(10))
+      ),
     );
   }
 }
