@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:partnership/ui/widgets/LabeledIconButton.dart';
 import 'package:partnership/ui/widgets/LargeButton.dart';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
@@ -69,15 +69,62 @@ class _HomePageState extends State<HomePage> {
         )));
   }
 
+  List<Widget> buildRightDrawerButtons(BuildContext context) {
+
+    Widget testButton = LabeledIconButton(
+      icon: Icon(Icons.account_circle),
+      toolTip: 'Accéder à mon profil',
+      onPressed: () {},
+      text:"Accéder à mon profil",
+    );
+    Widget disconnectButton = LabeledIconButton(
+      icon: Icon(Icons.power_settings_new),
+      toolTip: 'Me déconnecter',
+      onPressed: () {},
+      text:"Me déconnecter",
+    );
+    List<Widget> result = new List<Widget>();
+    result.addAll([
+      testButton,
+      disconnectButton
+    ]);
+    return (result);
+  }
+
+  Widget buildRightDrawer(BuildContext context) {
+    BoxDecoration drawerDecoration =
+        new BoxDecoration(color: Colors.lightBlueAccent.shade50);
+    List<Widget> buttons = buildRightDrawerButtons(context);
+
+    Widget drawerContent = Container(
+        decoration: new BoxDecoration(),
+        child: Column(
+          children: buttons,
+        ));
+
+    Widget drawerContentPositioning = Padding(
+      child: drawerContent,
+      padding: EdgeInsets.only(top: 24.0),
+    );
+    return (Drawer(
+      child: Container(
+        child: drawerContentPositioning,
+        decoration: drawerDecoration,
+      ),
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
-    this._viewModel.feedGlobalKey(key:_formkey);
+    this._viewModel.feedGlobalKey(key: _formkey);
     final Size screenSize = MediaQuery.of(context).size;
     Widget form = this.buildForm(context);
     Widget disconnectButton = this.buildDisconnectButton();
-    Widget buttonContainer = Scaffold(
+    Widget rightDrawer = buildRightDrawer(context);
+    Widget view = Scaffold(
       resizeToAvoidBottomPadding: false,
       backgroundColor: Colors.grey[300],
+      endDrawer: rightDrawer,
       body: Container(
           padding: EdgeInsets.all(20.0),
           width: screenSize.width,
@@ -85,6 +132,6 @@ class _HomePageState extends State<HomePage> {
             children: <Widget>[disconnectButton, form],
           )),
     );
-    return (buttonContainer);
+    return (WillPopScope(onWillPop: null, child: view));
   }
 }

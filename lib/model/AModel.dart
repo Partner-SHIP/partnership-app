@@ -2,6 +2,11 @@
 import 'package:partnership/model/FBStreamWrapper.dart';
 import 'package:partnership/model/AModelFactory.dart';
 import 'package:partnership/utils/PayloadsFactory.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:tuple/tuple.dart';
+import 'package:flutter/foundation.dart';
+import 'dart:async';
+
 
 abstract class AModel implements AModelFactory{
   final Firestore                                                               _firestore = Firestore.instance;

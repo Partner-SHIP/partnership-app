@@ -37,7 +37,10 @@ class _LoginPageState extends State<LoginPage> {
 
     final alreadyAccountButton = LargeButton(
       text:"J'ai déjà un compte",
-      onPressed: () => this.viewModel.changeView(route: Routes.signInPage, widgetContext: context)
+      onPressed: () {
+        this.viewModel.changeView(route: Routes.signInPage, widgetContext: context);
+        print("A l'aide");
+      }
     );
 
     final signUpButton = LargeButton(
