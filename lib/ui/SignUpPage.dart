@@ -10,13 +10,14 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  IRoutes _routing = Routes();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _mainKey = GlobalKey<ScaffoldState>();
   final SignUpData           _data = SignUpData();
   bool  busy = false;
 
   SignUpPageViewModel get viewModel =>
-      AViewModelFactory.register[Routes.signUpPage];
+      AViewModelFactory.register[_routing.signUpPage];
 
   @override
   Widget build(BuildContext context) {

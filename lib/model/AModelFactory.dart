@@ -7,27 +7,41 @@ import 'package:partnership/utils/Routes.dart';
 
 abstract class AModelFactory{
   static final Map<String, AModel> register = <String, AModel>{};
+
+  static RoutesEnum fetchRoutes(String route, IRoutes routing){
+    RoutesEnum target;
+    routing.routeList().forEach((value){
+      if (value == route){
+        target = routing.routeEnumMap()[value];
+        return target;
+      }
+    });
+    return target;
+  }
+
   factory AModelFactory(String route){
     if (register.containsKey(route))
       return register[route];
     else {
       AModel model;
-      switch (route){
-        case Routes.loginPage:
+      IRoutes _routing = Routes();
+      RoutesEnum targetedRoute = fetchRoutes(route, _routing);
+      switch (targetedRoute){
+        case RoutesEnum.loginPage:
           model = LoginPageModel();
-          register[Routes.loginPage] = model;
+          register[_routing.loginPage] = model;
           break;
-        case Routes.signInPage:
+        case RoutesEnum.signInPage:
           model = SignInPageModel();
-          register[Routes.signInPage] = model;
+          register[_routing.signInPage] = model;
           break;
-        case Routes.signUpPage:
+        case RoutesEnum.signUpPage:
           model = SignUpPageModel();
-          register[Routes.signUpPage] = model;
+          register[_routing.signUpPage] = model;
           break;
-        case Routes.profilePage:
+        case RoutesEnum.profilePage:
           model = ProfilePageModel();
-          register[Routes.profilePage] = model;
+          register[_routing.profilePage] = model;
           break;
         default:
           model = null;
