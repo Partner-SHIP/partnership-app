@@ -4,9 +4,11 @@ import 'package:partnership/ui/SignInPage.dart';
 import 'package:partnership/ui/SignUpPage.dart';
 import 'package:partnership/ui/ProfilePage.dart';
 import 'package:partnership/ui/testing_page.dart';
+import 'package:partnership/ui/CreationPage.dart';
+
 
 enum RoutesEnum {
-  root, loginPage, signInPage, signUpPage, profilePage, testingPage
+  root, loginPage, signInPage, signUpPage, profilePage, testingPage, creationPage
 }
 
 abstract class  IRoutes {
@@ -16,6 +18,7 @@ abstract class  IRoutes {
   String        get signUpPage;
   String        get profilePage;
   String        get testingPage;
+  String        get creationPage;
   dynamic            routeMap();
   List<String>   routeList();
   Map<String, RoutesEnum> routeEnumMap();
@@ -33,13 +36,15 @@ class Routes implements IRoutes {
   static const String _signUpPage = "/signup_page";
   static const String _profilePage = "/profile_page";
   static const String _testingPage = "/testing_page";
+  static const String _creationPage = "/creation_page";
   dynamic _routeMap() {
     return {
       _root:        (BuildContext context) => LoginPage(), // FallBack
       _loginPage:   (BuildContext context) => LoginPage(),
       _signInPage:  (BuildContext context) => SignInPage(),
       _signUpPage:  (BuildContext context) => SignUpPage(),
-      _profilePage: (BuildContext context) => ProfilePage()
+      _profilePage: (BuildContext context) => ProfilePage(),
+      _creationPage: (BuildContext context) => CreationPage()
     };
   }
   Map<String, RoutesEnum> _routeEnumMap() {
@@ -48,10 +53,11 @@ class Routes implements IRoutes {
       _loginPage:   RoutesEnum.loginPage,
       _signInPage:  RoutesEnum.signInPage,
       _signUpPage:  RoutesEnum.signUpPage,
-      _profilePage: RoutesEnum.profilePage
+      _profilePage: RoutesEnum.profilePage,
+      _creationPage: RoutesEnum.creationPage
     };
   }
-   List<String> _routesList() => <String>[_root, _loginPage, _signInPage, _signUpPage, _profilePage];
+   List<String> _routesList() => <String>[_root, _loginPage, _signInPage, _signUpPage, _profilePage, _creationPage];
 
   @override
   String get loginPage => _loginPage;
@@ -70,6 +76,9 @@ class Routes implements IRoutes {
 
   @override
   String get testingPage => this.testingPage;
+
+  @override
+  String get creationPage => _creationPage;
 
   @override
   List<String> routeList() {
