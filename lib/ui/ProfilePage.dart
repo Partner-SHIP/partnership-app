@@ -19,40 +19,9 @@ class ProfilePageState extends State<ProfilePage>{
               child: SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.blue[600]
-                      ),
-                      child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          child: Stack(
-                            children: <Widget>[
-                              Container(
-                                  width: MediaQuery.of(context).size.width *2,
-                                  height: MediaQuery.of(context).size.height / 4,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(image: AssetImage('assets/blue_texture.jpg'))
-                                  ),
-                              ),
-                              Positioned(
-                                child: _profileImageWidget(),
-                                top: MediaQuery.of(context).size.height / 8,
-                                left: MediaQuery.of(context).size.width / 3,
-                              ),
-                              Column(
-                                children: <Widget>[
-                                  SizedBox(width: 0, height: MediaQuery.of(context).size.height / 2.8),
-                                  _profileNameWidget(),
-                                  SizedBox(width: 0, height: 25),
-                                  _profileDescriptionWidget(),
-                                  _profileDescriptionWidget(),
-                                  _profileDescriptionWidget()
-                                ],
-                              ),
-                            ],
-                          )
-                      )
-                    )
+                    _profileHeaderWidget(),
+                    SizedBox(width: 0.0, height: 10.0),
+                    _profileContentWidget()
                   ],
                 ),
               )
@@ -60,9 +29,53 @@ class ProfilePageState extends State<ProfilePage>{
     );
   }
 
+  Widget _profileHeaderWidget() {
+    return Row(
+      children: <Widget>[
+        Expanded(
+          child: Stack(
+            alignment: Alignment.center,
+            children: <Widget>[
+              /*Container(
+                                height: /*MediaQuery.of(context).size.height / 2.2*/270,
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(image: AssetImage('assets/blue_texture.jpg'))
+                                ),
+                              ),*/
+              _clipPathWidget(),
+              _profileImageWidget()
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _profileContentWidget(){
+    return Container(
+        decoration: BoxDecoration(
+            color: Colors.blue[600]
+        ),
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            children: <Widget>[
+              SizedBox(width: 0, height: 10),
+              _profileNameWidget(),
+              SizedBox(width: 0, height: 10),
+              _profileDescriptionWidget(),
+              _profileDescriptionWidget(),
+              _profileDescriptionWidget()
+            ],
+          ),
+        )
+    );
+  }
+
   Widget _clipPathWidget(){
     return ClipPath(
       child: Container(
+        height: 250,
         decoration: BoxDecoration(
             image: DecorationImage(
                 image: AssetImage('assets/blue_texture.jpg'),
@@ -142,11 +155,20 @@ class ProfileClipper extends CustomClipper<Path>{
   @override
   Path getClip(Size size) {
     Path path = Path();
-    //path.lineTo(0.0, size.height / 2.0);
-    //path.lineTo(size.width + 125, 0.0);
+    /*
     path.lineTo(0.0, size.height / 6.0);
     path.lineTo(size.width / 2, size.height / 3.0);
     path.lineTo(size.width, size.height / 6.0);
+    path.lineTo(size.width, 0.0);
+    */
+    path.lineTo(0.0, size.height - 20.0);
+    path.lineTo(10.0, size.height - 10.0);
+    path.lineTo(size.width / 4, size.height - 10.0);
+    path.lineTo(size.width / 3, size.height);
+    path.lineTo(size.width - (size.width / 3), size.height);
+    path.lineTo(size.width - (size.width / 4), size.height - 10.0);
+    path.lineTo(size.width - 10.0, size.height - 10.0);
+    path.lineTo(size.width, size.height - 20.0);
     path.lineTo(size.width, 0.0);
     path.close();
     return path;
