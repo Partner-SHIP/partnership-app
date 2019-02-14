@@ -1,62 +1,91 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/CreationPageViewModel.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CreationPage extends StatefulWidget {
     @override
     CreationPageState createState() => CreationPageState();
 }
 
-class CreationPageState extends State<CreationPage>{
-    IRoutes     _routing = Routes();
-    CreationPageViewModel get viewModel =>
-        AViewModelFactory.register[_routing.creationPage];
+class CreationPageState extends State<CreationPage> {
+  IRoutes _routing = Routes();
 
-    static const _appTitle = 'Todo List';
-    final todos = <String>[];
-    final controller = TextEditingController();
+  CreationPageViewModel get viewModel =>
+      AViewModelFactory.register[_routing.creationPage];
 
-    @override
-    Widget build(BuildContext context) {
-      return MaterialApp(
-        title: _appTitle,
-        home: Scaffold(
-          appBar: AppBar(
-            title: Text(_appTitle),
+  File _image;
+
+  Future getImage() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      _image = image;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text('Création de projet'),
+      ),
+      body: new Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 20.0),
           ),
-          body: Column(
-            children: [
-              TextField(
-                controller: controller,
+          new FloatingActionButton(
+            onPressed: getImage,
+            child: _image == null
+                ? Icon(Icons.add_a_photo)
+                : new CircleAvatar(radius: 20.0, child: Image.file(_image)),
+            tooltip: 'Pick Image',
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 15.0),
+          ),
+          new ListTile(
+            contentPadding: EdgeInsets.symmetric(horizontal: 20.0),
+            title: new TextFormField(
+              decoration: new InputDecoration(
+                hintText: "Nom du projet",
+                labelStyle: new TextStyle(fontSize: 24.0),
               ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: todos.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final todo = todos[index];
-
-                    return Dismissible(
-                      key: Key('$todo$index'),
-                      onDismissed: (direction) => todos.removeAt(index),
-                      child: ListTile(title: Text(todo)),
-                      background: Container(color: Colors.red),
-                    );
-                  },
+              style: new TextStyle(fontSize: 24.0, color: Colors.black),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 15.0),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.0),
+            child: Text(
+              'Description',
+              textAlign: TextAlign.start,
+              overflow: TextOverflow.fade,
+              style: TextStyle(fontSize: 24.0, color: Colors.black45),
+              ),
+            ),
+          new ListTile(
+            title: new TextFormField(
+              decoration: new InputDecoration(
+                labelStyle: new TextStyle(fontSize: 20.0),
+                border: new OutlineInputBorder(
+                  borderRadius: new BorderRadius.circular(25.0),
+                  borderSide: new BorderSide(
+                  ),
                 ),
               ),
-            ],
+              style: new TextStyle(fontSize: 24.0, color: Colors.black),
+              maxLines: null,
+            ),
           ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              setState(() {
-                todos.add(controller.text);
-                controller.clear();
-              });
-            },
-            child: Icon(Icons.add),
-          ),
-        ),
-      );
-    }
+        ],
+      ),
+    );
+  }
 }
+
