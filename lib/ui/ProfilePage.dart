@@ -12,6 +12,7 @@ class ProfilePageState extends State<ProfilePage>{
   IRoutes      _routing = Routes();
   ProfilePageViewModel get viewModel =>
       AViewModelFactory.register[_routing.profilePage];
+  List<MyItems> items = [MyItems("Projects", "body"),MyItems("Partners", "body"),MyItems("Other", "body")];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,12 +37,6 @@ class ProfilePageState extends State<ProfilePage>{
           child: Stack(
             alignment: Alignment.center,
             children: <Widget>[
-              /*Container(
-                                height: /*MediaQuery.of(context).size.height / 2.2*/270,
-                                decoration: BoxDecoration(
-                                    image: DecorationImage(image: AssetImage('assets/blue_texture.jpg'))
-                                ),
-                              ),*/
               _clipPathWidget(),
               _profileImageWidget()
             ],
@@ -64,8 +59,7 @@ class ProfilePageState extends State<ProfilePage>{
               _profileNameWidget(),
               SizedBox(width: 0, height: 10),
               _profileDescriptionWidget(),
-              _profileDescriptionWidget(),
-              _profileDescriptionWidget()
+              _profilePanelList()
             ],
           ),
         )
@@ -148,6 +142,61 @@ class ProfilePageState extends State<ProfilePage>{
         borderRadius: BorderRadius.all(Radius.circular(10))
       ),
     );
+  }
+
+  Widget _profilePanelList(){
+    List<MyItems> items = this.items;
+    return ExpansionPanelList(
+      expansionCallback: (int index, bool isExpanded){
+
+        setState(() {
+          items[index].isExpanded = !items[index].isExpanded;
+        });
+      },
+      children: items.map((item){
+        return ExpansionPanel(
+          headerBuilder: (BuildContext context, bool isExpanded) => _profilePanelHeader(item.header),
+          isExpanded: item.isExpanded,
+          body: _profilePanelBody(item.body)
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _profilePanelHeader(String header){
+    return Text(
+      header,
+      textAlign: TextAlign.center,
+      style: TextStyle(
+          fontSize: 20.0,
+          fontWeight: FontWeight.bold,
+          fontFamily: 'Montserrat',
+          color: Colors.black,
+      )
+    );
+  }
+  Widget _profilePanelBody(String body){
+      return Column(
+        children: <Widget>[
+          Text(body),
+          Text(body),
+          Text(body),
+          Text(body),
+          Text(body),
+        ],
+      );
+  }
+
+}
+
+class MyItems{
+  String header;
+  String body;
+  bool isExpanded;
+  MyItems(String h,String b){
+    header = h;
+    body = b;
+    isExpanded = false;
   }
 }
 
