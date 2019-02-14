@@ -19,7 +19,6 @@ dependencies:
   firebase_database:
 
   image_picker: ^0.4.12+1
-  http:
   cupertino_icons: ^0.1.2
 
   fluro: "^1.4.0"
