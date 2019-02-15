@@ -19,7 +19,7 @@ class CreationPageState extends State<CreationPage> {
   File _image;
 
   Future getImage() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery, maxHeight: 250, maxWidth: 250);
     setState(() {
       _image = image;
     });
@@ -31,19 +31,17 @@ class CreationPageState extends State<CreationPage> {
       appBar: new AppBar(
         title: new Text('Création de projet'),
       ),
+      floatingActionButton: FloatingActionButton(child: Icon(Icons.check), tooltip: 'Confimez vous les informations'),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: new Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Padding(
             padding: EdgeInsets.symmetric(vertical: 20.0),
           ),
-          new FloatingActionButton(
-            onPressed: getImage,
-            child: _image == null
-                ? Icon(Icons.add_a_photo)
-                : new CircleAvatar(radius: 20.0, child: Image.file(_image)),
-            tooltip: 'Pick Image',
-          ),
+          new RaisedButton(onPressed: getImage, color: Colors.white,child: ClipRRect(borderRadius: BorderRadius.circular(150.0), clipBehavior: Clip.hardEdge,
+          child: _image == null ? CircleAvatar(backgroundColor: Colors.blue, radius: 70) : new Image.file(_image)
+            )),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 15.0),
           ),
