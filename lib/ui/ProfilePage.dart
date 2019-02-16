@@ -2,32 +2,81 @@ import 'package:flutter/material.dart';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/ProfilePageViewModel.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
+import 'dart:async';
+import 'dart:io';
 
 class ProfilePage extends StatefulWidget {
   @override
   ProfilePageState createState() => ProfilePageState();
 }
 
-class ProfilePageState extends State<ProfilePage>{
+class ProfilePageState extends State<ProfilePage> with SingleTickerProviderStateMixin{
   IRoutes      _routing = Routes();
-  ProfilePageViewModel get viewModel =>
-      AViewModelFactory.register[_routing.profilePage];
+  ProfilePageViewModel get viewModel => AViewModelFactory.register[_routing.profilePage];
   List<MyItems> items = [MyItems("Projects", "body"),MyItems("Partners", "body"),MyItems("Other", "body")];
+  bool isEditing = false;
+  String name = 'Tom Cruise';
+  Animation<double> animation;
+  AnimationController controller;
+  var _image;
+
+  @override
+  void initState(){
+    super.initState();
+    this._image = NetworkImage('https://pixel.nymag.com/imgs/daily/vulture/2017/06/14/14-tom-cruise.w700.h700.jpg');
+    controller = AnimationController(
+        vsync: this,
+        duration: Duration(seconds: 4)
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-          body: SafeArea(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                    _profileHeaderWidget(),
-                    SizedBox(width: 0.0, height: 10.0),
-                    _profileContentWidget()
-                  ],
-                ),
-              )
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.blue[600],
+        child: Container(height: 50),
+      ),
+      floatingActionButton: _editingButton(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      body: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                _profileHeaderWidget(),
+                SizedBox(width: 0.0, height: 10.0),
+                _profileContentWidget()
+              ],
+            ),
           )
+      )
     );
+  }
+
+  Widget _editingButton(){
+    var ret;
+    if (this.isEditing){
+      ret = FloatingActionButton(
+        onPressed: () => this.setState((){
+          this.isEditing = !this.isEditing;
+        }),
+        child: Icon(Icons.check, size: 35),
+        tooltip: "save changes",
+        backgroundColor: Colors.green[600],
+        foregroundColor: Colors.white,
+      );
+    }
+    else {
+      ret = FloatingActionButton(
+        onPressed: () => this.setState((){
+          this.isEditing = !this.isEditing;
+        }),
+        child: Icon(Icons.edit, size: 35),
+        tooltip: "edit",
+        backgroundColor: Colors.blueAccent,
+        foregroundColor: Colors.white,
+      );
+    }
+    return ret;
   }
 
   Widget _profileHeaderWidget() {
@@ -38,7 +87,8 @@ class ProfilePageState extends State<ProfilePage>{
             alignment: Alignment.center,
             children: <Widget>[
               _clipPathWidget(),
-              _profileImageWidget()
+              _profileImageWidget(),
+              this.isEditing ? this._changePhotoButton() : SizedBox(width: 0,height: 0)
             ],
           ),
         ),
@@ -82,6 +132,13 @@ class ProfilePageState extends State<ProfilePage>{
     );
   }
 
+  Future _getImage() async {
+    var image = await Future(null);
+    setState(() {
+      _image = _image;
+    });
+  }
+
   Widget _profileImageWidget(){
     return Container(
       width: 150,
@@ -89,7 +146,7 @@ class ProfilePageState extends State<ProfilePage>{
       decoration: BoxDecoration(
           color: Colors.red,
           image: DecorationImage(
-              image: NetworkImage('https://pixel.nymag.com/imgs/daily/vulture/2017/06/14/14-tom-cruise.w700.h700.jpg'),
+              image: _image,
               fit: BoxFit.cover
           ),
           borderRadius: BorderRadius.all(Radius.circular(75.0)),
@@ -104,16 +161,52 @@ class ProfilePageState extends State<ProfilePage>{
   }
 
   Widget _profileNameWidget(){
-    return Text(
-    'Tom Cruise',
-    softWrap: false,
-    overflow: TextOverflow.fade,
-    style: TextStyle(
-    fontSize: 30.0,
-    fontWeight: FontWeight.bold,
-    fontFamily: 'Montserrat',
-    color: Colors.white),
-    );
+    var ret;
+    if (this.isEditing) {
+      ret = Row(
+        children: <Widget>[
+          Expanded(
+              child: Padding(
+                  padding: EdgeInsets.only(left: 10.0),
+                  child: TextField(
+                    decoration: InputDecoration(
+                        labelText: this.name,
+                        labelStyle: TextStyle(
+                            color: Colors.white
+                        ),
+                        hintText: "change name here",
+                        hintStyle: TextStyle(
+                            color: Colors.white
+                        ),
+                        icon: Icon(Icons.edit, color: Colors.white)
+                    ),
+                  )
+              ),
+          ),
+          FlatButton.icon(
+              onPressed: null,
+              icon: Icon(Icons.cancel, color: Colors.red),
+              label: Text("cancel",
+                style: TextStyle(
+                    color: Colors.red),
+              )
+          )
+        ],
+      );
+    }
+    else {
+      ret = Text(
+        this.name,
+        softWrap: false,
+        overflow: TextOverflow.fade,
+        style: TextStyle(
+            fontSize: 30.0,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Montserrat',
+            color: Colors.white),
+      );
+    }
+    return ret;
   }
 
   Widget _profileDescriptionWidget(){
@@ -186,6 +279,13 @@ class ProfilePageState extends State<ProfilePage>{
         ],
       );
   }
+
+Widget _changePhotoButton() {
+    return FloatingActionButton(
+        onPressed: _getImage,
+        child: Icon(Icons.photo_camera, size: 35),
+    );
+}
 
 }
 
