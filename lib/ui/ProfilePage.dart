@@ -16,6 +16,10 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
   List<MyItems> items = [MyItems("Projects", "body"),MyItems("Partners", "body"),MyItems("Other", "body")];
   bool isEditing = false;
   String name = 'Tom Cruise';
+  String location = 'New-York';
+  String studies = 'Harvard';
+  String workLocation = 'Holywood Entertainment';
+  String job = "famous comedian";
   Animation<double> animation;
   AnimationController controller;
   var _image;
@@ -99,7 +103,13 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
   Widget _profileContentWidget(){
     return Container(
         decoration: BoxDecoration(
-            color: Colors.blue[600]
+          color: Colors.green,
+          gradient: LinearGradient(
+            colors: [Colors.cyan[700], Colors.cyan[400], Colors.cyan[700]],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,//Alignment(0.8, 0.0),
+            tileMode: TileMode.clamp
+          )
         ),
         child: Container(
           width: MediaQuery.of(context).size.width,
@@ -108,10 +118,177 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
               SizedBox(width: 0, height: 10),
               _profileNameWidget(),
               SizedBox(width: 0, height: 10),
-              _profileDescriptionWidget(),
+              _livesAtWidget(),
+              _studiedAtWidget(),
+              _worksAtWidget(),
+              _jobWidget(),
               _profilePanelList()
             ],
           ),
+        )
+    );
+  }
+
+  Widget _livesAtWidget(){
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: 90,
+      decoration: BoxDecoration(
+        border: Border(
+            bottom: BorderSide(
+              width: 1.0,
+              color: Colors.white,
+            ),
+        )
+      ),
+      //color: Colors.cyan,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Text("lives at:",
+            softWrap: false,
+            overflow: TextOverflow.fade,
+            style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Montserrat',
+                color: Colors.white),
+          ),
+          this.isEditing ? this._editablePresenter(this.location, "change location here") :
+          Text(
+            this.location,softWrap: false,
+            overflow: TextOverflow.fade,
+            style: TextStyle(
+                fontSize: 15.0,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Montserrat',
+                color: Colors.white)
+          ),
+        ],
+      )
+    );
+  }
+
+  Widget _studiedAtWidget(){
+    return Container(
+        width: MediaQuery.of(context).size.width,
+        height: 90,
+        decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(
+                width: 1.0,
+                color: Colors.white,
+              ),
+            )
+        ),
+        //color: Colors.cyan,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text("studied at:",
+              softWrap: false,
+              overflow: TextOverflow.fade,
+              style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Montserrat',
+                  color: Colors.white),
+            ),
+            this.isEditing ? this._editablePresenter(this.studies, "change studies location here") :
+            Text(
+                this.studies,softWrap: false,
+                overflow: TextOverflow.fade,
+                style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Montserrat',
+                    color: Colors.white)
+            ),
+          ],
+        )
+    );
+  }
+
+  Widget _worksAtWidget(){
+    return Container(
+        width: MediaQuery.of(context).size.width,
+        height: 90,
+        decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(
+                width: 1.0,
+                color: Colors.white,
+              ),
+            )
+        ),
+        //color: Colors.cyan,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text("works at:",
+              softWrap: false,
+              overflow: TextOverflow.fade,
+              style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Montserrat',
+                  color: Colors.white),
+            ),
+            this.isEditing ? this._editablePresenter(this.workLocation, "change work location here") :
+            Text(
+                this.workLocation,softWrap: false,
+                overflow: TextOverflow.fade,
+                style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Montserrat',
+                    color: Colors.white)
+            ),
+          ],
+        )
+    );
+  }
+
+  Widget _jobWidget(){
+    return Container(
+        width: MediaQuery.of(context).size.width,
+        height: 90,
+        decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(
+                width: 1.0,
+                color: Colors.white,
+              ),
+            )
+        ),
+        //color: Colors.cyan,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text("Work as:",
+              softWrap: false,
+              overflow: TextOverflow.fade,
+              style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Montserrat',
+                  color: Colors.white),
+            ),
+            this.isEditing ? this._editablePresenter(this.job, "change job here") :
+            Text(
+                this.job,softWrap: false,
+                overflow: TextOverflow.fade,
+                style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Montserrat',
+                    color: Colors.white)
+            ),
+          ],
         )
     );
   }
@@ -160,39 +337,43 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
     );
   }
 
+  Widget _editablePresenter(String label, String hint){
+    return Row(
+      children: <Widget>[
+        Expanded(
+          child: Padding(
+              padding: EdgeInsets.only(left: 10.0, bottom: 5.0),
+              child: TextField(
+                decoration: InputDecoration(
+                    labelText: label,
+                    labelStyle: TextStyle(
+                        color: Colors.white
+                    ),
+                    hintText: hint,
+                    hintStyle: TextStyle(
+                        color: Colors.white
+                    ),
+                    icon: Icon(Icons.edit, color: Colors.white)
+                ),
+              )
+          ),
+        ),
+        FlatButton.icon(
+            onPressed: null,
+            icon: Icon(Icons.cancel, color: Colors.red),
+            label: Text("cancel",
+              style: TextStyle(
+                  color: Colors.red),
+            )
+        )
+      ],
+    );
+  }
+
   Widget _profileNameWidget(){
     var ret;
     if (this.isEditing) {
-      ret = Row(
-        children: <Widget>[
-          Expanded(
-              child: Padding(
-                  padding: EdgeInsets.only(left: 10.0),
-                  child: TextField(
-                    decoration: InputDecoration(
-                        labelText: this.name,
-                        labelStyle: TextStyle(
-                            color: Colors.white
-                        ),
-                        hintText: "change name here",
-                        hintStyle: TextStyle(
-                            color: Colors.white
-                        ),
-                        icon: Icon(Icons.edit, color: Colors.white)
-                    ),
-                  )
-              ),
-          ),
-          FlatButton.icon(
-              onPressed: null,
-              icon: Icon(Icons.cancel, color: Colors.red),
-              label: Text("cancel",
-                style: TextStyle(
-                    color: Colors.red),
-              )
-          )
-        ],
-      );
+      ret = this._editablePresenter(this.name, "change name here");
     }
     else {
       ret = Text(
@@ -206,7 +387,20 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
             color: Colors.white),
       );
     }
-    return ret;
+    return Container(
+      alignment: Alignment.center,
+      child: ret,
+      width: MediaQuery.of(context).size.width,
+      height: 70,
+      decoration: BoxDecoration(
+        border: Border(
+            bottom: BorderSide(
+              width: 2.5,
+              color: Colors.white
+            )
+        )
+      ),
+    );
   }
 
   Widget _profileDescriptionWidget(){
@@ -255,17 +449,22 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
       }).toList(),
     );
   }
-
   Widget _profilePanelHeader(String header){
-    return Text(
-      header,
-      textAlign: TextAlign.center,
-      style: TextStyle(
-          fontSize: 20.0,
-          fontWeight: FontWeight.bold,
-          fontFamily: 'Montserrat',
-          color: Colors.black,
-      )
+    return Container(
+      padding: EdgeInsets.only(bottom:20.0,left:MediaQuery.of(context).size.width / 2.5),
+      alignment: Alignment.centerLeft,
+      child: Text(
+          header,
+          textAlign: TextAlign.center,
+          softWrap: false,
+          overflow: TextOverflow.fade,
+          style: TextStyle(
+            fontSize: 20.0,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Montserrat',
+            color: Colors.black,
+          )
+      ),
     );
   }
   Widget _profilePanelBody(String body){
