@@ -6,53 +6,66 @@ import 'dart:async';
 import 'dart:io';
 
 class ProfilePage extends StatefulWidget {
+  //Widget child;
   @override
   ProfilePageState createState() => ProfilePageState();
+  static ProfilePageState of(BuildContext context){
+    return (context.inheritFromWidgetOfExactType(ProfileInheritedWidget) as ProfileInheritedWidget).state;
+  }
 }
 
 class ProfilePageState extends State<ProfilePage> with SingleTickerProviderStateMixin{
-  IRoutes      _routing = Routes();
-  ProfilePageViewModel get viewModel => AViewModelFactory.register[_routing.profilePage];
+  static final IRoutes      _routing = Routes();
+  static final ProfilePageViewModel viewModel = AViewModelFactory.register[_routing.profilePage];
   List<MyItems> items = [MyItems("Projects", "body"),MyItems("Partners", "body"),MyItems("Other", "body")];
   bool isEditing = false;
-  String name = 'Tom Cruise';
-  String location = 'New-York';
-  String studies = 'Harvard';
-  String workLocation = 'Holywood Entertainment';
-  String job = "famous comedian";
-  Animation<double> animation;
-  AnimationController controller;
-  var _image;
+  /////////////////////////////////////
+  /*
+  final String _name = viewModel.name;
+  final String _location = viewModel.location;
+  final String _workLocation = viewModel.workLocation;
+  final String _job = viewModel.job;
+  final String _studies = viewModel.studies;
+  final NetworkImage _image = viewModel.image;
+  final AssetImage _background = viewModel.background;
+  */
+  String get name => viewModel.name;
+  String get location => viewModel.location;
+  String get workLocation => viewModel.workLocation;
+  String get job => viewModel.job;
+  String get studies => viewModel.studies;
+  NetworkImage get image => viewModel.image;
+  AssetImage get background => viewModel.background;
+  ////////////////////////////////////
 
   @override
   void initState(){
     super.initState();
-    this._image = NetworkImage('https://pixel.nymag.com/imgs/daily/vulture/2017/06/14/14-tom-cruise.w700.h700.jpg');
-    controller = AnimationController(
-        vsync: this,
-        duration: Duration(seconds: 4)
-    );
+    //this._image = NetworkImage('https://pixel.nymag.com/imgs/daily/vulture/2017/06/14/14-tom-cruise.w700.h700.jpg');
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.blue[600],
-        child: Container(height: 50),
-      ),
-      floatingActionButton: _editingButton(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      body: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                _profileHeaderWidget(),
-                SizedBox(width: 0.0, height: 10.0),
-                _profileContentWidget()
-              ],
-            ),
+    return ProfileInheritedWidget(
+      child: Scaffold(
+          bottomNavigationBar: BottomAppBar(
+            color: Colors.blue[600],
+            child: Container(height: 50),
+          ),
+          floatingActionButton: _editingButton(),
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+          body: SafeArea(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    _profileHeaderWidget(),
+                    SizedBox(width: 0.0, height: 10.0),
+                    _profileContentWidget()
+                  ],
+                ),
+              )
           )
-      )
+      ),
+      state: this,
     );
   }
 
@@ -65,8 +78,8 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
         }),
         child: Icon(Icons.check, size: 35),
         tooltip: "save changes",
-        backgroundColor: Colors.green[600],
         foregroundColor: Colors.white,
+        backgroundColor: Colors.green,
       );
     }
     else {
@@ -103,13 +116,13 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
   Widget _profileContentWidget(){
     return Container(
         decoration: BoxDecoration(
-          color: Colors.green,
-          gradient: LinearGradient(
-            colors: [Colors.cyan[700], Colors.cyan[400], Colors.cyan[700]],
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,//Alignment(0.8, 0.0),
-            tileMode: TileMode.clamp
-          )
+            color: Colors.green,
+            gradient: LinearGradient(
+                colors: [Colors.cyan[700], Colors.cyan[400], Colors.cyan[700]],
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,//Alignment(0.8, 0.0),
+                tileMode: TileMode.clamp
+            )
         ),
         child: Container(
           width: MediaQuery.of(context).size.width,
@@ -131,42 +144,42 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
 
   Widget _livesAtWidget(){
     return Container(
-      width: MediaQuery.of(context).size.width,
-      height: 90,
-      decoration: BoxDecoration(
-        border: Border(
-            bottom: BorderSide(
-              width: 1.0,
-              color: Colors.white,
+        width: MediaQuery.of(context).size.width,
+        height: 90,
+        decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(
+                width: 1.0,
+                color: Colors.white,
+              ),
+            )
+        ),
+        //color: Colors.cyan,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text("lives at:",
+              softWrap: false,
+              overflow: TextOverflow.fade,
+              style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Montserrat',
+                  color: Colors.white),
             ),
+            this.isEditing ? this._editablePresenter(this.location, "change location here") :
+            Text(
+                this.location,softWrap: false,
+                overflow: TextOverflow.fade,
+                style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Montserrat',
+                    color: Colors.white)
+            ),
+          ],
         )
-      ),
-      //color: Colors.cyan,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Text("lives at:",
-            softWrap: false,
-            overflow: TextOverflow.fade,
-            style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Montserrat',
-                color: Colors.white),
-          ),
-          this.isEditing ? this._editablePresenter(this.location, "change location here") :
-          Text(
-            this.location,softWrap: false,
-            overflow: TextOverflow.fade,
-            style: TextStyle(
-                fontSize: 15.0,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Montserrat',
-                color: Colors.white)
-          ),
-        ],
-      )
     );
   }
 
@@ -311,9 +324,9 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
 
   Future _getImage() async {
     var image = await Future(null);
-    setState(() {
+    /*setState(() {
       _image = _image;
-    });
+    });*/
   }
 
   Widget _profileImageWidget(){
@@ -323,7 +336,7 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
       decoration: BoxDecoration(
           color: Colors.red,
           image: DecorationImage(
-              image: _image,
+              image: image,
               fit: BoxFit.cover
           ),
           borderRadius: BorderRadius.all(Radius.circular(75.0)),
@@ -393,12 +406,12 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
       width: MediaQuery.of(context).size.width,
       height: 70,
       decoration: BoxDecoration(
-        border: Border(
-            bottom: BorderSide(
-              width: 2.5,
-              color: Colors.white
-            )
-        )
+          border: Border(
+              bottom: BorderSide(
+                  width: 2.5,
+                  color: Colors.white
+              )
+          )
       ),
     );
   }
@@ -406,8 +419,8 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
   Widget _profileDescriptionWidget(){
     return Container(
       padding: EdgeInsets.all(3),
-        child:Text(
-          """
+      child:Text(
+        """
       Id, and frappuccino sugar body skinny mocha affogato,
       grinder cappuccino half and half macchiato variety latte java whipped ut robusta.
       French press, froth, cup extra cup aftertaste decaffeinated, grounds filter to go caramelization acerbic extraction grounds cream foam café au lait dark arabica.
@@ -417,16 +430,16 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
       Lungo skinny single origin extraction foam, eu, cinnamon coffee single shot shop turkish crema frappuccino macchiato crema aged.
       A frappuccino body aftertaste, seasonal instant breve arabica turkish, cream dripper qui java milk spoon dripper.
       """,
-          softWrap: true,
-          style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.normal,
-            fontFamily: 'MontSerra',
-          ),
+        softWrap: true,
+        style: TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeight.normal,
+          fontFamily: 'MontSerra',
         ),
+      ),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.white, width: 5, style: BorderStyle.solid),
-        borderRadius: BorderRadius.all(Radius.circular(10))
+          border: Border.all(color: Colors.white, width: 5, style: BorderStyle.solid),
+          borderRadius: BorderRadius.all(Radius.circular(10))
       ),
     );
   }
@@ -442,9 +455,9 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
       },
       children: items.map((item){
         return ExpansionPanel(
-          headerBuilder: (BuildContext context, bool isExpanded) => _profilePanelHeader(item.header),
-          isExpanded: item.isExpanded,
-          body: _profilePanelBody(item.body)
+            headerBuilder: (BuildContext context, bool isExpanded) => _profilePanelHeader(item.header),
+            isExpanded: item.isExpanded,
+            body: _profilePanelBody(item.body)
         );
       }).toList(),
     );
@@ -468,25 +481,40 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
     );
   }
   Widget _profilePanelBody(String body){
-      return Column(
-        children: <Widget>[
-          Text(body),
-          Text(body),
-          Text(body),
-          Text(body),
-          Text(body),
-        ],
-      );
+    return Column(
+      children: <Widget>[
+        Text(body),
+        Text(body),
+        Text(body),
+        Text(body),
+        Text(body),
+      ],
+    );
   }
 
-Widget _changePhotoButton() {
+  Widget _changePhotoButton() {
     return FloatingActionButton(
-        onPressed: _getImage,
-        child: Icon(Icons.photo_camera, size: 35),
+      onPressed: _getImage,
+      child: Icon(Icons.photo_camera, size: 35),
     );
-}
+  }
 
 }
+
+class ProfileInheritedWidget extends InheritedWidget {
+  final ProfilePageState state;
+  ProfileInheritedWidget(
+      {
+        this.state,
+        Widget child
+      }) : super(child: child);
+  @override
+  bool updateShouldNotify(InheritedWidget oldWidget) {
+    return true;
+  }
+}
+
+
 
 class MyItems{
   String header;
