@@ -25,13 +25,20 @@ class CreationPageState extends State<CreationPage> {
     });
   }
 
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
         title: new Text('Création de projet'),
       ),
-      floatingActionButton: FloatingActionButton(child: Icon(Icons.check), tooltip: 'Confimez vous les informations'),
+      floatingActionButton: FloatingActionButton(onPressed: () {
+        if (_formKey.currentState.validate()) {
+          Scaffold.of(context).showSnackBar(SnackBar(content: Text('Chargement en cours')));
+        }
+      },
+          child: Icon(Icons.check), tooltip: 'Confimez vous les informations'),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: new Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -39,20 +46,29 @@ class CreationPageState extends State<CreationPage> {
           Padding(
             padding: EdgeInsets.symmetric(vertical: 20.0),
           ),
-          new RaisedButton(onPressed: getImage, color: Colors.white,child: ClipRRect(borderRadius: BorderRadius.circular(150.0), clipBehavior: Clip.hardEdge,
-          child: _image == null ? CircleAvatar(backgroundColor: Colors.blue, radius: 70) : new Image.file(_image)
-            )),
+          new RaisedButton(onPressed: getImage, color: Colors.blue, child: _image == null ? null : Image.file(_image)
+          ),
           Padding(
-            padding: EdgeInsets.symmetric(vertical: 15.0),
+            padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 20),
+            child: Text(
+              'Nom du projet',
+              textAlign: TextAlign.start,
+              overflow: TextOverflow.fade,
+              style: TextStyle(fontSize: 24.0, color: Colors.black),
+            ),
           ),
           new ListTile(
             contentPadding: EdgeInsets.symmetric(horizontal: 20.0),
             title: new TextFormField(
               decoration: new InputDecoration(
-                hintText: "Nom du projet",
+                hintText: 'Exemple : PartnerSHIP...',
                 labelStyle: new TextStyle(fontSize: 24.0),
               ),
               style: new TextStyle(fontSize: 24.0, color: Colors.black),
+              validator: (value) {
+                if (value.isEmpty)
+                  return 'Ce champ ne peut être vide';
+              },
             ),
           ),
           Padding(
@@ -64,7 +80,7 @@ class CreationPageState extends State<CreationPage> {
               'Description',
               textAlign: TextAlign.start,
               overflow: TextOverflow.fade,
-              style: TextStyle(fontSize: 24.0, color: Colors.black45),
+              style: TextStyle(fontSize: 24.0, color: Colors.black),
               ),
             ),
           new ListTile(
