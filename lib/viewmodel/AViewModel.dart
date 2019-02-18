@@ -6,25 +6,21 @@ import 'package:partnership/model/AModel.dart';
 import 'package:partnership/coordinator/AppCoordinator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-//import 'package:partnership/utils/Routes.dart';
-
 /*
     Abstract class defining all ViewModels, destined to be instanciated within the Coordinator by AViewModelFactory.
     Implements methods common to all ViewModels (ex: methods to ask Coordinator to change View/ViewModel).
 */
 abstract class AViewModel implements AViewModelFactory
 {
-  final Coordinator _coordinator = Coordinator();
+  final ICoordinator _coordinator = Coordinator();
   AModel            _abstractModel;
   String            _route;
 
-  AViewModel(String route){
-    this._route = route;
-    this._initModel();
-  }
+  AViewModel();
 
-  void _initModel(){
+  void initModel(String route){
     try {
+      this._route = route;
       AModelFactory(this._route);
       if (!AModelFactory.register.containsKey(this._route) || !(AModelFactory.register[this._route] != null))
         throw Exception("Missing Model for "+this._route);
@@ -42,9 +38,9 @@ abstract class AViewModel implements AViewModelFactory
       return this._coordinator.fetchRegisterToNavigate(route: route, context: widgetContext, popStack: popStack);
   }
   Future<FirebaseUser> signUp({@required String email, @required String password}) {
-    return this._coordinator.authentication.signUpByEmail(newEmail: email, newPassword: password);
+    return this._coordinator.signUpByEmail(newEmail: email, newPassword: password);
   }
   Future<FirebaseUser> signIn({@required String email, @required String password}) {
-    return this._coordinator.authentication.loginByEmail(userEmail: email, userPassword: password);
+    return this._coordinator.loginByEmail(userEmail: email, userPassword: password);
   }
 }

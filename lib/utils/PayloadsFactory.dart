@@ -106,4 +106,3 @@ class ProfilePayload extends Payload {
     this._parameters['uid'] = this._uid;
   }
 }
-

@@ -6,13 +6,14 @@ import 'package:partnership/ui/widgets/LargeButton.dart';
 
 class LoginPage extends StatefulWidget {
   @override
-  _LoginPageState createState() => _LoginPageState();
+  LoginPageState createState() => LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class LoginPageState extends State<LoginPage> {
   BuildContext _scaffoldContext;
+  IRoutes      _routing = Routes();
   LoginPageViewModel get viewModel =>
-      AViewModelFactory.register[Routes.loginPage];
+      AViewModelFactory.register[_routing.loginPage];
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,7 @@ class _LoginPageState extends State<LoginPage> {
       child: Center(
           child: Align(
         child: Image.asset(
-          'assets/img/work-office.png',
+          ' ',
         ),
       )),
     );
@@ -38,14 +39,16 @@ class _LoginPageState extends State<LoginPage> {
     final alreadyAccountButton = LargeButton(
       text:"J'ai déjà un compte",
       onPressed: () {
-        this.viewModel.changeView(route: Routes.signInPage, widgetContext: context);
-        print("A l'aide");
+        this.viewModel.changeView(route: _routing.signInPage, widgetContext: context);
       }
     );
 
     final signUpButton = LargeButton(
       text:"Je veux m'inscrire",
-      onPressed: () => this.viewModel.changeView(route: Routes.signUpPage, widgetContext: context)
+      onPressed: () { this
+                .viewModel
+                .changeView(route: _routing.signInPage, widgetContext: context);}
+
     );
 
     final whatIsButton = FlatButton(
@@ -77,27 +80,9 @@ class _LoginPageState extends State<LoginPage> {
       backgroundColor: Colors.grey[300],
         body: SingleChildScrollView(
             child: Container(
-      /*decoration: BoxDecoration(
-        // Box decoration takes a gradient
-        gradient: LinearGradient(
-          // Where the linear gradient begins and ends
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
-          // Add one stop for each color. Stops should increase from 0 to 1
-          stops: [0.1, 0.5, 0.7, 0.9],
-          colors: [
-            // Colors are easy thanks to Flutter's Colors class.
-            Colors.grey,
-            Colors.grey[300],
-            Colors.grey[800],
-            Colors.lightBlue
-          ],
-        ),
-      ),*/
       child: Column(
         children: <Widget>[topContainer, bottomContainer],
       ),
-      // backgroundColor: Colors.grey[300],
     )));
   }
 }

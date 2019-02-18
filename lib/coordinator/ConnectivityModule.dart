@@ -6,10 +6,15 @@ import 'package:connectivity/connectivity.dart';
     Coordinator's module used by ViewModels to check for internet connection availability.
     usage : Subscribe to the stream exposed by "connectionChangeController"
 */
-class ConnectivityModule {
-  static final ConnectivityModule  instance = ConnectivityModule._internal();
+abstract class IConnectivity {
+  Stream  connectionChangeStream();
+  void    initializeConnectivityModule();
+}
+
+class ConnectivityModule implements IConnectivity {
+  static final ConnectivityModule  _instance = ConnectivityModule._internal();
   factory ConnectivityModule() {
-    return  instance;
+    return  _instance;
   }
   ConnectivityModule._internal();
 
@@ -17,9 +22,7 @@ class ConnectivityModule {
   final StreamController connectionChangeController = new StreamController.broadcast();
   final Connectivity _connectivity = Connectivity();
 
-  Stream get connectionChange => connectionChangeController.stream;
-
-  void initialize() {
+  void _initialize() {
     _connectivity.onConnectivityChanged.listen(_connectionChange);
     checkConnection();
   }
@@ -49,5 +52,15 @@ class ConnectivityModule {
       connectionChangeController.add(_hasConnection);
     }
     return _hasConnection;
+  }
+
+  @override
+  Stream connectionChangeStream() {
+    return connectionChangeController.stream;
+  }
+
+  @override
+  void initializeConnectivityModule() {
+    this._initialize();
   }
 }

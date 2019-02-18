@@ -4,7 +4,8 @@ import 'package:partnership/utils/Routes.dart';
 
 class ProfilePageViewModel extends AViewModel {
   ProfilePageModel                  _model;
-  ProfilePageViewModel() : super(Routes.profilePage){
+  ProfilePageViewModel(String route) {
+    super.initModel(route);
     this._model = super.abstractModel;
   }
   ProfilePageModel get model => this._model;

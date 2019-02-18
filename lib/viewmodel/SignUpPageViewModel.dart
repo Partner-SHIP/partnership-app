@@ -9,7 +9,8 @@ import 'package:flutter/material.dart';
 
 class SignUpPageViewModel extends AViewModel {
   SignUpPageModel                 _model;
-  SignUpPageViewModel(): super(Routes.signUpPage){
+  SignUpPageViewModel(String route) {
+    super.initModel(route);
     this._model = super.abstractModel;
   }
   SignUpPageModel get model => this._model;

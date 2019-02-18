@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:partnership/model/FBStreamWrapper.dart';
-import 'package:partnership/utils/FBCollections.dart';
+import 'package:partnership/model/StreamWrapper.dart';
 
 class TestingPage extends StatefulWidget {
   @override
@@ -14,7 +13,6 @@ class TestingPage extends StatefulWidget {
 class _TestingPageState extends State<TestingPage> {
   bool isOffline = false;
   StreamSubscription<dynamic> sub;
-  //StreamSubscription<QuerySnapshot> user_sub;
   void listencb(){}
   void pausecb(){}
   void resumecb(){}
@@ -22,13 +20,12 @@ class _TestingPageState extends State<TestingPage> {
 
   @override
   Widget build(BuildContext context) {
-    FBStreamWrapper wrapper = FBStreamWrapper(
-        collection: FBCollections.profiles,
+    StreamWrapper wrapper = StreamWrapper(
+        stream: null,
         listenCallback: this.listencb,
         pauseCallback: this.pausecb,
         resumeCallback: this.resumecb,
         cancelCallback: this.cancelcb);
-    //sub = Coordinator.connectivity.connectionChange.listen(connectionChanged);
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(

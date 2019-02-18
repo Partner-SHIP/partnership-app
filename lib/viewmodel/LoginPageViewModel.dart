@@ -4,7 +4,8 @@ import 'package:partnership/utils/Routes.dart';
 
 class LoginPageViewModel extends AViewModel {
   LoginPageModel                  _model;
-  LoginPageViewModel() : super(Routes.loginPage){
+  LoginPageViewModel(String route) {
+    super.initModel(route);
     this._model = super.abstractModel;
   }
   LoginPageModel get model => this._model;
