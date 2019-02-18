@@ -21,6 +21,7 @@ abstract class  IRoutes {
   String        get testingPage;
   String        get homePage;
   String        get projectDescriptionPage;
+
   dynamic            routeMap();
   List<String>   routeList();
   Map<String, RoutesEnum> routeEnumMap();

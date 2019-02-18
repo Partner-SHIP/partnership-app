@@ -35,7 +35,6 @@ class LoginPageState extends State<LoginPage> {
         duration: new Duration(seconds: 5),
       ));
     }
-
     final alreadyAccountButton = LargeButton(
       text:"J'ai déjà un compte",
       onPressed: () {

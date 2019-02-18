@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 class SignInPageViewModel extends AViewModel {
   SignInPageModel                 _model;
   SignInPageModel get model => this._model;
+
   SignInPageViewModel(String route) {
     super.initModel(route);
     this._model = super.abstractModel;
