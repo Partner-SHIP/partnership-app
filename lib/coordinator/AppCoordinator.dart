@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:partnership/coordinator/RoutingModule.dart';
 import 'package:partnership/coordinator/ConnectivityModule.dart';
 import 'package:partnership/coordinator/AuthenticationModule.dart';
-import 'package:partnership/coordinator/notification_module.dart';
+import 'package:partnership/coordinator/NotificationModule.dart';
 import 'package:partnership/viewmodel/AViewModel.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 /*

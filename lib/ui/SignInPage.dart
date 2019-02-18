@@ -10,10 +10,19 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
+  final GlobalKey<ScaffoldState> _mainKey = GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final SignInData           _data = SignInData();
+  bool                        busy = false;
   IRoutes _routing = Routes();
   SignInPageViewModel get viewModel =>
       AViewModelFactory.register[_routing.signInPage];
+
+  void  displaySuccessSnackBar()
+    {
+      var snackbar = SnackBar(content: Text("SignIn successful!"), duration: Duration(milliseconds: 5000));
+                  this._mainKey.currentState.showSnackBar(snackbar);
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -40,14 +49,28 @@ class _SignInPageState extends State<SignInPage> {
             // Validate will return true if the form is valid, or false if
             // the form is invalid.
             if (_formKey.currentState.validate()) {
-              // If the form is valid, we want to show a Snackbar
-              //Scaffold.of(context)
-              //   .showSnackBar(SnackBar(content: Text('Processing Data')));
+              this._formKey.currentState.save();
+              setState(() {
+                busy = true;
+              });
+              this.viewModel.signInAction(this._data).then((value){
+                if (value) {
+                  displaySuccessSnackBar();
+                  this.viewModel.afterSignIn(context);
+                }
+                setState(() {
+                  busy = false;
+                });
+              });
+              
+
             }
           },
         ),
       ),
     );
+
+    
 
     final formContainer = Container(
         padding: EdgeInsets.all(20.0),
@@ -63,27 +86,6 @@ class _SignInPageState extends State<SignInPage> {
                 height: 150,
               ),
               TextFormField(
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return ('Veuillez saisir un pseudo');
-                  }
-                  //TODO : regex pour le pseudal
-                  /* bool nicknameValid =
-                        RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                            .hasMatch(value);
-                    if (!nicknameValid) {
-                      return ('Pseudo invalide');
-                    }*/
-                },
-                decoration: InputDecoration(
-                  icon: Icon(
-                    Icons.supervisor_account,
-                    color: Colors.grey,
-                  ),
-                  hintText: 'Votre pseudo',
-                ),
-              ),
-              TextFormField(
                   validator: (value) {
                     if (value.isEmpty) {
                       return ('Veuillez saisir une adresse email valide');
@@ -95,6 +97,7 @@ class _SignInPageState extends State<SignInPage> {
                       return ('Email invalide');
                     }
                   },
+                  onSaved: (value) => this._data.email = value,
                   keyboardType: TextInputType
                       .emailAddress, // Use email input type for emails.
                   decoration: InputDecoration(
@@ -118,6 +121,7 @@ class _SignInPageState extends State<SignInPage> {
                       return ('Mot de passe invalide');
                     }*/
                   },
+                  onSaved: (value) => this._data.password = value,
                   obscureText: true, // Use secure text for passwords.
                   decoration: InputDecoration(
                     icon: Icon(
@@ -159,21 +163,15 @@ class _SignInPageState extends State<SignInPage> {
         ),
       ),
     );
-
-    /* return Scaffold(
-        appBar: topBar,
-        backgroundColor: Colors.grey[300],
-        body: formContainer
-    );*/
     return Scaffold(
       resizeToAvoidBottomPadding: true,
-      appBar: topBar,
-      backgroundColor: Colors.grey[300],
-      //body: Container(child: formContainer),
-      body: SingleChildScrollView(
-          child: Column(
-        children: <Widget>[formContainer, bottomContainer],
-      )),
-    );
+        appBar: topBar,
+        backgroundColor: Colors.grey[300],
+        key: this._mainKey,
+        body: SingleChildScrollView(
+            child: Column(
+          children: <Widget>[formContainer, bottomContainer],
+        )));
   }
 }
+
