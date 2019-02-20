@@ -25,7 +25,7 @@ class CreationPageState extends State<CreationPage> {
     });
   }
 
-  final myControllerOne = TextEditingController();
+  final myControllerOne = TextEditingController(text: "Nom du projet");
   final myControllerTwo = TextEditingController();
 
   @override
@@ -144,7 +144,7 @@ class CreationPageState extends State<CreationPage> {
   Widget _descriptionAtWidget(){
     return Container(
         width: MediaQuery.of(context).size.width,
-        height: 90,
+        height: 200,
         decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(
@@ -155,14 +155,13 @@ class CreationPageState extends State<CreationPage> {
         ),
         //color: Colors.cyan,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text("Description :",
               softWrap: false,
               overflow: TextOverflow.fade,
               style: TextStyle(
-                  fontSize: 20.0,
+                  fontSize: 25.0,
                   fontWeight: FontWeight.bold,
                   fontFamily: 'Montserrat',
                   color: Colors.white),
@@ -248,7 +247,6 @@ class CreationPageState extends State<CreationPage> {
           child: Padding(
               padding: EdgeInsets.only(left: 10.0, bottom: 5.0),
               child: TextField(
-                controller: myControllerOne,
                 decoration: InputDecoration(
                     labelText: label,
                     labelStyle: TextStyle(
@@ -260,7 +258,7 @@ class CreationPageState extends State<CreationPage> {
                     ),
                     icon: Icon(Icons.edit, color: Colors.white)
                 ),
-                maxLines: null,
+                controller: myControllerOne,
               )
           ),
         ),
@@ -281,13 +279,9 @@ class CreationPageState extends State<CreationPage> {
                     labelStyle: TextStyle(
                         color: Colors.white
                     ),
-                    hintText: hint,
-                    hintStyle: TextStyle(
-                        color: Colors.white
-                    ),
                     icon: Icon(Icons.edit, color: Colors.white)
                 ),
-                maxLines: null,
+                maxLines: 5,
               )
           ),
         ),
