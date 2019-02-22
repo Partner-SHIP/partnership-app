@@ -25,14 +25,16 @@ class CreationPageState extends State<CreationPage> {
     });
   }
 
-  final myControllerOne = TextEditingController(text: "Nom du projet");
-  final myControllerTwo = TextEditingController();
+  bool _validateName = false;
+  bool _validateDesc = false;
+  final _nameProject = TextEditingController(text: "Nom du projet");
+  final _descriptionProject = TextEditingController();
 
   @override
   void dispose() {
     // Clean up the controller when the Widget is disposed
-    myControllerOne.dispose();
-    myControllerTwo.dispose();
+    _nameProject.dispose();
+    _descriptionProject.dispose();
     super.dispose();
   }
 
@@ -78,6 +80,9 @@ class CreationPageState extends State<CreationPage> {
       ret = FloatingActionButton(
         onPressed: () => this.setState((){
           this.isEditing = !this.isEditing;
+         if((_nameProject.text.isEmpty ? _validateName = true : _validateName = false) ||
+             (_descriptionProject.text.isEmpty ? _validateDesc = true : _validateDesc = false))
+           this.isEditing = !this.isEditing;
         }),
         child: Icon(Icons.check, size: 35),
         tooltip: "Sauvegarder",
@@ -166,9 +171,9 @@ class CreationPageState extends State<CreationPage> {
                   fontFamily: 'Montserrat',
                   color: Colors.white),
             ),
-            this.isEditing ? this._editablePresenterTwo("Qui êtes-vous, que proposez-vous ...", "Changer votre description ici") :
+            this.isEditing ? this._editablePresenterDescriptionProject("Qui êtes-vous, que proposez-vous ...", "Changer votre description ici") :
             Text(
-                myControllerTwo.text,
+                _descriptionProject.text,
                 softWrap: false,
                 overflow: TextOverflow.fade,
                 style: TextStyle(
@@ -226,7 +231,6 @@ class CreationPageState extends State<CreationPage> {
             color: Colors.red,
             image: DecorationImage(
                 image: FileImage(_image),
-                fit: BoxFit.cover
             ),
             borderRadius: BorderRadius.all(Radius.circular(75.0)),
             boxShadow: [
@@ -240,7 +244,7 @@ class CreationPageState extends State<CreationPage> {
     }
   }
 
-  Widget _editablePresenterOne(String label, String hint){
+  Widget _editablePresenterNameProject(String label, String hint){
     return Row(
       children: <Widget>[
         Expanded(
@@ -249,6 +253,7 @@ class CreationPageState extends State<CreationPage> {
               child: TextField(
                 decoration: InputDecoration(
                     labelText: label,
+                    errorText: _validateName ? "Ce champ ne peut être vide" : null,
                     labelStyle: TextStyle(
                         color: Colors.white
                     ),
@@ -258,7 +263,7 @@ class CreationPageState extends State<CreationPage> {
                     ),
                     icon: Icon(Icons.edit, color: Colors.white)
                 ),
-                controller: myControllerOne,
+                controller: _nameProject,
               )
           ),
         ),
@@ -266,16 +271,17 @@ class CreationPageState extends State<CreationPage> {
     );
   }
 
-  Widget _editablePresenterTwo(String label, String hint){
+  Widget _editablePresenterDescriptionProject(String label, String hint){
     return Row(
       children: <Widget>[
         Expanded(
           child: Padding(
               padding: EdgeInsets.only(left: 10.0, bottom: 5.0),
               child: TextField(
-                controller: myControllerTwo,
+                controller: _descriptionProject,
                 decoration: InputDecoration(
                     labelText: label,
+                    errorText: _validateDesc ? "Ce champ ne peut être vide" : null,
                     labelStyle: TextStyle(
                         color: Colors.white
                     ),
@@ -292,11 +298,11 @@ class CreationPageState extends State<CreationPage> {
   Widget _profileNameWidget(){
     var ret;
     if (this.isEditing) {
-      ret = this._editablePresenterOne("Nom du projet", "Changer le nom du projet");
+      ret = this._editablePresenterNameProject("Nom du projet", "Changer le nom du projet");
     }
     else {
       ret = Text(
-        myControllerOne.text,
+        _nameProject.text,
         softWrap: false,
         overflow: TextOverflow.fade,
         style: TextStyle(
