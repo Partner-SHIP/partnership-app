@@ -17,6 +17,9 @@ class ProfilePage extends StatefulWidget {
 class ProfilePageState extends State<ProfilePage> with SingleTickerProviderStateMixin{
   static final IRoutes      _routing = Routes();
   static final ProfilePageViewModel viewModel = AViewModelFactory.register[_routing.profilePage];
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> _mainKey = GlobalKey<ScaffoldState>();
+  List<String> values = List<String>();
   List<MyItems> items = [MyItems("Projects", "body"),MyItems("Partners", "body"),MyItems("Other", "body")];
   bool isEditing = false;
   /////////////////////////////////////
@@ -47,14 +50,17 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
   Widget build(BuildContext context) {
     return ProfileInheritedWidget(
       child: Scaffold(
-          bottomNavigationBar: BottomAppBar(
-            color: Colors.blue[600],
-            child: Container(height: 50),
-          ),
-          floatingActionButton: _editingButton(),
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-          body: SafeArea(
-              child: SingleChildScrollView(
+        key: _mainKey,
+        bottomNavigationBar: BottomAppBar(
+          color: Colors.blue[600],
+          child: Container(height: 50),
+        ),
+        floatingActionButton: _editingButton(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        body: SafeArea(
+            child: SingleChildScrollView(
+              child: Form(
+                key: _formKey,
                 child: Column(
                   children: <Widget>[
                     _profileHeaderWidget(),
@@ -63,37 +69,32 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
                   ],
                 ),
               )
-          )
+            )
+        )
       ),
       state: this,
     );
   }
 
   Widget _editingButton(){
-    var ret;
-    if (this.isEditing){
-      ret = FloatingActionButton(
-        onPressed: () => this.setState((){
-          this.isEditing = !this.isEditing;
-        }),
-        child: Icon(Icons.check, size: 35),
-        tooltip: "save changes",
+    return FloatingActionButton(
+        onPressed: (){
+          if (this.isEditing) {
+            print("SAVED :");
+            if (this._formKey.currentState.validate()) {
+              this._formKey.currentState.save();
+              // give data to viewmodel here
+            }
+          }
+          this.setState((){
+            this.isEditing = !this.isEditing;
+          });
+        },
+        child: this.isEditing ? Icon(Icons.check, size: 35) : Icon(Icons.edit, size: 35),
+        tooltip: this.isEditing ? "save changes" : "edit",
         foregroundColor: Colors.white,
-        backgroundColor: Colors.green,
+        backgroundColor: this.isEditing ? Colors.green : Colors.blueAccent,
       );
-    }
-    else {
-      ret = FloatingActionButton(
-        onPressed: () => this.setState((){
-          this.isEditing = !this.isEditing;
-        }),
-        child: Icon(Icons.edit, size: 35),
-        tooltip: "edit",
-        backgroundColor: Colors.blueAccent,
-        foregroundColor: Colors.white,
-      );
-    }
-    return ret;
   }
 
   Widget _profileHeaderWidget() {
@@ -356,7 +357,13 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
         Expanded(
           child: Padding(
               padding: EdgeInsets.only(left: 10.0, bottom: 5.0),
-              child: TextField(
+              child: TextFormField(
+                validator: (value){
+                  _formValidation(value);
+                },
+                onSaved: (value){
+                  _onSaved(value);
+                },
                 decoration: InputDecoration(
                     labelText: label,
                     labelStyle: TextStyle(
@@ -448,7 +455,6 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
     List<MyItems> items = this.items;
     return ExpansionPanelList(
       expansionCallback: (int index, bool isExpanded){
-
         setState(() {
           items[index].isExpanded = !items[index].isExpanded;
         });
@@ -499,6 +505,15 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
     );
   }
 
+  String _formValidation(String value) {
+    if (value.isEmpty)
+      return ("Value can't be empty");
+    return null;
+  }
+
+  void _onSaved(String value) {
+    this.values.add(value);
+  }
 }
 
 class ProfileInheritedWidget extends InheritedWidget {
@@ -513,8 +528,6 @@ class ProfileInheritedWidget extends InheritedWidget {
     return true;
   }
 }
-
-
 
 class MyItems{
   String header;

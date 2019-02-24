@@ -23,7 +23,7 @@ class LoginPageState extends State<LoginPage> {
       child: Center(
           child: Align(
         child: Image.asset(
-          ' ',
+          'assets/img/work-office.png',
         ),
       )),
     );
