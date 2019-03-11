@@ -25,6 +25,8 @@ dependencies:
   connectivity: ^0.3.2
   image_picker: ^0.4.12+1
 
+  material_search: ^0.2.8
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
