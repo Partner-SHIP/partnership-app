@@ -19,9 +19,11 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
   static final ProfilePageViewModel viewModel = AViewModelFactory.register[_routing.profilePage];
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _mainKey = GlobalKey<ScaffoldState>();
+  Map<String, Key> _keyMap = Map<String, Key>();
   List<String> values = List<String>();
   List<MyItems> items = [MyItems("Projects", "body"),MyItems("Partners", "body"),MyItems("Other", "body")];
   bool isEditing = false;
+  bool isBusy = false;
   /////////////////////////////////////
   /*
   final String _name = viewModel.name;
@@ -83,7 +85,7 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
             print("SAVED :");
             if (this._formKey.currentState.validate()) {
               this._formKey.currentState.save();
-              // give data to viewmodel here
+
             }
           }
           this.setState((){
@@ -106,7 +108,8 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
             children: <Widget>[
               _clipPathWidget(),
               _profileImageWidget(),
-              this.isEditing ? this._changePhotoButton() : SizedBox(width: 0,height: 0)
+              this.isEditing ? this._changePhotoButton() : SizedBox(width: 0,height: 0),
+              _spinner()
             ],
           ),
         ),
@@ -169,7 +172,7 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
                   fontFamily: 'Montserrat',
                   color: Colors.white),
             ),
-            this.isEditing ? this._editablePresenter(this.location, "change location here") :
+            this.isEditing ? this._editablePresenter(this.location, "change location here", "location", this._keyMap) :
             Text(
                 this.location,softWrap: false,
                 overflow: TextOverflow.fade,
@@ -210,7 +213,7 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
                   fontFamily: 'Montserrat',
                   color: Colors.white),
             ),
-            this.isEditing ? this._editablePresenter(this.studies, "change studies location here") :
+            this.isEditing ? this._editablePresenter(this.studies, "change studies location here", "studies", this._keyMap) :
             Text(
                 this.studies,softWrap: false,
                 overflow: TextOverflow.fade,
@@ -251,7 +254,7 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
                   fontFamily: 'Montserrat',
                   color: Colors.white),
             ),
-            this.isEditing ? this._editablePresenter(this.workLocation, "change work location here") :
+            this.isEditing ? this._editablePresenter(this.workLocation, "change work location here", "workLocation", this._keyMap) :
             Text(
                 this.workLocation,softWrap: false,
                 overflow: TextOverflow.fade,
@@ -292,7 +295,7 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
                   fontFamily: 'Montserrat',
                   color: Colors.white),
             ),
-            this.isEditing ? this._editablePresenter(this.job, "change job here") :
+            this.isEditing ? this._editablePresenter(this.job, "change job here", "job", this._keyMap) :
             Text(
                 this.job,softWrap: false,
                 overflow: TextOverflow.fade,
@@ -351,8 +354,11 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
     );
   }
 
-  Widget _editablePresenter(String label, String hint){
-    return Row(
+  Widget _editablePresenter(String label, String hint, String keyLabel, Map<String, Key> keyMap){
+    Widget ret;
+    Key key = Key(keyLabel);
+    print("key : "+key.toString());
+    ret = Row(
       children: <Widget>[
         Expanded(
           child: Padding(
@@ -364,6 +370,7 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
                 onSaved: (value){
                   _onSaved(value);
                 },
+                key: key,
                 decoration: InputDecoration(
                     labelText: label,
                     labelStyle: TextStyle(
@@ -388,12 +395,14 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
         )
       ],
     );
+    keyMap[keyLabel] = key;
+    return ret;
   }
 
   Widget _profileNameWidget(){
     var ret;
     if (this.isEditing) {
-      ret = this._editablePresenter(this.name, "change name here");
+      ret = this._editablePresenter(this.name, "change name here", "name", this._keyMap);
     }
     else {
       ret = Text(
@@ -419,34 +428,6 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
                   color: Colors.white
               )
           )
-      ),
-    );
-  }
-
-  Widget _profileDescriptionWidget(){
-    return Container(
-      padding: EdgeInsets.all(3),
-      child:Text(
-        """
-      Id, and frappuccino sugar body skinny mocha affogato,
-      grinder cappuccino half and half macchiato variety latte java whipped ut robusta.
-      French press, froth, cup extra cup aftertaste decaffeinated, grounds filter to go caramelization acerbic extraction grounds cream foam café au lait dark arabica.
-      Breve galão, saucer, dripper to go caffeine dark crema at breve, cultivar aftertaste whipped, spoon, organic mazagran shop irish beans.
-      Cortado at, cortado medium galão cultivar turkish steamed viennese wings froth so rich frappuccino.
-      Single origin, that siphon skinny turkish spoon that acerbic cinnamon to go skinny aftertaste as mug irish cinnamon iced organic filter arabica.
-      Lungo skinny single origin extraction foam, eu, cinnamon coffee single shot shop turkish crema frappuccino macchiato crema aged.
-      A frappuccino body aftertaste, seasonal instant breve arabica turkish, cream dripper qui java milk spoon dripper.
-      """,
-        softWrap: true,
-        style: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.normal,
-          fontFamily: 'MontSerra',
-        ),
-      ),
-      decoration: BoxDecoration(
-          border: Border.all(color: Colors.white, width: 5, style: BorderStyle.solid),
-          borderRadius: BorderRadius.all(Radius.circular(10))
       ),
     );
   }
@@ -513,6 +494,15 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
 
   void _onSaved(String value) {
     this.values.add(value);
+  }
+
+  Widget _spinner() {
+    if (this.isBusy)
+      return Positioned(
+        child: CircularProgressIndicator(),
+        top: MediaQuery.of(context).size.width / 2.2,
+        left: MediaQuery.of(context).size.height / 2.2);
+    return SizedBox(width: 0, height: 0);
   }
 }
 
