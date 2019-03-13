@@ -52,10 +52,6 @@ class CreationPageState extends State<CreationPage> {
   Widget build(BuildContext context) {
     return ProfileInheritedWidget(
       child: Scaffold(
-          bottomNavigationBar: BottomAppBar(
-            color: Colors.blue[600],
-            child: Container(height: 50),
-          ),
           floatingActionButton: _editingButton(),
           floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
           body: SafeArea(
@@ -91,7 +87,11 @@ class CreationPageState extends State<CreationPage> {
       );
     }
     else {
-      ret = FloatingActionButton(
+      ret = Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+        FloatingActionButton(
         onPressed: () => this.setState((){
           this.isEditing = !this.isEditing;
         }),
@@ -99,6 +99,15 @@ class CreationPageState extends State<CreationPage> {
         tooltip: "Editer",
         backgroundColor: Colors.blueAccent,
         foregroundColor: Colors.white,
+      ),
+      FloatingActionButton(
+        onPressed: () => this.setState((){
+        }),
+        child: Icon(Icons.add, size: 35),
+        tooltip: "Créer le projet",
+        backgroundColor: Colors.blueAccent,
+        foregroundColor: Colors.white,
+      )]
       );
     }
     return ret;
