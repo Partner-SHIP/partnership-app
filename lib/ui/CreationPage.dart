@@ -50,7 +50,7 @@ class CreationPageState extends State<CreationPage> {
   }
   @override
   Widget build(BuildContext context) {
-    return ProfileInheritedWidget(
+    return CreationProjectInheritedWidget(
       child: Scaffold(
           floatingActionButton: _editingButton(),
           floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -58,9 +58,9 @@ class CreationPageState extends State<CreationPage> {
               child: SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
-                    _profileHeaderWidget(),
+                    _creationProjectHeaderWidget(),
                     SizedBox(width: 0.0, height: 10.0),
-                    _profileContentWidget()
+                    _creationProjectContentWidget()
                   ],
                 ),
               )
@@ -113,7 +113,7 @@ class CreationPageState extends State<CreationPage> {
     return ret;
   }
 
-  Widget _profileHeaderWidget() {
+  Widget _creationProjectHeaderWidget() {
     return Row(
       children: <Widget>[
         Expanded(
@@ -121,7 +121,7 @@ class CreationPageState extends State<CreationPage> {
             alignment: Alignment.center,
             children: <Widget>[
               _clipPathWidget(),
-              _profileImageWidget(),
+              _creationProjectImageWidget(),
               this.isEditing ? this._changePhotoButton() : SizedBox(width: 0,height: 0)
             ],
           ),
@@ -130,7 +130,7 @@ class CreationPageState extends State<CreationPage> {
     );
   }
 
-  Widget _profileContentWidget(){
+  Widget _creationProjectContentWidget(){
     return Container(
         decoration: BoxDecoration(
             color: Colors.green,
@@ -146,7 +146,7 @@ class CreationPageState extends State<CreationPage> {
           child: Column(
             children: <Widget>[
               SizedBox(width: 0, height: 10),
-              _profileNameWidget(),
+              _creationProjectNameWidget(),
               SizedBox(width: 0, height: 10),
               _descriptionAtWidget(),
             ],
@@ -211,7 +211,7 @@ class CreationPageState extends State<CreationPage> {
     );
   }
 
-  Widget _profileImageWidget() {
+  Widget _creationProjectImageWidget() {
     if (_image == null) {
       return Container(
           width: 150,
@@ -304,7 +304,7 @@ class CreationPageState extends State<CreationPage> {
     );
   }
 
-  Widget _profileNameWidget(){
+  Widget _creationProjectNameWidget(){
     var ret;
     if (this.isEditing) {
       ret = this._editablePresenterNameProject("Nom du projet", "Changer le nom du projet");
@@ -345,9 +345,9 @@ class CreationPageState extends State<CreationPage> {
   }
 }
 
-class ProfileInheritedWidget extends InheritedWidget {
+class CreationProjectInheritedWidget extends InheritedWidget {
   final CreationPageState state;
-  ProfileInheritedWidget(
+  CreationProjectInheritedWidget(
       {
         this.state,
         Widget child
