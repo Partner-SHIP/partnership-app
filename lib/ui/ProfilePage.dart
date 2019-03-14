@@ -24,16 +24,15 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
   List<MyItems> items = [MyItems("Projects", "body"),MyItems("Partners", "body"),MyItems("Other", "body")];
   bool isEditing = false;
   bool isBusy = false;
-  NetworkImage profileImage = viewModel.networkImage;
+  File imagePickerFile;
   /////////////////////////////////////GETTERS
   String get name => viewModel.name;
   String get location => viewModel.location;
   String get workLocation => viewModel.workLocation;
   String get job => viewModel.job;
   String get studies => viewModel.studies;
-  File get imageFile => viewModel.imagePickerFile;
-  NetworkImage get networkImage => viewModel.networkImage;
-  AssetImage get background => viewModel.background;
+  String get photoUrl => viewModel.photoUrl;
+  String get backgroundUrl => viewModel.backgroundUrl;
   ////////////////////////////////////
 
   @override
@@ -75,9 +74,9 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
     return FloatingActionButton(
         onPressed: (){
           if (this.isEditing) {
-            print("SAVED :");
             if (this._formKey.currentState.validate()) {
               this._formKey.currentState.save();
+              viewModel.updateProfileInformations(this.values, this.imagePickerFile);
             }
           }
           this.setState((){
@@ -308,7 +307,7 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
         height: 250,
         decoration: BoxDecoration(
             image: DecorationImage(
-                image: AssetImage('assets/blue_texture.jpg'),
+                image: NetworkImage(this.backgroundUrl),
                 fit: BoxFit.cover
             )
         ),
@@ -320,10 +319,9 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
 
   Future _getImage() async {
     File image = await ImagePicker.pickImage(source: ImageSource.gallery);
-    //viewModel.printStorageRef();
-
-/*    setState(() {
-    });*/
+    setState(() {
+      this.imagePickerFile = image;
+    });
   }
 
   Widget _profileImageWidget(){
@@ -333,7 +331,7 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
       decoration: BoxDecoration(
           color: Colors.red,
           image: DecorationImage(
-              image: this.profileImage,
+              image: imagePickerFile != null ? Image.file(imagePickerFile).image : NetworkImage(this.photoUrl),
               fit: BoxFit.cover
           ),
           borderRadius: BorderRadius.all(Radius.circular(75.0)),

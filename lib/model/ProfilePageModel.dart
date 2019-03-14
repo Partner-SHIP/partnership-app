@@ -1,26 +1,27 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:partnership/model/AModel.dart';
 import 'package:partnership/utils/FBCollections.dart';
 
 class ProfilePageModel extends AModel {
   ProfilePageModel(): super(const <String>[FBCollections.profiles, FBCollections.projects/*Collections needed here*/]);
-  String _name;
-  String _location;
-  String _studies;
-  String _workLocation;
-  String _job;
-  File _imagePickerFile;
-  NetworkImage    _photoUrl;
-  //AssetImage      background = AssetImage('assets/blue_texture.jpg');
+  String _name = 'Tom Cruise';
+  String _location = 'New-York';
+  String _studies = 'Harvard';
+  String _workLocation = 'Holywood Entertainment';
+  String _job = "famous comedian";
+  String _photoUrl = 'https://pixel.nymag.com/imgs/daily/vulture/2017/06/14/14-tom-cruise.w700.h700.jpg';
+  String _backgroundUrl = 'https://firebasestorage.googleapis.com/v0/b/partnership-app-e8d99.appspot.com/o/bubble_texture.jpg?alt=media&token=b4997ecc-dd26-418a-b0a1-20881216995c';
   //////////////////GETTERS
   String get name => this._name;
   String get location => this._location;
   String get studies => this._studies;
   String get workLocation => this._workLocation;
   String get job => this._job;
-  NetworkImage get photoUrl => this._photoUrl;
+  String get photoUrl => this._photoUrl;
+  String get backgroundUrl => this._backgroundUrl;
+  ///////////////////
+/*
   /////////////////SETTERS
   set setName(String data) => this._name = data;
   set setLocation(String data) => this._location = data;
@@ -31,4 +32,5 @@ class ProfilePageModel extends AModel {
   set setPhotoUrl(NetworkImage data) => this._photoUrl = data;
   //set setBackground(AssetImage data) => this.background = data;
 //////////////////
+*/
 }
