@@ -46,7 +46,7 @@ class LoginPageState extends State<LoginPage> {
       text:"Je veux m'inscrire",
       onPressed: () { this
                 .viewModel
-                .changeView(route: _routing.signInPage, widgetContext: context);}
+                .changeView(route: _routing.signUpPage, widgetContext: context);}
 
     );
 

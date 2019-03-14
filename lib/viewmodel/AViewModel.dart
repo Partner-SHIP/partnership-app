@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/model/AModelFactory.dart';
 import 'package:partnership/model/AModel.dart';
@@ -25,6 +26,7 @@ abstract class AViewModel implements AViewModelFactory
       if (!AModelFactory.register.containsKey(this._route) || !(AModelFactory.register[this._route] != null))
         throw Exception("Missing Model for "+this._route);
       this._abstractModel = AModelFactory.register[this._route];
+      this._abstractModel.assetBundle = this._coordinator.getAssetBundle();
     }
     catch (error){
       print(error);
@@ -42,5 +44,11 @@ abstract class AViewModel implements AViewModelFactory
   }
   Future<FirebaseUser> signIn({@required String email, @required String password}) {
     return this._coordinator.loginByEmail(userEmail: email, userPassword: password);
+  }
+  FirebaseUser loggedInUser(){
+    return this._coordinator.getLoggedInUser();
+  }
+  AssetBundle getAssetBundle(){
+    return this._coordinator.getAssetBundle();
   }
 }

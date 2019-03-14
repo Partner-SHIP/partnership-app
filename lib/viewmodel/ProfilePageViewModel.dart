@@ -19,12 +19,19 @@ class ProfilePageViewModel extends AViewModel {
   String studies = 'Harvard';
   String workLocation = 'Holywood Entertainment';
   String job = "famous comedian";
-  NetworkImage    image = NetworkImage('https://pixel.nymag.com/imgs/daily/vulture/2017/06/14/14-tom-cruise.w700.h700.jpg');
+  File imagePickerFile;
+  NetworkImage    networkImage = NetworkImage('https://pixel.nymag.com/imgs/daily/vulture/2017/06/14/14-tom-cruise.w700.h700.jpg');
   AssetImage      background = AssetImage('assets/blue_texture.jpg');
-  void changeName(String _name){
-    name = _name;
-  }
-
+  /////////////////SETTERS
+  set setName(String data) => this.name = data;
+  set setLocation(String data) => this.location = data;
+  set setStudies(String data) => this.studies = data;
+  set setWorkLocation(String data) => this.workLocation = data;
+  set setJob(String data) => this.job = data;
+  set setImageFile(File data) => this.imagePickerFile = data;
+  set setNetworkImage(NetworkImage data) => this.networkImage = data;
+  set setBackground(AssetImage data) => this.background = data;
+  //////////////////
   updateProfileInformations(List<String> data, File image){
     ProfilePayload payload = this.model.createPayload(FBCollections.profiles);
   }

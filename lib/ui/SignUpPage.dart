@@ -49,6 +49,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 if (value) {
                   var snackbar = SnackBar(content: Text("SignUp successful!"), duration: Duration(milliseconds: 5000));
                   this._mainKey.currentState.showSnackBar(snackbar);
+                  this.viewModel.changeView(route: this._routing.homePage, widgetContext: context);
                 }
                 setState(() {
                   busy = false;

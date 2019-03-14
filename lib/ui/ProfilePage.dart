@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/ProfilePageViewModel.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
+import 'package:image_picker/image_picker.dart';
 import 'dart:async';
 import 'dart:io';
 
 class ProfilePage extends StatefulWidget {
-  //Widget child;
   @override
   ProfilePageState createState() => ProfilePageState();
   static ProfilePageState of(BuildContext context){
@@ -24,30 +24,23 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
   List<MyItems> items = [MyItems("Projects", "body"),MyItems("Partners", "body"),MyItems("Other", "body")];
   bool isEditing = false;
   bool isBusy = false;
-  /////////////////////////////////////
-  /*
-  final String _name = viewModel.name;
-  final String _location = viewModel.location;
-  final String _workLocation = viewModel.workLocation;
-  final String _job = viewModel.job;
-  final String _studies = viewModel.studies;
-  final NetworkImage _image = viewModel.image;
-  final AssetImage _background = viewModel.background;
-  */
+  NetworkImage profileImage = viewModel.networkImage;
+  /////////////////////////////////////GETTERS
   String get name => viewModel.name;
   String get location => viewModel.location;
   String get workLocation => viewModel.workLocation;
   String get job => viewModel.job;
   String get studies => viewModel.studies;
-  NetworkImage get image => viewModel.image;
+  File get imageFile => viewModel.imagePickerFile;
+  NetworkImage get networkImage => viewModel.networkImage;
   AssetImage get background => viewModel.background;
   ////////////////////////////////////
 
   @override
   void initState(){
     super.initState();
-    //this._image = NetworkImage('https://pixel.nymag.com/imgs/daily/vulture/2017/06/14/14-tom-cruise.w700.h700.jpg');
   }
+
   @override
   Widget build(BuildContext context) {
     return ProfileInheritedWidget(
@@ -85,7 +78,6 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
             print("SAVED :");
             if (this._formKey.currentState.validate()) {
               this._formKey.currentState.save();
-
             }
           }
           this.setState((){
@@ -327,9 +319,10 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
   }
 
   Future _getImage() async {
-    var image = await Future(null);
-    /*setState(() {
-      _image = _image;
+    File image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    //viewModel.printStorageRef();
+
+/*    setState(() {
     });*/
   }
 
@@ -340,7 +333,7 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
       decoration: BoxDecoration(
           color: Colors.red,
           image: DecorationImage(
-              image: image,
+              image: this.profileImage,
               fit: BoxFit.cover
           ),
           borderRadius: BorderRadius.all(Radius.circular(75.0)),

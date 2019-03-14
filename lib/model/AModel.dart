@@ -1,16 +1,23 @@
 
 import 'dart:async';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:tuple/tuple.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:partnership/model/StreamWrapper.dart';
 import 'package:partnership/model/AModelFactory.dart';
 import 'package:partnership/utils/PayloadsFactory.dart';
 
 abstract class AModel implements AModelFactory{
   final Firestore                                                               _firestore = Firestore.instance;
+  final FirebaseStorage                                                         _firebaseStorage = FirebaseStorage.instance;
   final Map<String, Tuple2<StreamWrapper, StreamSubscription<QuerySnapshot>>> _streamWrappers = <String, Tuple2<StreamWrapper, StreamSubscription<QuerySnapshot>>>{};
   List<String>                                                                  _collections;
+  AssetBundle                                                                   _assetBundle;
 
   Map<String, Tuple2<StreamWrapper, StreamSubscription<QuerySnapshot>>> get streamWrapper => this._streamWrappers;
 
@@ -26,6 +33,9 @@ abstract class AModel implements AModelFactory{
       print(error);
     }
   }
+
+  set assetBundle(AssetBundle bundle) => this._assetBundle = bundle;
+
   bool _assertCollection(String collection){
     try {
       assert(this._collections.contains(collection), "This model wasn't initialized to use the collection: "+collection);
@@ -71,6 +81,7 @@ abstract class AModel implements AModelFactory{
     _assertCollection(collection);
     return (PayloadsFactory(collection));
   }
+
   void pushPayload({@required String collection, @required Payload payload, String documentID}){
     _assertCollection(collection);
     var dataToWrite = payload.getDataToWrite();
@@ -86,4 +97,8 @@ abstract class AModel implements AModelFactory{
       this._firestore.collection(collection).document().updateData(dataToUpdate);
     }
   }
-}
+
+  StorageReference getUserStorage(String uid) {
+      return this._firebaseStorage.ref().child("users").child(uid);
+    }
+  }

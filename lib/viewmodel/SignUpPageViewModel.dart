@@ -30,6 +30,7 @@ class SignUpPageViewModel extends AViewModel {
         pData.profilePrivacyLevel = Tuple2<int, PayloadAction>(0, PayloadAction.WRITE);
         pData.nickname = Tuple2<String, PayloadAction>(inputs.nickname, PayloadAction.WRITE);
         pData.registrationDate = Tuple2<Timestamp, PayloadAction>(timestamp, PayloadAction.WRITE);
+        pData.photoUrl = Tuple2<String, PayloadAction>(null, PayloadAction.WRITE);
         pData.uid = Tuple2<String, PayloadAction>(result.uid, PayloadAction.WRITE);
         this.model.pushPayload(collection: FBCollections.membership, payload: mData, documentID: result.uid);
         this.model.pushPayload(collection: FBCollections.profiles, payload: pData, documentID: result.uid);
