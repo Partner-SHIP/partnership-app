@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -50,5 +52,8 @@ abstract class AViewModel implements AViewModelFactory
   }
   AssetBundle getAssetBundle(){
     return this._coordinator.getAssetBundle();
+  }
+  StreamSubscription subscribeToConnectivity(Function handler){
+    return this._coordinator.connectionChangeStream().listen(handler);
   }
 }

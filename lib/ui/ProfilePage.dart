@@ -3,6 +3,8 @@ import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/ProfilePageViewModel.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:partnership/ui/widgets/ConnectivityAlert.dart';
+import 'package:flushbar/flushbar.dart';
 import 'dart:async';
 import 'dart:io';
 
@@ -19,6 +21,8 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
   static final ProfilePageViewModel viewModel = AViewModelFactory.register[_routing.profilePage];
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _mainKey = GlobalKey<ScaffoldState>();
+  Flushbar _connectivityAlert;
+  StreamSubscription _connectivitySub;
   Map<String, Key> _keyMap = Map<String, Key>();
   List<String> values = List<String>();
   List<MyItems> items = [MyItems("Projects", "body"),MyItems("Partners", "body"),MyItems("Other", "body")];
@@ -38,6 +42,14 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
   @override
   void initState(){
     super.initState();
+    this._connectivityAlert = connectivityAlertWidget();
+    this._connectivitySub = viewModel.subscribeToConnectivity(this.connectivityHandler);
+  }
+
+  @override
+  void dispose(){
+    this._connectivitySub.cancel();
+    super.dispose();
   }
 
   @override
@@ -494,6 +506,16 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
         top: MediaQuery.of(context).size.width / 2.2,
         left: MediaQuery.of(context).size.height / 2.2);
     return SizedBox(width: 0, height: 0);
+  }
+
+  void connectivityHandler(bool value) {
+    if (!value)
+      this._connectivityAlert.show(context);
+    else
+      {
+        if (this._connectivityAlert.isShowing() && !this._connectivityAlert.isDismissed())
+          this._connectivityAlert.dismiss();
+      }
   }
 }
 

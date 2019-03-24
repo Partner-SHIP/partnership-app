@@ -16,6 +16,7 @@ abstract class ICoordinator{
   bool fetchRegisterToNavigate({@required String route, @required BuildContext context, bool navigate = true, bool popStack = false});
   Future<FirebaseUser> loginByEmail({@required String userEmail, @required String userPassword});
   Future<FirebaseUser> signUpByEmail({@required String newEmail, @required String newPassword});
+  Stream<bool>  connectionChangeStream();
   FirebaseUser         getLoggedInUser();
   AssetBundle          getAssetBundle();
 }
@@ -104,6 +105,11 @@ class Coordinator extends State<PartnershipApp> implements ICoordinator {
   @override
   AssetBundle getAssetBundle() {
     return this._assetBundle;
+  }
+
+  @override
+  Stream<bool> connectionChangeStream() {
+    return this._connectivity.connectionChangeStream();
   }
 }
 
