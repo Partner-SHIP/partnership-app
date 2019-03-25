@@ -3,6 +3,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/viewmodel/SignUpPageViewModel.dart';
+import 'package:flushbar/flushbar.dart';
+import 'package:partnership/ui/widgets/ConnectivityAlert.dart';
+import 'dart:async';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -14,10 +17,24 @@ class _SignUpPageState extends State<SignUpPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _mainKey = GlobalKey<ScaffoldState>();
   final SignUpData           _data = SignUpData();
+  Flushbar _connectivityAlert;
+  StreamSubscription _connectivitySub;
   bool  busy = false;
 
   SignUpPageViewModel get viewModel =>
       AViewModelFactory.register[_routing.signUpPage];
+  @override
+  void initState(){
+    super.initState();
+    this._connectivityAlert = connectivityAlertWidget();
+    this._connectivitySub = viewModel.subscribeToConnectivity(this.connectivityHandler);
+  }
+
+  @override
+  void dispose(){
+    this._connectivitySub.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -197,5 +214,15 @@ class _SignUpPageState extends State<SignUpPage> {
             child: Column(
           children: <Widget>[formContainer, bottomContainer],
         )));
+  }
+
+  connectivityHandler(bool value) {
+    if (!value)
+      this._connectivityAlert.show(context);
+    else
+    {
+      if (this._connectivityAlert.isShowing() && !this._connectivityAlert.isDismissed())
+        this._connectivityAlert.dismiss();
+    }
   }
 }
