@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/ProfilePageViewModel.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:partnership/ui/widgets/ConnectivityAlert.dart';
+import 'package:flushbar/flushbar.dart';
 import 'dart:async';
 import 'dart:io';
 
 class ProfilePage extends StatefulWidget {
-  //Widget child;
   @override
   ProfilePageState createState() => ProfilePageState();
   static ProfilePageState of(BuildContext context){
@@ -17,44 +19,54 @@ class ProfilePage extends StatefulWidget {
 class ProfilePageState extends State<ProfilePage> with SingleTickerProviderStateMixin{
   static final IRoutes      _routing = Routes();
   static final ProfilePageViewModel viewModel = AViewModelFactory.register[_routing.profilePage];
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> _mainKey = GlobalKey<ScaffoldState>();
+  Flushbar _connectivityAlert;
+  StreamSubscription _connectivitySub;
+  Map<String, Key> _keyMap = Map<String, Key>();
+  List<String> values = List<String>();
   List<MyItems> items = [MyItems("Projects", "body"),MyItems("Partners", "body"),MyItems("Other", "body")];
   bool isEditing = false;
-  /////////////////////////////////////
-  /*
-  final String _name = viewModel.name;
-  final String _location = viewModel.location;
-  final String _workLocation = viewModel.workLocation;
-  final String _job = viewModel.job;
-  final String _studies = viewModel.studies;
-  final NetworkImage _image = viewModel.image;
-  final AssetImage _background = viewModel.background;
-  */
+  bool isBusy = false;
+  File imagePickerFile;
+  /////////////////////////////////////GETTERS
   String get name => viewModel.name;
   String get location => viewModel.location;
   String get workLocation => viewModel.workLocation;
   String get job => viewModel.job;
   String get studies => viewModel.studies;
-  NetworkImage get image => viewModel.image;
-  AssetImage get background => viewModel.background;
+  String get photoUrl => viewModel.photoUrl;
+  String get backgroundUrl => viewModel.backgroundUrl;
   ////////////////////////////////////
 
   @override
   void initState(){
     super.initState();
-    //this._image = NetworkImage('https://pixel.nymag.com/imgs/daily/vulture/2017/06/14/14-tom-cruise.w700.h700.jpg');
+    this._connectivityAlert = connectivityAlertWidget();
+    this._connectivitySub = viewModel.subscribeToConnectivity(this.connectivityHandler);
   }
+
+  @override
+  void dispose(){
+    this._connectivitySub.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ProfileInheritedWidget(
       child: Scaffold(
-          bottomNavigationBar: BottomAppBar(
-            color: Colors.blue[600],
-            child: Container(height: 50),
-          ),
-          floatingActionButton: _editingButton(),
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-          body: SafeArea(
-              child: SingleChildScrollView(
+        key: _mainKey,
+        bottomNavigationBar: BottomAppBar(
+          color: Colors.blue[600],
+          child: Container(height: 50),
+        ),
+        floatingActionButton: _editingButton(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        body: SafeArea(
+            child: SingleChildScrollView(
+              child: Form(
+                key: _formKey,
                 child: Column(
                   children: <Widget>[
                     _profileHeaderWidget(),
@@ -63,37 +75,31 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
                   ],
                 ),
               )
-          )
+            )
+        )
       ),
       state: this,
     );
   }
 
   Widget _editingButton(){
-    var ret;
-    if (this.isEditing){
-      ret = FloatingActionButton(
-        onPressed: () => this.setState((){
-          this.isEditing = !this.isEditing;
-        }),
-        child: Icon(Icons.check, size: 35),
-        tooltip: "save changes",
+    return FloatingActionButton(
+        onPressed: (){
+          if (this.isEditing) {
+            if (this._formKey.currentState.validate()) {
+              this._formKey.currentState.save();
+              viewModel.updateProfileInformations(this.values, this.imagePickerFile);
+            }
+          }
+          this.setState((){
+            this.isEditing = !this.isEditing;
+          });
+        },
+        child: this.isEditing ? Icon(Icons.check, size: 35) : Icon(Icons.edit, size: 35),
+        tooltip: this.isEditing ? "save changes" : "edit",
         foregroundColor: Colors.white,
-        backgroundColor: Colors.green,
+        backgroundColor: this.isEditing ? Colors.green : Colors.blueAccent,
       );
-    }
-    else {
-      ret = FloatingActionButton(
-        onPressed: () => this.setState((){
-          this.isEditing = !this.isEditing;
-        }),
-        child: Icon(Icons.edit, size: 35),
-        tooltip: "edit",
-        backgroundColor: Colors.blueAccent,
-        foregroundColor: Colors.white,
-      );
-    }
-    return ret;
   }
 
   Widget _profileHeaderWidget() {
@@ -105,7 +111,8 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
             children: <Widget>[
               _clipPathWidget(),
               _profileImageWidget(),
-              this.isEditing ? this._changePhotoButton() : SizedBox(width: 0,height: 0)
+              this.isEditing ? this._changePhotoButton() : SizedBox(width: 0,height: 0),
+              _spinner()
             ],
           ),
         ),
@@ -168,7 +175,7 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
                   fontFamily: 'Montserrat',
                   color: Colors.white),
             ),
-            this.isEditing ? this._editablePresenter(this.location, "change location here") :
+            this.isEditing ? this._editablePresenter(this.location, "change location here", "location", this._keyMap) :
             Text(
                 this.location,softWrap: false,
                 overflow: TextOverflow.fade,
@@ -209,7 +216,7 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
                   fontFamily: 'Montserrat',
                   color: Colors.white),
             ),
-            this.isEditing ? this._editablePresenter(this.studies, "change studies location here") :
+            this.isEditing ? this._editablePresenter(this.studies, "change studies location here", "studies", this._keyMap) :
             Text(
                 this.studies,softWrap: false,
                 overflow: TextOverflow.fade,
@@ -250,7 +257,7 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
                   fontFamily: 'Montserrat',
                   color: Colors.white),
             ),
-            this.isEditing ? this._editablePresenter(this.workLocation, "change work location here") :
+            this.isEditing ? this._editablePresenter(this.workLocation, "change work location here", "workLocation", this._keyMap) :
             Text(
                 this.workLocation,softWrap: false,
                 overflow: TextOverflow.fade,
@@ -291,7 +298,7 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
                   fontFamily: 'Montserrat',
                   color: Colors.white),
             ),
-            this.isEditing ? this._editablePresenter(this.job, "change job here") :
+            this.isEditing ? this._editablePresenter(this.job, "change job here", "job", this._keyMap) :
             Text(
                 this.job,softWrap: false,
                 overflow: TextOverflow.fade,
@@ -312,7 +319,7 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
         height: 250,
         decoration: BoxDecoration(
             image: DecorationImage(
-                image: AssetImage('assets/blue_texture.jpg'),
+                image: NetworkImage(this.backgroundUrl),
                 fit: BoxFit.cover
             )
         ),
@@ -323,10 +330,10 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
   }
 
   Future _getImage() async {
-    var image = await Future(null);
-    /*setState(() {
-      _image = _image;
-    });*/
+    File image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      this.imagePickerFile = image;
+    });
   }
 
   Widget _profileImageWidget(){
@@ -336,7 +343,7 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
       decoration: BoxDecoration(
           color: Colors.red,
           image: DecorationImage(
-              image: image,
+              image: imagePickerFile != null ? Image.file(imagePickerFile).image : NetworkImage(this.photoUrl),
               fit: BoxFit.cover
           ),
           borderRadius: BorderRadius.all(Radius.circular(75.0)),
@@ -350,13 +357,23 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
     );
   }
 
-  Widget _editablePresenter(String label, String hint){
-    return Row(
+  Widget _editablePresenter(String label, String hint, String keyLabel, Map<String, Key> keyMap){
+    Widget ret;
+    Key key = Key(keyLabel);
+    print("key : "+key.toString());
+    ret = Row(
       children: <Widget>[
         Expanded(
           child: Padding(
               padding: EdgeInsets.only(left: 10.0, bottom: 5.0),
-              child: TextField(
+              child: TextFormField(
+                validator: (value){
+                  _formValidation(value);
+                },
+                onSaved: (value){
+                  _onSaved(value);
+                },
+                key: key,
                 decoration: InputDecoration(
                     labelText: label,
                     labelStyle: TextStyle(
@@ -381,12 +398,14 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
         )
       ],
     );
+    keyMap[keyLabel] = key;
+    return ret;
   }
 
   Widget _profileNameWidget(){
     var ret;
     if (this.isEditing) {
-      ret = this._editablePresenter(this.name, "change name here");
+      ret = this._editablePresenter(this.name, "change name here", "name", this._keyMap);
     }
     else {
       ret = Text(
@@ -416,39 +435,10 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
     );
   }
 
-  Widget _profileDescriptionWidget(){
-    return Container(
-      padding: EdgeInsets.all(3),
-      child:Text(
-        """
-      Id, and frappuccino sugar body skinny mocha affogato,
-      grinder cappuccino half and half macchiato variety latte java whipped ut robusta.
-      French press, froth, cup extra cup aftertaste decaffeinated, grounds filter to go caramelization acerbic extraction grounds cream foam café au lait dark arabica.
-      Breve galão, saucer, dripper to go caffeine dark crema at breve, cultivar aftertaste whipped, spoon, organic mazagran shop irish beans.
-      Cortado at, cortado medium galão cultivar turkish steamed viennese wings froth so rich frappuccino.
-      Single origin, that siphon skinny turkish spoon that acerbic cinnamon to go skinny aftertaste as mug irish cinnamon iced organic filter arabica.
-      Lungo skinny single origin extraction foam, eu, cinnamon coffee single shot shop turkish crema frappuccino macchiato crema aged.
-      A frappuccino body aftertaste, seasonal instant breve arabica turkish, cream dripper qui java milk spoon dripper.
-      """,
-        softWrap: true,
-        style: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.normal,
-          fontFamily: 'MontSerra',
-        ),
-      ),
-      decoration: BoxDecoration(
-          border: Border.all(color: Colors.white, width: 5, style: BorderStyle.solid),
-          borderRadius: BorderRadius.all(Radius.circular(10))
-      ),
-    );
-  }
-
   Widget _profilePanelList(){
     List<MyItems> items = this.items;
     return ExpansionPanelList(
       expansionCallback: (int index, bool isExpanded){
-
         setState(() {
           items[index].isExpanded = !items[index].isExpanded;
         });
@@ -499,6 +489,34 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
     );
   }
 
+  String _formValidation(String value) {
+    if (value.isEmpty)
+      return ("Value can't be empty");
+    return null;
+  }
+
+  void _onSaved(String value) {
+    this.values.add(value);
+  }
+
+  Widget _spinner() {
+    if (this.isBusy)
+      return Positioned(
+        child: CircularProgressIndicator(),
+        top: MediaQuery.of(context).size.width / 2.2,
+        left: MediaQuery.of(context).size.height / 2.2);
+    return SizedBox(width: 0, height: 0);
+  }
+
+  void connectivityHandler(bool value) {
+    if (!value)
+      this._connectivityAlert.show(context);
+    else
+      {
+        if (this._connectivityAlert.isShowing() && !this._connectivityAlert.isDismissed())
+          this._connectivityAlert.dismiss();
+      }
+  }
 }
 
 class ProfileInheritedWidget extends InheritedWidget {
@@ -513,8 +531,6 @@ class ProfileInheritedWidget extends InheritedWidget {
     return true;
   }
 }
-
-
 
 class MyItems{
   String header;

@@ -3,6 +3,9 @@ import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/viewmodel/LoginPageViewModel.dart';
 import 'package:partnership/ui/widgets/LargeButton.dart';
+import 'package:flushbar/flushbar.dart';
+import 'package:partnership/ui/widgets/ConnectivityAlert.dart';
+import 'dart:async';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -12,8 +15,23 @@ class LoginPage extends StatefulWidget {
 class LoginPageState extends State<LoginPage> {
   BuildContext _scaffoldContext;
   IRoutes      _routing = Routes();
+  StreamSubscription _connectivitySub;
+  Flushbar _connectivityAlert;
   LoginPageViewModel get viewModel =>
       AViewModelFactory.register[_routing.loginPage];
+
+  @override
+  void initState(){
+    super.initState();
+    this._connectivityAlert = connectivityAlertWidget();
+    this._connectivitySub = viewModel.subscribeToConnectivity(this.connectivityHandler);
+  }
+
+  @override
+  void dispose(){
+    this._connectivitySub.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +41,7 @@ class LoginPageState extends State<LoginPage> {
       child: Center(
           child: Align(
         child: Image.asset(
-          ' ',
+          'assets/img/work-office.png',
         ),
       )),
     );
@@ -46,7 +64,7 @@ class LoginPageState extends State<LoginPage> {
       text:"Je veux m'inscrire",
       onPressed: () { this
                 .viewModel
-                .changeView(route: _routing.signInPage, widgetContext: context);}
+                .changeView(route: _routing.signUpPage, widgetContext: context);}
 
     );
 
@@ -83,5 +101,15 @@ class LoginPageState extends State<LoginPage> {
         children: <Widget>[topContainer, bottomContainer],
       ),
     )));
+  }
+
+  void connectivityHandler(bool value) {
+    if (!value)
+      this._connectivityAlert.show(context);
+    else
+    {
+      if (this._connectivityAlert.isShowing() && !this._connectivityAlert.isDismissed())
+        this._connectivityAlert.dismiss();
+    }
   }
 }

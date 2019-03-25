@@ -3,6 +3,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/viewmodel/SignInPageViewModel.dart';
+import 'package:flushbar/flushbar.dart';
+import 'package:partnership/ui/widgets/ConnectivityAlert.dart';
+import 'dart:async';
 
 class SignInPage extends StatefulWidget {
   @override
@@ -14,6 +17,8 @@ class _SignInPageState extends State<SignInPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final SignInData           _data = SignInData();
   bool                        busy = false;
+  StreamSubscription _connectivitySub;
+  Flushbar _connectivityAlert;
   IRoutes _routing = Routes();
   SignInPageViewModel get viewModel =>
       AViewModelFactory.register[_routing.signInPage];
@@ -23,6 +28,18 @@ class _SignInPageState extends State<SignInPage> {
       var snackbar = SnackBar(content: Text("SignIn successful!"), duration: Duration(milliseconds: 5000));
                   this._mainKey.currentState.showSnackBar(snackbar);
     }
+  @override
+  void initState(){
+    super.initState();
+    this._connectivityAlert = connectivityAlertWidget();
+    this._connectivitySub = viewModel.subscribeToConnectivity(this.connectivityHandler);
+  }
+
+  @override
+  void dispose(){
+    this._connectivitySub.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -172,6 +189,15 @@ class _SignInPageState extends State<SignInPage> {
             child: Column(
           children: <Widget>[formContainer, bottomContainer],
         )));
+  }
+  void connectivityHandler(bool value) {
+    if (!value)
+      this._connectivityAlert.show(context);
+    else
+    {
+      if (this._connectivityAlert.isShowing() && !this._connectivityAlert.isDismissed())
+        this._connectivityAlert.dismiss();
+    }
   }
 }
 
