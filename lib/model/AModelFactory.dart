@@ -49,7 +49,7 @@ abstract class AModelFactory{
           model = CreationPageModel();
           register[_routing.creationPage] = model;
           break;
-        case RoutesEnum.creationPage:
+        case RoutesEnum.ideaPage:
           model = IdeaPageModel();
           register[_routing.ideaPage] = model;
           break;
