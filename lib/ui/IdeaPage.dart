@@ -125,15 +125,15 @@ class IdeaPageState extends State<IdeaPage> {
   Widget _ideaPageImageWidget() {
     if (_image == null) {
       return Container(
-        width: 150,
-        height: 150,
+        width: 200,
+        height: 200,
         decoration: BoxDecoration(
-            color: Colors.red,
+            color: Colors.black,
             image: DecorationImage(
                 image: image,
-                fit: BoxFit.cover
+                //fit: BoxFit.cover
             ),
-            borderRadius: BorderRadius.all(Radius.circular(75.0)),
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
             boxShadow: [
               BoxShadow(
                   blurRadius: 7.0,
@@ -145,14 +145,14 @@ class IdeaPageState extends State<IdeaPage> {
     }
     else {
       return Container(
-        width: 150,
-        height: 150,
+        width: 200,
+        height: 200,
         decoration: BoxDecoration(
-            color: Colors.red,
+            color: Colors.black,
             image: DecorationImage(
               image: FileImage(_image),
             ),
-            borderRadius: BorderRadius.all(Radius.circular(75.0)),
+            borderRadius: BorderRadius.all(Radius.circular(10.0)),
             boxShadow: [
               BoxShadow(
                   blurRadius: 7.0,
