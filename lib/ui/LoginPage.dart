@@ -3,8 +3,6 @@ import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/viewmodel/LoginPageViewModel.dart';
 import 'package:partnership/ui/widgets/LargeButton.dart';
-import 'package:flushbar/flushbar.dart';
-import 'package:partnership/ui/widgets/ConnectivityAlert.dart';
 import 'dart:async';
 
 class LoginPage extends StatefulWidget {
@@ -16,15 +14,13 @@ class LoginPageState extends State<LoginPage> {
   BuildContext _scaffoldContext;
   IRoutes      _routing = Routes();
   StreamSubscription _connectivitySub;
-  Flushbar _connectivityAlert;
   LoginPageViewModel get viewModel =>
       AViewModelFactory.register[_routing.loginPage];
 
   @override
   void initState(){
     super.initState();
-    this._connectivityAlert = connectivityAlertWidget();
-    this._connectivitySub = viewModel.subscribeToConnectivity(this.connectivityHandler);
+    this._connectivitySub = viewModel.subscribeToConnectivity(this._connectivityHandler);
   }
 
   @override
@@ -64,7 +60,8 @@ class LoginPageState extends State<LoginPage> {
       text:"Je veux m'inscrire",
       onPressed: () { this
                 .viewModel
-                .changeView(route: _routing.signUpPage, widgetContext: context);}
+                .changeView(route: _routing.signUpPage, widgetContext: context);
+      }
 
     );
 
@@ -103,13 +100,9 @@ class LoginPageState extends State<LoginPage> {
     )));
   }
 
-  void connectivityHandler(bool value) {
-    if (!value)
-      this._connectivityAlert.show(context);
-    else
-    {
-      if (this._connectivityAlert.isShowing() && !this._connectivityAlert.isDismissed())
-        this._connectivityAlert.dismiss();
+  void _connectivityHandler(bool value) {
+    if (!value){
+      viewModel.showConnectivityAlert(context);
     }
   }
 }
