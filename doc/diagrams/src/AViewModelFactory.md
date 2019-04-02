@@ -1,22 +1,13 @@
 ```plantuml
 @startuml AViewModelFactory
 
-!include HomePageViewModel.md
-!include LoginPageViewModel.md
-!include SignInPageViewModel.md
-!include SignUpPageViewModel.md
-
 package viewmodel {
-    class   AViewModelFactory {
-        +test
+    abstract class AViewModelFactory {
+        -- fields --
+        + {static} Map<String, AViewModel> register
+        -- methods --
+        + {static} AViewModel AViewModelFactory(String route)
     }
 }
-
-AViewModelFactory ---> HomePageViewModel
-AViewModelFactory ---> LoginPageViewModel
-AViewModelFactory ---> SignInPageViewModel
-AViewModelFactory ---> SignUpPageViewModel
-AViewModelFactory ---> AViewModel
-
 @enduml
 ```
