@@ -4,6 +4,7 @@ import 'package:partnership/viewmodel/LoginPageViewModel.dart';
 import 'package:partnership/viewmodel/SignInPageViewModel.dart';
 import 'package:partnership/viewmodel/SignUpPageViewModel.dart';
 import 'package:partnership/viewmodel/ProfilePageViewModel.dart';
+import 'package:partnership/viewmodel/CreationPageViewModel.dart';
 import 'package:partnership/viewmodel/ProjectDescriptionPageViewModel.dart';
 import 'package:partnership/viewmodel/ProjectBrowsingPageViewModel.dart';
 import 'package:partnership/utils/Routes.dart';
@@ -51,6 +52,9 @@ abstract class AViewModelFactory
           viewModel = ProfilePageViewModel(_routing.profilePage);
           register[_routing.profilePage] = viewModel;
           break;
+        case RoutesEnum.creationPage:
+          viewModel = CreationPageViewModel(_routing.creationPage);
+          register[_routing.creationPage] = viewModel;
         case RoutesEnum.homePage:
           viewModel = HomePageViewModel(_routing.homePage);
           register[_routing.homePage] = viewModel;
