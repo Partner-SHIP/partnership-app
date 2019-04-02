@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:partnership/coordinator/RoutingModule.dart';
 import 'package:partnership/coordinator/ConnectivityModule.dart';
 import 'package:partnership/coordinator/AuthenticationModule.dart';
-import 'package:partnership/coordinator/notification_module.dart';
+import 'package:partnership/coordinator/NotificationModule.dart';
 import 'package:partnership/viewmodel/AViewModel.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 /*
@@ -15,6 +16,9 @@ abstract class ICoordinator{
   bool fetchRegisterToNavigate({@required String route, @required BuildContext context, bool navigate = true, bool popStack = false});
   Future<FirebaseUser> loginByEmail({@required String userEmail, @required String userPassword});
   Future<FirebaseUser> signUpByEmail({@required String newEmail, @required String newPassword});
+  Stream<bool>  connectionChangeStream();
+  FirebaseUser         getLoggedInUser();
+  AssetBundle          getAssetBundle();
 }
 
 class Coordinator extends State<PartnershipApp> implements ICoordinator {
@@ -24,6 +28,7 @@ class Coordinator extends State<PartnershipApp> implements ICoordinator {
   final INotification           _notification = NotificationModule();
   final IAuthentication         _authentication = AuthenticationModule();
   final Map<String, AViewModel> _viewModels = AViewModelFactory.register;
+  AssetBundle                   _assetBundle;
 
   Coordinator._internal(){
     _connectivity.initializeConnectivityModule();
@@ -52,6 +57,7 @@ class Coordinator extends State<PartnershipApp> implements ICoordinator {
       //home: LoginPage(),
       initialRoute: this._setUpInitialRoute(),
     );
+    this._assetBundle = DefaultAssetBundle.of(_context);
     return app;
   }
 
@@ -89,6 +95,21 @@ class Coordinator extends State<PartnershipApp> implements ICoordinator {
   @override
   Future<FirebaseUser> signUpByEmail({@required String newEmail, @required String newPassword}) {
     return this._authentication.signUpByEmail(newEmail: newEmail, newPassword: newPassword);
+  }
+
+  @override
+  FirebaseUser getLoggedInUser() {
+    return this.authentication.getLoggedInUser();
+  }
+
+  @override
+  AssetBundle getAssetBundle() {
+    return this._assetBundle;
+  }
+
+  @override
+  Stream<bool> connectionChangeStream() {
+    return this._connectivity.connectionChangeStream();
   }
 }
 

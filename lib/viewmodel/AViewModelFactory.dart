@@ -1,10 +1,13 @@
 import 'package:partnership/viewmodel/AViewModel.dart';
+import 'package:partnership/viewmodel/HomePageViewModel.dart';
 import 'package:partnership/viewmodel/LoginPageViewModel.dart';
 import 'package:partnership/viewmodel/SignInPageViewModel.dart';
 import 'package:partnership/viewmodel/SignUpPageViewModel.dart';
 import 'package:partnership/viewmodel/ProfilePageViewModel.dart';
 import 'package:partnership/viewmodel/CreationPageViewModel.dart';
 import 'package:partnership/viewmodel/IdeaPageViewModel.dart';
+import 'package:partnership/viewmodel/ProjectDescriptionPageViewModel.dart';
+import 'package:partnership/viewmodel/ProjectBrowsingPageViewModel.dart';
 import 'package:partnership/utils/Routes.dart';
 /*
     Responsible for creating/managing all the ViewModel, accessible from the Coordinator.
@@ -53,6 +56,17 @@ abstract class AViewModelFactory
         case RoutesEnum.creationPage:
           viewModel = CreationPageViewModel(_routing.creationPage);
           register[_routing.creationPage] = viewModel;
+        case RoutesEnum.homePage:
+          viewModel = HomePageViewModel(_routing.homePage);
+          register[_routing.homePage] = viewModel;
+          break;
+        case RoutesEnum.projectDescriptionPage:
+          viewModel = ProjectDescriptionPageViewModel(_routing.projectDescriptionPage);
+          register[_routing.projectDescriptionPage] = viewModel;
+          break;
+        case RoutesEnum.projectBrowsingPage:
+          viewModel = ProjectBrowsingPageViewModel(_routing.projectBrowsingPage);
+          register[_routing.projectBrowsingPage] = viewModel;
           break;
         case RoutesEnum.ideaPage:
           viewModel = IdeaPageViewModel(_routing.ideaPage);
