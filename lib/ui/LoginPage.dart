@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/viewmodel/LoginPageViewModel.dart';
+import 'package:partnership/ui/widgets/LargeButton.dart';
+import 'package:flushbar/flushbar.dart';
+import 'package:partnership/ui/widgets/ConnectivityAlert.dart';
+import 'dart:async';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -11,13 +15,28 @@ class LoginPage extends StatefulWidget {
 class LoginPageState extends State<LoginPage> {
   BuildContext _scaffoldContext;
   IRoutes      _routing = Routes();
+  StreamSubscription _connectivitySub;
+  Flushbar _connectivityAlert;
   LoginPageViewModel get viewModel =>
       AViewModelFactory.register[_routing.loginPage];
 
   @override
+  void initState(){
+    super.initState();
+    this._connectivityAlert = connectivityAlertWidget();
+    this._connectivitySub = viewModel.subscribeToConnectivity(this.connectivityHandler);
+  }
+
+  @override
+  void dispose(){
+    this._connectivitySub.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     _scaffoldContext = context;
-
+    Color backgroundColor = Colors.grey[850];
     final topContainer = Container(
       child: Center(
           child: Align(
@@ -27,7 +46,7 @@ class LoginPageState extends State<LoginPage> {
       )),
     );
 
-//snackbar ne s'affiche pas
+    //snackbar ne s'affiche pas
     onPressForgot() {
       Scaffold.of(_scaffoldContext).showSnackBar(new SnackBar(
         content: new Text('Server error'),
@@ -35,46 +54,21 @@ class LoginPageState extends State<LoginPage> {
       ));
     }
 
-    final alreadyAccountButton = Padding(
-      padding: EdgeInsets.symmetric(vertical: 16.0),
-      child: Material(
-        borderRadius: BorderRadius.circular(30.0),
-        shadowColor: Colors.lightBlueAccent.shade100,
-        elevation: 5.0,
-        child: MaterialButton(
-          minWidth: 200.0,
-          height: 42.0,
-          color: Colors.lightBlueAccent,
-          child: Text('J\'ai déjà un compte',
-              style: TextStyle(color: Colors.white)),
-          onPressed: () {
-            this
-                .viewModel
-                .changeView(route: _routing.signInPage, widgetContext: context);
-            //Navigator.pushNamed(context, Routes.signInPage);
-          },
-        ),
-      ),
-    );
+    final alreadyAccountButton = LargeButton(
+        text: "J'ai déjà un compte",
+        onPressed: () {
+          this
+              .viewModel
+              .changeView(route: _routing.signInPage, widgetContext: context);
+        });
 
-    final signUpButton = Padding(
-      padding: EdgeInsets.symmetric(vertical: 16.0),
-      child: Material(
-        borderRadius: BorderRadius.circular(30.0),
-        shadowColor: Colors.lightBlueAccent.shade100,
-        elevation: 5.0,
-        child: MaterialButton(
-          minWidth: 200.0,
-          height: 42.0,
-          color: Colors.lightBlueAccent,
-          child: Text('Je veux m\'inscrire',
-              style: TextStyle(color: Colors.white)),
-          onPressed: () {
-            this.viewModel.changeView(route: _routing.signUpPage, widgetContext: context);
-          },
-        ),
-      ),
-    );
+    final signUpButton = LargeButton(
+        text: "Je veux m'inscrire",
+        onPressed: () {
+          this
+              .viewModel
+              .changeView(route: _routing.signUpPage, widgetContext: context);
+        });
 
     final whatIsButton = FlatButton(
       child: Text('Mais c\'est quoi PartnerSHIP ?',
@@ -86,46 +80,59 @@ class LoginPageState extends State<LoginPage> {
         onPressForgot();
       },
     );
-
-    final bottomContainer = Container(
-      child: Column(
-        children: <Widget>[
-          Image.asset(
-            'assets/img/logo_partnership.png',
-            height: 150,
-          ),
-          alreadyAccountButton,
-          signUpButton,
-          whatIsButton,
-        ],
-      ),
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double bannerHeight = 240;
+    final double paddingHeight = 24;
+    final double paddedHeight = MediaQuery.of(context).size.height - paddingHeight;
+    final BoxDecoration backgroundFade = BoxDecoration(
+        image: DecorationImage(
+            fit: BoxFit.cover,
+            image: AssetImage("assets/img/work-office.png"),
+            colorFilter: ColorFilter.mode(
+                Colors.black.withOpacity(0.3), BlendMode.srcATop)),
+        color: Colors.red);
+    final Container topContainer = Container(
+      height: bannerHeight,
+      width: screenWidth,
+      decoration: backgroundFade,
+      child: Image.asset('assets/img/logo_partnership.png'),
+      padding: EdgeInsets.only(
+          top: bannerHeight * 1 / 20, bottom: bannerHeight * 1 / 10),
     );
+    final bottomContainer = Container(
+      width: screenWidth,
+        height: paddedHeight - bannerHeight,
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisSize: MainAxisSize.max,
+      children: <Widget>[
+        alreadyAccountButton,
+        signUpButton,
+        whatIsButton,
+      ],
+    ));
 
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+        backgroundColor: backgroundColor,
         body: SingleChildScrollView(
             child: Container(
-      /*decoration: BoxDecoration(
-        // Box decoration takes a gradient
-        gradient: LinearGradient(
-          // Where the linear gradient begins and ends
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
-          // Add one stop for each color. Stops should increase from 0 to 1
-          stops: [0.1, 0.5, 0.7, 0.9],
-          colors: [
-            // Colors are easy thanks to Flutter's Colors class.
-            Colors.grey,
-            Colors.grey[300],
-            Colors.grey[800],
-            Colors.lightBlue
-          ],
-        ),
-      ),*/
-      child: Column(
-        children: <Widget>[topContainer, bottomContainer],
-      ),
-      // backgroundColor: Colors.grey[300],
-    )));
+          height: MediaQuery.of(context).size.height,
+          padding: EdgeInsets.only(top: paddingHeight),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[topContainer, bottomContainer],
+          ),
+        )));
+  }
+
+  void connectivityHandler(bool value) {
+    if (!value)
+      this._connectivityAlert.show(context);
+    else
+    {
+      if (this._connectivityAlert.isShowing() && !this._connectivityAlert.isDismissed())
+        this._connectivityAlert.dismiss();
+    }
   }
 }

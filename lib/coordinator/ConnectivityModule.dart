@@ -7,7 +7,7 @@ import 'package:connectivity/connectivity.dart';
     usage : Subscribe to the stream exposed by "connectionChangeController"
 */
 abstract class IConnectivity {
-  Stream  connectionChangeStream();
+  Stream<bool>  connectionChangeStream();
   void    initializeConnectivityModule();
 }
 
@@ -19,7 +19,7 @@ class ConnectivityModule implements IConnectivity {
   ConnectivityModule._internal();
 
   bool _hasConnection;
-  final StreamController connectionChangeController = new StreamController.broadcast();
+  final StreamController<bool> connectionChangeController = new StreamController<bool>.broadcast();
   final Connectivity _connectivity = Connectivity();
 
   void _initialize() {
@@ -55,7 +55,7 @@ class ConnectivityModule implements IConnectivity {
   }
 
   @override
-  Stream connectionChangeStream() {
+  Stream<bool> connectionChangeStream() {
     return connectionChangeController.stream;
   }
 

@@ -1,11 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/model/AModelFactory.dart';
 import 'package:partnership/model/AModel.dart';
 import 'package:partnership/coordinator/AppCoordinator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:partnership/utils/Routes.dart';
 
 /*
     Abstract class defining all ViewModels, destined to be instanciated within the Coordinator by AViewModelFactory.
@@ -26,6 +28,7 @@ abstract class AViewModel implements AViewModelFactory
       if (!AModelFactory.register.containsKey(this._route) || !(AModelFactory.register[this._route] != null))
         throw Exception("Missing Model for "+this._route);
       this._abstractModel = AModelFactory.register[this._route];
+      this._abstractModel.assetBundle = this._coordinator.getAssetBundle();
     }
     catch (error){
       print(error);
@@ -43,5 +46,14 @@ abstract class AViewModel implements AViewModelFactory
   }
   Future<FirebaseUser> signIn({@required String email, @required String password}) {
     return this._coordinator.loginByEmail(userEmail: email, userPassword: password);
+  }
+  FirebaseUser loggedInUser(){
+    return this._coordinator.getLoggedInUser();
+  }
+  AssetBundle getAssetBundle(){
+    return this._coordinator.getAssetBundle();
+  }
+  StreamSubscription subscribeToConnectivity(Function handler){
+    return this._coordinator.connectionChangeStream().listen(handler);
   }
 }
