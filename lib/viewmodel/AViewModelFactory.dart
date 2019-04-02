@@ -1,39 +1,67 @@
 import 'package:partnership/viewmodel/AViewModel.dart';
+import 'package:partnership/viewmodel/HomePageViewModel.dart';
 import 'package:partnership/viewmodel/LoginPageViewModel.dart';
 import 'package:partnership/viewmodel/SignInPageViewModel.dart';
 import 'package:partnership/viewmodel/SignUpPageViewModel.dart';
 import 'package:partnership/viewmodel/ProfilePageViewModel.dart';
+import 'package:partnership/viewmodel/ProjectDescriptionPageViewModel.dart';
+import 'package:partnership/viewmodel/ProjectBrowsingPageViewModel.dart';
 import 'package:partnership/utils/Routes.dart';
 /*
     Responsible for creating/managing all the ViewModel, accessible from the Coordinator.
 */
+
 abstract class AViewModelFactory
 {
   // Register to store and reuse (without changes in state) instanciated ViewModels
   static final Map<String, AViewModel> register = <String, AViewModel>{};
 
+  static RoutesEnum fetchRoutes(String route, IRoutes routing){
+    RoutesEnum target;
+    routing.routeList().forEach((value){
+      if (value == route){
+        target = routing.routeEnumMap()[value];
+        return target;
+      }
+    });
+    return target;
+  }
   // Factory to instanciate ViewModels from routes
   factory AViewModelFactory(String route){
     if  (register.containsKey(route))
       return register[route];
     else {
-      AViewModel viewModel;
-      switch (route){
-        case Routes.loginPage:
-          viewModel = LoginPageViewModel();
-          register[Routes.loginPage] = viewModel;
+      AViewModel  viewModel;
+      IRoutes     _routing = Routes();
+      RoutesEnum  targetedRoute = fetchRoutes(route, _routing);
+      switch (targetedRoute){
+        case RoutesEnum.loginPage:
+          viewModel = LoginPageViewModel(_routing.loginPage);
+          register[_routing.loginPage] = viewModel;
           break;
-        case Routes.signInPage:
-          viewModel = SignInPageViewModel();
-          register[Routes.signInPage] = viewModel;
+        case RoutesEnum.signInPage:
+          viewModel = SignInPageViewModel(_routing.signInPage);
+          register[_routing.signInPage] = viewModel;
           break;
-        case Routes.signUpPage:
-          viewModel = SignUpPageViewModel();
-          register[Routes.signUpPage] = viewModel;
+        case RoutesEnum.signUpPage:
+          viewModel = SignUpPageViewModel(_routing.signUpPage);
+          register[_routing.signUpPage] = viewModel;
           break;
-        case Routes.profilePage:
-          viewModel = ProfilePageViewModel();
-          register[Routes.profilePage] = viewModel;
+        case RoutesEnum.profilePage:
+          viewModel = ProfilePageViewModel(_routing.profilePage);
+          register[_routing.profilePage] = viewModel;
+          break;
+        case RoutesEnum.homePage:
+          viewModel = HomePageViewModel(_routing.homePage);
+          register[_routing.homePage] = viewModel;
+          break;
+        case RoutesEnum.projectDescriptionPage:
+          viewModel = ProjectDescriptionPageViewModel(_routing.projectDescriptionPage);
+          register[_routing.projectDescriptionPage] = viewModel;
+          break;
+        case RoutesEnum.projectBrowsingPage:
+          viewModel = ProjectBrowsingPageViewModel(_routing.projectBrowsingPage);
+          register[_routing.projectBrowsingPage] = viewModel;
           break;
         default:
           throw Exception("Error while constructing ViewModel: the route \"$route\" provided is unknown !");

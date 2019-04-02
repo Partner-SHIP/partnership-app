@@ -20,6 +20,5 @@ package views {
 }
 
 SignUpPage -> SignUpPageState
-
 @enduml
 ```

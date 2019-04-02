@@ -77,6 +77,9 @@ class ProfilePayload extends Payload {
   Tuple2<GeoPoint, PayloadAction>  _location = Tuple2<GeoPoint, PayloadAction>(null, PayloadAction.NOTHING);
   Tuple2<int, PayloadAction>       _locationPrivacyLevel = Tuple2<int, PayloadAction>(null, PayloadAction.NOTHING);
   Tuple2<String, PayloadAction>    _nickname = Tuple2<String, PayloadAction>(null, PayloadAction.NOTHING);
+  Tuple2<String, PayloadAction>    _workLocation = Tuple2<String, PayloadAction>(null, PayloadAction.NOTHING);
+  Tuple2<String, PayloadAction>    _job = Tuple2<String, PayloadAction>(null, PayloadAction.NOTHING);
+  Tuple2<String, PayloadAction>    _studiesLocation = Tuple2<String, PayloadAction>(null, PayloadAction.NOTHING);
   Tuple2<String, PayloadAction>    _photoUrl = Tuple2<String, PayloadAction>(null, PayloadAction.NOTHING);
   Tuple2<int, PayloadAction>       _profilePrivacyLevel = Tuple2<int, PayloadAction>(null, PayloadAction.NOTHING);
   Tuple2<Timestamp, PayloadAction> _registrationDate = Tuple2<Timestamp, PayloadAction>(null, PayloadAction.NOTHING);
@@ -87,6 +90,9 @@ class ProfilePayload extends Payload {
   set location(Tuple2<GeoPoint, PayloadAction> data) => this._location = data;
   set locationPrivacyLevel(Tuple2<int, PayloadAction> data) => this._locationPrivacyLevel = data;
   set nickname(Tuple2<String, PayloadAction> data) => this._nickname = data;
+  set workLocation(Tuple2<String, PayloadAction> data) => this._workLocation = data;
+  set job(Tuple2<String, PayloadAction> data) => this._job = data;
+  set studiesLocation(Tuple2<String, PayloadAction> data) => this._studiesLocation = data;
   set photoUrl(Tuple2<String, PayloadAction> data) => this._photoUrl = data;
   set profilePrivacyLevel(Tuple2<int, PayloadAction> data) => this._profilePrivacyLevel = data;
   set registrationDate(Tuple2<Timestamp, PayloadAction> data) => this._registrationDate = data;
@@ -100,10 +106,12 @@ class ProfilePayload extends Payload {
     this._parameters['location'] = this._location;
     this._parameters['locationPrivacyLevel'] = this._locationPrivacyLevel;
     this._parameters['nickname'] = this._nickname;
+    this._parameters['workLocation'] = this._workLocation;
+    this._parameters['job'] = this._job;
+    this._parameters['studiesLocation'] = this._studiesLocation;
     this._parameters['photoUrl'] = this._photoUrl;
     this._parameters['profilePrivacyLevel'] = this._profilePrivacyLevel;
     this._parameters['registrationDate'] = this._registrationDate;
     this._parameters['uid'] = this._uid;
   }
 }
-

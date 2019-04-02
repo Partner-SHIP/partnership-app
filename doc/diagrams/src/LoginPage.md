@@ -17,6 +17,5 @@ package views {
 }
 
 LoginPage --> LoginPageState
-
 @enduml
 ```

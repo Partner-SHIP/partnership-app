@@ -2,17 +2,36 @@ import 'package:flutter/material.dart';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/viewmodel/LoginPageViewModel.dart';
+import 'package:partnership/ui/widgets/LargeButton.dart';
+import 'package:flushbar/flushbar.dart';
+import 'package:partnership/ui/widgets/ConnectivityAlert.dart';
+import 'dart:async';
 
 class LoginPage extends StatefulWidget {
   @override
-  _LoginPageState createState() => _LoginPageState();
+  LoginPageState createState() => LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class LoginPageState extends State<LoginPage> {
   BuildContext _scaffoldContext;
-
+  IRoutes      _routing = Routes();
+  StreamSubscription _connectivitySub;
+  Flushbar _connectivityAlert;
   LoginPageViewModel get viewModel =>
-      AViewModelFactory.register[Routes.loginPage];
+      AViewModelFactory.register[_routing.loginPage];
+
+  @override
+  void initState(){
+    super.initState();
+    this._connectivityAlert = connectivityAlertWidget();
+    this._connectivitySub = viewModel.subscribeToConnectivity(this.connectivityHandler);
+  }
+
+  @override
+  void dispose(){
+    this._connectivitySub.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,53 +46,26 @@ class _LoginPageState extends State<LoginPage> {
       )),
     );
 
-//snackbar ne s'affiche pas
+    //snackbar ne s'affiche pas
     onPressForgot() {
       Scaffold.of(_scaffoldContext).showSnackBar(new SnackBar(
         content: new Text('Server error'),
         duration: new Duration(seconds: 5),
       ));
     }
-
-    final alreadyAccountButton = Padding(
-      padding: EdgeInsets.symmetric(vertical: 16.0),
-      child: Material(
-        borderRadius: BorderRadius.circular(30.0),
-        shadowColor: Colors.lightBlueAccent.shade100,
-        elevation: 5.0,
-        child: MaterialButton(
-          minWidth: 200.0,
-          height: 42.0,
-          color: Colors.lightBlueAccent,
-          child: Text('J\'ai déjà un compte',
-              style: TextStyle(color: Colors.white)),
-          onPressed: () {
-            this
-                .viewModel
-                .changeView(route: Routes.signInPage, widgetContext: context);
-            //Navigator.pushNamed(context, Routes.signInPage);
-          },
-        ),
-      ),
+    final alreadyAccountButton = LargeButton(
+      text:"J'ai déjà un compte",
+      onPressed: () {
+        this.viewModel.changeView(route: _routing.signInPage, widgetContext: context);
+      }
     );
 
-    final signUpButton = Padding(
-      padding: EdgeInsets.symmetric(vertical: 16.0),
-      child: Material(
-        borderRadius: BorderRadius.circular(30.0),
-        shadowColor: Colors.lightBlueAccent.shade100,
-        elevation: 5.0,
-        child: MaterialButton(
-          minWidth: 200.0,
-          height: 42.0,
-          color: Colors.lightBlueAccent,
-          child: Text('Je veux m\'inscrire',
-              style: TextStyle(color: Colors.white)),
-          onPressed: () {
-            this.viewModel.changeView(route: Routes.signUpPage, widgetContext: context);
-          },
-        ),
-      ),
+    final signUpButton = LargeButton(
+      text:"Je veux m'inscrire",
+      onPressed: () { this
+                .viewModel
+                .changeView(route: _routing.signUpPage, widgetContext: context);}
+
     );
 
     final whatIsButton = FlatButton(
@@ -105,27 +97,19 @@ class _LoginPageState extends State<LoginPage> {
       backgroundColor: Colors.grey[300],
         body: SingleChildScrollView(
             child: Container(
-      /*decoration: BoxDecoration(
-        // Box decoration takes a gradient
-        gradient: LinearGradient(
-          // Where the linear gradient begins and ends
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
-          // Add one stop for each color. Stops should increase from 0 to 1
-          stops: [0.1, 0.5, 0.7, 0.9],
-          colors: [
-            // Colors are easy thanks to Flutter's Colors class.
-            Colors.grey,
-            Colors.grey[300],
-            Colors.grey[800],
-            Colors.lightBlue
-          ],
-        ),
-      ),*/
       child: Column(
         children: <Widget>[topContainer, bottomContainer],
       ),
-      // backgroundColor: Colors.grey[300],
     )));
+  }
+
+  void connectivityHandler(bool value) {
+    if (!value)
+      this._connectivityAlert.show(context);
+    else
+    {
+      if (this._connectivityAlert.isShowing() && !this._connectivityAlert.isDismissed())
+        this._connectivityAlert.dismiss();
+    }
   }
 }

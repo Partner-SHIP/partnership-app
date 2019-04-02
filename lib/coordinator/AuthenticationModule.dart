@@ -2,18 +2,24 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class AuthenticationModule {
-  static final AuthenticationModule instance = AuthenticationModule._internal();
+abstract class IAuthentication {
+  Future<FirebaseUser> loginByEmail({@required String userEmail, @required String userPassword});
+  Future<FirebaseUser> signUpByEmail({@required String newEmail, @required String newPassword});
+  FirebaseUser         getLoggedInUser();
+}
+
+class AuthenticationModule implements IAuthentication {
+  static final AuthenticationModule _instance = AuthenticationModule._internal();
   final FirebaseAuth  _auth = FirebaseAuth.instance;
   FirebaseUser        _loggedInUser;
 
   factory AuthenticationModule(){
-      return instance;
+      return _instance;
   }
   AuthenticationModule._internal();
 
   //Email Authentification
-  Future<FirebaseUser> loginByEmail({@required String userEmail, @required String userPassword}) async {
+  Future<FirebaseUser> _loginByEmail({@required String userEmail, @required String userPassword}) async {
     try {
       assert(userEmail != null && userEmail.isNotEmpty, "userMail must be a valid Email");
       assert(userPassword != null && userPassword.isNotEmpty, "userPassword must be a valid Password");
@@ -32,7 +38,7 @@ class AuthenticationModule {
   }
 
   // Email SignUp
-  Future<FirebaseUser> signUpByEmail({@required String newEmail, @required String newPassword}) async {
+  Future<FirebaseUser> _signUpByEmail({@required String newEmail, @required String newPassword}) async {
     try{
       assert(newEmail != null && newEmail.isNotEmpty, "newEmail must be a valid Email");
       assert(newPassword != null && newPassword.isNotEmpty, "newPassword must be a valid Password");
@@ -48,5 +54,20 @@ class AuthenticationModule {
       print(error);
       return null;
     }
+  }
+
+  @override
+  Future<FirebaseUser> loginByEmail({@required String userEmail, @required String userPassword}) {
+    return this._loginByEmail(userEmail: userEmail, userPassword: userPassword);
+  }
+
+  @override
+  Future<FirebaseUser> signUpByEmail({@required String newEmail, @required String newPassword}) {
+    return this._signUpByEmail(newEmail: newEmail, newPassword: newPassword);
+  }
+
+  @override
+  FirebaseUser getLoggedInUser() {
+    return this._loggedInUser;
   }
 }

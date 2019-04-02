@@ -17,6 +17,5 @@ package views {
 }
 
 SignInPage --> SignInPageState
-
 @enduml
 ```

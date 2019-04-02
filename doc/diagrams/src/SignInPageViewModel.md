@@ -11,6 +11,5 @@ package viewmodel {
         + SignInPageModel()
     }
 }
-
 @enduml
 ```

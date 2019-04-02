@@ -11,6 +11,5 @@ package viewmodel {
         + LoginPageModel()
     }
 }
-
 @enduml
 ```

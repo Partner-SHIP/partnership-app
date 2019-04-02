@@ -9,6 +9,5 @@ package viewmodel {
         + {static} AViewModel AViewModelFactory(String route)
     }
 }
-
 @enduml
 ```
