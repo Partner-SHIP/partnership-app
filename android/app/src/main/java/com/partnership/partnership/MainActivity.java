@@ -1,4 +1,4 @@
-package com.priscilliaponnou.partnership;
+package com.partnership.partnership;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

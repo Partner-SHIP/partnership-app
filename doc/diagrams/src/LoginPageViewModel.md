@@ -1,15 +1,15 @@
 ```plantuml
 @startuml LoginPageViewModel
 
-!include AViewModel.md
-
 package viewmodel {
     class   LoginPageViewModel {
-        
+        -- fields --
+        - LoginPageModel _model
+        -- methods --
+        + LoginPageViewModel()
+        -- getters --
+        + LoginPageModel()
     }
 }
-
-AViewModel --|> LoginPageViewModel
-
 @enduml
 ```

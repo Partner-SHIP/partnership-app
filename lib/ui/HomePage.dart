@@ -7,6 +7,8 @@ import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/viewmodel/HomePageViewModel.dart';
 import 'package:partnership/ui/widgets/StoryList.dart';
+import 'package:flushbar/flushbar.dart';
+import 'package:partnership/ui/widgets/ConnectivityAlert.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -18,6 +20,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   StoryList     _stories = StoryList();
   IRoutes      _routing = Routes();
+  StreamSubscription _connectivitySub;
+  Flushbar _connectivityAlert;
   HomePageViewModel get viewModel =>
       AViewModelFactory.register[_routing.homePage];
   bool isOffline = false;
@@ -28,6 +32,19 @@ class _HomePageState extends State<HomePage> {
   void pausecb() {}
   void resumecb() {}
   void cancelcb() {}
+
+  @override
+  void initState(){
+    super.initState();
+    this._connectivityAlert = connectivityAlertWidget();
+    this._connectivitySub = viewModel.subscribeToConnectivity(this.connectivityHandler);
+  }
+
+  @override
+  void dispose(){
+    this._connectivitySub.cancel();
+    super.dispose();
+  }
 
   Widget _buildDisconnectButton() {
     return (LargeButton(
@@ -127,5 +144,14 @@ class _HomePageState extends State<HomePage> {
           )),
     );
     return (WillPopScope(onWillPop: null, child: view));
+  }
+  void connectivityHandler(bool value) {
+    if (!value)
+      this._connectivityAlert.show(context);
+    else
+    {
+      if (this._connectivityAlert.isShowing() && !this._connectivityAlert.isDismissed())
+        this._connectivityAlert.dismiss();
+    }
   }
 }
