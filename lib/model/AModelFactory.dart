@@ -5,6 +5,7 @@ import 'package:partnership/model/SignInPageModel.dart';
 import 'package:partnership/model/SignUpPageModel.dart';
 import 'package:partnership/model/ProfilePageModel.dart';
 import 'package:partnership/model/CreationPageModel.dart';
+import 'package:partnership/model/IdeaPageModel.dart';
 import 'package:partnership/model/ProjectBrowsingPageModel.dart';
 import 'package:partnership/utils/Routes.dart';
 
@@ -56,6 +57,10 @@ abstract class AModelFactory{
         case RoutesEnum.projectBrowsingPage:
           model = ProjectBrowsingPageModel();
           register[_routing.projectBrowsingPage] = model;
+          break;
+        case RoutesEnum.ideaPage:
+          model = IdeaPageModel();
+          register[_routing.ideaPage] = model;
           break;
         default:
           model = null;

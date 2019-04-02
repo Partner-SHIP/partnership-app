@@ -8,11 +8,12 @@ import 'package:partnership/ui/ProjectDescriptionPage.dart';
 import 'package:partnership/ui/ProjectBrowsingPage.dart';
 import 'package:partnership/ui/testing_page.dart';
 import 'package:partnership/ui/CreationPage.dart';
+import 'package:partnership/ui/IdeaPage.dart';
 
 
 
 enum RoutesEnum {
-  root, loginPage, signInPage, signUpPage, profilePage, testingPage, homePage, projectDescriptionPage, projectBrowsingPage, creationPage
+  root, loginPage, signInPage, signUpPage, profilePage, testingPage, homePage, projectDescriptionPage, projectBrowsingPage, creationPage, ideaPage
 }
 
 abstract class  IRoutes {
@@ -23,6 +24,7 @@ abstract class  IRoutes {
   String        get profilePage;
   String        get testingPage;
   String        get creationPage;
+  String        get ideaPage;
   String        get homePage;
   String        get projectDescriptionPage;
   String        get projectBrowsingPage;
@@ -48,6 +50,7 @@ class Routes implements IRoutes {
   static const String _projectDescriptionPage = "/project_description_page";
   static const String _projectBrowsingPage = "/project_browsing_page";
   static const String _creationPage = "/creation_page";
+  static const String _ideaPage = "/idea_page";
   dynamic _routeMap() {
     return {
       _root:                      (BuildContext context) => LoginPage(), // FallBack
@@ -58,7 +61,8 @@ class Routes implements IRoutes {
       _homePage:                  (BuildContext context) => HomePage(),
       _projectDescriptionPage:    (BuildContext context) => ProjectDescriptionPage(),
       _projectBrowsingPage:       (BuildContext context) => ProjectBrowsingPage(),
-      _creationPage:              (BuildContext context) => CreationPage()
+      _creationPage:              (BuildContext context) => CreationPage(),
+      _ideaPage:                  (BuildContext context) => IdeaPage()
     };  
   }
   Map<String, RoutesEnum> _routeEnumMap() {
@@ -72,6 +76,7 @@ class Routes implements IRoutes {
       _projectDescriptionPage:  RoutesEnum.projectDescriptionPage,
       _projectBrowsingPage:     RoutesEnum.projectBrowsingPage,
       _creationPage:            RoutesEnum.creationPage,
+      _ideaPage:                RoutesEnum.ideaPage,
     };
   }
    List<String> _routesList() => <String>
@@ -84,7 +89,8 @@ class Routes implements IRoutes {
      _homePage,
      _projectDescriptionPage,
      _projectBrowsingPage,
-     _creation_Page
+     _creation_Page,
+     _ideaPage
    ]
 
   @override
@@ -116,6 +122,9 @@ class Routes implements IRoutes {
 
   @override
   String get creationPage => _creationPage;
+
+  @override
+  String get ideaPage => _ideaPage;
 
   @override
   List<String> routeList() {

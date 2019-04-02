@@ -5,6 +5,7 @@ import 'package:partnership/viewmodel/SignInPageViewModel.dart';
 import 'package:partnership/viewmodel/SignUpPageViewModel.dart';
 import 'package:partnership/viewmodel/ProfilePageViewModel.dart';
 import 'package:partnership/viewmodel/CreationPageViewModel.dart';
+import 'package:partnership/viewmodel/IdeaPageViewModel.dart';
 import 'package:partnership/viewmodel/ProjectDescriptionPageViewModel.dart';
 import 'package:partnership/viewmodel/ProjectBrowsingPageViewModel.dart';
 import 'package:partnership/utils/Routes.dart';
@@ -66,6 +67,10 @@ abstract class AViewModelFactory
         case RoutesEnum.projectBrowsingPage:
           viewModel = ProjectBrowsingPageViewModel(_routing.projectBrowsingPage);
           register[_routing.projectBrowsingPage] = viewModel;
+          break;
+        case RoutesEnum.ideaPage:
+          viewModel = IdeaPageViewModel(_routing.ideaPage);
+          register[_routing.ideaPage] = viewModel;
           break;
         default:
           throw Exception("Error while constructing ViewModel: the route \"$route\" provided is unknown !");
