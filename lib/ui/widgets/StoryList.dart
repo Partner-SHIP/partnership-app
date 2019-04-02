@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 
 class StoryList extends StatelessWidget {
   List<StoryListItem> _list;
-  StoryList();
-  void updateList({@required List<StoryListItem> list}) {
+  double _height;
+  StoryList({double height = 450}) :_height = height;
+  void updateList({@required List<StoryListItem> list, double height}) {
     _list = list;
+    if (height != null)
+      _height = height;
   }
   Container _mapList() {
-    return (Container(height: 450, child: SingleChildScrollView(child: Column(children:_list),),));
+    return (Container(height: _height, child: SingleChildScrollView(child: Column(children:_list),),));
   }
   @override
   Widget build(BuildContext context) {
@@ -18,25 +21,31 @@ class StoryList extends StatelessWidget {
   }
 }
 
+const TextStyle storyHeaderTextStyle = TextStyle(fontSize: 20, fontFamily: "Roboto", color: Colors.white, shadows: [Shadow(color: Colors.black, blurRadius: 10)]);
+const TextStyle storyDescriptionTextStyle = TextStyle(fontFamily: "Roboto", color: Colors.white, shadows: [Shadow(color: Colors.black, blurRadius: 10)]);
+
 class StoryListItem extends StatelessWidget {
   final String _imgPath;
   final String _title;
   final String _description;
   StoryListItem({@required String imgPath, @required String title, String description = ""}) :_imgPath = imgPath, _title = title, _description = description;
-  Row _buildTitle() {
-    return (Row(children: [Text(_title)], mainAxisSize: MainAxisSize.max, ));
+  Text _buildTitle() {
+    return (Text(_title, textAlign: TextAlign.left, style: storyHeaderTextStyle, maxLines: 1, overflow: TextOverflow.fade,));
   }
-  Row _buildDescription() {
-    return (Row(children: [Text(_description)], mainAxisSize: MainAxisSize.max, ));
+  Text _buildDescription() {
+    return (Text(_description, textAlign: TextAlign.right, style: storyDescriptionTextStyle, maxLines: 2, overflow: TextOverflow.fade));
   }
-  Container _buildContainer() {
-    BoxDecoration decoration =BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.all(Radius.circular(5)));
+  Container _buildContainer({double width}) {
+    DecorationImage image = DecorationImage(image:AssetImage(_imgPath), fit: BoxFit.cover, alignment: Alignment.topCenter);
+    BoxDecoration decoration =BoxDecoration(color: Colors.lightBlue[200], borderRadius: BorderRadius.all(Radius.circular(5)), image: image);
+    final double sidePadding = 10;
     Container result = Container(
       decoration: decoration,
-      height: 100,
-      padding: EdgeInsets.only(bottom: 10, top: 10, left: 5, right: 5),
+      height: 120,
+      width: width,
+      padding: EdgeInsets.only(bottom: 10, top: 10, left: sidePadding, right: sidePadding),
       child: Column(
-        children: <Widget>[_buildTitle(), _buildDescription()],
+        children: <Widget>[Container(width: width - sidePadding * 2, child: _buildTitle()), Container( width:width- 10, child: _buildDescription())],
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
       ),
       
@@ -46,8 +55,8 @@ class StoryListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     
-    Container result = _buildContainer();
+    Container result = _buildContainer(width:MediaQuery.of(context).size.width);
     
-    return (Padding(child: result, padding: EdgeInsets.only(bottom: 2),));
+    return (Padding(child: result, padding: EdgeInsets.only(bottom: 8),));
   }
 }
