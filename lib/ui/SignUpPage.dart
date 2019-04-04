@@ -213,8 +213,6 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   void _connectivityHandler(bool value) {
-    if (!value){
-      viewModel.showConnectivityAlert(context);
-    }
+
   }
 }

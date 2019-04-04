@@ -12,9 +12,8 @@ class ConnectivityAlertWidget extends StatefulWidget{
     _state.subscribeToConnectivity(stream);
   }
   void showAlert(BuildContext context){
-    if (_state._flushBar.isShowing())
-      _state._flushBar.dismiss();
-    _state._flushBar.show(context);
+    if (!_state._flushBar.isShowing())
+      _state._flushBar.show(context);
   }
 }
 

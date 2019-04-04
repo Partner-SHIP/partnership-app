@@ -187,9 +187,7 @@ class _SignInPageState extends State<SignInPage> {
         )));
   }
   void _connectivityHandler(bool value) {
-    if (!value){
-      viewModel.showConnectivityAlert(context);
-    }
+
   }
 }
 

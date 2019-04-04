@@ -505,9 +505,7 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
   }
 
   void _connectivityHandler(bool value) {
-    if (!value){
-      viewModel.showConnectivityAlert(context);
-    }
+
   }
 }
 

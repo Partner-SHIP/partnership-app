@@ -77,8 +77,6 @@ class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
   }
 
   void _connectivityHandler(bool value) {
-    if (!value){
-      viewModel.showConnectivityAlert(context);
-    }
+
   }
 }

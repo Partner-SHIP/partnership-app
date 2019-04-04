@@ -15,6 +15,7 @@ import 'package:partnership/viewmodel/AViewModelFactory.dart';
 
 abstract class ICoordinator{
   bool fetchRegisterToNavigate({@required String route, @required BuildContext context, bool navigate = true, bool popStack = false});
+  String getInitialRoute();
   Future<FirebaseUser> loginByEmail({@required String userEmail, @required String userPassword});
   Future<FirebaseUser> signUpByEmail({@required String newEmail, @required String newPassword});
   StreamSubscription   subscribeToConnectivity(Function handler);
@@ -73,10 +74,13 @@ class Coordinator extends State<PartnershipApp> implements ICoordinator {
       initialRoute: this._setUpInitialRoute(),
     );
     this._assetBundle = DefaultAssetBundle.of(_context);
+    //this._setUpInitialRoute();
     return app;
   }
 
   String _setUpInitialRoute(){
+    if (!this.fetchRegisterToNavigate(route: "/", context: null, navigate: false))
+      return null;
     if (this.fetchRegisterToNavigate(route: this._router.initialRoute, context: null, navigate: false))
       return this._router.initialRoute;
     return null;
@@ -134,6 +138,11 @@ class Coordinator extends State<PartnershipApp> implements ICoordinator {
   @override
   void showConnectivityAlert(BuildContext context) {
     this._connectivity.showAlert(context);
+  }
+
+  @override
+  String getInitialRoute() {
+    return this._router.initialRoute;
   }
 }
 

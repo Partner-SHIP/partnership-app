@@ -59,4 +59,7 @@ abstract class AViewModel implements AViewModelFactory
   void showConnectivityAlert(BuildContext context){
     this._coordinator.showConnectivityAlert(context);
   }
+  String getInitialRoute(){
+    return this._coordinator.getInitialRoute();
+  }
 }

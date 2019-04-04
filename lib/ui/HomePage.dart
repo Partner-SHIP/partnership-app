@@ -130,8 +130,6 @@ class _HomePageState extends State<HomePage> {
     return (WillPopScope(onWillPop: null, child: view));
   }
   void _connectivityHandler(bool value) {
-    if (!value){
-      viewModel.showConnectivityAlert(context);
-    }
+
   }
 }
