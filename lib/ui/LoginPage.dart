@@ -3,6 +3,7 @@ import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/viewmodel/LoginPageViewModel.dart';
 import 'package:partnership/ui/widgets/LargeButton.dart';
+import 'package:permission/permission.dart';
 import 'dart:async';
 
 class LoginPage extends StatefulWidget {
@@ -100,9 +101,12 @@ class LoginPageState extends State<LoginPage> {
     )));
   }
 
-  void _connectivityHandler(bool value) {
+  void _connectivityHandler(bool value) async {
     if (!value){
       viewModel.showConnectivityAlert(context);
+      //List<Permissions> permissionNames = await Permission.requestPermissions([PermissionName.Calendar, PermissionName.Camera]);
+
+      //Permission.openSettings();
     }
   }
 }

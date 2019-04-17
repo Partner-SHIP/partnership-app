@@ -3,6 +3,7 @@ import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/ProfilePageViewModel.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission/permission.dart';
 import 'dart:async';
 import 'dart:io';
 
@@ -119,7 +120,7 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
   Widget _profileContentWidget(){
     return Container(
         decoration: BoxDecoration(
-            color: Colors.green,
+            //image: DecorationImage(image: NetworkImage(viewModel.backgroundUrl), fit: BoxFit.fill),
             gradient: LinearGradient(
                 colors: [Colors.cyan[700], Colors.cyan[400], Colors.cyan[700]],
                 begin: Alignment.centerLeft,
@@ -326,10 +327,14 @@ class ProfilePageState extends State<ProfilePage> with SingleTickerProviderState
   }
 
   Future _getImage() async {
-    File image = await ImagePicker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      this.imagePickerFile = image;
-    });
+    List<Permissions> permissionNames = await Permission.requestPermissions([PermissionName.Camera, PermissionName.Storage]);
+    List<Permissions> permissions = await Permission.getPermissionsStatus([PermissionName.Camera, PermissionName.Storage]);
+    if (permissions[0].permissionStatus == PermissionStatus.allow && permissions[1].permissionStatus == PermissionStatus.allow){
+      File image = await ImagePicker.pickImage(source: ImageSource.gallery);
+      setState(() {
+        this.imagePickerFile = image;
+      });
+    }
   }
 
   Widget _profileImageWidget(){
