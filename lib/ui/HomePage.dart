@@ -7,8 +7,6 @@ import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/viewmodel/HomePageViewModel.dart';
 import 'package:partnership/ui/widgets/StoryList.dart';
-import 'package:flushbar/flushbar.dart';
-import 'package:partnership/ui/widgets/ConnectivityAlert.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -21,7 +19,6 @@ class _HomePageState extends State<HomePage> {
   StoryList     _stories = StoryList();
   IRoutes      _routing = Routes();
   StreamSubscription _connectivitySub;
-  Flushbar _connectivityAlert;
   HomePageViewModel get viewModel =>
       AViewModelFactory.register[_routing.homePage];
   bool isOffline = false;
@@ -36,8 +33,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState(){
     super.initState();
-    this._connectivityAlert = connectivityAlertWidget();
-    this._connectivitySub = viewModel.subscribeToConnectivity(this.connectivityHandler);
+    this._connectivitySub = viewModel.subscribeToConnectivity(this._connectivityHandler);
   }
 
   @override
@@ -145,13 +141,7 @@ class _HomePageState extends State<HomePage> {
     );
     return (WillPopScope(onWillPop: null, child: view));
   }
-  void connectivityHandler(bool value) {
-    if (!value)
-      this._connectivityAlert.show(context);
-    else
-    {
-      if (this._connectivityAlert.isShowing() && !this._connectivityAlert.isDismissed())
-        this._connectivityAlert.dismiss();
-    }
+  void _connectivityHandler(bool value) {
+
   }
 }

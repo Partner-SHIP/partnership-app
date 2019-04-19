@@ -13,11 +13,11 @@ import 'package:partnership/ui/IdeaPage.dart';
 
 
 enum RoutesEnum {
-  root, loginPage, signInPage, signUpPage, profilePage, testingPage, homePage, projectDescriptionPage, projectBrowsingPage, creationPage, ideaPage
+  /*root,*/ loginPage, signInPage, signUpPage, profilePage, testingPage, homePage, projectDescriptionPage
 }
 
 abstract class  IRoutes {
-  String        get root;
+  //String        get root;
   String        get loginPage;
   String        get signInPage;
   String        get signUpPage;
@@ -40,8 +40,8 @@ class Routes implements IRoutes {
     return _instance;
   }
   Routes._internal();
-  static const String _root = "/";
-  static const String _loginPage = "/login_page";
+  //static const String _root = "/";
+  static const String _loginPage = "/";
   static const String _signInPage = "/signin_page";
   static const String _signUpPage = "/signup_page";
   static const String _profilePage = "/profile_page";
@@ -53,7 +53,7 @@ class Routes implements IRoutes {
   static const String _ideaPage = "/idea_page";
   dynamic _routeMap() {
     return {
-      _root:                      (BuildContext context) => LoginPage(), // FallBack
+      //_root:                      (BuildContext context) => LoginPage(), // FallBack
       _loginPage:                 (BuildContext context) => LoginPage(),
       _signInPage:                (BuildContext context) => SignInPage(),
       _signUpPage:                (BuildContext context) => SignUpPage(),
@@ -67,7 +67,7 @@ class Routes implements IRoutes {
   }
   Map<String, RoutesEnum> _routeEnumMap() {
     return <String, RoutesEnum>{
-      _root:                    RoutesEnum.root,
+      //_root:                    RoutesEnum.root,
       _loginPage:               RoutesEnum.loginPage,
       _signInPage:              RoutesEnum.signInPage,
       _signUpPage:              RoutesEnum.signUpPage,
@@ -79,29 +79,18 @@ class Routes implements IRoutes {
       _ideaPage:                RoutesEnum.ideaPage,
     };
   }
-   List<String> _routesList() => <String>
-   [
-     _root,
-     _loginPage,
-     _signInPage,
-     _signUpPage,
-     _profilePage,
-     _homePage,
-     _projectDescriptionPage,
-     _projectBrowsingPage,
-     _creation_Page,
-     _ideaPage
-   ]
+
+   List<String> _routesList() => <String>[/*_root,*/ _loginPage, _signInPage, _signUpPage, _profilePage, _homePage, _projectDescriptionPage];
 
   @override
   String get loginPage => _loginPage;
 
   @override
   String get profilePage => _profilePage;
-
+/*
   @override
   String get root => _root;
-
+*/
   @override
   String get signInPage => _signInPage;
 

@@ -3,8 +3,7 @@ import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/viewmodel/LoginPageViewModel.dart';
 import 'package:partnership/ui/widgets/LargeButton.dart';
-import 'package:flushbar/flushbar.dart';
-import 'package:partnership/ui/widgets/ConnectivityAlert.dart';
+import 'package:permission/permission.dart';
 import 'dart:async';
 
 class LoginPage extends StatefulWidget {
@@ -16,15 +15,13 @@ class LoginPageState extends State<LoginPage> {
   BuildContext _scaffoldContext;
   IRoutes      _routing = Routes();
   StreamSubscription _connectivitySub;
-  Flushbar _connectivityAlert;
   LoginPageViewModel get viewModel =>
       AViewModelFactory.register[_routing.loginPage];
 
   @override
   void initState(){
     super.initState();
-    this._connectivityAlert = connectivityAlertWidget();
-    this._connectivitySub = viewModel.subscribeToConnectivity(this.connectivityHandler);
+    this._connectivitySub = viewModel.subscribeToConnectivity(this._connectivityHandler);
   }
 
   @override
@@ -63,12 +60,15 @@ class LoginPageState extends State<LoginPage> {
         });
 
     final signUpButton = LargeButton(
-        text: "Je veux m'inscrire",
-        onPressed: () {
-          this
-              .viewModel
-              .changeView(route: _routing.signUpPage, widgetContext: context);
-        });
+
+      text:"Je veux m'inscrire",
+      onPressed: () { this
+                .viewModel
+                .changeView(route: _routing.signUpPage, widgetContext: context);
+      }
+
+    );
+
 
     final whatIsButton = FlatButton(
       child: Text('Mais c\'est quoi PartnerSHIP ?',
@@ -126,13 +126,12 @@ class LoginPageState extends State<LoginPage> {
         )));
   }
 
-  void connectivityHandler(bool value) {
-    if (!value)
-      this._connectivityAlert.show(context);
-    else
-    {
-      if (this._connectivityAlert.isShowing() && !this._connectivityAlert.isDismissed())
-        this._connectivityAlert.dismiss();
+  void _connectivityHandler(bool value) async {
+    if (!value){
+      viewModel.showConnectivityAlert(context);
+      //List<Permissions> permissionNames = await Permission.requestPermissions([PermissionName.Calendar, PermissionName.Camera]);
+
+      //Permission.openSettings();
     }
   }
 }

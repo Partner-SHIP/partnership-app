@@ -3,8 +3,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/viewmodel/SignInPageViewModel.dart';
-import 'package:flushbar/flushbar.dart';
-import 'package:partnership/ui/widgets/ConnectivityAlert.dart';
 import 'dart:async';
 
 class SignInPage extends StatefulWidget {
@@ -18,7 +16,6 @@ class _SignInPageState extends State<SignInPage> {
   final SignInData           _data = SignInData();
   bool                        busy = false;
   StreamSubscription _connectivitySub;
-  Flushbar _connectivityAlert;
   IRoutes _routing = Routes();
   SignInPageViewModel get viewModel =>
       AViewModelFactory.register[_routing.signInPage];
@@ -31,8 +28,7 @@ class _SignInPageState extends State<SignInPage> {
   @override
   void initState(){
     super.initState();
-    this._connectivityAlert = connectivityAlertWidget();
-    this._connectivitySub = viewModel.subscribeToConnectivity(this.connectivityHandler);
+    this._connectivitySub = viewModel.subscribeToConnectivity(this._connectivityHandler);
   }
 
   @override
@@ -190,14 +186,8 @@ class _SignInPageState extends State<SignInPage> {
           children: <Widget>[formContainer, bottomContainer],
         )));
   }
-  void connectivityHandler(bool value) {
-    if (!value)
-      this._connectivityAlert.show(context);
-    else
-    {
-      if (this._connectivityAlert.isShowing() && !this._connectivityAlert.isDismissed())
-        this._connectivityAlert.dismiss();
-    }
+  void _connectivityHandler(bool value) {
+
   }
 }
 

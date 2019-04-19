@@ -54,6 +54,12 @@ abstract class AViewModel implements AViewModelFactory
     return this._coordinator.getAssetBundle();
   }
   StreamSubscription subscribeToConnectivity(Function handler){
-    return this._coordinator.connectionChangeStream().listen(handler);
+    return this._coordinator.subscribeToConnectivity(handler);
+  }
+  void showConnectivityAlert(BuildContext context){
+    this._coordinator.showConnectivityAlert(context);
+  }
+  String getInitialRoute(){
+    return this._coordinator.getInitialRoute();
   }
 }

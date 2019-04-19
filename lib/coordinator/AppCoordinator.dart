@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
+import 'dart:async';
 import 'package:partnership/coordinator/RoutingModule.dart';
 import 'package:partnership/coordinator/ConnectivityModule.dart';
 import 'package:partnership/coordinator/AuthenticationModule.dart';
@@ -14,9 +15,11 @@ import 'package:partnership/viewmodel/AViewModelFactory.dart';
 
 abstract class ICoordinator{
   bool fetchRegisterToNavigate({@required String route, @required BuildContext context, bool navigate = true, bool popStack = false});
+  String getInitialRoute();
   Future<FirebaseUser> loginByEmail({@required String userEmail, @required String userPassword});
   Future<FirebaseUser> signUpByEmail({@required String newEmail, @required String newPassword});
-  Stream<bool>  connectionChangeStream();
+  StreamSubscription   subscribeToConnectivity(Function handler);
+  void                 showConnectivityAlert(BuildContext context);
   FirebaseUser         getLoggedInUser();
   AssetBundle          getAssetBundle();
 }
@@ -29,6 +32,7 @@ class Coordinator extends State<PartnershipApp> implements ICoordinator {
   final IAuthentication         _authentication = AuthenticationModule();
   final Map<String, AViewModel> _viewModels = AViewModelFactory.register;
   AssetBundle                   _assetBundle;
+  StreamSubscription<bool>      _connectivitySub;
 
   Coordinator._internal(){
     _connectivity.initializeConnectivityModule();
@@ -42,6 +46,18 @@ class Coordinator extends State<PartnershipApp> implements ICoordinator {
     IAuthentication get authentication => this._authentication;
     IConnectivity   get connectivity => this._connectivity;
     INotification   get notification => this._notification;
+
+  @override
+  void initState(){
+    super.initState();
+    this._connectivitySub = this._connectivity.subscribeToConnectivity(this._connectivityHandler);
+  }
+
+  @override
+  void dispose(){
+    this._connectivitySub.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext _context) {
@@ -58,10 +74,13 @@ class Coordinator extends State<PartnershipApp> implements ICoordinator {
       initialRoute: this._setUpInitialRoute(),
     );
     this._assetBundle = DefaultAssetBundle.of(_context);
+    //this._setUpInitialRoute();
     return app;
   }
 
   String _setUpInitialRoute(){
+    if (!this.fetchRegisterToNavigate(route: "/", context: null, navigate: false))
+      return null;
     if (this.fetchRegisterToNavigate(route: this._router.initialRoute, context: null, navigate: false))
       return this._router.initialRoute;
     return null;
@@ -108,8 +127,22 @@ class Coordinator extends State<PartnershipApp> implements ICoordinator {
   }
 
   @override
-  Stream<bool> connectionChangeStream() {
-    return this._connectivity.connectionChangeStream();
+  StreamSubscription subscribeToConnectivity(Function handler) {
+    return this._connectivity.subscribeToConnectivity(handler);
+  }
+
+  void _connectivityHandler(bool value) {
+    // Do something involving internet connection's status
+  }
+
+  @override
+  void showConnectivityAlert(BuildContext context) {
+    this._connectivity.showAlert(context);
+  }
+
+  @override
+  String getInitialRoute() {
+    return this._router.initialRoute;
   }
 }
 

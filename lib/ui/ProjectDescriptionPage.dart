@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/viewmodel/ProjectDescriptionPageViewModel.dart';
-import 'package:flushbar/flushbar.dart';
-import 'package:partnership/ui/widgets/ConnectivityAlert.dart';
 import 'dart:async';
 
 final String lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
@@ -17,15 +15,13 @@ class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
   bool busy = false;
   IRoutes _routing = Routes();
   StreamSubscription _connectivitySub;
-  Flushbar _connectivityAlert;
   ProjectDescriptionPageViewModel get viewModel =>
       AViewModelFactory.register[_routing.projectDescriptionPage];
 
   @override
   void initState(){
     super.initState();
-    this._connectivityAlert = connectivityAlertWidget();
-    this._connectivitySub = viewModel.subscribeToConnectivity(this.connectivityHandler);
+    this._connectivitySub = viewModel.subscribeToConnectivity(this._connectivityHandler);
   }
 
   @override
@@ -80,13 +76,7 @@ class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
         body: SingleChildScrollView(child:Container(child: column,), padding: EdgeInsets.only(top:24),));
   }
 
-  void connectivityHandler(bool value) {
-    if (!value)
-      this._connectivityAlert.show(context);
-    else
-    {
-      if (this._connectivityAlert.isShowing() && !this._connectivityAlert.isDismissed())
-        this._connectivityAlert.dismiss();
-    }
+  void _connectivityHandler(bool value) {
+
   }
 }

@@ -22,7 +22,7 @@ class RoutingModule implements IRouting {
       if (!this._routes.routeList().contains(route))
         throw Exception("Routing error: trying to reach an unknown route: "+route);
       if (popStack)
-        Navigator.pushNamedAndRemoveUntil(context, route, (Route<dynamic> route) => false);
+        Navigator.pushNamedAndRemoveUntil(context, route, ModalRoute.withName(_routes.loginPage));
       else
         Navigator.pushNamed(context, route);
     }
