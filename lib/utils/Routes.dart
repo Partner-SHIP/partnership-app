@@ -5,7 +5,11 @@ import 'package:partnership/ui/SignInPage.dart';
 import 'package:partnership/ui/SignUpPage.dart';
 import 'package:partnership/ui/ProfilePage.dart';
 import 'package:partnership/ui/ProjectDescriptionPage.dart';
+import 'package:partnership/ui/ProjectBrowsingPage.dart';
 import 'package:partnership/ui/testing_page.dart';
+import 'package:partnership/ui/CreationPage.dart';
+import 'package:partnership/ui/IdeaPage.dart';
+
 
 
 enum RoutesEnum {
@@ -19,8 +23,11 @@ abstract class  IRoutes {
   String        get signUpPage;
   String        get profilePage;
   String        get testingPage;
+  String        get creationPage;
+  String        get ideaPage;
   String        get homePage;
   String        get projectDescriptionPage;
+  String        get projectBrowsingPage;
 
   dynamic            routeMap();
   List<String>   routeList();
@@ -41,6 +48,9 @@ class Routes implements IRoutes {
   static const String _testingPage = "/testing_page";
   static const String _homePage = "/home_page";
   static const String _projectDescriptionPage = "/project_description_page";
+  static const String _projectBrowsingPage = "/project_browsing_page";
+  static const String _creationPage = "/creation_page";
+  static const String _ideaPage = "/idea_page";
   dynamic _routeMap() {
     return {
       //_root:                      (BuildContext context) => LoginPage(), // FallBack
@@ -50,6 +60,9 @@ class Routes implements IRoutes {
       _profilePage:               (BuildContext context) => ProfilePage(),
       _homePage:                  (BuildContext context) => HomePage(),
       _projectDescriptionPage:    (BuildContext context) => ProjectDescriptionPage(),
+      _projectBrowsingPage:       (BuildContext context) => ProjectBrowsingPage(),
+      _creationPage:              (BuildContext context) => CreationPage(),
+      _ideaPage:                  (BuildContext context) => IdeaPage()
     };  
   }
   Map<String, RoutesEnum> _routeEnumMap() {
@@ -61,8 +74,12 @@ class Routes implements IRoutes {
       _profilePage:             RoutesEnum.profilePage,
       _homePage:                RoutesEnum.homePage,
       _projectDescriptionPage:  RoutesEnum.projectDescriptionPage,
+      _projectBrowsingPage:     RoutesEnum.projectBrowsingPage,
+      _creationPage:            RoutesEnum.creationPage,
+      _ideaPage:                RoutesEnum.ideaPage,
     };
   }
+
    List<String> _routesList() => <String>[/*_root,*/ _loginPage, _signInPage, _signUpPage, _profilePage, _homePage, _projectDescriptionPage];
 
   @override
@@ -88,6 +105,15 @@ class Routes implements IRoutes {
 
   @override
   String get projectDescriptionPage => _projectDescriptionPage;
+
+  @override
+  String get projectBrowsingPage => _projectBrowsingPage;
+
+  @override
+  String get creationPage => _creationPage;
+
+  @override
+  String get ideaPage => _ideaPage;
 
   @override
   List<String> routeList() {

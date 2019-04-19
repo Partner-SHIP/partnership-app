@@ -1,15 +1,15 @@
 ```plantuml
 @startuml SignInPageViewModel
 
-!include AViewModel.md
-
 package viewmodel {
     class   SignInPageViewModel {
-        
+        -- fields --
+        - SignInPageModel _model
+        -- methods --
+        + SignInPageViewModel()
+        -- getters --
+        + SignInPageModel()
     }
 }
-
-AViewModel --|> SignInPageViewModel
-
 @enduml
 ```

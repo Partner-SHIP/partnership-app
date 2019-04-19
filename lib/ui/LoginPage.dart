@@ -33,7 +33,7 @@ class LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     _scaffoldContext = context;
-
+    Color backgroundColor = Colors.grey[850];
     final topContainer = Container(
       child: Center(
           child: Align(
@@ -50,14 +50,17 @@ class LoginPageState extends State<LoginPage> {
         duration: new Duration(seconds: 5),
       ));
     }
+
     final alreadyAccountButton = LargeButton(
-      text:"J'ai déjà un compte",
-      onPressed: () {
-        this.viewModel.changeView(route: _routing.signInPage, widgetContext: context);
-      }
-    );
+        text: "J'ai déjà un compte",
+        onPressed: () {
+          this
+              .viewModel
+              .changeView(route: _routing.signInPage, widgetContext: context);
+        });
 
     final signUpButton = LargeButton(
+
       text:"Je veux m'inscrire",
       onPressed: () { this
                 .viewModel
@@ -65,6 +68,7 @@ class LoginPageState extends State<LoginPage> {
       }
 
     );
+
 
     final whatIsButton = FlatButton(
       child: Text('Mais c\'est quoi PartnerSHIP ?',
@@ -76,29 +80,50 @@ class LoginPageState extends State<LoginPage> {
         onPressForgot();
       },
     );
-
-    final bottomContainer = Container(
-      child: Column(
-        children: <Widget>[
-          Image.asset(
-            'assets/img/logo_partnership.png',
-            height: 150,
-          ),
-          alreadyAccountButton,
-          signUpButton,
-          whatIsButton,
-        ],
-      ),
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double bannerHeight = 240;
+    final double paddingHeight = 24;
+    final double paddedHeight = MediaQuery.of(context).size.height - paddingHeight;
+    final BoxDecoration backgroundFade = BoxDecoration(
+        image: DecorationImage(
+            fit: BoxFit.cover,
+            image: AssetImage("assets/img/work-office.png"),
+            colorFilter: ColorFilter.mode(
+                Colors.black.withOpacity(0.3), BlendMode.srcATop)),
+        color: Colors.red);
+    final Container topContainer = Container(
+      height: bannerHeight,
+      width: screenWidth,
+      decoration: backgroundFade,
+      child: Image.asset('assets/img/logo_partnership.png'),
+      padding: EdgeInsets.only(
+          top: bannerHeight * 1 / 20, bottom: bannerHeight * 1 / 10),
     );
+    final bottomContainer = Container(
+      width: screenWidth,
+        height: paddedHeight - bannerHeight,
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisSize: MainAxisSize.max,
+      children: <Widget>[
+        alreadyAccountButton,
+        signUpButton,
+        whatIsButton,
+      ],
+    ));
 
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+        backgroundColor: backgroundColor,
         body: SingleChildScrollView(
             child: Container(
-      child: Column(
-        children: <Widget>[topContainer, bottomContainer],
-      ),
-    )));
+          height: MediaQuery.of(context).size.height,
+          padding: EdgeInsets.only(top: paddingHeight),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[topContainer, bottomContainer],
+          ),
+        )));
   }
 
   void _connectivityHandler(bool value) async {
