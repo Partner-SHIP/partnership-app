@@ -106,12 +106,12 @@ class _HomePageState extends State<HomePage> {
   }
   Container _buildActions(double height) {
     FloatingActionButton createProjectAction = FloatingActionButton(child:Icon(Icons.add), onPressed: () {}, backgroundColor: Colors.grey[700],);
-    FloatingActionButton joinProjectAction = FloatingActionButton(child:Icon(Icons.file_download), onPressed: () {}, backgroundColor: Colors.grey[700]);
+    //FloatingActionButton joinProjectAction = FloatingActionButton(child:Icon(Icons.file_download), onPressed: () {}, backgroundColor: Colors.grey[700]);
     Row actionsRow = Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           Padding(child: createProjectAction, padding:EdgeInsets.symmetric(horizontal: 5)),
-          Padding(child: joinProjectAction, padding: EdgeInsets.only(left: 5)),
+          //Padding(child: joinProjectAction, padding: EdgeInsets.only(left: 5)),
         ],
     );
     Container actions = Container(child:actionsRow);

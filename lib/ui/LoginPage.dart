@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:ui';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/viewmodel/LoginPageViewModel.dart';
@@ -33,23 +34,7 @@ class LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     _scaffoldContext = context;
-    Color backgroundColor = Colors.grey[850];
-    final topContainer = Container(
-      child: Center(
-          child: Align(
-        child: Image.asset(
-          'assets/img/work-office.png',
-        ),
-      )),
-    );
 
-    //snackbar ne s'affiche pas
-    onPressForgot() {
-      Scaffold.of(_scaffoldContext).showSnackBar(new SnackBar(
-        content: new Text('Server error'),
-        duration: new Duration(seconds: 5),
-      ));
-    }
 
     final alreadyAccountButton = LargeButton(
         text: "J'ai déjà un compte",
@@ -69,7 +54,6 @@ class LoginPageState extends State<LoginPage> {
 
     );
 
-
     final whatIsButton = FlatButton(
       child: Text('Mais c\'est quoi PartnerSHIP ?',
           style: TextStyle(
@@ -77,54 +61,75 @@ class LoginPageState extends State<LoginPage> {
             color: Colors.white,
           )),
       onPressed: () {
-        onPressForgot();
       },
     );
-    final double screenWidth = MediaQuery.of(context).size.width;
-    final double bannerHeight = 240;
-    final double paddingHeight = 24;
-    final double paddedHeight = MediaQuery.of(context).size.height - paddingHeight;
-    final BoxDecoration backgroundFade = BoxDecoration(
+
+
+    final topContainer = Container(
+      decoration: BoxDecoration(
         image: DecorationImage(
-            fit: BoxFit.cover,
-            image: AssetImage("assets/img/work-office.png"),
-            colorFilter: ColorFilter.mode(
-                Colors.black.withOpacity(0.3), BlendMode.srcATop)),
-        color: Colors.red);
-    final Container topContainer = Container(
-      height: bannerHeight,
-      width: screenWidth,
-      decoration: backgroundFade,
-      child: Image.asset('assets/img/logo_partnership.png'),
-      padding: EdgeInsets.only(
-          top: bannerHeight * 1 / 20, bottom: bannerHeight * 1 / 10),
+            image: AssetImage('assets/img/work-office.png'),
+            fit: BoxFit.fill
+        )
+      ),
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height / 2.5,
+      );
+
+    final botContainer = Container(
+      decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage('assets/img/logo_partnership.png'),
+              fit: BoxFit.fitHeight
+          )
+      ),
+      child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                child: Column(children: <Widget>[
+                  SizedBox(width: 0, height: 50),
+                  Center(child: Text("PartnerShip",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 50,
+                          fontWeight: FontWeight.bold,
+                          fontStyle: FontStyle.italic
+                          //fontFamily: 'PeaceSans'
+                      )
+                  )
+                  ),
+                  SizedBox(width: 0, height: 30),
+                  alreadyAccountButton,
+                  signUpButton,
+                  whatIsButton,
+                ],
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.lightBlueAccent.withOpacity(0.2),
+                  //borderRadius: BorderRadius.all(Radius.circular(10))
+                ),
+            ),
+      ),
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height - MediaQuery.of(context).size.height / 2.25,
     );
-    final bottomContainer = Container(
-      width: screenWidth,
-        height: paddedHeight - bannerHeight,
-        child: Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      mainAxisSize: MainAxisSize.max,
-      children: <Widget>[
-        alreadyAccountButton,
-        signUpButton,
-        whatIsButton,
-      ],
-    ));
 
     return Scaffold(
-        backgroundColor: backgroundColor,
-        body: SingleChildScrollView(
-            child: Container(
-          height: MediaQuery.of(context).size.height,
-          padding: EdgeInsets.only(top: paddingHeight),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[topContainer, bottomContainer],
+        backgroundColor: Colors.blueGrey,
+        body: SafeArea(
+            child: SingleChildScrollView(
+                    child: Column(
+                    children: <Widget>[
+                      topContainer,
+                      botContainer,
+                    ],
           ),
-        )));
+        ))
+    );
   }
+
+
 
   void _connectivityHandler(bool value) async {
     if (!value){

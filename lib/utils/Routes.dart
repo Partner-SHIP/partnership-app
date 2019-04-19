@@ -13,7 +13,7 @@ import 'package:partnership/ui/IdeaPage.dart';
 
 
 enum RoutesEnum {
-  /*root,*/ loginPage, signInPage, signUpPage, profilePage, testingPage, homePage, projectDescriptionPage
+  /*root,*/ loginPage, signInPage, signUpPage, profilePage, testingPage, homePage, projectDescriptionPage, projectBrowsingPage, creationPage, ideaPage
 }
 
 abstract class  IRoutes {
@@ -80,7 +80,7 @@ class Routes implements IRoutes {
     };
   }
 
-   List<String> _routesList() => <String>[/*_root,*/ _loginPage, _signInPage, _signUpPage, _profilePage, _homePage, _projectDescriptionPage];
+   List<String> _routesList() => <String>[/*_root,*/ _loginPage, _signInPage, _signUpPage, _profilePage, _homePage, _projectDescriptionPage, _projectBrowsingPage, _creationPage, _ideaPage];
 
   @override
   String get loginPage => _loginPage;

@@ -56,6 +56,7 @@ abstract class AViewModelFactory
         case RoutesEnum.creationPage:
           viewModel = CreationPageViewModel(_routing.creationPage);
           register[_routing.creationPage] = viewModel;
+          break;
         case RoutesEnum.homePage:
           viewModel = HomePageViewModel(_routing.homePage);
           register[_routing.homePage] = viewModel;

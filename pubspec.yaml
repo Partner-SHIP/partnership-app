@@ -19,7 +19,6 @@ dependencies:
   path_provider: ^0.5.0+1
   firebase_storage:
 
-  image_picker: ^0.4.12+1
   cupertino_icons: ^0.1.2
 
   fluro: "^1.4.0"
@@ -51,6 +50,11 @@ flutter:
     - assets/
 
 fonts:
+
+    - family: PeaceSans
+      fonts:
+        - asset: assets/PeaceSans/Peace_Sans_Webfont.ttf
+
     - family: WorkSansSemiBold
       fonts:
         - asset: assets/fonts/Work_Sans/WorkSans-Semibold.ttf

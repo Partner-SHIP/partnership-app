@@ -68,15 +68,13 @@ class _SignInPageState extends State<SignInPage> {
               });
               this.viewModel.signInAction(this._data).then((value){
                 if (value) {
-                  displaySuccessSnackBar();
+                  print("coucou !");
                   this.viewModel.afterSignIn(context);
                 }
                 setState(() {
                   busy = false;
                 });
               });
-              
-
             }
           },
         ),

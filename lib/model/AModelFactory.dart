@@ -50,6 +50,7 @@ abstract class AModelFactory{
         case RoutesEnum.creationPage:
           model = CreationPageModel();
           register[_routing.creationPage] = model;
+          break;
         case RoutesEnum.homePage:
           model = ProjectModel();
           register[_routing.homePage] = model;
