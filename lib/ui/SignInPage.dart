@@ -94,7 +94,7 @@ class _SignInPageState extends State<SignInPage> {
             children: <Widget>[
               Image.asset(
                 'assets/img/logo_partnership.png',
-                height: 150,
+                height: 50,
               ),
               TextFormField(
                   validator: (value) {
