@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
@@ -16,6 +17,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final GlobalKey<ScaffoldState> _mainKey = GlobalKey<ScaffoldState>();
   final SignUpData           _data = SignUpData();
   StreamSubscription _connectivitySub;
+  bool _termsChecked = false;
   bool  busy = false;
 
   SignUpPageViewModel get viewModel =>
@@ -53,7 +55,7 @@ class _SignUpPageState extends State<SignUpPage> {
           color: Colors.lightBlueAccent,
           child: Text('Je m\'inscris', style: TextStyle(color: Colors.white)),
           onPressed: () {
-            if (this._formKey.currentState.validate()) {
+            if (this._formKey.currentState.validate() && _termsChecked) {
               this._formKey.currentState.save();
               setState(() {
                 busy = true;
@@ -85,7 +87,7 @@ class _SignUpPageState extends State<SignUpPage> {
             children: <Widget>[
               Image.asset(
                 'assets/img/logo_partnership.png',
-                height: 150,
+                height: 50,
               ),
               busy ? CircularProgressIndicator() : Container(width: 0, height: 0),
               TextFormField(
@@ -167,10 +169,48 @@ class _SignUpPageState extends State<SignUpPage> {
                     icon: Icon(Icons.check_circle_outline, color: Colors.grey),
                     hintText: 'Confirmer le mot de passe',
                   )),
+              CheckboxListTile(
+                activeColor: Theme.of(context).accentColor,
+                title: RichText(
+                    text: TextSpan(children: [
+                      TextSpan(text: "J'accepte les ", style: TextStyle(color: Colors.grey.shade700)),
+                      TextSpan(
+                          text: "Conditions d'utilisations",
+                          style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+                          recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            viewModel.getAssetBundle().loadString('assets/texts/terms&conditions.txt').then((value){
+                              showDialog(context: context, builder: (BuildContext context){
+                                return AlertDialog(
+                                  title: Text("Conditions d'utilisations"),
+                                  content: SingleChildScrollView(
+                                      child: Text(value)
+                                  ),
+                                  actions: <Widget>[
+                                    FlatButton(
+                                      child: Text("Annuler"),
+                                      onPressed: () => Navigator.of(context).pop(),
+                                    )
+                                  ],
+                                );
+                              });
+                            });
+                          }
+                      )
+                    ])
+                ),
+                value: _termsChecked,
+                onChanged: (bool value) => setState(() => _termsChecked = value),
+                subtitle: !_termsChecked
+                    ? Padding(
+                  padding: EdgeInsets.fromLTRB(12.0, 0, 0, 0),
+                  child: Text('accord requis', style: TextStyle(color: Color(0xFFe53935), fontSize: 12),),)
+                    : null,
+              ),
               Container(
                 width: screenSize.width,
                 child: signUpButton,
-              )
+              ),
             ],
           ),
         ));

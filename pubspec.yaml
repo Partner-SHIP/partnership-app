@@ -41,6 +41,7 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/texts/terms&conditions.txt
     - assets/test.png
     - assets/img/logo_partnership.png
     - assets/img/work-office.png
