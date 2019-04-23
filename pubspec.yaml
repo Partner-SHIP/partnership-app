@@ -50,21 +50,13 @@ flutter:
     - assets/bubble_texture.jpg
     - assets/
 
-fonts:
-
+  fonts:
     - family: PeaceSans
       fonts:
         - asset: assets/PeaceSans/Peace_Sans_Webfont.ttf
 
-    - family: WorkSansSemiBold
+    - family: Copperhead
       fonts:
-        - asset: assets/fonts/Work_Sans/WorkSans-Semibold.ttf
-
-    - family: WorkSansBold
-      fonts:
-        - asset: assets/fonts/Work_Sans/WorkSans-Bold.ttf
-
-    - family: WorkSansMedium
-      fonts:
-        - asset: assets/fonts/Work_Sans/WorkSans-Medium.ttf
+        - asset: assets/fonts/Copperhead_Condensed_Demo.ttf
+          style: normal
 

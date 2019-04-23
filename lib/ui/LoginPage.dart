@@ -4,7 +4,6 @@ import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/viewmodel/LoginPageViewModel.dart';
 import 'package:partnership/ui/widgets/LargeButton.dart';
-import 'package:permission/permission.dart';
 import 'dart:async';
 
 class LoginPage extends StatefulWidget {
@@ -115,17 +114,69 @@ class LoginPageState extends State<LoginPage> {
       height: MediaQuery.of(context).size.height - MediaQuery.of(context).size.height / 2.25,
     );
 
+    final titleWidget = Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height / 5,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            ClipRect(
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width / 1.15,
+                    height: 3,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(colors: [Color(0xff20264c).withOpacity(0.1), Colors.black.withOpacity(0.4), Color(0xff20264c).withOpacity(0.1)]),
+                      //color: Colors.black.withOpacity(0.3),
+                    ),
+                  ),
+                )
+            ),
+            Text('PartnerShip',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Copperhead',
+                  fontSize: 35
+              )
+            ),
+            ClipRect(
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width / 1.15,
+                    height: 3,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(colors: [Color(0xff35294f).withOpacity(0.1), Colors.black.withOpacity(0.4), Color(0xff35294f).withOpacity(0.1)]),
+                      //color: Colors.black.withOpacity(0.3),
+                    ),
+                  ),
+                )
+            )
+          ],
+        )
+      );
+
     return Scaffold(
         backgroundColor: Colors.blueGrey,
         body: SafeArea(
-            child: SingleChildScrollView(
-                    child: Column(
-                    children: <Widget>[
-                      topContainer,
-                      botContainer,
-                    ],
-          ),
-        ))
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(begin:Alignment.topCenter, end:Alignment.bottomCenter,colors: [Color(0xff14244a), Color(0xff82365c)])
+              ),
+              child: Column(children: <Widget>[
+                Padding(
+                  child: Image.asset('assets/img/logo_partnership.png', width:50, height: 50),
+                  padding: EdgeInsets.only(top: 20, bottom: 30),
+                ),
+                titleWidget
+              ]),
+            )
+        )
     );
   }
 
