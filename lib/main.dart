@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:partnership/coordinator/AppCoordinator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -8,5 +9,7 @@ void main() {
       timestampsInSnapshotsEnabled: true,
       persistenceEnabled: true
   );
-  runApp(new PartnershipApp());
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((_) {
+    runApp(new PartnershipApp());
+  });
 }
