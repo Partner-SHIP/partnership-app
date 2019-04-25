@@ -9,6 +9,7 @@ void main() {
       timestampsInSnapshotsEnabled: true,
       persistenceEnabled: true
   );
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.transparent));
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((_) {
     runApp(new PartnershipApp());
   });

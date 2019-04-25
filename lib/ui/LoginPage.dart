@@ -7,6 +7,11 @@ import 'package:partnership/style/theme.dart';
 import 'dart:async';
 import 'dart:ui';
 
+class ContactFields {
+  String subject;
+  String message;
+}
+
 class LoginPage extends StatefulWidget {
   @override
   LoginPageState createState() => LoginPageState();
@@ -16,6 +21,8 @@ class LoginPageState extends State<LoginPage> {
   BuildContext _scaffoldContext;
   IRoutes      _routing = Routes();
   StreamSubscription _connectivitySub;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  ContactFields _data = ContactFields();
   LoginPageViewModel get viewModel =>
       AViewModelFactory.register[_routing.loginPage];
 
@@ -56,9 +63,11 @@ class LoginPageState extends State<LoginPage> {
             ),
             Text('PartnerShip',
                 style: TextStyle(
-                  color: Colors.white,
+                  //color: Colors.white,
                   fontFamily: 'Copperplate',
-                  fontSize: 35
+                  fontSize: 35,
+                  foreground: Paint()
+                    ..shader = Gradients.verticalMetallic.createShader(Rect.fromLTWH(0, 150, 250, 40))
               )
             ),
             ClipRect(
@@ -150,6 +159,7 @@ class LoginPageState extends State<LoginPage> {
     return Scaffold(
         resizeToAvoidBottomPadding: false,
         body: SafeArea(
+            top: false,
             child: Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
@@ -159,7 +169,7 @@ class LoginPageState extends State<LoginPage> {
               child: Column(children: <Widget>[
                 Padding(
                   child: Image.asset('assets/img/logo_partnership.png', width:50, height: 50),
-                  padding: EdgeInsets.only(top: 20, bottom: 30),
+                  padding: EdgeInsets.only(top: 30, bottom: 30),
                 ),
                 titleWidget,
                 Padding(
@@ -182,20 +192,44 @@ class LoginPageState extends State<LoginPage> {
         ),
         content: SingleChildScrollView(
             child: Container(
-              //width: MediaQuery.of(context).size.width / 2,
               child: Form(
+                  key: this._formKey,
                   child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text(
-                      'Sujet:',
-                        style: TextStyle(fontFamily: 'Orkney')
+                   TextFormField(
+                      maxLines: 1,
+                      maxLength: 30,
+                      validator: (value) {
+                       if (value.isEmpty) {
+                         return ('Veuillez renseigner le sujet de votre message');
+                       }
+                      },
+                      onSaved: (value) => this._data.subject = value,
+                      decoration: InputDecoration(
+                        labelText: "Sujet",
+                        hintText: "le sujet de votre message...",
+                        labelStyle: TextStyle(fontFamily: "Orkney"),
+                        hintStyle: TextStyle(fontFamily: "Orkney")
+                      ),
                     ),
-                    TextFormField(),
-                    Text(
-                      'Message:',
-                        style: TextStyle(fontFamily: 'Orkney')
-                    ),
-                    TextFormField()
+                    TextFormField(
+                      maxLines: 10,
+                      maxLength: 300,
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return ('Veuillez renseigner votre message');
+                        }
+                      },
+                      onSaved: (value) => this._data.message = value,
+                      decoration: InputDecoration(
+                        labelText: "Message",
+                        hintText: "écrivez-nous içi...",
+                        labelStyle: TextStyle(fontFamily: "Orkney"),
+                        hintStyle: TextStyle(fontFamily: "Orkney")
+                      ),
+                    )
                   ],
                 )
               ),
@@ -215,9 +249,12 @@ class LoginPageState extends State<LoginPage> {
                 style: TextStyle(fontFamily: 'Orkney')
               ),
               onPressed: () {
-                viewModel.contactUsByInAppMail(subject: null, message: null).then((_) {
-                  Navigator.of(context).pop();
-                });
+                if (this._formKey.currentState.validate()) {
+                  this._formKey.currentState.save();
+                  viewModel.contactUsByInAppMail(subject: _data.subject, message: _data.message).then((_) {
+                    Navigator.of(context).pop();
+                  });
+                }
               }
           )
         ],
