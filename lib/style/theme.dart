@@ -80,11 +80,11 @@ class Gradients {
   static LinearGradient metallic = buildGradient(_topLeftBeginAlignment, _bottomRightEndAlignment, const [
     Color(0xffffffff),
     Color(0xff7b7b7b),
-    /*0xffbdbdbd < 0xffa5a5a5*/
+    /*0xffbdbdbd < 0xffa5a5a5 < 949494 < 7b7b7b*/
   ]);
   static LinearGradient verticalMetallic = buildGradient(_topCenterBeginAlignment, _bottomCenterEndAlignment, const [
     Color(0xffffffff),
-    Color(0xff7b7b7b),
+    Color(0xffbdbdbd),
   ]);
 }
 

@@ -9,8 +9,11 @@ void main() {
       timestampsInSnapshotsEnabled: true,
       persistenceEnabled: true
   );
+  //ApplicationSwitcherDescription description = ApplicationSwitcherDescription(label:'LOL', primaryColor: 0xff502e54);
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((_) {
-    runApp(new PartnershipApp());
-  });
+  //SystemChrome.setApplicationSwitcherDescription(description).then((_){
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((_) {
+      runApp(new PartnershipApp());
+    });
+  //});
 }
