@@ -1,5 +1,5 @@
 import 'dart:ui';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/cupertino.dart';
 
 /*
@@ -9,10 +9,10 @@ import 'package:flutter/cupertino.dart';
 * */
 
 class Gradients {
-  static AlignmentGeometry _topLeftBeginAlignment = Alignment.topLeft;
-  static AlignmentGeometry _bottomRightEndAlignment = Alignment.bottomRight;
-  static AlignmentGeometry _topCenterBeginAlignment = Alignment.topCenter;
-  static AlignmentGeometry _bottomCenterEndAlignment = Alignment.bottomCenter;
+  static const AlignmentGeometry _topLeftBeginAlignment = Alignment.topLeft;
+  static const AlignmentGeometry _bottomRightEndAlignment = Alignment.bottomRight;
+  static const AlignmentGeometry _topCenterBeginAlignment = Alignment.topCenter;
+  static const AlignmentGeometry _bottomCenterEndAlignment = Alignment.bottomCenter;
 
   static LinearGradient buildGradient(AlignmentGeometry begin, AlignmentGeometry end, List<Color> colors) =>
       LinearGradient(begin: begin, end: end, colors: colors);
@@ -86,15 +86,40 @@ class Gradients {
     Color(0xffffffff),
     Color(0xffbdbdbd),
   ]);
+
+  static LinearGradient verticalDawn = buildGradient(_topCenterBeginAlignment, _bottomCenterEndAlignment, const [
+    Color(0xff14244a),
+    Color(0xff82365c)
+  ]);
 }
 
-class Theme {
+class AppTheme {
+  LinearGradient _bgGradient;
+  LinearGradient _btnGradient;
+  LinearGradient get bgGradient => _bgGradient;
+  LinearGradient get btnGradient => _btnGradient;
+  AppTheme({@required LinearGradient backgroundGradient, @required LinearGradient buttonGradient}){
+    _bgGradient = backgroundGradient;
+    _btnGradient = buttonGradient;
+  }
+}
 
-  const Theme();
+enum enumTheme {
+  DAWN,
+}
 
+abstract class AThemes {
+  static final AppTheme _dawnTheme = AppTheme(backgroundGradient: Gradients.verticalDawn, buttonGradient: Gradients.metallic);
+  static final Map<enumTheme, AppTheme> _themesMap = {
+    enumTheme.DAWN: _dawnTheme
+  };
+  static AppTheme selectedTheme = _themesMap[enumTheme.DAWN];
+  void changeTheme({@required enumTheme newTheme}){
+    selectedTheme = _themesMap[newTheme];
+  }
+// OLD THEME BELOW
   static const Color loginGradientStart = const Color(0xFF99DAFF);
   static const Color loginGradientEnd = const Color(0xFF008080);
-
   static const primaryGradient = const LinearGradient(
     colors: const [loginGradientStart, loginGradientEnd],
     stops: const [0.0, 1.0],

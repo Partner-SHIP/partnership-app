@@ -3,7 +3,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/viewmodel/SignInPageViewModel.dart';
+import 'package:partnership/style/theme.dart';
+import 'package:partnership/ui/widgets/ThemeContainer.dart';
 import 'dart:async';
+import 'dart:ui';
 
 class SignInPage extends StatefulWidget {
   @override
@@ -15,6 +18,7 @@ class _SignInPageState extends State<SignInPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final SignInData           _data = SignInData();
   bool                        busy = false;
+  bool                       _switch = false;
   StreamSubscription _connectivitySub;
   IRoutes _routing = Routes();
   SignInPageViewModel get viewModel =>
@@ -39,14 +43,13 @@ class _SignInPageState extends State<SignInPage> {
 
   @override
   Widget build(BuildContext context) {
+/*
     final Size screenSize = MediaQuery.of(context).size;
-
     final topBar = AppBar(
       backgroundColor: Colors.lightBlueAccent.shade100,
       title: Text('Connectez vous'),
       centerTitle: true,
     );
-
     final signInButton = Padding(
       padding: EdgeInsets.symmetric(vertical: 16.0),
       child: Material(
@@ -80,9 +83,6 @@ class _SignInPageState extends State<SignInPage> {
         ),
       ),
     );
-
-    
-
     final formContainer = Container(
         padding: EdgeInsets.all(20.0),
         width: screenSize.width,
@@ -148,7 +148,6 @@ class _SignInPageState extends State<SignInPage> {
             ],
           ),
         ));
-
     final bottomContainer = Container(
       child: Center(
         child: Column(
@@ -174,15 +173,80 @@ class _SignInPageState extends State<SignInPage> {
         ),
       ),
     );
+*/
+    final loginSwitcher = Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height / 8,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          Expanded(
+            child: FlatButton(
+                onPressed: () => setState(() => _switch = !_switch),
+                child: Text(
+                  'Email et Mdp',
+                  softWrap: false,
+                  style: TextStyle(
+                      color: _switch ? null : Colors.white,
+                      fontFamily: 'Orkney',
+                      fontSize: 15
+                  ),
+                ),
+            ),
+          ),
+          ClipRect(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 0.0, sigmaY: 0.0),
+                child: Container(
+                  width: 2,
+                  height: MediaQuery.of(context).size.height / 8,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.withOpacity(0.3),
+                  ),
+                ),
+              )
+          ),
+          Expanded(
+            child: FlatButton(
+              onPressed: () => setState(() => _switch = !_switch),
+              child: Text(
+                'Réseaux Sociaux',
+                softWrap: false,
+                style: TextStyle(
+                    color: _switch ? Colors.white : null,
+                    fontFamily: 'Orkney',
+                    fontSize: 15
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+
     return Scaffold(
-      resizeToAvoidBottomPadding: true,
-        appBar: topBar,
-        backgroundColor: Colors.grey[300],
-        key: this._mainKey,
-        body: SingleChildScrollView(
-            child: Column(
-          children: <Widget>[formContainer, bottomContainer],
-        )));
+        resizeToAvoidBottomPadding: false,
+        body: SafeArea(
+            top: false,
+            child: ThemeContainer(context, Column(
+              children: <Widget>[
+                Padding(
+                  child: Image.asset('assets/img/partnership_logo.png', width:110, height: 110),
+                  padding: EdgeInsets.only(top: 15, bottom: 15),
+                ),
+                Text(
+                  'Connexion',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 35,
+                    fontFamily: 'Orkney'
+                  ),
+                ),
+                loginSwitcher
+              ],
+            ))
+        )
+    );
   }
   void _connectivityHandler(bool value) {
 
