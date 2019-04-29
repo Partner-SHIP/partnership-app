@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/viewmodel/SignInPageViewModel.dart';
+import 'dart:async';
 
 class SignInPage extends StatefulWidget {
   @override
@@ -14,6 +15,7 @@ class _SignInPageState extends State<SignInPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final SignInData           _data = SignInData();
   bool                        busy = false;
+  StreamSubscription _connectivitySub;
   IRoutes _routing = Routes();
   SignInPageViewModel get viewModel =>
       AViewModelFactory.register[_routing.signInPage];
@@ -23,6 +25,17 @@ class _SignInPageState extends State<SignInPage> {
       var snackbar = SnackBar(content: Text("SignIn successful!"), duration: Duration(milliseconds: 5000));
                   this._mainKey.currentState.showSnackBar(snackbar);
     }
+  @override
+  void initState(){
+    super.initState();
+    this._connectivitySub = viewModel.subscribeToConnectivity(this._connectivityHandler);
+  }
+
+  @override
+  void dispose(){
+    this._connectivitySub.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,15 +68,13 @@ class _SignInPageState extends State<SignInPage> {
               });
               this.viewModel.signInAction(this._data).then((value){
                 if (value) {
-                  displaySuccessSnackBar();
+                  print("coucou !");
                   this.viewModel.afterSignIn(context);
                 }
                 setState(() {
                   busy = false;
                 });
               });
-              
-
             }
           },
         ),
@@ -83,7 +94,7 @@ class _SignInPageState extends State<SignInPage> {
             children: <Widget>[
               Image.asset(
                 'assets/img/logo_partnership.png',
-                height: 150,
+                height: 50,
               ),
               TextFormField(
                   validator: (value) {
@@ -172,6 +183,9 @@ class _SignInPageState extends State<SignInPage> {
             child: Column(
           children: <Widget>[formContainer, bottomContainer],
         )));
+  }
+  void _connectivityHandler(bool value) {
+
   }
 }
 

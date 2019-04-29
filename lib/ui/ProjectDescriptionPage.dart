@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/viewmodel/ProjectDescriptionPageViewModel.dart';
+import 'dart:async';
 
 final String lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 
@@ -13,8 +14,22 @@ class ProjectDescriptionPage extends StatefulWidget {
 class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
   bool busy = false;
   IRoutes _routing = Routes();
+  StreamSubscription _connectivitySub;
   ProjectDescriptionPageViewModel get viewModel =>
       AViewModelFactory.register[_routing.projectDescriptionPage];
+
+  @override
+  void initState(){
+    super.initState();
+    this._connectivitySub = viewModel.subscribeToConnectivity(this._connectivityHandler);
+  }
+
+  @override
+  void dispose(){
+    this._connectivitySub.cancel();
+    super.dispose();
+  }
+
   Row _buildBanner(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     Row result;
@@ -59,5 +74,9 @@ class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
         resizeToAvoidBottomPadding: true,
         backgroundColor: Colors.grey[300],
         body: SingleChildScrollView(child:Container(child: column,), padding: EdgeInsets.only(top:24),));
+  }
+
+  void _connectivityHandler(bool value) {
+
   }
 }
