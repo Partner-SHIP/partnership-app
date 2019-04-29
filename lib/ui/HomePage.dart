@@ -102,14 +102,22 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
     _stories.updateList(list:_debugMockupList());
+    BoxDecoration bd = BoxDecoration(
+      image: DecorationImage(
+        image:AssetImage("assets/img/back.png"),
+        fit: BoxFit.fill,
+      ),
+    );
     Widget rightDrawer = buildRightDrawer(context);
     Widget view = Scaffold(
       resizeToAvoidBottomPadding: false,
       backgroundColor: Colors.grey[300],
       endDrawer: rightDrawer,
       body: Container(
+          height: screenSize.height,
           padding: EdgeInsets.all(25.0),
           width: screenSize.width,
+          decoration: bd,
           child: Column(
             children: <Widget>[Padding(padding:EdgeInsets.only(top:40), child:_stories)],
           )),
