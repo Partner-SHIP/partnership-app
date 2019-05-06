@@ -13,13 +13,15 @@ class SignInPage extends StatefulWidget {
   _SignInPageState createState() => _SignInPageState();
 }
 
-class _SignInPageState extends State<SignInPage> {
+class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateMixin {
   final GlobalKey<ScaffoldState> _mainKey = GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final SignInData           _data = SignInData();
   bool                        busy = false;
   bool                       _switch = false;
   StreamSubscription _connectivitySub;
+  FocusNode _focusNode = FocusNode();
+  MainAxisAlignment _formAlignment = MainAxisAlignment.center;
   IRoutes _routing = Routes();
   SignInPageViewModel get viewModel =>
       AViewModelFactory.register[_routing.signInPage];
@@ -33,11 +35,25 @@ class _SignInPageState extends State<SignInPage> {
   void initState(){
     super.initState();
     this._connectivitySub = viewModel.subscribeToConnectivity(this._connectivityHandler);
+    _focusNode.addListener(() {
+      if (_focusNode.hasFocus) {
+        //_controller.forward();
+        setState(() {
+          _formAlignment = MainAxisAlignment.start;
+        });
+      } else {
+        //_controller.reverse();
+        setState(() {
+          _formAlignment = MainAxisAlignment.center;
+        });
+      }
+    });
   }
 
   @override
   void dispose(){
     this._connectivitySub.cancel();
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -233,16 +249,28 @@ class _SignInPageState extends State<SignInPage> {
       child: Form(
         key: _formKey,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: _formAlignment,
           children: <Widget>[
             Padding(
               child: TextFormField(
                 keyboardType: TextInputType.emailAddress,
                 maxLines: 1,
                 maxLength: 30,
-                onSaved: null,
+                //focusNode: _focusNode,
+                validator: (String value){
+                  if (value.isEmpty) {
+                    return ('Veuillez saisir une adresse email valide');
+                  }
+                  bool emailValid =
+                  RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                      .hasMatch(value);
+                  if (!emailValid) {
+                    return ('Email invalide');
+                  }
+                },
+                onSaved: (value) => this._data.email = value,
                 decoration: InputDecoration(
-                  hintText: 'Addresse email valide',
+                  hintText: 'Adresse email valide',
                   labelStyle: TextStyle(fontFamily: "Orkney"),
                   hintStyle: TextStyle(fontFamily: "Orkney"),
                   icon: Padding(
@@ -261,7 +289,13 @@ class _SignInPageState extends State<SignInPage> {
                 maxLines: 1,
                 maxLength: 30,
                 obscureText: true,
-                onSaved: null,
+                focusNode: _focusNode,
+                validator: (String value){
+                  if (value.isEmpty) {
+                    return ('Veuillez saisir un mot de passe');
+                  }
+                },
+                onSaved: (value) => this._data.password = value,
                 decoration: InputDecoration(
                   hintText: 'Mot de passe',
                   icon: Padding(
@@ -285,12 +319,29 @@ class _SignInPageState extends State<SignInPage> {
                     fontFamily: 'Orkney'
                   ),
                 ),
-                callback: null,
+                callback: () {
+                  if (_formKey.currentState.validate()) {
+                    this._formKey.currentState.save();
+                    setState(() {
+                      busy = true;
+                    });
+                    this.viewModel.signInAction(this._data).then((value){
+                      if (value) {
+                        print("coucou !");
+                        this.viewModel.afterSignIn(context);
+                      }
+                      setState(() {
+                        busy = false;
+                      });
+                    });
+                  }
+                },
                 increaseWidthBy: 80,
                 increaseHeightBy: 10
               ),
               padding: EdgeInsets.only(top: 40),
-            )
+            ),
+            //SizedBox(height: _animation.value)
           ],
         ),
       ),
@@ -363,30 +414,36 @@ class _SignInPageState extends State<SignInPage> {
 
     return Scaffold(
         resizeToAvoidBottomPadding: false,
-        body: SafeArea(
-            top: false,
-            child: ThemeContainer(context, Column(
-              children: <Widget>[
-                Padding(
-                  child: Image.asset('assets/img/partnership_logo.png', width:110, height: 110),
-                  padding: EdgeInsets.only(top: 15, bottom: 15),
-                ),
-                AutoSizeText(
-                  'Connexion',
-                  maxLines: 1,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 35,
-                    fontFamily: 'Orkney'
+        body: InkWell(
+          onTap: () {
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+          splashColor: Colors.transparent,
+          child: SafeArea(
+              top: false,
+              child: ThemeContainer(context, Column(
+                children: <Widget>[
+                  Padding(
+                    child: Image.asset('assets/img/partnership_logo.png', width:110, height: 110),
+                    padding: EdgeInsets.only(top: 15, bottom: 15),
                   ),
-                ),
-                loginSwitcher,
-                Padding(
-                  child: _switch ? providersContainer : formContainer,
-                  padding: EdgeInsets.only(top: 10),
-                )
-              ],
-            ))
+                  AutoSizeText(
+                    'Connexion',
+                    maxLines: 1,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 35,
+                        fontFamily: 'Orkney'
+                    ),
+                  ),
+                  loginSwitcher,
+                  Padding(
+                    child: _switch ? providersContainer : formContainer,
+                    padding: EdgeInsets.only(top: 10),
+                  )
+                ],
+              ))
+          )
         )
     );
   }
