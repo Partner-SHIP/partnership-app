@@ -37,7 +37,7 @@ class StoryListItem extends StatelessWidget {
     return (Text(_description, textAlign: TextAlign.right, style: storyDescriptionTextStyle, maxLines: 2, overflow: TextOverflow.fade));
   }
   Container _buildContainer({double width}) {
-    DecorationImage image = DecorationImage(image:AssetImage(_imgPath), fit: BoxFit.cover, alignment: Alignment.topCenter);
+    DecorationImage image = DecorationImage(image:NetworkImage(_imgPath), fit: BoxFit.cover, alignment: Alignment.topCenter);
     BoxDecoration decoration =BoxDecoration(color: Colors.lightBlue[200], borderRadius: BorderRadius.all(Radius.circular(5)), image: image);
     final double sidePadding = 10;
     Container result = Container(
