@@ -4,7 +4,7 @@ import 'package:partnership/model/AModel.dart';
 import 'package:partnership/utils/FBCollections.dart';
 
 class ProfilePageModel extends AModel {
-  ProfilePageModel(): super(const <String>[FBCollections.profiles, FBCollections.projects/*Collections needed here*/]);
+  ProfilePageModel(): super();
   String _name = 'Tom Cruise';
   String _location = 'New-York';
   String _studies = 'Harvard';

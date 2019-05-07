@@ -34,14 +34,13 @@ class _HomePageState extends State<HomePage> {
   void initState(){
     super.initState();
     this._connectivitySub = viewModel.subscribeToConnectivity(this._connectivityHandler);
+    viewModel.getStoryList((value) => this._updateStoryList(value));
   }
-
   @override
   void dispose(){
     this._connectivitySub.cancel();
     super.dispose();
   }
-
   Widget _buildDisconnectButton() {
     return (LargeButton(
       text: "Se déconnecter",
@@ -73,7 +72,6 @@ class _HomePageState extends State<HomePage> {
     ]);
     return (result);
   }
-
   Widget _buildRightDrawer(BuildContext context) {
     BoxDecoration drawerDecoration =
         new BoxDecoration();
@@ -92,26 +90,23 @@ class _HomePageState extends State<HomePage> {
       ),
     ));
   }
-  List<StoryListItem> _debugMockupList() {
-    List<StoryListItem> result = List<StoryListItem>();
-    result.add(StoryListItem(imgPath: "assets/img/login_logo.png", title: "Titre1", description: "description1",));
-    result.add(StoryListItem(imgPath: "assets/img/logo_partnership.png", title: "Titre2", description: "description2 description2 description2 description2 description2 description2 description2 description2 description2",));
-    result.add(StoryListItem(imgPath: "assets/blue_texture.jpg", title: "Titre3 Titre3 Titre3 Titre3 Titre3 Titre3", description: "description3",));
-    result.add(StoryListItem(imgPath: "", title: "Titre4", description: "description4",));
-    result.add(StoryListItem(imgPath: "", title: "Titre5", description: "description5",));
-    result.add(StoryListItem(imgPath: "", title: "Titre6", description: "description6",));
-    result.add(StoryListItem(imgPath: "", title: "Titre7", description: "description7",));
-    result.add(StoryListItem(imgPath: "", title: "Titre8", description: "description8",));
-    return (result);
+  void _updateStoryList(List<StoryData> param) {
+    this.setState(() {
+      this._stories = StoryList();
+      List<StoryListItem> newStories = param.map((elem) {
+        return (StoryListItem(imgPath: elem.imgPath, title:elem.title, description: elem.description));
+      }).toList();
+      this._stories.updateList(list:newStories);
+    });
   }
   Container _buildActions(double height) {
     FloatingActionButton createProjectAction = FloatingActionButton(child:Icon(Icons.add), onPressed: () {}, backgroundColor: Colors.grey[700],);
-    //FloatingActionButton joinProjectAction = FloatingActionButton(child:Icon(Icons.file_download), onPressed: () {}, backgroundColor: Colors.grey[700]);
+    FloatingActionButton joinProjectAction = FloatingActionButton(child:Icon(Icons.file_download), onPressed: () {}, backgroundColor: Colors.grey[700]);
     Row actionsRow = Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           Padding(child: createProjectAction, padding:EdgeInsets.symmetric(horizontal: 5)),
-          //Padding(child: joinProjectAction, padding: EdgeInsets.only(left: 5)),
+          Padding(child: joinProjectAction, padding: EdgeInsets.only(left: 5)),
         ],
     );
     Container actions = Container(child:actionsRow);
@@ -121,7 +116,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
     final double paddedHeight = screenSize.height - 24;
-    _stories.updateList(list:_debugMockupList(), height: paddedHeight - 14);
+    _stories.setHeight(paddedHeight - 14);
     Widget actions = _buildActions(paddedHeight / 8);
     Widget rightDrawer = _buildRightDrawer(context);
     Widget view = Scaffold(
