@@ -24,13 +24,6 @@ class ProfilePageViewModel extends AViewModel {
   String get backgroundUrl => this.model.backgroundUrl;
   //////////////////
   updateProfileInformations(List<String> data, File image){
-    ProfilePayload payload = this.model.createPayload(FBCollections.profiles);
-    payload.firstName = Tuple2<String, PayloadAction>(data[0], PayloadAction.WRITE);
-    payload.lastName = Tuple2<String, PayloadAction>(data[0], PayloadAction.WRITE);
-    //payload.location = Tuple2<GeoPoint, PayloadAction>(data[1], PayloadAction.WRITE);
-    //payload.studiesLocation = Tuple2<GeoPoint, PayloadAction>(data[2], PayloadAction.WRITE);
-    //payload.workLocation = Tuple2<GeoPoint, PayloadAction>(data[3], PayloadAction.WRITE);
-    payload.job = Tuple2<String, PayloadAction>(data[4], PayloadAction.WRITE);
     if (image != null)
       {
         // Upload image on storage
