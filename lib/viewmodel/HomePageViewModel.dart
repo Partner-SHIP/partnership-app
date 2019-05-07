@@ -1,6 +1,7 @@
 import 'package:partnership/model/ProjectModel.dart';
 import 'package:partnership/model/HomePageModel.dart';
 import 'package:partnership/viewmodel/AViewModel.dart';
+import 'package:partnership/utils/Routes.dart';
 import 'package:flutter/material.dart';
 
 class StoryData {
@@ -25,7 +26,7 @@ class HomePageViewModel extends AViewModel {
   HomePageModel _homePageModel = HomePageModel();
   void disconnect(BuildContext context) {
     this.changeView(
-        widgetContext: context, route: "/login_page", popStack: true);
+        widgetContext: context, route: "/" , popStack: true);
   }
 
   void goToProfile(BuildContext context) {
