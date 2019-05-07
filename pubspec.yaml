@@ -7,7 +7,9 @@ environment:
   sdk: ">=2.0.0-dev.68.0 <3.0.0"
 
 dependencies:
-
+  http: ^0.12.0+2
+  json_annotation: ^2.0.0
+  json_serializable: ^2.0.0
   cloud_firestore: ^0.8.2+3
 
   flutter:
@@ -16,13 +18,19 @@ dependencies:
   google_sign_in: ^3.2.4
   firebase_auth: ^0.6.6
   firebase_messaging: ^2.1.0
-  firebase_database:
+  path_provider: ^0.5.0+1
+  firebase_storage:
 
   cupertino_icons: ^0.1.2
 
   fluro: "^1.4.0"
   tuple: ^1.0.2
   connectivity: ^0.3.2
+  image_picker: ^0.4.12+1
+  flushbar: ^1.3.0
+  permission: ^0.1.1
+  url_launcher: ^5.0.2
+  material_search: ^0.2.8
 
 dev_dependencies:
   flutter_test:
@@ -35,23 +43,51 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/texts/terms&conditions.txt
     - assets/test.png
+    - assets/img/back.png
     - assets/img/logo_partnership.png
     - assets/img/work-office.png
     - assets/img/login_logo.png
     - assets/blue_texture.jpg
     - assets/bubble_texture.jpg
+    - assets/
 
-fonts:
-    - family: WorkSansSemiBold
+  fonts:
+    - family: Copperplate
       fonts:
-        - asset: assets/fonts/Work_Sans/WorkSans-Semibold.ttf
+        - asset: assets/fonts/OPTICopperplate.otf
+        - asset: assets/fonts/OPTICopperplate-Light.otf
+          weight: 100
+        - asset: assets/fonts/OPTICopperplate-Heavy.otf
+          weight: 700
 
-    - family: WorkSansBold
+    - family: Orkney
       fonts:
-        - asset: assets/fonts/Work_Sans/WorkSans-Bold.ttf
+        - asset: assets/fonts/Orkney-Regular.ttf
+        - asset: assets/fonts/Orkney-Regular-Italic.ttf
+          style: italic
+        - asset: assets/fonts/Orkney-Light.ttf
+          weight: 100
+        - asset: assets/fonts/Orkney-Light-Italic.ttf
+          weight: 100
+          style: italic
+        - asset: assets/fonts/Orkney-Medium.ttf
+          weight: 400
+        - asset: assets/fonts/Orkney-Medium-Italic.ttf
+          weight: 400
+          style: italic
+        - asset: assets/fonts/Orkney-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Orkney-Bold-Italic.ttf
+          weight: 700
+          style: italic
 
-    - family: WorkSansMedium
+    - family: PeaceSans
       fonts:
-        - asset: assets/fonts/Work_Sans/WorkSans-Medium.ttf
+        - asset: assets/PeaceSans/Peace_Sans_Webfont.ttf
+
+    - family: Copperhead
+      fonts:
+        - asset: assets/fonts/Copperhead_Condensed_Demo.ttf
 
