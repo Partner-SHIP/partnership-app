@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:partnership/style/theme.dart';
 
-Widget gradientContainer(BuildContext context, Gradient gradient, double incHeightBy, double incWidthBy, Widget child) {
+Widget gradientContainer(BuildContext context, double incHeightBy, double incWidthBy, Widget child) {
   final ButtonThemeData buttonTheme = ButtonTheme.of(context).copyWith(padding: const EdgeInsets.all(0.0));
   return Container(
     height: buttonTheme.height + incHeightBy,
     width: buttonTheme.minWidth + incWidthBy,
-    decoration: BoxDecoration(gradient: gradient),
+    decoration: BoxDecoration(gradient: AThemes.selectedTheme.btnGradient),
     child: Center(child: child),
   );
 }
 
 class RoundedGradientButton extends StatefulWidget {
   RoundedGradientButton(
-      {@required this.gradient,
+      {
         @required this.child,
         @required this.callback,
         this.shape,
@@ -22,10 +23,12 @@ class RoundedGradientButton extends StatefulWidget {
         this.isEnabled = true,
         this.disabledGradient,
         this.increaseHeightBy = 0.0,
-        this.increaseWidthBy = 0.0});
+        this.increaseWidthBy = 0.0}){
+    this.gradient = AThemes.selectedTheme.btnGradient;
+  }
 
   final Widget child;
-  final Gradient gradient;
+  Gradient gradient;
   final Gradient disabledGradient;
   final VoidCallback callback;
   final ShapeBorder shape;
@@ -133,7 +136,7 @@ class RoundedGradientButtonState extends State<RoundedGradientButton> with Singl
           clipBehavior: Clip.antiAliasWithSaveLayer,
           child: FadeTransition(
             opacity: _opacity,
-            child: gradientContainer(context, gradient, widget.increaseHeightBy, widget.increaseWidthBy, widget.child),
+            child: gradientContainer(context, widget.increaseHeightBy, widget.increaseWidthBy, widget.child),
           ),
         ),
       ),

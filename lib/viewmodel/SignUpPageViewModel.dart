@@ -24,7 +24,8 @@ class SignUpPageViewModel extends AViewModel {
 }
 
 class SignUpData {
-  String nickname = '';
+  String firstName = '';
+  String lastName = '';
   String email = '';
   String password = '';
   String confirmPassword = '';

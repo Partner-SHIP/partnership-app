@@ -4,6 +4,7 @@ import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/viewmodel/LoginPageViewModel.dart';
 import 'package:partnership/ui/widgets/RoundedGradientButton.dart';
 import 'package:partnership/style/theme.dart';
+import 'package:partnership/ui/widgets/ThemeContainer.dart';
 import 'dart:async';
 import 'dart:ui';
 
@@ -94,7 +95,6 @@ class LoginPageState extends State<LoginPage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           RoundedGradientButton(
-              gradient: Gradients.metallic,
               child: Text(
                   'CONNEXION',
                   style: TextStyle(
@@ -107,7 +107,6 @@ class LoginPageState extends State<LoginPage> {
               increaseHeightBy: 10
           ),
           RoundedGradientButton(
-              gradient: Gradients.metallic,
               child: Text(
                 'INSCRIPTION',
                 style: TextStyle(
@@ -160,25 +159,20 @@ class LoginPageState extends State<LoginPage> {
         resizeToAvoidBottomPadding: false,
         body: SafeArea(
             top: false,
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(begin:Alignment.topCenter, end:Alignment.bottomCenter,colors: [Color(0xff14244a), Color(0xff82365c)])
-              ),
-              child: Column(children: <Widget>[
+            child: ThemeContainer(context, Column(
+              children: <Widget>[
                 Padding(
                   child: Image.asset('assets/img/logo_partnership.png', width:50, height: 50),
                   padding: EdgeInsets.only(top: 30, bottom: 30),
                 ),
                 titleWidget,
                 Padding(
-                  child: logButtonsWidget,
-                  padding: EdgeInsets.only(top: 50, bottom: 30)
+                    child: logButtonsWidget,
+                    padding: EdgeInsets.only(top: 50, bottom: 30)
                 ),
                 contactButtonsWidget
-              ]),
-            )
+              ],
+            ))
         )
     );
   }

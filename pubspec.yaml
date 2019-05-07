@@ -31,6 +31,7 @@ dependencies:
   permission: ^0.1.1
   url_launcher: ^5.0.2
   material_search: ^0.2.8
+  auto_size_text: ^1.1.2 # MUST REPLACE ALL TEXT WIDGET SOON
 
 dev_dependencies:
   flutter_test:
@@ -47,6 +48,11 @@ flutter:
     - assets/test.png
     - assets/img/back.png
     - assets/img/logo_partnership.png
+    - assets/img/partnership_logo.png
+    - assets/img/login_provider_fb.png
+    - assets/img/login_provider_google.png
+    - assets/img/login_provider_insta.png
+    - assets/img/login_provider_twitter.png
     - assets/img/work-office.png
     - assets/img/login_logo.png
     - assets/blue_texture.jpg
