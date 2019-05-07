@@ -22,7 +22,7 @@ class HomePageViewModel extends AViewModel {
     _projectModel = super.abstractModel;
   }
   ProjectModel _projectModel;
-  HomePageModel _homePageModel;
+  HomePageModel _homePageModel = HomePageModel();
   void disconnect(BuildContext context) {
     this.changeView(
         widgetContext: context, route: "/login_page", popStack: true);
@@ -32,16 +32,14 @@ class HomePageViewModel extends AViewModel {
     this.changeView(widgetContext: context, route: "/profile_page");
   }
 
-  Future<List<StoryData>> getStoryList(BuildContext context) async {
-    List<StoryDataModel> list = _homePageModel.getStories();
-    return (
-      list.map((value) {
-        return (StoryData(
+  void getStoryList(Function updateList) async {
+    List<StoryDataModel> list = await _homePageModel.getStories();
+    List<StoryData> result = list.map((value) { 
+      return (StoryData(
           description: value.description,
           title: value.title,
-          img_path: value.imgPath
-        ));
-      })
-    );
+          img_path: value.img_path));
+    }).toList();
+    updateList(result);
   }
 }

@@ -4,10 +4,11 @@ class StoryList extends StatelessWidget {
   List<StoryListItem> _list;
   double _height;
   StoryList({double height = 450}) :_height = height;
-  void updateList({@required List<StoryListItem> list, double height}) {
+  void updateList({@required List<StoryListItem> list}) {
     _list = list;
-    if (height != null)
-      _height = height;
+  }
+  void setHeight(double height) {
+    _height = height;
   }
   Container _mapList() {
     return (Container(height: _height, child: SingleChildScrollView(child: Column(children:_list),),));

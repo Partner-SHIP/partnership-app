@@ -28,7 +28,6 @@ abstract class AViewModel implements AViewModelFactory
       if (!AModelFactory.register.containsKey(this._route) || !(AModelFactory.register[this._route] != null))
         throw Exception("Missing Model for "+this._route);
       this._abstractModel = AModelFactory.register[this._route];
-      this._abstractModel.assetBundle = this._coordinator.getAssetBundle();
     }
     catch (error){
       print(error);
