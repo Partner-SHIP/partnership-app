@@ -3,7 +3,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/viewmodel/SignInPageViewModel.dart';
-import 'dart:async';
 
 class SignInPage extends StatefulWidget {
   @override
@@ -11,31 +10,10 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
-  final GlobalKey<ScaffoldState> _mainKey = GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final SignInData           _data = SignInData();
-  bool                        busy = false;
-  StreamSubscription _connectivitySub;
   IRoutes _routing = Routes();
   SignInPageViewModel get viewModel =>
       AViewModelFactory.register[_routing.signInPage];
-
-  void  displaySuccessSnackBar()
-    {
-      var snackbar = SnackBar(content: Text("SignIn successful!"), duration: Duration(milliseconds: 5000));
-                  this._mainKey.currentState.showSnackBar(snackbar);
-    }
-  @override
-  void initState(){
-    super.initState();
-    this._connectivitySub = viewModel.subscribeToConnectivity(this._connectivityHandler);
-  }
-
-  @override
-  void dispose(){
-    this._connectivitySub.cancel();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,26 +40,14 @@ class _SignInPageState extends State<SignInPage> {
             // Validate will return true if the form is valid, or false if
             // the form is invalid.
             if (_formKey.currentState.validate()) {
-              this._formKey.currentState.save();
-              setState(() {
-                busy = true;
-              });
-              this.viewModel.signInAction(this._data).then((value){
-                if (value) {
-                  print("coucou !");
-                  this.viewModel.afterSignIn(context);
-                }
-                setState(() {
-                  busy = false;
-                });
-              });
+              // If the form is valid, we want to show a Snackbar
+              //Scaffold.of(context)
+              //   .showSnackBar(SnackBar(content: Text('Processing Data')));
             }
           },
         ),
       ),
     );
-
-    
 
     final formContainer = Container(
         padding: EdgeInsets.all(20.0),
@@ -94,7 +60,28 @@ class _SignInPageState extends State<SignInPage> {
             children: <Widget>[
               Image.asset(
                 'assets/img/logo_partnership.png',
-                height: 50,
+                height: 150,
+              ),
+              TextFormField(
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return ('Veuillez saisir un pseudo');
+                  }
+                  //TODO : regex pour le pseudal
+                  /* bool nicknameValid =
+                        RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                            .hasMatch(value);
+                    if (!nicknameValid) {
+                      return ('Pseudo invalide');
+                    }*/
+                },
+                decoration: InputDecoration(
+                  icon: Icon(
+                    Icons.supervisor_account,
+                    color: Colors.grey,
+                  ),
+                  hintText: 'Votre pseudo',
+                ),
               ),
               TextFormField(
                   validator: (value) {
@@ -108,7 +95,6 @@ class _SignInPageState extends State<SignInPage> {
                       return ('Email invalide');
                     }
                   },
-                  onSaved: (value) => this._data.email = value,
                   keyboardType: TextInputType
                       .emailAddress, // Use email input type for emails.
                   decoration: InputDecoration(
@@ -132,7 +118,6 @@ class _SignInPageState extends State<SignInPage> {
                       return ('Mot de passe invalide');
                     }*/
                   },
-                  onSaved: (value) => this._data.password = value,
                   obscureText: true, // Use secure text for passwords.
                   decoration: InputDecoration(
                     icon: Icon(
@@ -174,18 +159,21 @@ class _SignInPageState extends State<SignInPage> {
         ),
       ),
     );
-    return Scaffold(
-      resizeToAvoidBottomPadding: true,
+
+    /* return Scaffold(
         appBar: topBar,
         backgroundColor: Colors.grey[300],
-        key: this._mainKey,
-        body: SingleChildScrollView(
-            child: Column(
-          children: <Widget>[formContainer, bottomContainer],
-        )));
-  }
-  void _connectivityHandler(bool value) {
-
+        body: formContainer
+    );*/
+    return Scaffold(
+      resizeToAvoidBottomPadding: true,
+      appBar: topBar,
+      backgroundColor: Colors.grey[300],
+      //body: Container(child: formContainer),
+      body: SingleChildScrollView(
+          child: Column(
+        children: <Widget>[formContainer, bottomContainer],
+      )),
+    );
   }
 }
-
