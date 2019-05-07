@@ -7,6 +7,7 @@
 // import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/viewmodel/SignUpPageViewModel.dart';
@@ -336,10 +337,14 @@ class _SignUpPageState extends State<SignUpPage> {
           children: <Widget>[
             Padding(
                 child: TextFormField(
-                    keyboardType: TextInputType.emailAddress,
+                    keyboardType: TextInputType.text,
                     maxLines: 1,
                     maxLength: 30,
-                    onSaved: null,
+                    validator: (String value){
+                      if (value.isEmpty)
+                        return 'nom manquant';
+                    },
+                    onSaved: (String value) => this._data.lastName = value,
                     decoration: InputDecoration(
                         hintText: 'Votre Nom',
                         labelStyle: TextStyle(fontFamily: "Orkney"),
@@ -353,10 +358,14 @@ class _SignUpPageState extends State<SignUpPage> {
                     right: MediaQuery.of(context).size.width / 5)),
             Padding(
                 child: TextFormField(
-                    keyboardType: TextInputType.emailAddress,
+                    keyboardType: TextInputType.text,
                     maxLines: 1,
                     maxLength: 30,
-                    onSaved: null,
+                    validator: (String value){
+                      if (value.isEmpty)
+                        return 'prénom manquant';
+                    },
+                    onSaved: (String value) => this._data.firstName = value,
                     decoration: InputDecoration(
                         hintText: 'Votre prénom',
                         labelStyle: TextStyle(fontFamily: "Orkney"),
@@ -373,7 +382,11 @@ class _SignUpPageState extends State<SignUpPage> {
                     keyboardType: TextInputType.emailAddress,
                     maxLines: 1,
                     maxLength: 30,
-                    onSaved: null,
+                    validator: (String value){
+                      if (value.isEmpty)
+                        return 'email manquant';
+                    },
+                    onSaved: (String value) => this._data.email = value,
                     decoration: InputDecoration(
                         hintText: 'Addresse email valide',
                         labelStyle: TextStyle(fontFamily: "Orkney"),
@@ -390,7 +403,11 @@ class _SignUpPageState extends State<SignUpPage> {
                   maxLines: 1,
                   maxLength: 30,
                   obscureText: true,
-                  onSaved: null,
+                  validator: (String value){
+                    if (value.isEmpty)
+                      return 'mot de passe manquant';
+                  },
+                  onSaved: (String value) => this._data.password = value,
                   decoration: InputDecoration(
                       hintText: 'Mot de passe',
                       icon: Padding(
@@ -403,10 +420,14 @@ class _SignUpPageState extends State<SignUpPage> {
                     right: MediaQuery.of(context).size.width / 5)),
             Padding(
                 child: TextFormField(
-                    keyboardType: TextInputType.emailAddress,
                     maxLines: 1,
                     maxLength: 30,
-                    onSaved: null,
+                    obscureText: true,
+                    validator: (String value){
+                      if (value.isEmpty)
+                        return 'confirmation manquante';
+                    },
+                    onSaved: (String value) => this._data.confirmPassword = value,
                     decoration: InputDecoration(
                         hintText: 'Confirmer votre mot de passe',
                         labelStyle: TextStyle(fontFamily: "Orkney"),
@@ -419,38 +440,64 @@ class _SignUpPageState extends State<SignUpPage> {
                     left: MediaQuery.of(context).size.width / 5,
                     right: MediaQuery.of(context).size.width / 5)),
             Padding(
-                child: CheckboxListTile(
+              child: CheckboxListTile(
                   controlAffinity: ListTileControlAffinity.leading,
                   activeColor: Theme.of(context).accentColor,
                   title: RichText(
                       text: TextSpan(children: [
-                    TextSpan(
-                        text: "J'accepte les ",
-                        style: TextStyle(color: Colors.grey.shade700)),
-                    TextSpan(
-                      text: "Conditions d'utilisations",
-                      style: TextStyle(
-                          color: Colors.blue, fontWeight: FontWeight.bold),
-                          
-                    )
-                  ])),
+                        TextSpan(
+                            text: "J'accepte les ",
+                            style: TextStyle(color: Colors.white)),
+                        TextSpan(
+                            text: "Conditions d'utilisations",
+                            style: TextStyle(
+                                color: Colors.blue, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                viewModel
+                                    .getAssetBundle()
+                                    .loadString('assets/texts/terms&conditions.txt')
+                                    .then((value) {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Text("Conditions d'utilisations"),
+                                          content: SingleChildScrollView(
+                                              child: Text(value)),
+                                          actions: <Widget>[
+                                            FlatButton(
+                                              child: Text("Annuler"),
+                                              onPressed: () =>
+                                                  Navigator.of(context).pop(),
+                                            )
+                                          ],
+                                        );
+                                      });
+                                });
+                              })
+                      ]
+                      )
+                  ),
                   value: _termsChecked,
                   onChanged: (bool value) =>
                       setState(() => _termsChecked = value),
                   subtitle: !_termsChecked
                       ? Padding(
-                          padding: EdgeInsets.fromLTRB(0.0, 0, 0, 0),
-                          child: Text(
-                            'Votre accord est requis',
-                            style: TextStyle(
-                                color: Color(0xFFe53935), fontSize: 12),
-                          ),
-                        )
-                   : null,
+                    padding: EdgeInsets.fromLTRB(0.0, 0, 0, 0),
+                    child: Text(
+                      'Votre accord est requis',
+                      style: TextStyle(
+                          color: Color(0xFFe53935), fontSize: 12),
+                    ),
+                  )
+                      : null,
                 ),
-                padding: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.width / 7,
-                    right: MediaQuery.of(context).size.width / 5)),
+              padding: EdgeInsets.only(
+                  left: MediaQuery.of(context).size.width / 5,
+                  right: MediaQuery.of(context).size.width / 5
+              ),
+            ),
           ],
         ),
       ),
@@ -464,7 +511,23 @@ class _SignUpPageState extends State<SignUpPage> {
             maxLines: 1,
             style: TextStyle(color: Colors.black, fontFamily: 'Orkney'),
           ),
-          callback: null,
+          callback: (){
+            if (this._formKey.currentState.validate() && _termsChecked){
+              this._formKey.currentState.save();
+               setState(() {
+                 busy = true;
+               });
+               this.viewModel.signUpAction(this._data).then((value) {
+                 if (value) {
+                   this.viewModel.changeView(
+                       route: this._routing.homePage, widgetContext: context);
+                 }
+                 setState(() {
+                   busy = false;
+                 });
+               });
+            }
+          },
           increaseWidthBy: 80,
           increaseHeightBy: 10),
       padding: EdgeInsets.only(top: 0),
