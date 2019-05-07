@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 abstract class IAuthentication {
   Future<FirebaseUser> loginByEmail({@required String userEmail, @required String userPassword});
   Future<FirebaseUser> signUpByEmail({@required String newEmail, @required String newPassword});
-  FirebaseUser         getLoggedInUser();
 }
 
 class AuthenticationModule implements IAuthentication {
@@ -64,10 +63,5 @@ class AuthenticationModule implements IAuthentication {
   @override
   Future<FirebaseUser> signUpByEmail({@required String newEmail, @required String newPassword}) {
     return this._signUpByEmail(newEmail: newEmail, newPassword: newPassword);
-  }
-
-  @override
-  FirebaseUser getLoggedInUser() {
-    return this._loggedInUser;
   }
 }

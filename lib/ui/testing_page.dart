@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'dart:async';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:partnership/style/theme.dart' as Theme;
+import 'package:partnership/utils/bubble_indication_painter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:partnership/model/StreamWrapper.dart';
-
+import 'package:partnership/coordinator/AppCoordinator.dart';
+import 'package:partnership/utils/FBCollections.dart';
 
 class TestingPage extends StatefulWidget {
   @override
@@ -14,6 +19,7 @@ class TestingPage extends StatefulWidget {
 class _TestingPageState extends State<TestingPage> {
   bool isOffline = false;
   StreamSubscription<dynamic> sub;
+  //StreamSubscription<QuerySnapshot> user_sub;
   void listencb(){}
   void pausecb(){}
   void resumecb(){}
@@ -27,6 +33,7 @@ class _TestingPageState extends State<TestingPage> {
         pauseCallback: this.pausecb,
         resumeCallback: this.resumecb,
         cancelCallback: this.cancelcb);
+    //sub = Coordinator.connectivity.connectionChange.listen(connectionChanged);
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(

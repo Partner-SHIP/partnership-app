@@ -1,35 +1,29 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:flutter/material.dart';
 import 'package:connectivity/connectivity.dart';
-import 'package:partnership/ui/widgets/ConnectivityAlert.dart';
 
 /*
     Coordinator's module used by ViewModels to check for internet connection availability.
     usage : Subscribe to the stream exposed by "connectionChangeController"
 */
 abstract class IConnectivity {
-  StreamSubscription subscribeToConnectivity(Function handler);
-  Stream<bool>  connectionChangeStream();
+  Stream  connectionChangeStream();
   void    initializeConnectivityModule();
-  void    showAlert(BuildContext context);
 }
 
 class ConnectivityModule implements IConnectivity {
   static final ConnectivityModule  _instance = ConnectivityModule._internal();
-  static final ConnectivityAlertWidget _connectivityAlertWidget = ConnectivityAlertWidget();
   factory ConnectivityModule() {
     return  _instance;
   }
   ConnectivityModule._internal();
 
   bool _hasConnection;
-  final StreamController<bool> connectionChangeController = new StreamController<bool>.broadcast();
+  final StreamController connectionChangeController = new StreamController.broadcast();
   final Connectivity _connectivity = Connectivity();
 
   void _initialize() {
     _connectivity.onConnectivityChanged.listen(_connectionChange);
-    _connectivityAlertWidget.subscribeToConnectivity(connectionChangeController.stream);
     checkConnection();
   }
 
@@ -61,22 +55,12 @@ class ConnectivityModule implements IConnectivity {
   }
 
   @override
-  Stream<bool> connectionChangeStream() {
+  Stream connectionChangeStream() {
     return connectionChangeController.stream;
   }
 
   @override
   void initializeConnectivityModule() {
     this._initialize();
-  }
-
-  @override
-  StreamSubscription subscribeToConnectivity(Function handler) {
-    return connectionChangeController.stream.listen(handler);
-  }
-
-  @override
-  void showAlert(BuildContext context) {
-    _connectivityAlertWidget.showAlert(context);
   }
 }
