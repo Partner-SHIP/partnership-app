@@ -54,8 +54,8 @@ Flushbar connectivityAlertFlushBar() {
     flushbarStyle: FlushbarStyle.GROUNDED,
     reverseAnimationCurve: Curves.decelerate,
     forwardAnimationCurve: Curves.elasticOut,
-    boxShadow: BoxShadow(
-        color: Colors.blue[800], offset: Offset(0.0, 2.0), blurRadius: 3.0),
+    // boxShadow: BoxShadow(
+    //     color: Colors.blue[800], offset: Offset(0.0, 2.0), blurRadius: 3.0),
     backgroundGradient: LinearGradient(colors: [Colors.red, Colors.black]),
     isDismissible: true,
     icon: Icon(
