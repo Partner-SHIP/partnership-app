@@ -20,15 +20,18 @@ class StoryData {
 class HomePageViewModel extends AViewModel {
   HomePageViewModel(String route) {
     super.initModel(route);
-    _projectModel = super.abstractModel;
   }
-  ProjectModel _projectModel;
   HomePageModel _homePageModel = HomePageModel();
   void disconnect(BuildContext context) {
     this.changeView(
         widgetContext: context, route: "/" , popStack: true);
   }
-
+  void goToBrowsingProjectPage(BuildContext context) {
+    this.changeView(widgetContext: context, route: "/project_browsing_page");
+  }
+  void goToCreateProjectPage(BuildContext context) {
+    this.changeView(widgetContext: context, route: "/creation_page");
+  }
   void goToProfile(BuildContext context) {
     this.changeView(widgetContext: context, route: "/profile_page");
   }
