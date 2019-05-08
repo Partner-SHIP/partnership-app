@@ -25,7 +25,6 @@ class StoriesModel extends ATableModel {
     _stories = List<StoryModel>();
     StoryModel toadd;
     var value = json["value"];
-    print("value=\n$value");
     var to_parse = null;
     for (var elem in value) {
       toadd = _createStoryModel(elem);
