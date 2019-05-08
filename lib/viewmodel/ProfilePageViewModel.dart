@@ -1,11 +1,6 @@
 import 'dart:io';
-import 'package:tuple/tuple.dart';
 import 'package:partnership/viewmodel/AViewModel.dart';
 import 'package:partnership/model/ProfilePageModel.dart';
-import 'package:flutter/material.dart';
-import 'package:partnership/utils/Routes.dart';
-import 'package:partnership/utils/PayloadsFactory.dart';
-import 'package:partnership/utils/FBCollections.dart';
 
 class ProfilePageViewModel extends AViewModel {
   ProfilePageModel                  _model;
