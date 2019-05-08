@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class ProjectScrollListItemData {
-  ProjectScrollListItemData({@required String name, @required ImageProvider banner, @required ImageProvider logo}) : name = name, banner = banner, logo = logo;
+  ProjectScrollListItemData({@required String name, @required String banner, @required String logo}) : name = name, banner = NetworkImage(banner), logo = NetworkImage(logo);
   String name;
-  ImageProvider banner;
-  ImageProvider logo;
+  NetworkImage banner;
+  NetworkImage logo;
 }
 
 class ProjectScrollListItem extends StatelessWidget {

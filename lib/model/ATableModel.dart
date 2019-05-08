@@ -16,6 +16,9 @@ abstract class ATableModel implements AModel {
     _updateDuration = updateDurationInSeconds,
     _header = header,
     _path = path;
+  void updateHeader(Map<String, String> newHeader) {
+    _header = newHeader;
+  }
   void _handleDisupdating() async{
     Duration waitingTime = Duration(seconds: _updateDuration);
     await Future.delayed(waitingTime);

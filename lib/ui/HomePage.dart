@@ -101,9 +101,9 @@ class _HomePageState extends State<HomePage> {
       this._stories.updateList(list:newStories);
     });
   }
-  Container _buildActions(double height) {
-    FloatingActionButton createProjectAction = FloatingActionButton(heroTag: "add", child:Icon(Icons.add), onPressed: () {}, backgroundColor: Colors.grey[700],);
-    FloatingActionButton joinProjectAction = FloatingActionButton(heroTag: "join", child:Icon(Icons.file_download), onPressed: () {}, backgroundColor: Colors.grey[700]);
+  Container _buildActions(BuildContext context, double height) {
+    FloatingActionButton createProjectAction = FloatingActionButton(heroTag: "add", child:Icon(Icons.add), onPressed: () {this.viewModel.goToCreateProjectPage(context);}, backgroundColor: Colors.grey[700],);
+    FloatingActionButton joinProjectAction = FloatingActionButton(heroTag: "join", child:Icon(Icons.file_download), onPressed: () {this.viewModel.goToBrowsingProjectPage(context);}, backgroundColor: Colors.grey[700]);
     Row actionsRow = Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
@@ -119,7 +119,7 @@ class _HomePageState extends State<HomePage> {
     final Size screenSize = MediaQuery.of(context).size;
     final double paddedHeight = screenSize.height - 24;
     _stories.setHeight(paddedHeight - 14);
-    Widget actions = _buildActions(paddedHeight / 8);
+    Widget actions = _buildActions(context, paddedHeight / 8);
     Widget rightDrawer = _buildRightDrawer(context);
     Widget view = Scaffold(
       floatingActionButton: actions,
