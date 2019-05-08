@@ -6,7 +6,6 @@ import 'package:partnership/ui/SignUpPage.dart';
 import 'package:partnership/ui/ProfilePage.dart';
 import 'package:partnership/ui/ProjectDescriptionPage.dart';
 import 'package:partnership/ui/ProjectBrowsingPage.dart';
-import 'package:partnership/ui/testing_page.dart';
 import 'package:partnership/ui/CreationPage.dart';
 import 'package:partnership/ui/IdeaPage.dart';
 

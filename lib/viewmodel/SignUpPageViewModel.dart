@@ -1,11 +1,5 @@
 import 'package:partnership/viewmodel/AViewModel.dart';
 import 'package:partnership/model/SignUpPageModel.dart';
-import 'package:partnership/utils/Routes.dart';
-import 'package:partnership/utils/FBCollections.dart';
-import 'package:partnership/utils/PayloadsFactory.dart';
-import 'package:tuple/tuple.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 
 class SignUpPageViewModel extends AViewModel {
   SignUpPageModel                 _model;
