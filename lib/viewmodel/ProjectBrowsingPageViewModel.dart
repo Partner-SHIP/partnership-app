@@ -10,23 +10,15 @@ class ProjectBrowsingPageViewModel extends AViewModel {
     super.initModel(route);
     this._model = super.abstractModel;
   }
-  List<ProjectScrollListItemData> getProjectList() {
-    List<ProjectScrollListItemData> result = [
-      ProjectScrollListItemData(name:"Projet1", logo: AssetImage("assets/test.png"), banner: AssetImage("assets/bubble_texture.jpg")),
-      ProjectScrollListItemData(name:"Projet2", logo: AssetImage("assets/img/logo_partnership.png"), banner:AssetImage("assets/blue_texture.jpg")),
-      ProjectScrollListItemData(name:"Projet3", logo: AssetImage("assets/test.png"), banner:AssetImage("assets/work-office.png")),
-      ProjectScrollListItemData(name:"Projet4", logo: AssetImage("assets/img/logo_partnership.png"), banner:AssetImage("assets/test.png")),
-      ProjectScrollListItemData(name:"Projet5", logo: AssetImage("assets/test.png"), banner:AssetImage("assets/img/logo_partnership.png")),
-      ProjectScrollListItemData(name:"Projet6", logo: AssetImage("assets/img/logo_partnership.png"), banner:AssetImage("assets/blue_texture.jpg")),
-      ProjectScrollListItemData(name:"Projet8", logo: AssetImage("assets/test.png"), banner:AssetImage("assets/work-office.png")),
-      ProjectScrollListItemData(name:"Projet9", logo: AssetImage("assets/img/logo_partnership.png"), banner:AssetImage("assets/test.png")),
-      ProjectScrollListItemData(name:"Projet10", logo: AssetImage("assets/test.png"), banner:AssetImage("assets/img/logo_partnership.png")),
-      ProjectScrollListItemData(name:"Projet11", logo: AssetImage("assets/img/logo_partnership.png"), banner:AssetImage("assets/blue_texture.jpg")),
-      ProjectScrollListItemData(name:"Projet12", logo: AssetImage("assets/test.png"), banner:AssetImage("assets/work-office.png")),
-      ProjectScrollListItemData(name:"Projet13", logo: AssetImage("assets/img/logo_partnership.png"), banner:AssetImage("assets/test.png")),
-      ProjectScrollListItemData(name:"Projet14", logo: AssetImage("assets/test.png"), banner:AssetImage("assets/img/logo_partnership.png"))
-    ];
-    return (result);
+  void getProjectList({@required String query, @required Function onUpdate}) async {
+    print("==========test==============");
+    final List<ProjectScrollListItemData> result = (await this._model.getProjectList(query))
+      .map((elem) {
+        return (ProjectScrollListItemData(name: elem.name, logo: elem.logoPath, banner: elem.bannerPath));
+      })
+      .toList();
+    print("result = $result");
+    onUpdate(result);
   }
   Future<dynamic>  searchTag(String value) async {
     List<dynamic> result = List<dynamic>();
