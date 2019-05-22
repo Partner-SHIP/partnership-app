@@ -7,6 +7,9 @@ import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/viewmodel/HomePageViewModel.dart';
 import 'package:partnership/ui/widgets/StoryList.dart';
+import 'package:partnership/ui/widgets/ThemeContainer.dart';
+import 'package:partnership/style/theme.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -49,17 +52,37 @@ class _HomePageState extends State<HomePage> {
           .changeView(route: _routing.loginPage, widgetContext: context, popStack: true),
     ));
   }
+
+  Row _homePageHeader(BuildContext context){
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Image.asset('assets/img/partnership_logo.png', width:110, height: 110),
+        AutoSizeText(
+          'Votre fil d\'actualités',
+          maxLines: 1,
+          style: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontFamily: 'Orkney'
+          ),
+        ),
+        IconButton(icon: Icon(Icons.menu, color: Colors.white), onPressed: () => Scaffold.of(context).openEndDrawer())
+      ],
+    );
+  }
+
   List<Widget> _buildRightDrawerButtons(BuildContext context) {
 
     LabeledIconButton testButton = LabeledIconButton(
-      icon: Icon(Icons.account_circle),
+      icon: Icon(Icons.account_circle, color: Colors.white),
       toolTip: 'Accéder à mon profil',
       onPressed: () => this.viewModel.goToProfile(context),
       text: "Accéder à mon profil",
       fullWidth: true,
     );
     LabeledIconButton disconnectButton = LabeledIconButton(
-      icon: Icon(Icons.power_settings_new),
+      icon: Icon(Icons.power_settings_new, color: Colors.white),
       toolTip: 'Me déconnecter',
       onPressed: () => this.viewModel.disconnect(context),
       text: "Me déconnecter",
@@ -74,7 +97,9 @@ class _HomePageState extends State<HomePage> {
   }
   Widget _buildRightDrawer(BuildContext context) {
     BoxDecoration drawerDecoration =
-        new BoxDecoration();
+        new BoxDecoration(
+          gradient: AThemes.selectedTheme.bgGradient,
+        );
     List<LabeledIconButton> buttons = _buildRightDrawerButtons(context);
 
     LabeledIconButtonList drawerContent = LabeledIconButtonList(childs: buttons, forceFullWidth: true,);
@@ -84,9 +109,12 @@ class _HomePageState extends State<HomePage> {
     );
     
     return (Drawer(
-      child: Container(
+      child: Opacity(
+        opacity: 0.8,
+        child: Container(
         child: drawerContentPositioning,
         decoration: drawerDecoration,
+      ),
       ),
     ));
   }
@@ -118,23 +146,34 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
     final double paddedHeight = screenSize.height - 24;
-    _stories.setHeight(paddedHeight - 14);
+    _stories.setHeight(screenSize.height / 1.2);
     Widget actions = _buildActions(context, paddedHeight / 8);
     Widget rightDrawer = _buildRightDrawer(context);
     Widget view = Scaffold(
       floatingActionButton: actions,
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomPadding: true,
       backgroundColor: Colors.grey[300],
-      endDrawer: rightDrawer,
-      body: Container(
-          height: screenSize.height,
-          padding: EdgeInsets.only(top:24.0, bottom: 0, left: 14, right: 14),
-          width: screenSize.width,
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[_stories],
-          )),
+      endDrawer: Theme(
+        data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
+        child: rightDrawer,
+      ),
+      body: Builder(
+        builder: (BuildContext context) {
+          return SafeArea(
+              top: false,
+              child: ThemeContainer(
+                  context,
+                  Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      _homePageHeader(context),
+                      _stories
+                    ],
+                  ))
+          );
+        }
+      ),
     );
     return (WillPopScope(onWillPop: null, child: view));
   }
