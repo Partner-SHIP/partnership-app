@@ -1,7 +1,7 @@
 name: partnership
 description: In progress
 
-version: 1.0.0+1
+version: 1.0.0+2
 
 environment:
   sdk: ">=2.0.0-dev.68.0 <3.0.0"
@@ -25,7 +25,9 @@ dependencies:
   connectivity: ^0.4.3+1
   image_picker: ^0.6.0+2
   flushbar: ^1.5.0
-  permission: ^0.1.0
+  permission:
+    git:
+      url: https://github.com/devadrianapostol/permission
   url_launcher: ^5.0.2
   material_search: ^0.2.8
   auto_size_text: ^1.1.2 # MUST REPLACE ALL TEXT WIDGET SOON
