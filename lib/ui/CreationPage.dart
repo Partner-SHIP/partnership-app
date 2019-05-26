@@ -7,6 +7,7 @@ import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/CreationPageViewModel.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class CreationPage extends StatefulWidget {
     @override
@@ -52,62 +53,28 @@ class CreationPageState extends State<CreationPage> {
  Widget build(BuildContext context) {
    _scaffoldContext = context;
 
-
-    final titleWidget = Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height / 5,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            ClipRect(
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width / 1.15,
-                    height: 3,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(colors: [Color(0xff20264c).withOpacity(0.1), Colors.black.withOpacity(0.4), Color(0xff20264c).withOpacity(0.1)]),
-                      //color: Colors.black.withOpacity(0.3),
-                    ),
-                  ),
-                )
-            ),
-            Text('PartnerShip',
-                style: TextStyle(
-                  //color: Colors.white,
-                  fontFamily: 'Copperplate',
-                  fontSize: 35,
-                  foreground: Paint()
-                    ..shader = Gradients.verticalMetallic.createShader(Rect.fromLTWH(0, 150, 250, 40))
-              )
-            ),
-            ClipRect(
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width / 1.15,
-                    height: 3,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(colors: [Color(0xff35294f).withOpacity(0.1), Colors.black.withOpacity(0.4), Color(0xff35294f).withOpacity(0.1)]),
-                      //color: Colors.black.withOpacity(0.3),
-                    ),
-                  ),
-                )
-            )
-          ],
-        )
-      );
           return Scaffold(
         resizeToAvoidBottomPadding: false,
         body: SafeArea(
             top: false,
-            child: ThemeContainer(context, Column(
+            child: ThemeContainer(context, Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Padding(
-                  child: Image.asset('assets/img/logo_partnership.png', width:50, height: 50),
-                  padding: EdgeInsets.only(top: 30, bottom: 30),
+                 Padding(
+                    child: Image.asset('assets/img/partnership_logo.png', width:110, height: 110),
+                    padding: EdgeInsets.only(top: 15, bottom: 15, left: 15),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 80, left: 15),
+                    child: Text(
+                    'Création de projet',
+                    style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontFamily: 'Orkney'
+                    ),
+                  ),
                 ),
-                titleWidget,
               ],
             ))
         )
