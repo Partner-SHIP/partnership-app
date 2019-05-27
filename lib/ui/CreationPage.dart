@@ -62,8 +62,14 @@ class CreationPageState extends State<CreationPage> {
             child: ThemeContainer(context, Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-            _TopSide(),
-            _creationProjectImageWidget(),
+              _creationProjectHeaderWidget(),
+              SizedBox(width: 0, height: 10),
+              Padding(
+                padding: EdgeInsets.only(left:130),
+                child: _creationProjectImageWidget(),
+                ),
+              SizedBox(width: 0, height: 10),
+              _creationProjectNameWidget(),
               ],
             )
           )
@@ -71,7 +77,7 @@ class CreationPageState extends State<CreationPage> {
     );
  }
 
-Widget _TopSide()
+Widget _creationProjectHeaderWidget()
 {
    return Row(
         children: <Widget>[
@@ -134,4 +140,41 @@ Widget _TopSide()
       );
     }
   }
+
+  Widget _creationProjectNameWidget(){
+    return Container (
+      padding: const EdgeInsets.all(30.0),
+      child: new Container(
+        child: new Center(
+          child: new Column(
+            children : [
+              new Padding(padding: EdgeInsets.only(top: 20.0)),
+              new Text('Nom du projet',
+                style: new TextStyle(color: Colors.white, fontSize: 25.0, fontFamily: "Orkney",),),
+                new Padding(padding: EdgeInsets.only(top: 50.0)),
+                new TextFormField(
+                  decoration: new InputDecoration(
+                  labelText: "Entrer un nom de projet",
+                  fillColor: Colors.white,
+                  border: new OutlineInputBorder(
+                    borderRadius: new BorderRadius.circular(25.0),
+                    borderSide: new BorderSide(),
+                    ),
+                  ),
+                  maxLines: null,
+                  keyboardType: TextInputType.text,
+                  style: new TextStyle(
+                    fontFamily: "Orkney",
+                    color: Colors.white,
+                    ),
+                ),
+            ]
+          )
+        ),
+      ),
+    );
+  }
+  Color hexToColor(String code) {
+      return new Color(int.parse(code.substring(1, 7), radix: 16) + 0xFF000000);
+    }
 }
