@@ -146,7 +146,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
     final double paddedHeight = screenSize.height - 24;
-    _stories.setHeight(screenSize.height / 1.2);
+    _stories.setHeight(screenSize.height / 1.3);
     Widget actions = _buildActions(context, paddedHeight / 8);
     Widget rightDrawer = _buildRightDrawer(context);
     Widget view = Scaffold(
