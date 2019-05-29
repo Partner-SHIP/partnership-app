@@ -10,6 +10,7 @@ import 'package:partnership/ui/widgets/ThemeContainer.dart';
 import 'package:partnership/ui/widgets/LabeledIconButton.dart';
 import 'package:partnership/ui/widgets/LabeledIconButtonList.dart';
 import 'package:partnership/ui/widgets/LargeButton.dart';
+import 'package:partnership/ui/widgets/EndDrawer.dart';
 import 'package:partnership/style/theme.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
@@ -112,7 +113,7 @@ class ProfilePageState extends State<ProfilePage>
       resizeToAvoidBottomPadding: true,
       endDrawer: Theme(
         data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
-        child: _buildRightDrawer(context),
+        child: buildEndDrawer(context: context, viewModel: viewModel, profile: false),
       ),
     );
   }
@@ -133,57 +134,6 @@ class ProfilePageState extends State<ProfilePage>
             onPressed: () => Scaffold.of(context).openEndDrawer())
       ],
     );
-  }
-
-  Widget _buildRightDrawer(BuildContext context) {
-    BoxDecoration drawerDecoration = new BoxDecoration(
-      gradient: AThemes.selectedTheme.bgGradient,
-    );
-    List<LabeledIconButton> buttons = _buildRightDrawerButtons(context);
-
-    LabeledIconButtonList drawerContent = LabeledIconButtonList(
-      childs: buttons,
-      forceFullWidth: true,
-    );
-    Widget drawerContentPositioning = Padding(
-      child: drawerContent,
-      padding: EdgeInsets.only(top: 24.0),
-    );
-
-    return (Drawer(
-      child: Opacity(
-        opacity: 0.8,
-        child: Container(
-          child: drawerContentPositioning,
-          decoration: drawerDecoration,
-        ),
-      ),
-    ));
-  }
-
-  List<Widget> _buildRightDrawerButtons(BuildContext context) {
-    LabeledIconButton testButton = LabeledIconButton(
-      icon: Icon(Icons.account_circle, color: Colors.white),
-      toolTip: 'Accéder à mon profil',
-      onPressed: () => null,
-      // onPressed: () => this.viewModel.goToProfile(context),
-      text: "Accéder à mon profil",
-      fullWidth: true,
-    );
-    LabeledIconButton disconnectButton = LabeledIconButton(
-      icon: Icon(Icons.power_settings_new, color: Colors.white),
-      toolTip: 'Me déconnecter',
-      onPressed: () => null,
-      // onPressed: () => this.viewModel.disconnect(context),
-      text: "Me déconnecter",
-      fullWidth: true,
-    );
-    List<LabeledIconButton> result = new List<LabeledIconButton>();
-    result.addAll([
-      testButton,
-      disconnectButton,
-    ]);
-    return (result);
   }
 
   Widget _profilePicture() {
