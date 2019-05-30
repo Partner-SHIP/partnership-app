@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:partnership/ui/widgets/LabeledIconButton.dart';
-import 'package:partnership/ui/widgets/LabeledIconButtonList.dart';
-import 'package:partnership/ui/widgets/LargeButton.dart';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/viewmodel/HomePageViewModel.dart';
 import 'package:partnership/ui/widgets/StoryList.dart';
 import 'package:partnership/ui/widgets/ThemeContainer.dart';
 import 'package:partnership/ui/widgets/EndDrawer.dart';
-import 'package:partnership/style/theme.dart';
+import 'package:partnership/ui/widgets/PageHeader.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
 class HomePage extends StatefulWidget {
@@ -44,25 +41,6 @@ class _HomePageState extends State<HomePage> {
   void dispose(){
     this._connectivitySub.cancel();
     super.dispose();
-  }
-
-  Row _homePageHeader(BuildContext context){
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Image.asset('assets/img/partnership_logo.png', width:110, height: 110),
-        AutoSizeText(
-          'Votre fil d\'actualités',
-          maxLines: 1,
-          style: TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontFamily: 'Orkney'
-          ),
-        ),
-        IconButton(icon: Icon(Icons.menu, color: Colors.white), onPressed: () => Scaffold.of(context).openEndDrawer())
-      ],
-    );
   }
 
   void _updateStoryList(List<StoryData> param) {
@@ -113,7 +91,7 @@ class _HomePageState extends State<HomePage> {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      _homePageHeader(context),
+                      pageHeader(context, 'Votre fil d\'actualités'),
                       _stories
                     ],
                   ))

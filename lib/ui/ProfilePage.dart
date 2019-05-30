@@ -7,11 +7,8 @@ import 'package:permission/permission.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:partnership/ui/widgets/ThemeContainer.dart';
-import 'package:partnership/ui/widgets/LabeledIconButton.dart';
-import 'package:partnership/ui/widgets/LabeledIconButtonList.dart';
-import 'package:partnership/ui/widgets/LargeButton.dart';
+import 'package:partnership/ui/widgets/PageHeader.dart';
 import 'package:partnership/ui/widgets/EndDrawer.dart';
-import 'package:partnership/style/theme.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -104,7 +101,7 @@ class ProfilePageState extends State<ProfilePage>
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    _pageHeader(context),
+                    pageHeader(context, 'Profil'),
                     _profilePicture(),
                     _profileTabBarView(),
                   ],
@@ -115,24 +112,6 @@ class ProfilePageState extends State<ProfilePage>
         data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
         child: buildEndDrawer(context: context, viewModel: viewModel, profile: false),
       ),
-    );
-  }
-
-  Row _pageHeader(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Image.asset('assets/img/partnership_logo.png', width: 110, height: 110),
-        AutoSizeText(
-          'toto',
-          maxLines: 1,
-          style: TextStyle(
-              color: Colors.white, fontSize: 20, fontFamily: 'Orkney'),
-        ),
-        IconButton(
-            icon: Icon(Icons.menu, color: Colors.white),
-            onPressed: () => Scaffold.of(context).openEndDrawer())
-      ],
     );
   }
 
