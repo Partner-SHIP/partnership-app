@@ -70,6 +70,7 @@ class CreationPageState extends State<CreationPage> {
                 ),
               SizedBox(width: 0, height: 10),
               _creationProjectNameWidget(),
+              _creationProjectDescWidget(),
               ],
             )
           )
@@ -99,7 +100,8 @@ Widget _creationProjectHeaderWidget()
       ],
     );
 }
- Widget _creationProjectImageWidget() {
+
+Widget _creationProjectImageWidget() {
     if (_image == null) {
       return Container(
           width: 150,
@@ -141,7 +143,41 @@ Widget _creationProjectHeaderWidget()
     }
   }
 
-  Widget _creationProjectNameWidget(){
+Widget _creationProjectDescWidget(){
+    return Container (
+      padding: const EdgeInsets.all(1.0),
+      child: new Container(
+        child: new Center(
+          child: new Column(
+            children : [
+              new Padding(padding: EdgeInsets.only(top: 1.0)),
+              new Text('Description',
+                style: new TextStyle(color: Colors.white, fontSize: 25.0, fontFamily: "Orkney",),),
+                new Padding(padding: EdgeInsets.only(top: 1.0)),
+                new TextFormField(
+                  decoration: new InputDecoration(
+                  labelText: "Entrer une description",
+                  fillColor: Colors.white,
+                  border: new OutlineInputBorder(
+                    borderRadius: new BorderRadius.circular(25.0),
+                    borderSide: new BorderSide(),
+                    ),
+                  ),
+                  maxLines: 3,
+                  keyboardType: TextInputType.text,
+                  style: new TextStyle(
+                    fontFamily: "Orkney",
+                    color: Colors.white,
+                    ),
+                ),
+            ]
+          )
+        ),
+      ),
+    );
+  }
+
+ Widget _creationProjectNameWidget(){
     return Container (
       padding: const EdgeInsets.all(30.0),
       child: new Container(
@@ -151,7 +187,7 @@ Widget _creationProjectHeaderWidget()
               new Padding(padding: EdgeInsets.only(top: 20.0)),
               new Text('Nom du projet',
                 style: new TextStyle(color: Colors.white, fontSize: 25.0, fontFamily: "Orkney",),),
-                new Padding(padding: EdgeInsets.only(top: 50.0)),
+                new Padding(padding: EdgeInsets.only(top: 1.0)),
                 new TextFormField(
                   decoration: new InputDecoration(
                   labelText: "Entrer un nom de projet",
@@ -174,7 +210,4 @@ Widget _creationProjectHeaderWidget()
       ),
     );
   }
-  Color hexToColor(String code) {
-      return new Color(int.parse(code.substring(1, 7), radix: 16) + 0xFF000000);
-    }
 }
