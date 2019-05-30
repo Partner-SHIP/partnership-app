@@ -65,12 +65,17 @@ class CreationPageState extends State<CreationPage> {
               _creationProjectHeaderWidget(),
               SizedBox(width: 0, height: 10),
               Padding(
-                padding: EdgeInsets.only(left:130),
-                child: _creationProjectImageWidget(),
+                padding: EdgeInsets.only(left: (MediaQuery.of(context).size.width / 100)),
+                child: _creationProjectRowImageWidget(),
                 ),
-              SizedBox(width: 0, height: 10),
+              SizedBox(width: 0, height: 5),
               _creationProjectNameWidget(),
               _creationProjectDescWidget(),
+              SizedBox(width: 0, height: 5),
+              Padding(
+                padding: EdgeInsets.only(left: (MediaQuery.of(context).size.width / 2.3)), 
+              child: _validatingProject()
+              ),
               ],
             )
           )
@@ -97,10 +102,30 @@ Widget _creationProjectHeaderWidget()
             ),
           ),
         ),
+        Padding(
+          padding: EdgeInsets.only(left: 40, top: 20),
+        child: IconButton(
+            icon: Icon(Icons.menu, color: Colors.white),
+            onPressed: () => Scaffold.of(context).openEndDrawer())
+        ),
+      ],
+      );
+}
+Widget _creationProjectRowImageWidget(){
+     return Row(
+      children: <Widget>[
+        Expanded(
+          child: Stack(
+            alignment: Alignment.center,
+            children: <Widget>[
+              _creationProjectImageWidget(),
+              this._changePhotoButton()
+            ],
+          ),
+        ),
       ],
     );
 }
-
 Widget _creationProjectImageWidget() {
     if (_image == null) {
       return Container(
@@ -208,6 +233,21 @@ Widget _creationProjectDescWidget(){
           )
         ),
       ),
+    );
+  }
+    Widget _changePhotoButton() {
+    return FloatingActionButton(
+      onPressed: _getImage,
+      child: Icon(Icons.photo_camera, size: 35)
+        );
+  }
+  Widget _validatingProject(){
+   return FloatingActionButton(
+    onPressed: () => this.setState((){}),
+    child: Icon(Icons.add, size: 35),
+    tooltip: "Créer le projet",
+    backgroundColor: Colors.grey,
+    foregroundColor: Colors.white,
     );
   }
 }
