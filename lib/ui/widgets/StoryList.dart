@@ -49,7 +49,6 @@ class StoryListItem extends StatelessWidget {
         children: <Widget>[Container(width: width - sidePadding * 2, child: _buildTitle()), Container( width:width- 10, child: _buildDescription())],
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
       ),
-      
     );
     return (result);
   }
@@ -58,6 +57,6 @@ class StoryListItem extends StatelessWidget {
     
     Container result = _buildContainer(width:MediaQuery.of(context).size.width);
     
-    return (Padding(child: result, padding: EdgeInsets.only(bottom: 8),));
+    return (Padding(child: result, padding: EdgeInsets.only(bottom: 20, left: 20, right: 20),));
   }
 }

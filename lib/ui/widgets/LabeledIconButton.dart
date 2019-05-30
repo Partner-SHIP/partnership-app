@@ -41,7 +41,14 @@ class LabeledIconButton extends StatelessWidget {
         onPressed: _onPressed);
   }
   Widget _buildText() {
-    return Text(_text);
+    return Text(
+      _text,
+      style: TextStyle(
+        color: Colors.white,
+        fontFamily: 'Orkney',
+        fontSize: 18,
+      ),
+    );
   }
   List<Widget> buildRowContent() {
     List<Widget> result = List<Widget>();
