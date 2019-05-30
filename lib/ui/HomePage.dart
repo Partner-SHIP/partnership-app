@@ -7,7 +7,6 @@ import 'package:partnership/ui/widgets/StoryList.dart';
 import 'package:partnership/ui/widgets/ThemeContainer.dart';
 import 'package:partnership/ui/widgets/EndDrawer.dart';
 import 'package:partnership/ui/widgets/PageHeader.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 
 class HomePage extends StatefulWidget {
   @override

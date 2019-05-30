@@ -42,5 +42,5 @@ class RoutingModule implements IRouting {
   }
 
   @override
-  String get initialRoute => this._routes.homePage;
+  String get initialRoute => this._routes.chatPage;
 }
