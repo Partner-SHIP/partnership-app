@@ -32,9 +32,9 @@ class CreationPageState extends State<CreationPage> {
 
   bool _validateName = false;
   bool _validateDesc = false;
-  final _nameProject = TextEditingController(text: "Nom du projet");
-  NetworkImage get image => viewModel.image;
+  final _nameProject = TextEditingController();
   final _descriptionProject = TextEditingController();
+  NetworkImage get image => viewModel.image;
   BuildContext _scaffoldContext;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -171,7 +171,6 @@ Widget _creationProjectImageWidget() {
 Widget _creationProjectDescWidget(){
     return Container (
       padding: const EdgeInsets.all(1.0),
-      child: new Container(
         child: new Center(
           child: new Column(
             children : [
@@ -180,7 +179,17 @@ Widget _creationProjectDescWidget(){
                 style: new TextStyle(color: Colors.white, fontSize: 25.0, fontFamily: "Orkney",),),
                 new Padding(padding: EdgeInsets.only(top: 1.0)),
                 new TextFormField(
+                  controller: _descriptionProject,
+                    validator: (_validateDesc) {
+                      if (_validateDesc.isEmpty) {
+                        return "Veuillez entrer une description";
+                      }
+                    },
                   decoration: new InputDecoration(
+                  errorText:  _validateDesc ? "Ce champ ne peut être vide" : null,
+                  labelStyle: TextStyle(
+                    color: Colors.white
+                  ),
                   labelText: "Entrer une description",
                   fillColor: Colors.white,
                   border: new OutlineInputBorder(
@@ -198,14 +207,12 @@ Widget _creationProjectDescWidget(){
             ]
           )
         ),
-      ),
     );
   }
 
  Widget _creationProjectNameWidget(){
     return Container (
       padding: const EdgeInsets.all(30.0),
-      child: new Container(
         child: new Center(
           child: new Column(
             children : [
@@ -214,7 +221,17 @@ Widget _creationProjectDescWidget(){
                 style: new TextStyle(color: Colors.white, fontSize: 25.0, fontFamily: "Orkney",),),
                 new Padding(padding: EdgeInsets.only(top: 1.0)),
                 new TextFormField(
+                  controller: _nameProject,
+                  validator: (_validateDesc) {
+                    if (_validateDesc.isEmpty) {
+                      return "Veuillez entrer une description";
+                    }
+                  },                  
                   decoration: new InputDecoration(
+                    errorText:  _validateDesc ? "Ce champ ne peut être vide" : null,
+                    labelStyle: TextStyle(
+                    color: Colors.white
+                  ),
                   labelText: "Entrer un nom de projet",
                   fillColor: Colors.white,
                   border: new OutlineInputBorder(
@@ -232,7 +249,6 @@ Widget _creationProjectDescWidget(){
             ]
           )
         ),
-      ),
     );
   }
     Widget _changePhotoButton() {
