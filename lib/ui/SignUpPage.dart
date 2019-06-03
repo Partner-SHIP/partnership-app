@@ -378,35 +378,40 @@ class _SignUpPageState extends State<SignUpPage> {
       ),
     );
     return Scaffold(
-        resizeToAvoidBottomPadding: false,
+        resizeToAvoidBottomPadding: true,
         body: SafeArea(
             top:false,
             child: ThemeContainer(
                 context,
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Padding(
-                      child: Image.asset('assets/img/partnership_logo.png',
-                          width: 110, height: 110),
-                      padding: EdgeInsets.only(top: 0, bottom: 0),
-                    ),
-                    AutoSizeText(
-                      'Inscription',
-                      maxLines: 1,
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 35,
-                          fontFamily: 'Orkney'),
-                    ),
-                    signUpSwitcher,
-                    Padding(
-                      child: _switch ? providersContainer : formContainer,
-                      padding: EdgeInsets.only(top: 0),
-                    ),
-                    signUpButtonContainer,
-                  ],
-                ))));
+                SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Padding(
+                        child: Image.asset('assets/img/partnership_logo.png',
+                            width: 110, height: 110),
+                        padding: EdgeInsets.only(top: 0, bottom: 0),
+                      ),
+                      AutoSizeText(
+                        'Inscription',
+                        maxLines: 1,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 35,
+                            fontFamily: 'Orkney'),
+                      ),
+                      signUpSwitcher,
+                      Padding(
+                        child: _switch ? providersContainer : formContainer,
+                        padding: EdgeInsets.only(top: 0),
+                      ),
+                      signUpButtonContainer,
+                    ],
+                  ),
+                )
+            )
+        )
+    );
   
   }
 

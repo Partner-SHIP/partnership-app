@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:partnership/ui/widgets/LabeledIconButton.dart';
-import 'package:partnership/ui/widgets/LabeledIconButtonList.dart';
-import 'package:partnership/ui/widgets/LargeButton.dart';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/viewmodel/HomePageViewModel.dart';
 import 'package:partnership/ui/widgets/StoryList.dart';
+import 'package:partnership/ui/widgets/ThemeContainer.dart';
+import 'package:partnership/ui/widgets/EndDrawer.dart';
+import 'package:partnership/ui/widgets/PageHeader.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -41,55 +41,7 @@ class _HomePageState extends State<HomePage> {
     this._connectivitySub.cancel();
     super.dispose();
   }
-  Widget _buildDisconnectButton() {
-    return (LargeButton(
-      text: "Se déconnecter",
-      onPressed: () => this
-          .viewModel
-          .changeView(route: _routing.loginPage, widgetContext: context, popStack: true),
-    ));
-  }
-  List<Widget> _buildRightDrawerButtons(BuildContext context) {
 
-    LabeledIconButton testButton = LabeledIconButton(
-      icon: Icon(Icons.account_circle),
-      toolTip: 'Accéder à mon profil',
-      onPressed: () => this.viewModel.goToProfile(context),
-      text: "Accéder à mon profil",
-      fullWidth: true,
-    );
-    LabeledIconButton disconnectButton = LabeledIconButton(
-      icon: Icon(Icons.power_settings_new),
-      toolTip: 'Me déconnecter',
-      onPressed: () => this.viewModel.disconnect(context),
-      text: "Me déconnecter",
-      fullWidth: true,
-    );
-    List<LabeledIconButton> result = new List<LabeledIconButton>();
-    result.addAll([
-      testButton,
-      disconnectButton,
-    ]);
-    return (result);
-  }
-  Widget _buildRightDrawer(BuildContext context) {
-    BoxDecoration drawerDecoration =
-        new BoxDecoration();
-    List<LabeledIconButton> buttons = _buildRightDrawerButtons(context);
-
-    LabeledIconButtonList drawerContent = LabeledIconButtonList(childs: buttons, forceFullWidth: true,);
-    Widget drawerContentPositioning = Padding(
-      child: drawerContent,
-      padding: EdgeInsets.only(top: 24.0),
-    );
-    
-    return (Drawer(
-      child: Container(
-        child: drawerContentPositioning,
-        decoration: drawerDecoration,
-      ),
-    ));
-  }
   void _updateStoryList(List<StoryData> param) {
     this.setState(() {
       if (!mounted)
@@ -118,23 +70,33 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
     final double paddedHeight = screenSize.height - 24;
-    _stories.setHeight(paddedHeight - 14);
+    _stories.setHeight(screenSize.height / 1.3);
     Widget actions = _buildActions(context, paddedHeight / 8);
-    Widget rightDrawer = _buildRightDrawer(context);
     Widget view = Scaffold(
       floatingActionButton: actions,
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomPadding: true,
       backgroundColor: Colors.grey[300],
-      endDrawer: rightDrawer,
-      body: Container(
-          height: screenSize.height,
-          padding: EdgeInsets.only(top:24.0, bottom: 0, left: 14, right: 14),
-          width: screenSize.width,
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[_stories],
-          )),
+      endDrawer: Theme(
+        data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
+        child: buildEndDrawer(context: context, viewModel: viewModel),
+      ),
+      body: Builder(
+        builder: (BuildContext context) {
+          return SafeArea(
+              top: false,
+              child: ThemeContainer(
+                  context,
+                  Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      pageHeader(context, 'Votre fil d\'actualités'),
+                      _stories
+                    ],
+                  ))
+          );
+        }
+      ),
     );
     return (WillPopScope(onWillPop: null, child: view));
   }
