@@ -16,25 +16,17 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  StoryList     _stories = StoryList();
+  StoryList     _stories = StoryList(items: null);
   IRoutes      _routing = Routes();
   StreamSubscription _connectivitySub;
   HomePageViewModel get viewModel =>
       AViewModelFactory.register[_routing.homePage];
-  bool isOffline = false;
-  GlobalKey<FormState> _formkey = GlobalKey<FormState>();
-  StreamSubscription<dynamic> sub;
-  //StreamSubscription<QuerySnapshot> user_sub;
-  void listencb() {}
-  void pausecb() {}
-  void resumecb() {}
-  void cancelcb() {}
 
   @override
   void initState(){
     super.initState();
     this._connectivitySub = viewModel.subscribeToConnectivity(this._connectivityHandler);
-    viewModel.getStoryList((value) => this._updateStoryList(value));
+    viewModel.getStoryList(this._updateStoryList);
   }
   @override
   void dispose(){
@@ -42,17 +34,12 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 
-  void _updateStoryList(List<StoryData> param) {
+  void _updateStoryList(dynamic data) {
     this.setState(() {
-      if (!mounted)
-        return ;
-      this._stories = StoryList();
-      List<StoryListItem> newStories = param.map((elem) {
-        return (StoryListItem(imgPath: elem.imgPath, title:elem.title, description: elem.description));
-      }).toList();
-      this._stories.updateList(list:newStories);
+      this._stories = StoryList(items: viewModel.convertStoryModelToItems(data));
     });
   }
+
   Container _buildActions(BuildContext context, double height) {
     FloatingActionButton createProjectAction = FloatingActionButton(heroTag: "add", child:Icon(Icons.add), onPressed: () {this.viewModel.goToCreateProjectPage(context);}, backgroundColor: Colors.grey[700],);
     FloatingActionButton joinProjectAction = FloatingActionButton(heroTag: "join", child:Icon(Icons.file_download), onPressed: () {this.viewModel.goToBrowsingProjectPage(context);}, backgroundColor: Colors.grey[700]);

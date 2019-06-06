@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
 class StoryList extends StatelessWidget {
+
   List<StoryListItem> _list;
   double _height;
-  StoryList({double height = 450}) :_height = height;
+  StoryList({@required List<StoryListItem> items, double height = 450}) : _list = items, _height = height;
+
   void updateList({@required List<StoryListItem> list}) {
     _list = list;
   }
