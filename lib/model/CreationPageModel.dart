@@ -8,7 +8,12 @@ import 'package:partnership/model/AREST.dart';
 class CreationPageModel extends AModel {
   CreationPageModel() : super();
   bool posting = false;
+
   void _postProjectRequests(String name, String description, File image, String uid) async {
+    /*
+
+    AREST WAS CHANGED !!!!
+
     String path = await AREST.publishFile(user:"user", file:image);
     var head = Map<String, String>();
     head["name"] = name;
@@ -22,6 +27,7 @@ class CreationPageModel extends AModel {
       onSuccess: (body) {print("==============================\n===================\n==============\n=====\nsucces $body");_postedProject(body);},
       onError: (body) => _cantPost(),
     );
+    */
   }
   void _cantPost() {
     posting = false;
