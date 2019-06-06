@@ -51,6 +51,4 @@ class ApiREST implements IApiREST {
   Future<Map<String, dynamic>> getStories({Map<String, String> header, Function onSuccess, Function onError}) {
     return _httpGetRequest(path: ApiRoutes.getStories, header: header, onSuccess: onSuccess, onError: onError);
   }
-
-
 }

@@ -19,6 +19,7 @@ class HomePageViewModel extends AViewModel {
     this.changeView(widgetContext: context, route: "/project_browsing_page");
   }
   void goToCreateProjectPage(BuildContext context) {
+    print("=============\n=\n=\n=\n");
     this.changeView(widgetContext: context, route: "/creation_page");
   }
   void goToProfile(BuildContext context) {
