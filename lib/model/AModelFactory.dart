@@ -1,6 +1,5 @@
 import 'package:partnership/model/AModel.dart';
 import 'package:partnership/model/LoginPageModel.dart';
-import 'package:partnership/model/ProjectModel.dart';
 import 'package:partnership/model/SignInPageModel.dart';
 import 'package:partnership/model/SignUpPageModel.dart';
 import 'package:partnership/model/ProfilePageModel.dart';
@@ -8,6 +7,7 @@ import 'package:partnership/model/CreationPageModel.dart';
 import 'package:partnership/model/IdeaPageModel.dart';
 import 'package:partnership/model/ProjectBrowsingPageModel.dart';
 import 'package:partnership/model/ChatPageModel.dart';
+import 'package:partnership/model/HomePageModel.dart';
 import 'package:partnership/utils/Routes.dart';
 
 abstract class AModelFactory{
@@ -53,7 +53,7 @@ abstract class AModelFactory{
           register[_routing.creationPage] = model;
           break;
         case RoutesEnum.homePage:
-          model = ProjectModel();
+          model = HomePageModel();
           register[_routing.homePage] = model;
           break;
         case RoutesEnum.projectBrowsingPage:

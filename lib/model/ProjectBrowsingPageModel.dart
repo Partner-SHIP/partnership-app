@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:partnership/model/AModel.dart';
-import 'package:partnership/utils/FBCollections.dart';
-import 'package:partnership/model/ATableModel.dart';
-import 'package:partnership/model/ApiRoutes.dart';
+
 
 class ProjectDescriptionItemData {
   final String bannerPath;
@@ -20,17 +18,15 @@ class ProjectDescriptionItemData {
         name = name;
 }
 
-class ProjectDescriptionListModel extends ATableModel {
+class ProjectDescriptionListModel extends AModel {
   ProjectDescriptionListModel()
-      : super(path: ApiRoutes.getProjectQueryResult, header: {"query": ""}) {}
+      : super(/*path: ApiRoutes.getProjectQueryResult, header: {"query": ""}*/);
   List<ProjectDescriptionItemData> _list;
   Future<List<ProjectDescriptionItemData>> getList() async {
-    if (!this.isUpToDate()) {
-      await this.fetch();
-    }
+   // await this.fetch();
     return (this._list);
   }
-
+/*
   @override
   void readJSON() {
     Map<String, dynamic> json = this.requestedJSON;
@@ -45,7 +41,7 @@ class ProjectDescriptionListModel extends ATableModel {
       if (toadd != null) _list.add(toadd);
     }
   }
-
+*/
   ProjectDescriptionItemData _createProjectDescriptionItemData(Map data) {
     if (!data.containsKey("name") ||
         !data.containsKey("bannerPath") ||
@@ -74,12 +70,14 @@ class ProjectDescriptionListModel extends ATableModel {
   }
 }
 
+
 class ProjectBrowsingPageModel extends AModel {
   ProjectBrowsingPageModel() : super();
-  ProjectDescriptionListModel _listModel = ProjectDescriptionListModel();
+
+ ProjectDescriptionListModel _listModel = ProjectDescriptionListModel();
   Future<List<ProjectDescriptionItemData>> getProjectList(String query) async {
-    _listModel.updateHeader({"query": query});
-    await _listModel.fetch();
+    //_listModel.updateHeader({"query": query});
+   // await _listModel.fetch();
     print("http ok");
     return (this._listModel.getList());
   }
