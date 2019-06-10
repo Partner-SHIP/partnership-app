@@ -19,6 +19,7 @@ dependencies:
   firebase_auth: ^0.10.0+1
   firebase_messaging: ^5.0.1
   firebase_storage:
+  cloud_firestore: ^0.12.3
   path:
   #PUB PACKAGES
   path_provider: ^0.5.0+1
@@ -26,7 +27,7 @@ dependencies:
   tuple: ^1.0.2
   connectivity: ^0.4.3+1
   image_picker: ^0.6.0+2
-  flushbar: ^1.5.0
+  flushbar: '1.5.3'
   permission:
     git:
       url: https://github.com/devadrianapostol/permission

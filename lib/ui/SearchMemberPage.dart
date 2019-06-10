@@ -5,6 +5,7 @@ import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/ui/widgets/ThemeContainer.dart';
 import 'package:partnership/ui/widgets/PageHeader.dart';
 import 'package:partnership/ui/widgets/EndDrawer.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SearchMemberPage extends StatefulWidget {
   @override
@@ -13,44 +14,10 @@ class SearchMemberPage extends StatefulWidget {
   }
 }
 
+
 class SearchMemberPageState extends State<SearchMemberPage> {
   IRoutes      _routing = Routes();
   SearchMemberPageViewModel get viewModel => AViewModelFactory.register[_routing.searchMemberPage];
-
-  TextEditingController editingController = TextEditingController();
-
-  final duplicateItems = List<String>.generate(10000, (i) => "Item $i");
-  var items = List<String>();
-
-  @override
-  void initState() {
-    items.addAll(duplicateItems);
-    super.initState();
-  }
-
-  void filterSearchResults(String query) {
-    List<String> dummySearchList = List<String>();
-    dummySearchList.addAll(duplicateItems);
-    if (query.isNotEmpty) {
-      List<String> dummyListData = List<String>();
-      dummySearchList.forEach((item) {
-        if (item.contains(query)) {
-          dummyListData.add(item);
-        }
-      });
-      setState(() {
-        items.clear();
-        items.addAll(dummyListData);
-      });
-      return;
-    } else {
-      setState(() {
-        items.clear();
-        items.addAll(duplicateItems);
-      });
-    }
-
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,45 +29,89 @@ class SearchMemberPageState extends State<SearchMemberPage> {
       ),
       body: Builder(builder: (BuildContext context){
         return SafeArea(
-          top: false,
-          child: ThemeContainer(
-              context,
-              Column(
-                children: <Widget>[
-                  pageHeader(context, 'Recherche de membres'),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextField(
-                      onChanged: (value) {
-                        filterSearchResults(value);
-                      },
-                      controller: editingController,
-                      decoration: InputDecoration(
-                        labelText: "Search",
-                        hintText: "Search",
-                        prefixIcon: Icon(Icons.search),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(25.0)),
-                        )
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: items.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Text('${items[index]}'),
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              )
+          child: ThemeContainer(context, 
+              Container(
+                pageHeader(context, 'Messages'),
+                padding: const EdgeInsets.all(10.0),
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: Firestore.instance.collection('profiles').snapshots(),
+                  builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.hasError)
+                      return new Text('Error: ${snapshot.error}');
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.waiting:
+                        return new Text('Loading...');
+                      default:
+                        return new ListView(
+                          children: snapshot.data.documents.map((DocumentSnapshot document) {
+                          return new CustomCard(
+                            title: document['nickname'],
+                            test: document['uid'],
+                          );
+                      }).toList(),
+                    );
+                }
+              },
+            )),
           ),
-        );
-      }),
-    );
+        );}));
+
+  }
+
+  
+
+}
+
+class SecondPage extends StatelessWidget {
+  SecondPage({@required this.title, this.test});
+
+  final title;
+  final test;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Center(
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(test),
+                RaisedButton(
+                    child: Text('Retour'),
+                    color: Theme.of(context).primaryColor,
+                    textColor: Colors.white,
+                    onPressed: () => Navigator.pop(context)),
+              ]),
+        ));
+  }
+}
+
+class CustomCard extends StatelessWidget {
+  CustomCard({@required this.title, this.test});
+
+  final title;
+  final test;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+        child: Container(
+            padding: const EdgeInsets.only(top: 5.0),
+            child: Column(
+              children: <Widget>[
+                Text(title),
+                FlatButton(
+                    child: Text("Plus d'info"),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SecondPage(
+                                  title: title, test: test)));
+                    }),
+              ],
+            )));
   }
 }
