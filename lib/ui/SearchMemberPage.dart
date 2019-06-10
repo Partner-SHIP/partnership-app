@@ -31,7 +31,6 @@ class SearchMemberPageState extends State<SearchMemberPage> {
         return SafeArea(
           child: ThemeContainer(context, 
               Container(
-                pageHeader(context, 'Messages'),
                 padding: const EdgeInsets.all(10.0),
                 child: StreamBuilder<QuerySnapshot>(
                   stream: Firestore.instance.collection('profiles').snapshots(),
@@ -55,8 +54,9 @@ class SearchMemberPageState extends State<SearchMemberPage> {
               },
             )),
           ),
-        );}));
-
+        );
+      })
+    );
   }
 
   
