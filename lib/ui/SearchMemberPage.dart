@@ -3,7 +3,6 @@ import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/viewmodel/SearchMemberPageViewModel.dart';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/ui/widgets/ThemeContainer.dart';
-import 'package:partnership/ui/widgets/PageHeader.dart';
 import 'package:partnership/ui/widgets/EndDrawer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -58,9 +57,6 @@ class SearchMemberPageState extends State<SearchMemberPage> {
       })
     );
   }
-
-  
-
 }
 
 class SecondPage extends StatelessWidget {
@@ -110,8 +106,11 @@ class CustomCard extends StatelessWidget {
                           MaterialPageRoute(
                               builder: (context) => SecondPage(
                                   title: title, test: test)));
-                    }),
+                    }
+                ),
               ],
-            )));
+            )
+        )
+    );
   }
 }
