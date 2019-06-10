@@ -9,6 +9,7 @@ import 'package:partnership/viewmodel/IdeaPageViewModel.dart';
 import 'package:partnership/viewmodel/ProjectDescriptionPageViewModel.dart';
 import 'package:partnership/viewmodel/ProjectBrowsingPageViewModel.dart';
 import 'package:partnership/viewmodel/ChatPageViewModel.dart';
+import 'package:partnership/viewmodel/SearchMemberPageViewModel.dart';
 import 'package:partnership/utils/Routes.dart';
 /*
     Responsible for creating/managing all the ViewModel, accessible from the Coordinator.
@@ -78,6 +79,10 @@ abstract class AViewModelFactory
           viewModel = ChatPageViewModel(_routing.chatPage);
           register[_routing.chatPage] = viewModel;
           break;
+        case RoutesEnum.searchMemberPage:
+          viewModel = SearchMemberPageViewModel(_routing.searchMemberPage);
+          register[_routing.searchMemberPage] = viewModel;
+          break;          
         default:
           throw Exception("Error while constructing ViewModel: the route \"$route\" provided is unknown !");
           break;
