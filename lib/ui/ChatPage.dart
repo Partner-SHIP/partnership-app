@@ -40,5 +40,4 @@ class ChatPageState extends State<ChatPage> {
       }),
     );
   }
-
 }

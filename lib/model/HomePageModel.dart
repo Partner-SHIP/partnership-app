@@ -30,6 +30,6 @@ class HomePageModel extends AModel {
   void getStories(Function handler) {
     this.apiClient
         .getStories(header: Map<String, String>(), onSuccess: null, onError: null)
-        .then((json) => (json != null) ? this._updateStories(json, handler) : print('network error'));
+        .then((json) => (json != null) ? this._updateStories(json as Map<String, dynamic>, handler) : print('network error'));
   }
 }

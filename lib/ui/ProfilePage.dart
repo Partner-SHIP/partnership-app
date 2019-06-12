@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission/permission.dart';
 import 'dart:async';
 import 'dart:io';
+import 'package:tuple/tuple.dart';
 import 'package:partnership/ui/widgets/ThemeContainer.dart';
 import 'package:partnership/ui/widgets/PageHeader.dart';
 import 'package:partnership/ui/widgets/EndDrawer.dart';
@@ -29,32 +30,34 @@ class ProfilePageState extends State<ProfilePage>
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _mainKey = GlobalKey<ScaffoldState>();
   StreamSubscription _connectivitySub;
-  Map<String, Key> _keyMap = Map<String, Key>();
+  Map<String, Tuple2<Key, TextEditingController>> _keyMap = Map<String, Tuple2<Key, TextEditingController>>();
   List<String> values = List<String>();
   List<MyItems> items = [
-    MyItems("Projects", "body"),
-    MyItems("Partners", "body"),
-    MyItems("Other", "body")
+    MyItems("Mes Projets", "pas encore disponible"),
+    //MyItems("Partners", "body"),
+    //MyItems("Other", "body")
   ];
   bool isEditing = false;
   bool isBusy = false;
   File imagePickerFile;
   /////////////////////////////////////GETTERS
-  String get name => viewModel.name;
-  String get location => viewModel.location;
-  String get workLocation => viewModel.workLocation;
-  String get job => viewModel.job;
-  String get studies => viewModel.studies;
-  String get photoUrl => viewModel.photoUrl;
-  String get backgroundUrl => viewModel.backgroundUrl;
+  String  firstName = viewModel.firstName;
+  String  lastName = viewModel.lastName;
+  String  location = viewModel.location;
+  int     date = viewModel.date;
+  String  workLocation = viewModel.workLocation;
+  String  job = viewModel.job;
+  String  studies = viewModel.studies;
+  String  photoUrl = viewModel.photoUrl;
+  String  backgroundUrl = viewModel.backgroundUrl;
   ////////////////////////////////////
   TabController _tabController;
   @override
   void initState() {
     super.initState();
-    this._connectivitySub =
-        viewModel.subscribeToConnectivity(this._connectivityHandler);
+    this._connectivitySub = viewModel.subscribeToConnectivity(this._connectivityHandler);
     _tabController = TabController(vsync: this, length: 2);
+    viewModel.getCurrentUserProfile(this._updateProfile);
   }
 
   @override
@@ -92,20 +95,36 @@ class ProfilePageState extends State<ProfilePage>
     //   state: this,
     // );
     return Scaffold(
+      floatingActionButton: _editingButton(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: Builder(builder: (BuildContext context) {
         return SafeArea(
             top: false,
             child: ThemeContainer(
                 context,
-                Column(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    pageHeader(context, 'Profil'),
-                    _profilePicture(),
-                    _profileTabBarView(),
-                  ],
-                )));
+                SingleChildScrollView(
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          pageHeader(context, 'Profil'),
+                          _profilePicture(),
+                          Padding(child: _nameWidget(), padding: EdgeInsets.only(top: 10, bottom: 5, left: 5, right: 5)),
+                          Padding(child: _registrationDateWidget(), padding: EdgeInsets.all(5)),
+                          _livesAtWidget(),
+                          _studiedAtWidget(),
+                          _worksAtWidget(),
+                          _jobWidget(),
+                          _profilePanelList(),
+                          SizedBox(height: 80)
+                        ],
+                      )
+                  ),
+                )
+            )
+        );
       }),
       resizeToAvoidBottomPadding: true,
       endDrawer: Theme(
@@ -115,24 +134,76 @@ class ProfilePageState extends State<ProfilePage>
     );
   }
 
+  void _updateProfile(Map<String, dynamic> newProfile){
+    print(newProfile['nickname']);
+    this.setState(() {
+      this.firstName = newProfile['nickname'];
+      this.lastName = newProfile['nickname'];
+      this.date = newProfile['registrationDate']['_seconds'];
+    });
+  }
+
   Widget _profilePicture() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Container(
-          width: 150,
-          height: 150,
-          child: Container(
-            decoration: BoxDecoration(
-                color: Colors.red,
-                image: DecorationImage(
-                    image: imagePickerFile != null
-                        ? Image.file(imagePickerFile).image
-                        : NetworkImage(this.photoUrl),
-                    fit: BoxFit.cover),
-                borderRadius: BorderRadius.all(Radius.circular(45.0)),
-                boxShadow: [BoxShadow(blurRadius: 7.0, color: Colors.black)]),
-          ),
+        Stack(
+          children: <Widget>[
+            Container(
+              width: 150,
+              height: 150,
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.red,
+                    image: DecorationImage(
+                        image: imagePickerFile != null
+                            ? Image.file(imagePickerFile).image
+                            : NetworkImage(this.photoUrl),
+                        fit: BoxFit.cover),
+                    borderRadius: BorderRadius.all(Radius.circular(45.0)),
+                    boxShadow: [BoxShadow(blurRadius: 7.0, color: Colors.black)]),
+              ),
+            ),
+            this.isEditing ? _changePhotoButton() : SizedBox(width: 0, height: 0),
+            this.isBusy ? _spinner() : SizedBox(width: 0, height: 0)
+          ],
+        )
+      ],
+    );
+  }
+
+  Widget _registrationDateWidget(){
+    String date = DateTime.fromMicrosecondsSinceEpoch(this.date).toString();
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        AutoSizeText("Inscrit depuis le : ", style: TextStyle(
+            fontSize: 15,
+            fontFamily: 'Orkney',
+            fontWeight: FontWeight.bold,
+            color: Colors.white
+          )
+        ),
+      AutoSizeText(date, style: TextStyle(
+            fontSize: 15,
+            fontFamily: 'Orkney',
+            color: Colors.white
+          )
+       )
+      ],
+    );
+  }
+
+  Widget _nameWidget(){
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        AutoSizeText(this.firstName+' '+this.lastName, style: TextStyle(
+            fontSize: 25,
+            fontFamily: 'Orkney',
+            fontWeight: FontWeight.bold,
+            color: Colors.white
+        )
         )
       ],
     );
@@ -172,8 +243,7 @@ class ProfilePageState extends State<ProfilePage>
         if (this.isEditing) {
           if (this._formKey.currentState.validate()) {
             this._formKey.currentState.save();
-            viewModel.updateProfileInformations(
-                this.values, this.imagePickerFile);
+            this.values.forEach((s) => print(s));
           }
         }
         this.setState(() {
@@ -183,7 +253,7 @@ class ProfilePageState extends State<ProfilePage>
       child: this.isEditing
           ? Icon(Icons.check, size: 35)
           : Icon(Icons.edit, size: 35),
-      tooltip: this.isEditing ? "save changes" : "edit",
+      tooltip: this.isEditing ? "valider les changements" : "éditer",
       foregroundColor: Colors.white,
       backgroundColor: this.isEditing ? Colors.green : Colors.blueAccent,
     );
@@ -238,39 +308,43 @@ class ProfilePageState extends State<ProfilePage>
   Widget _livesAtWidget() {
     return Container(
         width: MediaQuery.of(context).size.width,
-        height: 90,
+        height: 120,
         decoration: BoxDecoration(
             border: Border(
           bottom: BorderSide(
             width: 1.0,
             color: Colors.white,
           ),
+          top: BorderSide(
+            width: 1.0,
+            color: Colors.white,
+          )
         )),
         //color: Colors.cyan,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text(
-              "lives at:",
+              "Habite à :",
               softWrap: false,
               overflow: TextOverflow.fade,
               style: TextStyle(
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'Montserrat',
+                  fontFamily: 'Orkney',
                   color: Colors.white),
             ),
             this.isEditing
-                ? this._editablePresenter(this.location, "change location here",
-                    "location", this._keyMap)
+                ? this._editablePresenter(this.location, "modifier içi",
+                    "location")
                 : Text(this.location,
                     softWrap: false,
                     overflow: TextOverflow.fade,
                     style: TextStyle(
                         fontSize: 15.0,
                         fontWeight: FontWeight.bold,
-                        fontFamily: 'Montserrat',
+                        fontFamily: 'Orkney',
                         color: Colors.white)),
           ],
         ));
@@ -279,7 +353,7 @@ class ProfilePageState extends State<ProfilePage>
   Widget _studiedAtWidget() {
     return Container(
         width: MediaQuery.of(context).size.width,
-        height: 90,
+        height: 120,
         decoration: BoxDecoration(
             border: Border(
           bottom: BorderSide(
@@ -289,29 +363,29 @@ class ProfilePageState extends State<ProfilePage>
         )),
         //color: Colors.cyan,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text(
-              "studied at:",
+              "A étudié à :",
               softWrap: false,
               overflow: TextOverflow.fade,
               style: TextStyle(
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'Montserrat',
+                  fontFamily: 'Orkney',
                   color: Colors.white),
             ),
             this.isEditing
                 ? this._editablePresenter(this.studies,
-                    "change studies location here", "studies", this._keyMap)
+                    "modifier içi", "studies")
                 : Text(this.studies,
                     softWrap: false,
                     overflow: TextOverflow.fade,
                     style: TextStyle(
                         fontSize: 15.0,
                         fontWeight: FontWeight.bold,
-                        fontFamily: 'Montserrat',
+                        fontFamily: 'Orkney',
                         color: Colors.white)),
           ],
         ));
@@ -320,7 +394,7 @@ class ProfilePageState extends State<ProfilePage>
   Widget _worksAtWidget() {
     return Container(
         width: MediaQuery.of(context).size.width,
-        height: 90,
+        height: 120,
         decoration: BoxDecoration(
             border: Border(
           bottom: BorderSide(
@@ -330,29 +404,29 @@ class ProfilePageState extends State<ProfilePage>
         )),
         //color: Colors.cyan,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text(
-              "works at:",
+              "Travaille à :",
               softWrap: false,
               overflow: TextOverflow.fade,
               style: TextStyle(
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'Montserrat',
+                  fontFamily: 'Orkney',
                   color: Colors.white),
             ),
             this.isEditing
                 ? this._editablePresenter(this.workLocation,
-                    "change work location here", "workLocation", this._keyMap)
+                    "modifier içi", "workLocation")
                 : Text(this.workLocation,
                     softWrap: false,
                     overflow: TextOverflow.fade,
                     style: TextStyle(
                         fontSize: 15.0,
                         fontWeight: FontWeight.bold,
-                        fontFamily: 'Montserrat',
+                        fontFamily: 'Orkney',
                         color: Colors.white)),
           ],
         ));
@@ -361,7 +435,7 @@ class ProfilePageState extends State<ProfilePage>
   Widget _jobWidget() {
     return Container(
         width: MediaQuery.of(context).size.width,
-        height: 90,
+        height: 120,
         decoration: BoxDecoration(
             border: Border(
           bottom: BorderSide(
@@ -371,29 +445,29 @@ class ProfilePageState extends State<ProfilePage>
         )),
         //color: Colors.cyan,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text(
-              "Work as:",
+              "Travaille en tant que :",
               softWrap: false,
               overflow: TextOverflow.fade,
               style: TextStyle(
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'Montserrat',
+                  fontFamily: 'Orkney',
                   color: Colors.white),
             ),
             this.isEditing
                 ? this._editablePresenter(
-                    this.job, "change job here", "job", this._keyMap)
+                    this.job, "modifier içi", "job")
                 : Text(this.job,
                     softWrap: false,
                     overflow: TextOverflow.fade,
                     style: TextStyle(
                         fontSize: 15.0,
                         fontWeight: FontWeight.bold,
-                        fontFamily: 'Montserrat',
+                        fontFamily: 'Orkney',
                         color: Colors.white)),
           ],
         ));
@@ -441,42 +515,44 @@ class ProfilePageState extends State<ProfilePage>
     );
   }
 
-  Widget _editablePresenter(
-      String label, String hint, String keyLabel, Map<String, Key> keyMap) {
+  Widget _editablePresenter(String label, String hint, String keyLabel) {
     Widget ret;
     Key key = Key(keyLabel);
-    print("key : " + key.toString());
+    TextEditingController controller = TextEditingController();
+    TextFormField input = TextFormField(
+      controller: controller,
+      validator: (value) {
+        _formValidation(value);
+      },
+      onSaved: (value) {
+        _onSaved(value);
+      },
+      key: key,
+      decoration: InputDecoration(
+          labelText: label,
+          labelStyle: TextStyle(color: Colors.white),
+          hintText: hint,
+          hintStyle: TextStyle(color: Colors.white),
+          icon: Icon(Icons.edit, color: Colors.white)),
+    );
     ret = Row(
       children: <Widget>[
         Expanded(
           child: Padding(
               padding: EdgeInsets.only(left: 10.0, bottom: 5.0),
-              child: TextFormField(
-                validator: (value) {
-                  _formValidation(value);
-                },
-                onSaved: (value) {
-                  _onSaved(value);
-                },
-                key: key,
-                decoration: InputDecoration(
-                    labelText: label,
-                    labelStyle: TextStyle(color: Colors.white),
-                    hintText: hint,
-                    hintStyle: TextStyle(color: Colors.white),
-                    icon: Icon(Icons.edit, color: Colors.white)),
-              )),
+              child: input),
         ),
         FlatButton.icon(
-            onPressed: null,
+            onPressed: () => controller.clear(),
             icon: Icon(Icons.cancel, color: Colors.red),
             label: Text(
-              "cancel",
+              "effacer",
               style: TextStyle(color: Colors.red),
-            ))
+            )
+        )
       ],
     );
-    keyMap[keyLabel] = key;
+    this._keyMap[keyLabel] = Tuple2<Key, TextEditingController>(key, controller);
     return ret;
   }
 
@@ -484,10 +560,10 @@ class ProfilePageState extends State<ProfilePage>
     var ret;
     if (this.isEditing) {
       ret = this._editablePresenter(
-          this.name, "change name here", "name", this._keyMap);
+          this.firstName, "change name here", "name");
     } else {
       ret = Text(
-        this.name,
+        this.firstName,
         softWrap: false,
         overflow: TextOverflow.fade,
         style: TextStyle(
@@ -575,8 +651,9 @@ class ProfilePageState extends State<ProfilePage>
     if (this.isBusy)
       return Positioned(
           child: CircularProgressIndicator(),
-          top: MediaQuery.of(context).size.width / 2.2,
-          left: MediaQuery.of(context).size.height / 2.2);
+          top: 50,
+          left: 50
+      );
     return SizedBox(width: 0, height: 0);
   }
 
