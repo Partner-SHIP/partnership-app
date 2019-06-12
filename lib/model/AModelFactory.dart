@@ -8,6 +8,7 @@ import 'package:partnership/model/IdeaPageModel.dart';
 import 'package:partnership/model/ProjectBrowsingPageModel.dart';
 import 'package:partnership/model/ChatPageModel.dart';
 import 'package:partnership/model/HomePageModel.dart';
+import 'package:partnership/model/SearchMemberPageModel.dart';
 import 'package:partnership/utils/Routes.dart';
 
 abstract class AModelFactory{
@@ -67,6 +68,10 @@ abstract class AModelFactory{
         case RoutesEnum.chatPage:
           model = ChatPageModel();
           register[_routing.chatPage] = model;
+          break;
+        case RoutesEnum.searchMemberPage:
+          model = SearchMemberPageModel();
+          register[_routing.searchMemberPage] = model;
           break;
         default:
           model = null;
