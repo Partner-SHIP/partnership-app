@@ -32,10 +32,10 @@ List<Widget> _buildRightDrawerButtons(
   List<LabeledIconButton> result = new List<LabeledIconButton>();
   if (profile)
     result.add(profileButton);
+    if (searchMember)
+  result.add(searchMemberButton);
   if (disconnect)
     result.add(disconnectButton);
-  if (searchMember)
-    result.add(searchMemberButton);
   return (result);
 }
 
@@ -63,7 +63,7 @@ Widget _buildRightDrawer(
   ));
 }
 
-Widget buildEndDrawer({@required BuildContext context, @required AViewModel viewModel,bool profile = true,bool disconnect = true}) {
+Widget buildEndDrawer({@required BuildContext context, @required AViewModel viewModel,bool profile = true,bool disconnect = true, bool searchMember = true}) {
   List<Widget> buttonsList = _buildRightDrawerButtons(
       context: context,
       viewModel: viewModel,
