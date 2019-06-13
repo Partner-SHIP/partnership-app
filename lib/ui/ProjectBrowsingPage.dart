@@ -53,45 +53,45 @@ class ProjectBrowsingPageState extends State<ProjectBrowsingPage> {
       ),
       body: Builder(builder: (BuildContext context) {
         return SafeArea(
-            top: false,
-            child: ThemeContainer(
+          top: false,
+          child: ThemeContainer(
               context,
-               Column(
-                 children: <Widget>[
-                    pageHeader(context, 'Recherche de projets'),
-                    Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height - 110,
-                        child: StreamBuilder<QuerySnapshot>(
-                         stream: Firestore.instance
-                             .collection('projects')
-                             .orderBy('dateOfCreation', descending: true)
-                             .snapshots(),
-                         builder: (BuildContext context,
-                             AsyncSnapshot<QuerySnapshot> snapshot) {
-                           if (snapshot.hasError)
-                             return new Text('Error: ${snapshot.error}');
-                           switch (snapshot.connectionState) {
-                             case ConnectionState.waiting:
-                               return new Text('Loading...');
-                             default:
-                               return new ListView(
-                                 children: snapshot.data.documents
-                                     .map((DocumentSnapshot document) {
-                                   return Padding(child: CustomCard(
-                                     title: document['name'],
-                                     bannerPath: document['bannerPath'],
-                                     description: document['description'],
-                                     dateOfCreation: document['dateOfCreation'],
-                                   ), padding: EdgeInsets.all(10));
-                                 }).toList(),
-                               );
-                           }
-                         })
-                    )
-                ]
-             )),
-            );
+              Column(children: <Widget>[
+                pageHeader(context, 'Recherche de projets'),
+                Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height - 110,
+                    child: StreamBuilder<QuerySnapshot>(
+                        stream: Firestore.instance
+                            .collection('projects')
+                            .orderBy('dateOfCreation', descending: true)
+                            .snapshots(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<QuerySnapshot> snapshot) {
+                          if (snapshot.hasError)
+                            return new Text('Error: ${snapshot.error}');
+                          switch (snapshot.connectionState) {
+                            case ConnectionState.waiting:
+                              return new Text('Loading...');
+                            default:
+                              return new ListView(
+                                children: snapshot.data.documents
+                                    .map((DocumentSnapshot document) {
+                                  return Padding(
+                                      child: CustomCard(
+                                        title: document['name'],
+                                        bannerPath: document['bannerPath'],
+                                        description: document['description'],
+                                        dateOfCreation:
+                                            document['dateOfCreation'],
+                                      ),
+                                      padding: EdgeInsets.all(10));
+                                }).toList(),
+                              );
+                          }
+                        }))
+              ])),
+        );
       }),
     );
   }
@@ -156,7 +156,7 @@ class CustomCard extends StatelessWidget {
         overflow: TextOverflow.fade));
   }
 
-  Container _buildContainer({double width}) {
+  Widget _buildContainer({double width}) {
     DecorationImage image = DecorationImage(
         image: NetworkImage(bannerPath),
         fit: BoxFit.cover,
@@ -166,20 +166,24 @@ class CustomCard extends StatelessWidget {
         borderRadius: BorderRadius.all(Radius.circular(5)),
         image: image);
     final double sidePadding = 10;
-    Container result = Container(
-      decoration: decoration,
-      height: 120,
-      width: width,
-      padding: EdgeInsets.only(
-          bottom: 10, top: 10, left: sidePadding, right: sidePadding),
-      child: Column(
-        children: <Widget>[
-          Container(width: width - sidePadding * 2, child: _buildTitle()),
-          Container(width: width - 10, child: _buildDescription())
-        ],
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      ),
-    );
+    Widget result = GestureDetector(
+        onTap: () {
+          print('titi');
+        },
+        child: Container(
+          decoration: decoration,
+          height: 120,
+          width: width,
+          padding: EdgeInsets.only(
+              bottom: 10, top: 10, left: sidePadding, right: sidePadding),
+          child: Column(
+            children: <Widget>[
+              Container(width: width - sidePadding * 2, child: _buildTitle()),
+              Container(width: width - 10, child: _buildDescription())
+            ],
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          ),
+        ));
     return (result);
   }
 }
