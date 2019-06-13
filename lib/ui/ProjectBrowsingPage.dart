@@ -56,46 +56,41 @@ class ProjectBrowsingPageState extends State<ProjectBrowsingPage> {
             top: false,
             child: ThemeContainer(
               context,
-              // Column(
-              //   children: <Widget>[
-              //     pageHeader(context, 'Recherche de projets'),
-              //     searchBar,
-              //     // SingleChildScrollView(
-              //     //   child: Container(
-              //     //     color: Colors.blue, child: Text('liste de projet'),
-              //     //   )
-              //     // )
-              //     Container(
-              //       child: StreamBuilder<QuerySnapshot>(
-              StreamBuilder<QuerySnapshot>(
-                  stream: Firestore.instance
-                      .collection('projects')
-                      .orderBy('dateOfCreation', descending: true)
-                      .snapshots(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if (snapshot.hasError)
-                      return new Text('Error: ${snapshot.error}');
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.waiting:
-                        return new Text('Loading...');
-                      default:
-                        return new ListView(
-                          children: snapshot.data.documents
-                              .map((DocumentSnapshot document) {
-                            return new CustomCard(
-                              title: document['name'],
-                              bannerPath: document['bannerPath'],
-                              description: document['description'],
-                              dateOfCreation: document['dateOfCreation'],
-                            );
-                          }).toList(),
-                        );
-                    }
-                  }),
-            )
-            //],
-            // )),
+               Column(
+                 children: <Widget>[
+                    pageHeader(context, 'Recherche de projets'),
+                    Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height - 110,
+                        child: StreamBuilder<QuerySnapshot>(
+                         stream: Firestore.instance
+                             .collection('projects')
+                             .orderBy('dateOfCreation', descending: true)
+                             .snapshots(),
+                         builder: (BuildContext context,
+                             AsyncSnapshot<QuerySnapshot> snapshot) {
+                           if (snapshot.hasError)
+                             return new Text('Error: ${snapshot.error}');
+                           switch (snapshot.connectionState) {
+                             case ConnectionState.waiting:
+                               return new Text('Loading...');
+                             default:
+                               return new ListView(
+                                 children: snapshot.data.documents
+                                     .map((DocumentSnapshot document) {
+                                   return Padding(child: CustomCard(
+                                     title: document['name'],
+                                     bannerPath: document['bannerPath'],
+                                     description: document['description'],
+                                     dateOfCreation: document['dateOfCreation'],
+                                   ), padding: EdgeInsets.all(10));
+                                 }).toList(),
+                               );
+                           }
+                         })
+                    )
+                ]
+             )),
             );
       }),
     );
