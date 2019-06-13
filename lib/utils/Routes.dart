@@ -10,6 +10,8 @@ import 'package:partnership/ui/CreationPage.dart';
 import 'package:partnership/ui/IdeaPage.dart';
 import 'package:partnership/ui/ChatPage.dart';
 import 'package:partnership/ui/SearchMemberPage.dart';
+import 'package:partnership/ui/widgets/NotificationsPage.dart';
+import 'package:path/path.dart';
 
 enum DynamicRoutesEnum {
   LOL
@@ -28,6 +30,7 @@ enum RoutesEnum {
   ideaPage,
   chatPage,
   searchMemberPage,
+  notificationsPage,
 }
 
 abstract class  IRoutes {
@@ -43,6 +46,7 @@ abstract class  IRoutes {
   String        get projectBrowsingPage;
   String        get chatPage;
   String        get searchMemberPage;
+  String        get notificationsPage;
 
   dynamic            routeMap();
   List<String>   routeList();
@@ -72,6 +76,7 @@ class Routes implements IRoutes {
   static const String _ideaPage = "/idea_page";
   static const String _chatPage = "/chat_page";
   static const String _searchMemberPage = "/search_member_page";
+  static const String _notificationsPage = "/notifications_page";
   /*
   * Dynamic Routes
   */
@@ -90,6 +95,7 @@ class Routes implements IRoutes {
       _ideaPage:                  (BuildContext context) => IdeaPage(),
       _chatPage:                  (BuildContext context) => ChatPage(),
       _searchMemberPage:          (BuildContext context) => SearchMemberPage(),
+      _notificationsPage:          (BuildContext context) => NotificationsPage(),
     };  
   }
   Map<String, RoutesEnum> _routeEnumMap() {
@@ -105,6 +111,7 @@ class Routes implements IRoutes {
       _ideaPage:                RoutesEnum.ideaPage,
       _chatPage:                RoutesEnum.chatPage,
       _searchMemberPage:        RoutesEnum.searchMemberPage,
+      _notificationsPage:       RoutesEnum.notificationsPage,
     };
   }
 
@@ -120,6 +127,7 @@ class Routes implements IRoutes {
      _ideaPage,
      _chatPage,
      _searchMemberPage,
+     _notificationsPage,
    ];
 
   Map<String, DynamicRoutesEnum> _dynamicRoutesEnumMap(){
@@ -167,6 +175,9 @@ class Routes implements IRoutes {
 
   @override
   String get searchMemberPage => _searchMemberPage;
+
+  @override
+  String get notificationsPage => _notificationsPage;
 
   @override
   List<String> routeList() {

@@ -11,12 +11,12 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 
 
-class NotificationsWidget extends StatefulWidget {
+class NotificationsPage extends StatefulWidget {
   @override
-  _NotificationsWidgetState createState() => _NotificationsWidgetState();
+  _NotificationsPageState createState() => _NotificationsPageState();
 }
 
-class _NotificationsWidgetState extends State<NotificationsWidget> {
+class _NotificationsPageState extends State<NotificationsPage> {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   //final List<Message> notificationsList = [];
 
