@@ -40,7 +40,7 @@ class ProjectBrowsingPageState extends State<ProjectBrowsingPage> {
     double searchBarHeight = screenHeight * 1 / 10;
 
     SearchBar searchBar = SearchBar(onQuery: this.viewModel.searchTag,);
-   //ProjectScrollList list = ProjectScrollList.fromDataList(this._projectList, height: listHeight);
+   ProjectScrollList list = ProjectScrollList.fromDataList(this._projectList, height: listHeight);
 
 
 
@@ -59,7 +59,12 @@ class ProjectBrowsingPageState extends State<ProjectBrowsingPage> {
                 children: <Widget>[
                   pageHeader(context, 'Recherche de projets'),
                   searchBar,
-                  SingleChildScrollView(child: Container(color: Colors.blue, child: Text('liste de projet'),))
+                  SingleChildScrollView(
+                    child: Container(
+                      color: Colors.blue, child: Text('liste de projet'),
+                      list,
+                    )
+                  )
                 ],
               )
           ),
