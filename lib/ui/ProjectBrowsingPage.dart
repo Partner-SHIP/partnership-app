@@ -117,29 +117,75 @@ class CustomCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-        child: Container(
-            padding: const EdgeInsets.only(top: 5.0),
-            child: Column(
-              children: <Widget>[
-                Image.network(
-                  bannerPath,
-                ),
-                Text(title),
-                FlatButton(
-                    child: Text("Plus d'info"),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SecondPage(
-                                  title: title,
-                                  bannerPath: bannerPath,
-                                  description: description,
-                                  dateOfCreation: dateOfCreation)));
-                    }),
-              ],
-            )));
+    // return Card(
+    //     child: Container(
+    //         padding: const EdgeInsets.only(top: 5.0),
+    //         child: Column(
+    //           children: <Widget>[
+    //             Image.network(
+    //               bannerPath,
+    //             ),
+    //             Text(title),
+    //             FlatButton(
+    //                 child: Text("Plus d'info"),
+    //                 onPressed: () {
+    //                   Navigator.push(
+    //                       context,
+    //                       MaterialPageRoute(
+    //                           builder: (context) => SecondPage(
+    //                               title: title,
+    //                               bannerPath: bannerPath,
+    //                               description: description,
+    //                               dateOfCreation: dateOfCreation)));
+    //                 }),
+    //           ],
+    //         )));
+    return (_buildContainer(width: MediaQuery.of(context).size.width));
+  }
+
+  Text _buildTitle() {
+    return (Text(
+      title,
+      textAlign: TextAlign.left,
+      //style: storyHeaderTextStyle,
+      maxLines: 1,
+      overflow: TextOverflow.fade,
+    ));
+  }
+
+  Text _buildDescription() {
+    return (Text(description,
+        textAlign: TextAlign.right,
+        //style: storyDescriptionTextStyle,
+        maxLines: 2,
+        overflow: TextOverflow.fade));
+  }
+
+  Container _buildContainer({double width}) {
+    DecorationImage image = DecorationImage(
+        image: NetworkImage(bannerPath),
+        fit: BoxFit.cover,
+        alignment: Alignment.topCenter);
+    BoxDecoration decoration = BoxDecoration(
+        color: Colors.lightBlue[200],
+        borderRadius: BorderRadius.all(Radius.circular(5)),
+        image: image);
+    final double sidePadding = 10;
+    Container result = Container(
+      decoration: decoration,
+      height: 120,
+      width: width,
+      padding: EdgeInsets.only(
+          bottom: 10, top: 10, left: sidePadding, right: sidePadding),
+      child: Column(
+        children: <Widget>[
+          Container(width: width - sidePadding * 2, child: _buildTitle()),
+          Container(width: width - 10, child: _buildDescription())
+        ],
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      ),
+    );
+    return (result);
   }
 }
 
