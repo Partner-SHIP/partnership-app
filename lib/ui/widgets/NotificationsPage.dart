@@ -9,7 +9,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
+import 'package:partnership/coordinator/AppCoordinator.dart';
+import 'package:partnership/viewmodel/AViewModel.dart';
 import 'package:partnership/ui/widgets/ThemeContainer.dart';
+import 'package:partnership/viewmodel/NotificationsPageViewModel.dart';
 
 class NotificationsPage extends StatefulWidget {
   @override
@@ -80,10 +83,16 @@ class _NotificationsPageState extends State<NotificationsPage> {
 
 class NotificationsList extends StatelessWidget {
   //il faut récupérer l'id de l'user connecté avec firebase
-  String userId = 'e2COxsRabKaD64DIhEp84l5qFNm2';
+  
+  static Coordinator toto = Coordinator();
+  static FirebaseUser titi = toto.getLoggedInUser();
+  //String userId = 'e2COxsRabKaD64DIhEp84l5qFNm2';
+  String userId = titi.uid;
   @override
   Widget build(BuildContext context) {
+    print('onche = ' + userId);
     //il faut récupérer l'id de l'user avec firebase
+    //print('onche onche = ' + userId);
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance
           .collection('notifications')
