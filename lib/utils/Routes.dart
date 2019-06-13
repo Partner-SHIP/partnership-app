@@ -9,6 +9,7 @@ import 'package:partnership/ui/ProjectBrowsingPage.dart';
 import 'package:partnership/ui/CreationPage.dart';
 import 'package:partnership/ui/IdeaPage.dart';
 import 'package:partnership/ui/ChatPage.dart';
+import 'package:partnership/ui/SearchMemberPage.dart';
 
 enum DynamicRoutesEnum {
   LOL
@@ -26,6 +27,7 @@ enum RoutesEnum {
   creationPage,
   ideaPage,
   chatPage,
+  searchMemberPage,
 }
 
 abstract class  IRoutes {
@@ -40,6 +42,7 @@ abstract class  IRoutes {
   String        get projectDescriptionPage;
   String        get projectBrowsingPage;
   String        get chatPage;
+  String        get searchMemberPage;
 
   dynamic            routeMap();
   List<String>   routeList();
@@ -68,6 +71,7 @@ class Routes implements IRoutes {
   static const String _creationPage = "/creation_page";
   static const String _ideaPage = "/idea_page";
   static const String _chatPage = "/chat_page";
+  static const String _searchMemberPage = "/search_member_page";
   /*
   * Dynamic Routes
   */
@@ -85,6 +89,7 @@ class Routes implements IRoutes {
       _creationPage:              (BuildContext context) => CreationPage(),
       _ideaPage:                  (BuildContext context) => IdeaPage(),
       _chatPage:                  (BuildContext context) => ChatPage(),
+      _searchMemberPage:          (BuildContext context) => SearchMemberPage(),
     };  
   }
   Map<String, RoutesEnum> _routeEnumMap() {
@@ -99,6 +104,7 @@ class Routes implements IRoutes {
       _creationPage:            RoutesEnum.creationPage,
       _ideaPage:                RoutesEnum.ideaPage,
       _chatPage:                RoutesEnum.chatPage,
+      _searchMemberPage:        RoutesEnum.searchMemberPage,
     };
   }
 
@@ -113,6 +119,7 @@ class Routes implements IRoutes {
      _creationPage,
      _ideaPage,
      _chatPage,
+     _searchMemberPage,
    ];
 
   Map<String, DynamicRoutesEnum> _dynamicRoutesEnumMap(){
@@ -157,6 +164,9 @@ class Routes implements IRoutes {
 
   @override
   String get chatPage => _chatPage;
+
+  @override
+  String get searchMemberPage => _searchMemberPage;
 
   @override
   List<String> routeList() {

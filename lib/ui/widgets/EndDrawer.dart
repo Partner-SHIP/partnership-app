@@ -6,13 +6,20 @@ import 'package:partnership/ui/widgets/LabeledIconButtonList.dart';
 import 'package:partnership/viewmodel/AViewModel.dart';
 
 List<Widget> _buildRightDrawerButtons(
-    {@required BuildContext context, @required AViewModel viewModel, @required bool profile, @required bool disconnect}) {
+    {@required BuildContext context, @required AViewModel viewModel, @required bool profile, @required bool disconnect, @required bool searchMember}) {
   LabeledIconButton profileButton = LabeledIconButton(
     icon: Icon(Icons.account_circle, color: Colors.white),
     toolTip: 'Accéder à mon profil',
     onPressed: () =>
         viewModel.changeView(route: '/profile_page', widgetContext: context),
     text: "Accéder à mon profil",
+    fullWidth: true,
+  );
+  LabeledIconButton  searchMemberButton = LabeledIconButton(
+    icon: Icon(Icons.search, color: Colors.white),
+    toolTip: 'Rechercher un profil',
+    onPressed: () => viewModel.changeView(route: '/search_member_page', widgetContext: context),
+    text: "Rechercher un profil",
     fullWidth: true,
   );
   LabeledIconButton disconnectButton = LabeledIconButton(
@@ -25,6 +32,8 @@ List<Widget> _buildRightDrawerButtons(
   List<LabeledIconButton> result = new List<LabeledIconButton>();
   if (profile)
     result.add(profileButton);
+    if (searchMember)
+  result.add(searchMemberButton);
   if (disconnect)
     result.add(disconnectButton);
   return (result);
@@ -54,11 +63,12 @@ Widget _buildRightDrawer(
   ));
 }
 
-Widget buildEndDrawer({@required BuildContext context, @required AViewModel viewModel,bool profile = true,bool disconnect = true}) {
+Widget buildEndDrawer({@required BuildContext context, @required AViewModel viewModel,bool profile = true,bool disconnect = true, bool searchMember = true}) {
   List<Widget> buttonsList = _buildRightDrawerButtons(
       context: context,
       viewModel: viewModel,
       profile: profile,
-      disconnect: disconnect);
+      disconnect: disconnect,
+      searchMember: searchMember);
   return _buildRightDrawer(context: context, buttonsList: buttonsList);
 }

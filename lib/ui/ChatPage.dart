@@ -14,8 +14,10 @@ class ChatPage extends StatefulWidget {
 }
 
 class ChatPageState extends State<ChatPage> {
+  
   IRoutes      _routing = Routes();
   ChatPageViewModel get viewModel => AViewModelFactory.register[_routing.chatPage];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
