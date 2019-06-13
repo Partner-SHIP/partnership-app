@@ -53,8 +53,8 @@ class ProjectBrowsingPageState extends State<ProjectBrowsingPage> {
       ),
       body: Builder(builder: (BuildContext context) {
         return SafeArea(
-          top: false,
-          child: ThemeContainer(
+            top: false,
+            child: ThemeContainer(
               context,
               // Column(
               //   children: <Widget>[
@@ -67,43 +67,53 @@ class ProjectBrowsingPageState extends State<ProjectBrowsingPage> {
               //     // )
               //     Container(
               //       child: StreamBuilder<QuerySnapshot>(
-                StreamBuilder<QuerySnapshot>(
-                        stream: Firestore.instance
-                            .collection('projects')
-                            .snapshots(),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<QuerySnapshot> snapshot) {
-                          if (snapshot.hasError)
-                            return new Text('Error: ${snapshot.error}');
-                          switch (snapshot.connectionState) {
-                            case ConnectionState.waiting:
-                              return new Text('Loading...');
-                            default:
-                              return new ListView(
-                                children: snapshot.data.documents
-                                    .map((DocumentSnapshot document) {
-                                  return new CustomCard(
-                                    title: document['name'],
-                                    test: document['bannerPath'],
-                                  );
-                                }).toList(),
-                              );
-                          }
-                        }),
-                  )
-                //],
-             // )),
-        );
+              StreamBuilder<QuerySnapshot>(
+                  stream: Firestore.instance
+                      .collection('projects')
+                      .orderBy('dateOfCreation', descending: true)
+                      .snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.hasError)
+                      return new Text('Error: ${snapshot.error}');
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.waiting:
+                        return new Text('Loading...');
+                      default:
+                        return new ListView(
+                          children: snapshot.data.documents
+                              .map((DocumentSnapshot document) {
+                            return new CustomCard(
+                              title: document['name'],
+                              bannerPath: document['bannerPath'],
+                              description: document['description'],
+                              dateOfCreation: document['dateOfCreation'],
+                            );
+                          }).toList(),
+                        );
+                    }
+                  }),
+            )
+            //],
+            // )),
+            );
       }),
     );
   }
 }
 
 class CustomCard extends StatelessWidget {
-  CustomCard({@required this.title, this.test});
+  CustomCard({
+    @required this.title,
+    this.bannerPath,
+    this.description,
+    this.dateOfCreation,
+  });
 
   final title;
-  final test;
+  final bannerPath;
+  final description;
+  final dateOfCreation;
 
   @override
   Widget build(BuildContext context) {
@@ -112,17 +122,60 @@ class CustomCard extends StatelessWidget {
             padding: const EdgeInsets.only(top: 5.0),
             child: Column(
               children: <Widget>[
+                Image.network(
+                  bannerPath,
+                ),
                 Text(title),
                 FlatButton(
                     child: Text("Plus d'info"),
                     onPressed: () {
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => SecondPage(
-                      //             title: title, test: test)));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SecondPage(
+                                  title: title,
+                                  bannerPath: bannerPath,
+                                  description: description,
+                                  dateOfCreation: dateOfCreation)));
                     }),
               ],
+            )));
+  }
+}
+
+class SecondPage extends StatelessWidget {
+  SecondPage(
+      {@required this.title,
+      this.bannerPath,
+      this.description,
+      this.dateOfCreation});
+
+  final title;
+  final bannerPath;
+  final description;
+  final dateOfCreation;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: ThemeContainer(
+            context,
+            Center(
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Image.network(
+                      bannerPath,
+                    ),
+                    Text(title),
+                    Text(description),
+                    RaisedButton(
+                        child: Text('Retour'),
+                        color: Theme.of(context).primaryColor,
+                        textColor: Colors.white,
+                        onPressed: () => Navigator.pop(context)),
+                  ]),
             )));
   }
 }
