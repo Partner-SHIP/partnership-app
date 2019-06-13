@@ -6,7 +6,13 @@ import 'package:partnership/ui/widgets/LabeledIconButtonList.dart';
 import 'package:partnership/viewmodel/AViewModel.dart';
 
 List<Widget> _buildRightDrawerButtons(
-    {@required BuildContext context, @required AViewModel viewModel, @required bool profile, @required bool disconnect, @required bool searchMember}) {
+    {@required BuildContext context, 
+    @required AViewModel viewModel, 
+    @required bool profile, 
+    @required bool disconnect, 
+    @required bool searchMember,
+    @required bool projectSearch,
+    @required bool projectCreation}) {
   LabeledIconButton profileButton = LabeledIconButton(
     icon: Icon(Icons.account_circle, color: Colors.white),
     toolTip: 'Accéder à mon profil',
@@ -22,6 +28,20 @@ List<Widget> _buildRightDrawerButtons(
     text: "Rechercher un profil",
     fullWidth: true,
   );
+  LabeledIconButton  projectSearchButton = LabeledIconButton(
+    icon: Icon(Icons.bluetooth_searching, color: Colors.white),
+    toolTip: 'Rechercher un projet',
+    onPressed: () => viewModel.changeView(route: '/project_browsing_page', widgetContext: context),
+    text: "Rechercher un projet",
+    fullWidth: true,
+  );
+    LabeledIconButton  projectCreationButton = LabeledIconButton(
+    icon: Icon(Icons.create, color: Colors.white),
+    toolTip: 'Créer un projet',
+    onPressed: () => viewModel.changeView(route: '/creation_page', widgetContext: context),
+    text: "Créer un projet",
+    fullWidth: true,
+  );
   LabeledIconButton disconnectButton = LabeledIconButton(
     icon: Icon(Icons.power_settings_new, color: Colors.white),
     toolTip: 'Me déconnecter',
@@ -32,8 +52,12 @@ List<Widget> _buildRightDrawerButtons(
   List<LabeledIconButton> result = new List<LabeledIconButton>();
   if (profile)
     result.add(profileButton);
-    if (searchMember)
-  result.add(searchMemberButton);
+  if (searchMember)
+    result.add(searchMemberButton);
+  if (projectSearch)
+    result.add(projectSearchButton);
+  if (projectCreation)
+    result.add(projectCreationButton);
   if (disconnect)
     result.add(disconnectButton);
   return (result);
@@ -63,12 +87,20 @@ Widget _buildRightDrawer(
   ));
 }
 
-Widget buildEndDrawer({@required BuildContext context, @required AViewModel viewModel,bool profile = true,bool disconnect = true, bool searchMember = true}) {
+Widget buildEndDrawer({@required BuildContext context, 
+@required AViewModel viewModel,
+bool profile = true,
+bool disconnect = true, 
+bool searchMember = true,
+bool projectSearch = true,
+bool projectCreation = true}) {
   List<Widget> buttonsList = _buildRightDrawerButtons(
       context: context,
       viewModel: viewModel,
       profile: profile,
       disconnect: disconnect,
-      searchMember: searchMember);
+      searchMember: searchMember,
+      projectSearch: projectSearch,
+      projectCreation: projectCreation);
   return _buildRightDrawer(context: context, buttonsList: buttonsList);
 }
