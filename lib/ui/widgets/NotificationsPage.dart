@@ -51,12 +51,14 @@ class _NotificationsPageState extends State<NotificationsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return NotificationsList();
+    return Scaffold(
+      body: NotificationsList(),
     // return SizedBox(
     //   child: ListView(
     //     children: notificationsList.map(buildNotificationTile).toList(),
     //   ),
-    // );
+    // );,
+    ); 
   }
 
   // Widget buildNotificationTile(Message message) {
