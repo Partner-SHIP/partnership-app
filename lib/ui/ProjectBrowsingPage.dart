@@ -13,6 +13,7 @@ class ProjectBrowsingPage extends StatefulWidget {
   ProjectBrowsingPageState createState() => ProjectBrowsingPageState();
 }
 
+
 class ProjectBrowsingPageState extends State<ProjectBrowsingPage> {
   IRoutes      _routing = Routes();
   List<ProjectScrollListItemData> _projectList = List();
@@ -39,9 +40,11 @@ class ProjectBrowsingPageState extends State<ProjectBrowsingPage> {
     double searchBarHeight = screenHeight * 1 / 10;
 
     SearchBar searchBar = SearchBar(onQuery: this.viewModel.searchTag,);
-    //ProjectScrollList list = ProjectScrollList.fromDataList(this._projectList, height: listHeight);
+   //ProjectScrollList list = ProjectScrollList.fromDataList(this._projectList, height: listHeight);
 
-    return Scaffold(
+
+
+ return Scaffold(
       resizeToAvoidBottomPadding: true,
       endDrawer: Theme(
         data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
