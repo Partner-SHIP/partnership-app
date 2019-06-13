@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:partnership/viewmodel/AViewModel.dart';
 import 'package:partnership/viewmodel/HomePageViewModel.dart';
 import 'package:partnership/viewmodel/LoginPageViewModel.dart';
@@ -30,6 +31,12 @@ abstract class AViewModelFactory
     });
     return target;
   }
+
+  static DynamicRoutesEnum fetchDynamicRoutes(String route, IRoutes routing){
+    DynamicRoutesEnum target;
+    return target;
+  }
+
   // Factory to instanciate ViewModels from routes
   factory AViewModelFactory(String route){
     if  (register.containsKey(route))
@@ -90,4 +97,19 @@ abstract class AViewModelFactory
       return viewModel;
     }
   }
+
+  factory AViewModelFactory.createDynamicViewModel({@required String route, Map<String, dynamic> args}){
+    AViewModel viewModel;
+    IRoutes     _routing = Routes();
+    DynamicRoutesEnum target = fetchDynamicRoutes(route, _routing);
+    switch (target){
+      case DynamicRoutesEnum.LOL:
+        break;
+      default:
+        throw Exception("Error while constructing dynamic ViewModel: the dynamic route \"$route\" provided is unknown !");
+        break;
+    }
+    return viewModel;
+  }
+
 }

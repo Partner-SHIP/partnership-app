@@ -4,6 +4,9 @@ import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/viewmodel/ProjectBrowsingPageViewModel.dart';
 import 'package:partnership/ui/widgets/ProjectScrollList.dart';
 import 'package:partnership/ui/widgets/SearchBar.dart';
+import 'package:partnership/ui/widgets/ThemeContainer.dart';
+import 'package:partnership/ui/widgets/EndDrawer.dart';
+import 'package:partnership/ui/widgets/PageHeader.dart';
 
 class ProjectBrowsingPage extends StatefulWidget {
   @override
@@ -36,15 +39,29 @@ class ProjectBrowsingPageState extends State<ProjectBrowsingPage> {
     double searchBarHeight = screenHeight * 1 / 10;
 
     SearchBar searchBar = SearchBar(onQuery: this.viewModel.searchTag,);
-    ProjectScrollList list = ProjectScrollList.fromDataList(this._projectList, height: listHeight);
-    
-    return Scaffold( 
-      backgroundColor: Colors.grey[300],
-      body: SingleChildScrollView(
-            child: Container(
-              child: Column(children: <Widget>[searchBar, list],),
-            )
-        )
+    //ProjectScrollList list = ProjectScrollList.fromDataList(this._projectList, height: listHeight);
+
+    return Scaffold(
+      resizeToAvoidBottomPadding: true,
+      endDrawer: Theme(
+        data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
+        child: buildEndDrawer(context: context, viewModel: viewModel),
+      ),
+      body: Builder(builder: (BuildContext context){
+        return SafeArea(
+          top: false,
+          child: ThemeContainer(
+              context,
+              Column(
+                children: <Widget>[
+                  pageHeader(context, 'Recherche de projets'),
+                  searchBar,
+                  SingleChildScrollView(child: Container(color: Colors.blue, child: Text('liste de projet'),))
+                ],
+              )
+          ),
+        );
+      }),
     );
   }
 }

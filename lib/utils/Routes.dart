@@ -11,10 +11,11 @@ import 'package:partnership/ui/IdeaPage.dart';
 import 'package:partnership/ui/ChatPage.dart';
 import 'package:partnership/ui/SearchMemberPage.dart';
 
-
+enum DynamicRoutesEnum {
+  LOL
+}
 
 enum RoutesEnum {
-  /*root,*/
   loginPage,
   signInPage,
   signUpPage,
@@ -30,7 +31,6 @@ enum RoutesEnum {
 }
 
 abstract class  IRoutes {
-  //String        get root;
   String        get loginPage;
   String        get signInPage;
   String        get signUpPage;
@@ -47,6 +47,8 @@ abstract class  IRoutes {
   dynamic            routeMap();
   List<String>   routeList();
   Map<String, RoutesEnum> routeEnumMap();
+  List<String> dynamicRouteList();
+  Map<String, DynamicRoutesEnum> dynamicRouteEnumMap();
 }
 
 class Routes implements IRoutes {
@@ -55,23 +57,28 @@ class Routes implements IRoutes {
     return _instance;
   }
   Routes._internal();
-  //static const String _root = "/";
+
+  /*
+  *  Static Routes
+  */
   static const String _loginPage = "/";
   static const String _signInPage = "/signin_page";
   static const String _signUpPage = "/signup_page";
   static const String _profilePage = "/profile_page";
   static const String _testingPage = "/testing_page";
   static const String _homePage = "/home_page";
-  static const String _projectDescriptionPage = "/project_description_page";
   static const String _projectBrowsingPage = "/project_browsing_page";
   static const String _creationPage = "/creation_page";
   static const String _ideaPage = "/idea_page";
   static const String _chatPage = "/chat_page";
   static const String _searchMemberPage = "/search_member_page";
+  /*
+  * Dynamic Routes
+  */
+  static const String _projectDescriptionPage = "/project_description_page";
 
   dynamic _routeMap() {
     return {
-      //_root:                      (BuildContext context) => LoginPage(), // FallBack
       _loginPage:                 (BuildContext context) => LoginPage(),
       _signInPage:                (BuildContext context) => SignInPage(),
       _signUpPage:                (BuildContext context) => SignUpPage(),
@@ -87,7 +94,6 @@ class Routes implements IRoutes {
   }
   Map<String, RoutesEnum> _routeEnumMap() {
     return <String, RoutesEnum>{
-      //_root:                    RoutesEnum.root,
       _loginPage:               RoutesEnum.loginPage,
       _signInPage:              RoutesEnum.signInPage,
       _signUpPage:              RoutesEnum.signUpPage,
@@ -103,7 +109,6 @@ class Routes implements IRoutes {
   }
 
    List<String> _routesList() => <String>[
-     /*_root,*/
      _loginPage,
      _signInPage,
      _signUpPage,
@@ -117,15 +122,22 @@ class Routes implements IRoutes {
      _searchMemberPage,
    ];
 
+  Map<String, DynamicRoutesEnum> _dynamicRoutesEnumMap(){
+    return <String, DynamicRoutesEnum>{
+
+    };
+  }
+
+  List<String> _dynamicRoutesList() => <String>[
+
+  ];
+
   @override
   String get loginPage => _loginPage;
 
   @override
   String get profilePage => _profilePage;
-/*
-  @override
-  String get root => _root;
-*/
+
   @override
   String get signInPage => _signInPage;
 
@@ -169,6 +181,16 @@ class Routes implements IRoutes {
   @override
   Map<String, RoutesEnum> routeEnumMap() {
     return this._routeEnumMap();
+  }
+
+  @override
+  Map<String, DynamicRoutesEnum> dynamicRouteEnumMap() {
+    return this._dynamicRoutesEnumMap();
+  }
+
+  @override
+  List<String> dynamicRouteList() {
+    return this._dynamicRoutesList();
   }
 
 }

@@ -6,6 +6,7 @@ import 'package:partnership/utils/Routes.dart';
 */
 abstract class IRouting {
   void navigateTo({@required String route, @required BuildContext context, bool popStack = false});
+  void pushDynamicPage({@required String route, @required BuildContext context, Map<String, dynamic> args});
   dynamic  routeMap();
   String get initialRoute;
 }
@@ -31,9 +32,24 @@ class RoutingModule implements IRouting {
     }
   }
 
+  void _pushDynamicPage({@required String route, @required BuildContext context, Map<String, dynamic> args}){
+    try {
+      MaterialPageRoute(builder: null);
+      Navigator.pushNamed(context, null);
+    }
+    catch(error){
+      rethrow;
+    }
+  }
+
   @override
   void navigateTo({String route, BuildContext context, bool popStack = false}) {
     this._navigateTo(route: route, context: context, popStack: popStack);
+  }
+
+  @override
+  void pushDynamicPage({String route, BuildContext context, Map<String, dynamic> args}) {
+    this._pushDynamicPage(route: null, context: null, args: args);
   }
 
   @override
@@ -42,5 +58,5 @@ class RoutingModule implements IRouting {
   }
 
   @override
-  String get initialRoute => this._routes.loginPage;
+  String get initialRoute => this._routes.projectBrowsingPage;
 }
