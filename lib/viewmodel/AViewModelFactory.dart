@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:partnership/viewmodel/AViewModel.dart';
 import 'package:partnership/viewmodel/HomePageViewModel.dart';
 import 'package:partnership/viewmodel/LoginPageViewModel.dart';
+import 'package:partnership/viewmodel/NotificationsPageViewModel.dart';
 import 'package:partnership/viewmodel/SignInPageViewModel.dart';
 import 'package:partnership/viewmodel/SignUpPageViewModel.dart';
 import 'package:partnership/viewmodel/ProfilePageViewModel.dart';
@@ -89,6 +90,10 @@ abstract class AViewModelFactory
         case RoutesEnum.searchMemberPage:
           viewModel = SearchMemberPageViewModel(_routing.searchMemberPage);
           register[_routing.searchMemberPage] = viewModel;
+          break;
+        case RoutesEnum.notificationsPage:
+          viewModel = NotificationsPageViewModel(_routing.notificationsPage);
+          register[_routing.notificationsPage] = viewModel;
           break;          
         default:
           throw Exception("Error while constructing ViewModel: the route \"$route\" provided is unknown !");

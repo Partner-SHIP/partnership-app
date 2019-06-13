@@ -12,7 +12,8 @@ List<Widget> _buildRightDrawerButtons(
     @required bool disconnect, 
     @required bool searchMember,
     @required bool projectSearch,
-    @required bool projectCreation}) {
+    @required bool projectCreation,
+    @required bool notification}) {
   LabeledIconButton profileButton = LabeledIconButton(
     icon: Icon(Icons.account_circle, color: Colors.white),
     toolTip: 'Accéder à mon profil',
@@ -42,6 +43,13 @@ List<Widget> _buildRightDrawerButtons(
     text: "Créer un projet",
     fullWidth: true,
   );
+    LabeledIconButton  notificationButton = LabeledIconButton(
+    icon: Icon(Icons.notifications, color: Colors.white),
+    toolTip: 'Accéder aux notifications',
+    onPressed: () => viewModel.changeView(route: '/notifications_page', widgetContext: context),
+    text: "Mes notifications",
+    fullWidth: true,
+  );
   LabeledIconButton disconnectButton = LabeledIconButton(
     icon: Icon(Icons.power_settings_new, color: Colors.white),
     toolTip: 'Me déconnecter',
@@ -49,6 +57,7 @@ List<Widget> _buildRightDrawerButtons(
     text: "Me déconnecter",
     fullWidth: true,
   );
+
   List<LabeledIconButton> result = new List<LabeledIconButton>();
   if (profile)
     result.add(profileButton);
@@ -58,6 +67,8 @@ List<Widget> _buildRightDrawerButtons(
     result.add(projectSearchButton);
   if (projectCreation)
     result.add(projectCreationButton);
+  if (notification)
+    result.add(notificationButton);
   if (disconnect)
     result.add(disconnectButton);
   return (result);
@@ -93,7 +104,8 @@ bool profile = true,
 bool disconnect = true, 
 bool searchMember = true,
 bool projectSearch = true,
-bool projectCreation = true}) {
+bool projectCreation = true,
+bool notification = true}) {
   List<Widget> buttonsList = _buildRightDrawerButtons(
       context: context,
       viewModel: viewModel,
@@ -101,6 +113,7 @@ bool projectCreation = true}) {
       disconnect: disconnect,
       searchMember: searchMember,
       projectSearch: projectSearch,
-      projectCreation: projectCreation);
+      projectCreation: projectCreation,
+      notification: notification);
   return _buildRightDrawer(context: context, buttonsList: buttonsList);
 }

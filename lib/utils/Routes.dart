@@ -95,7 +95,7 @@ class Routes implements IRoutes {
       _ideaPage:                  (BuildContext context) => IdeaPage(),
       _chatPage:                  (BuildContext context) => ChatPage(),
       _searchMemberPage:          (BuildContext context) => SearchMemberPage(),
-      _notificationsPage:          (BuildContext context) => NotificationsPage(),
+      _notificationsPage:         (BuildContext context) => NotificationsPage(),
     };  
   }
   Map<String, RoutesEnum> _routeEnumMap() {

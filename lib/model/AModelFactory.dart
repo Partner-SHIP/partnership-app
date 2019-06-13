@@ -1,5 +1,6 @@
 import 'package:partnership/model/AModel.dart';
 import 'package:partnership/model/LoginPageModel.dart';
+import 'package:partnership/model/NotificationsPageModel.dart';
 import 'package:partnership/model/SignInPageModel.dart';
 import 'package:partnership/model/SignUpPageModel.dart';
 import 'package:partnership/model/ProfilePageModel.dart';
@@ -72,6 +73,10 @@ abstract class AModelFactory{
         case RoutesEnum.searchMemberPage:
           model = SearchMemberPageModel();
           register[_routing.searchMemberPage] = model;
+          break;
+        case RoutesEnum.notificationsPage:
+          model = NotificationsPageModel();
+          register[_routing.notificationsPage] = model;
           break;
         default:
           model = null;
