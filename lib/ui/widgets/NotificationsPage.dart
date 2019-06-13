@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/rendering.dart';
+import 'package:partnership/ui/widgets/PageHeader.dart';
 
 import 'dart:async';
 import 'dart:convert';
@@ -55,7 +56,18 @@ class _NotificationsPageState extends State<NotificationsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ThemeContainer(context, NotificationsList()),
+      body: ThemeContainer(
+        context,
+        Column(
+          children: <Widget>[
+            pageHeader(context, 'mes notifications'),
+            Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height - 110,
+                child: NotificationsList())
+          ],
+        ),
+      ),
       // return SizedBox(
       //   child: ListView(
       //     children: notificationsList.map(buildNotificationTile).toList(),
@@ -83,11 +95,11 @@ class _NotificationsPageState extends State<NotificationsPage> {
 
 class NotificationsList extends StatelessWidget {
   //il faut récupérer l'id de l'user connecté avec firebase
-  
+
   static Coordinator toto = Coordinator();
   static FirebaseUser titi = toto.getLoggedInUser();
-  //String userId = 'e2COxsRabKaD64DIhEp84l5qFNm2';
-  String userId = titi.uid;
+  String userId = 'e2COxsRabKaD64DIhEp84l5qFNm2';
+  //String userId = titi.uid;
   @override
   Widget build(BuildContext context) {
     print('onche = ' + userId);
