@@ -4,6 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/rendering.dart';
 import 'package:partnership/ui/widgets/PageHeader.dart';
+import 'package:partnership/viewmodel/AViewModelFactory.dart';
 
 import 'dart:async';
 import 'dart:convert';
@@ -14,6 +15,7 @@ import 'package:partnership/coordinator/AppCoordinator.dart';
 import 'package:partnership/viewmodel/AViewModel.dart';
 import 'package:partnership/ui/widgets/ThemeContainer.dart';
 import 'package:partnership/viewmodel/NotificationsPageViewModel.dart';
+import 'package:partnership/utils/Routes.dart';
 
 class NotificationsPage extends StatefulWidget {
   @override
@@ -22,15 +24,19 @@ class NotificationsPage extends StatefulWidget {
 
 class _NotificationsPageState extends State<NotificationsPage> {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  IRoutes _routing = Routes();
+  NotificationsPageViewModel get viewModel => AViewModelFactory.register[_routing.notificationsPage];
   //final List<Message> notificationsList = [];
 
   @override
   void initState() {
     //pour les test seulement
     final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+    /*
     _firebaseAuth.signInWithEmailAndPassword(
         email: 'jeff@jeff.fr', password: 'coucou');
     //-------------------------------------------------------
+    */
     super.initState();
     /*_firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> firebaseNotificationMap) async {
@@ -64,7 +70,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
             Container(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height - 110,
-                child: NotificationsList())
+                child: NotificationsList(viewModel.loggedInUser().uid))
           ],
         ),
       ),
@@ -94,12 +100,14 @@ class _NotificationsPageState extends State<NotificationsPage> {
 }
 
 class NotificationsList extends StatelessWidget {
-  //il faut récupérer l'id de l'user connecté avec firebase
 
-  static Coordinator toto = Coordinator();
-  static FirebaseUser titi = toto.getLoggedInUser();
-  String userId = 'e2COxsRabKaD64DIhEp84l5qFNm2';
-  //String userId = titi.uid;
+  final String userId;
+
+  NotificationsList(String uid): userId = uid;
+
+  //il faut récupérer l'id de l'user connecté avec firebase
+  //String userId = 'e2COxsRabKaD64DIhEp84l5qFNm2';
+
   @override
   Widget build(BuildContext context) {
     print('onche = ' + userId);

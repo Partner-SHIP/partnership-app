@@ -6,7 +6,7 @@ import 'package:partnership/utils/Routes.dart';
 */
 abstract class IRouting {
   void navigateTo({@required String route, @required BuildContext context, bool popStack = false});
-  void pushDynamicPage({@required String route, @required BuildContext context, Map<String, dynamic> args});
+  void pushDynamicPage({@required String route, @required BuildContext context, @required Map<String, dynamic> args});
   dynamic  routeMap();
   String get initialRoute;
 }
@@ -32,12 +32,15 @@ class RoutingModule implements IRouting {
     }
   }
 
-  void _pushDynamicPage({@required String route, @required BuildContext context, Map<String, dynamic> args}){
+  void _pushDynamicPage({@required String route, @required BuildContext context, @required Map<String, dynamic> args}){
     try {
-      if (!this._routes.dynamicRouteList().contains(route))
+      if (!this._routes.dynamicRouteList().contains(route)){
         throw Exception("Routing error: trying to reach an unknown dynamic route: "+route);
-      MaterialPageRoute page = MaterialPageRoute(builder: null);
-      Navigator.push(context, page);
+      }
+      else {
+        MaterialPageRoute page = MaterialPageRoute(builder: (context) => this._routes.getDynamicPage(route: route, args: args) as Widget);
+        Navigator.of(context).push(page);
+      }
     }
     catch(error){
       rethrow;
@@ -50,8 +53,8 @@ class RoutingModule implements IRouting {
   }
 
   @override
-  void pushDynamicPage({String route, BuildContext context, Map<String, dynamic> args}) {
-    this._pushDynamicPage(route: null, context: null, args: args);
+  void pushDynamicPage({@required String route, @required BuildContext context, @required Map<String, dynamic> args}) {
+    this._pushDynamicPage(route: route, context: context, args: args);
   }
 
   @override
@@ -60,5 +63,5 @@ class RoutingModule implements IRouting {
   }
 
   @override
-  String get initialRoute => this._routes.homePage;
+  String get initialRoute => this._routes.signInPage;
 }

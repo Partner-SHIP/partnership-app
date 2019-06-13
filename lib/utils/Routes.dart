@@ -53,6 +53,7 @@ abstract class  IRoutes {
   Map<String, RoutesEnum> routeEnumMap();
   List<String> dynamicRouteList();
   Map<String, DynamicRoutesEnum> dynamicRouteEnumMap();
+  dynamic getDynamicPage({@required String route, @required Map<String, dynamic> args});
 }
 
 class Routes implements IRoutes {
@@ -127,6 +128,19 @@ class Routes implements IRoutes {
      _notificationsPage,
    ];
 
+  dynamic _getDynamicPage({@required String route, @required Map<String, dynamic> args}){
+    var view;
+    switch (route){
+      case _projectDescriptionPage:
+        view = ProjectDescriptionPage(args);
+        break;
+      default:
+        throw Exception('Dynamic Page not found');
+        break;
+    }
+    return view;
+  }
+
   Map<String, DynamicRoutesEnum> _dynamicRoutesEnumMap(){
     return <String, DynamicRoutesEnum>{
       _projectDescriptionPage: DynamicRoutesEnum.projectDescriptionPage
@@ -199,6 +213,11 @@ class Routes implements IRoutes {
   @override
   List<String> dynamicRouteList() {
     return this._dynamicRoutesList();
+  }
+
+  @override
+  dynamic getDynamicPage({String route, Map<String, dynamic> args}) {
+    return this._getDynamicPage(route: route, args: args);
   }
 
 }

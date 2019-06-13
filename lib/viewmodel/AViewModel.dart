@@ -40,6 +40,11 @@ abstract class AViewModel implements AViewModelFactory
   bool changeView({@required String route,@required BuildContext widgetContext, bool popStack = false}){
       return this._coordinator.fetchRegisterToNavigate(route: route, context: widgetContext, popStack: popStack);
   }
+
+  bool pushDynamicPage({@required String route,@required BuildContext widgetContext, @required Map<String, dynamic> args}){
+    return this._coordinator.navigateToDynamicPage(route: route, context: widgetContext, args: args);
+  }
+
   Future<FirebaseUser> signUp({@required String email, @required String password}) {
     return this._coordinator.signUpByEmail(newEmail: email, newPassword: password);
   }

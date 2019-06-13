@@ -77,13 +77,7 @@ class ProjectBrowsingPageState extends State<ProjectBrowsingPage> {
                                 children: snapshot.data.documents
                                     .map((DocumentSnapshot document) {
                                   return Padding(
-                                      child: CustomCard(
-                                        title: document['name'],
-                                        bannerPath: document['bannerPath'],
-                                        description: document['description'],
-                                        dateOfCreation:
-                                            document['dateOfCreation'],
-                                      ),
+                                      child: CustomCard(viewModel: viewModel, routing: _routing, project: document),
                                       padding: EdgeInsets.all(10));
                                 }).toList(),
                               );
@@ -97,17 +91,12 @@ class ProjectBrowsingPageState extends State<ProjectBrowsingPage> {
 }
 
 class CustomCard extends StatelessWidget {
-  CustomCard({
-    @required this.title,
-    this.bannerPath,
-    this.description,
-    this.dateOfCreation,
-  });
+  ProjectBrowsingPageViewModel _viewModel;
+  DocumentSnapshot  _project;
+  IRoutes           _routing;
 
-  final title;
-  final bannerPath;
-  final description;
-  final dateOfCreation;
+  CustomCard({@required ProjectBrowsingPageViewModel viewModel, @required IRoutes routing, @required DocumentSnapshot project})
+      : _viewModel = viewModel, _routing = routing, _project = project;
 
   @override
   Widget build(BuildContext context) {
@@ -139,7 +128,7 @@ class CustomCard extends StatelessWidget {
 
   Text _buildTitle() {
     return (Text(
-      title,
+      _project['title'] ?? 'title not found',
       textAlign: TextAlign.left,
       //style: storyHeaderTextStyle,
       maxLines: 1,
@@ -148,16 +137,16 @@ class CustomCard extends StatelessWidget {
   }
 
   Text _buildDescription() {
-    return (Text(description,
+    return (Text(_project['description'] ?? 'description not found',
         textAlign: TextAlign.right,
         //style: storyDescriptionTextStyle,
         maxLines: 2,
         overflow: TextOverflow.fade));
   }
 
-  Widget _buildContainer({double width}) {
+  Widget _buildContainer({double width, BuildContext context}) {
     DecorationImage image = DecorationImage(
-        image: NetworkImage(bannerPath),
+        image: NetworkImage(_project['bannerPath'] ?? null),
         fit: BoxFit.cover,
         alignment: Alignment.topCenter);
     BoxDecoration decoration = BoxDecoration(
@@ -167,7 +156,12 @@ class CustomCard extends StatelessWidget {
     final double sidePadding = 10;
     Widget result = GestureDetector(
         onTap: () {
-          print('titi');
+          String r = _routing.projectDescriptionPage;
+          this._viewModel.pushDynamicPage(
+              route: _routing.projectDescriptionPage,
+              widgetContext: context,
+              args: <String, dynamic>{'project': this._project}
+            );
         },
         child: Container(
           decoration: decoration,
