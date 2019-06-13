@@ -9,7 +9,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
-
+import 'package:partnership/ui/widgets/ThemeContainer.dart';
 
 class NotificationsPage extends StatefulWidget {
   @override
@@ -52,13 +52,13 @@ class _NotificationsPageState extends State<NotificationsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: NotificationsList(),
-    // return SizedBox(
-    //   child: ListView(
-    //     children: notificationsList.map(buildNotificationTile).toList(),
-    //   ),
-    // );,
-    ); 
+      body: ThemeContainer(context, NotificationsList()),
+      // return SizedBox(
+      //   child: ListView(
+      //     children: notificationsList.map(buildNotificationTile).toList(),
+      //   ),
+      // );,
+    );
   }
 
   // Widget buildNotificationTile(Message message) {
