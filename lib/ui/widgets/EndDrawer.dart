@@ -17,8 +17,7 @@ List<Widget> _buildRightDrawerButtons(
   LabeledIconButton profileButton = LabeledIconButton(
     icon: Icon(Icons.account_circle, color: Colors.white),
     toolTip: 'Accéder à mon profil',
-    onPressed: () =>
-        viewModel.changeView(route: '/profile_page', widgetContext: context),
+    onPressed: () => viewModel.changeView(route: '/profile_page', widgetContext: context),
     text: "Accéder à mon profil",
     fullWidth: true,
   );
