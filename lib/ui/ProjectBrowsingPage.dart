@@ -62,7 +62,6 @@ class ProjectBrowsingPageState extends State<ProjectBrowsingPage> {
                   SingleChildScrollView(
                     child: Container(
                       color: Colors.blue, child: Text('liste de projet'),
-                      list,
                     )
                   )
                 ],
