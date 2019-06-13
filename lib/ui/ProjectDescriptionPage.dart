@@ -7,20 +7,28 @@ import 'dart:async';
 final String lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 
 class ProjectDescriptionPage extends StatefulWidget {
+  static _ProjectDescriptionPageState _state;
+  ProjectDescriptionPage(Map<String, dynamic> args) {
+    _state = _ProjectDescriptionPageState(args);
+  }
+
   @override
-  _ProjectDescriptionPageState createState() => _ProjectDescriptionPageState();
+  _ProjectDescriptionPageState createState() => _state;
 }
 
 class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
   bool busy = false;
   IRoutes _routing = Routes();
   StreamSubscription _connectivitySub;
-  ProjectDescriptionPageViewModel get viewModel =>
-      AViewModelFactory.register[_routing.projectDescriptionPage];
+  ProjectDescriptionPageViewModel viewModel;
+  Map<String, dynamic> args;
+
+  _ProjectDescriptionPageState(Map<String, dynamic> parameters) : args = parameters;
 
   @override
   void initState(){
     super.initState();
+    viewModel = AViewModelFactory.createDynamicViewModel(route: _routing.projectDescriptionPage);
     this._connectivitySub = viewModel.subscribeToConnectivity(this._connectivityHandler);
   }
 

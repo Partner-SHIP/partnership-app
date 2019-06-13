@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:partnership/model/AModel.dart';
 
-
+/*
 class ProjectDescriptionItemData {
   final String bannerPath;
   final String logoPath;
@@ -18,30 +18,6 @@ class ProjectDescriptionItemData {
         name = name;
 }
 
-class ProjectDescriptionListModel extends AModel {
-  ProjectDescriptionListModel()
-      : super(/*path: ApiRoutes.getProjectQueryResult, header: {"query": ""}*/);
-  List<ProjectDescriptionItemData> _list;
-  Future<List<ProjectDescriptionItemData>> getList() async {
-   // await this.fetch();
-    return (this._list);
-  }
-/*
-  @override
-  void readJSON() {
-    Map<String, dynamic> json = this.requestedJSON;
-    if (json == null) return;
-    _list = List<ProjectDescriptionItemData>();
-    var value = json["value"];
-    var to_parse = null;
-    ProjectDescriptionItemData toadd;
-    print("before loop $value");
-    for (var elem in value) {
-      toadd = _createProjectDescriptionItemData(elem);
-      if (toadd != null) _list.add(toadd);
-    }
-  }
-*/
   ProjectDescriptionItemData _createProjectDescriptionItemData(Map data) {
     if (!data.containsKey("name") ||
         !data.containsKey("bannerPath") ||
@@ -69,16 +45,8 @@ class ProjectDescriptionListModel extends AModel {
         description: description));
   }
 }
-
+*/
 
 class ProjectBrowsingPageModel extends AModel {
   ProjectBrowsingPageModel() : super();
-
- ProjectDescriptionListModel _listModel = ProjectDescriptionListModel();
-  Future<List<ProjectDescriptionItemData>> getProjectList(String query) async {
-    //_listModel.updateHeader({"query": query});
-   // await _listModel.fetch();
-    print("http ok");
-    return (this._listModel.getList());
-  }
 }

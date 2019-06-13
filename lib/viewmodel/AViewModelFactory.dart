@@ -71,10 +71,12 @@ abstract class AViewModelFactory
           viewModel = HomePageViewModel(_routing.homePage);
           register[_routing.homePage] = viewModel;
           break;
+          /*
         case RoutesEnum.projectDescriptionPage:
           viewModel = ProjectDescriptionPageViewModel(_routing.projectDescriptionPage);
           register[_routing.projectDescriptionPage] = viewModel;
           break;
+          */
         case RoutesEnum.projectBrowsingPage:
           viewModel = ProjectBrowsingPageViewModel(_routing.projectBrowsingPage);
           register[_routing.projectBrowsingPage] = viewModel;
@@ -103,12 +105,13 @@ abstract class AViewModelFactory
     }
   }
 
-  factory AViewModelFactory.createDynamicViewModel({@required String route, Map<String, dynamic> args}){
+  factory AViewModelFactory.createDynamicViewModel({@required String route}){
     AViewModel viewModel;
     IRoutes     _routing = Routes();
     DynamicRoutesEnum target = fetchDynamicRoutes(route, _routing);
     switch (target){
-      case DynamicRoutesEnum.LOL:
+      case DynamicRoutesEnum.projectDescriptionPage:
+        viewModel = ProjectDescriptionPageViewModel(_routing.projectDescriptionPage);
         break;
       default:
         throw Exception("Error while constructing dynamic ViewModel: the dynamic route \"$route\" provided is unknown !");
@@ -116,5 +119,4 @@ abstract class AViewModelFactory
     }
     return viewModel;
   }
-
 }

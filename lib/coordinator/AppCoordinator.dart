@@ -15,6 +15,7 @@ import 'package:partnership/viewmodel/AViewModelFactory.dart';
 
 abstract class ICoordinator{
   bool fetchRegisterToNavigate({@required String route, @required BuildContext context, bool navigate = true, bool popStack = false});
+  bool navigateToDynamicPage({@required String route, @required BuildContext context, Map<String, dynamic> args});
   String getInitialRoute();
   Future<FirebaseUser> loginByEmail({@required String userEmail, @required String userPassword});
   Future<FirebaseUser> signUpByEmail({@required String newEmail, @required String newPassword});
@@ -101,6 +102,17 @@ class Coordinator extends State<PartnershipApp> implements ICoordinator {
     }
   }
 
+  bool _navigateToDynamicPage({@required String route, @required BuildContext context, Map<String, dynamic> args}){
+    try {
+      _router.pushDynamicPage(route: route, context: context, args: args);
+      return true;
+    }
+    catch (error){
+      print(error);
+      return false;
+    }
+  }
+
   @override
   bool fetchRegisterToNavigate({String route, BuildContext context, bool navigate = true, bool popStack = false}) {
     return this._fetchRegisterToNavigate(route: route, context: context, navigate: navigate, popStack: popStack);
@@ -143,6 +155,11 @@ class Coordinator extends State<PartnershipApp> implements ICoordinator {
   @override
   String getInitialRoute() {
     return this._router.initialRoute;
+  }
+
+  @override
+  bool navigateToDynamicPage({String route, BuildContext context, Map<String, dynamic> args}) {
+    return _navigateToDynamicPage(route: route, context: context, args: args);
   }
 }
 

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:partnership/model/AModel.dart';
 import 'package:partnership/model/LoginPageModel.dart';
 import 'package:partnership/model/NotificationsPageModel.dart';
@@ -7,6 +8,7 @@ import 'package:partnership/model/ProfilePageModel.dart';
 import 'package:partnership/model/CreationPageModel.dart';
 import 'package:partnership/model/IdeaPageModel.dart';
 import 'package:partnership/model/ProjectBrowsingPageModel.dart';
+import 'package:partnership/model/ProjectDescriptionPageModel.dart';
 import 'package:partnership/model/ChatPageModel.dart';
 import 'package:partnership/model/HomePageModel.dart';
 import 'package:partnership/model/SearchMemberPageModel.dart';
@@ -20,6 +22,17 @@ abstract class AModelFactory{
     routing.routeList().forEach((value){
       if (value == route){
         target = routing.routeEnumMap()[value];
+        return target;
+      }
+    });
+    return target;
+  }
+
+  static DynamicRoutesEnum fetchDynamicRoutes(String route, IRoutes routing){
+    DynamicRoutesEnum target;
+    routing.dynamicRouteList().forEach((value){
+      if (value == route){
+        target = routing.dynamicRouteEnumMap()[value];
         return target;
       }
     });
@@ -84,5 +97,20 @@ abstract class AModelFactory{
       }
       return model;
     }
+  }
+
+  factory AModelFactory.createDynamicModel({@required String route}){
+    AModel model;
+    IRoutes _routing = Routes();
+    DynamicRoutesEnum targetedRoute = fetchDynamicRoutes(route, _routing);
+    switch (targetedRoute) {
+      case DynamicRoutesEnum.projectDescriptionPage:
+        model = ProjectDescriptionPageModel();
+        break;
+      default:
+        model = null;
+        break;
+    }
+    return model;
   }
 }

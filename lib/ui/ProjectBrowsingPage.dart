@@ -22,8 +22,7 @@ class ProjectBrowsingPageState extends State<ProjectBrowsingPage> {
   @override
   void initState() {
     super.initState();
-    this.viewModel.getProjectList(
-        query: "", onUpdate: (value) => this._updateProjectList(value));
+    //this.viewModel.getProjectList(query: "", onUpdate: (value) => this._updateProjectList(value));
   }
 
   void _updateProjectList(List<ProjectScrollListItemData> list) {

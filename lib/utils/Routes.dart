@@ -14,7 +14,7 @@ import 'package:partnership/ui/widgets/NotificationsPage.dart';
 import 'package:path/path.dart';
 
 enum DynamicRoutesEnum {
-  LOL
+  projectDescriptionPage
 }
 
 enum RoutesEnum {
@@ -89,7 +89,6 @@ class Routes implements IRoutes {
       _signUpPage:                (BuildContext context) => SignUpPage(),
       _profilePage:               (BuildContext context) => ProfilePage(),
       _homePage:                  (BuildContext context) => HomePage(),
-      _projectDescriptionPage:    (BuildContext context) => ProjectDescriptionPage(),
       _projectBrowsingPage:       (BuildContext context) => ProjectBrowsingPage(),
       _creationPage:              (BuildContext context) => CreationPage(),
       _ideaPage:                  (BuildContext context) => IdeaPage(),
@@ -105,7 +104,6 @@ class Routes implements IRoutes {
       _signUpPage:              RoutesEnum.signUpPage,
       _profilePage:             RoutesEnum.profilePage,
       _homePage:                RoutesEnum.homePage,
-      _projectDescriptionPage:  RoutesEnum.projectDescriptionPage,
       _projectBrowsingPage:     RoutesEnum.projectBrowsingPage,
       _creationPage:            RoutesEnum.creationPage,
       _ideaPage:                RoutesEnum.ideaPage,
@@ -121,7 +119,6 @@ class Routes implements IRoutes {
      _signUpPage,
      _profilePage,
      _homePage,
-     _projectDescriptionPage,
      _projectBrowsingPage,
      _creationPage,
      _ideaPage,
@@ -132,12 +129,12 @@ class Routes implements IRoutes {
 
   Map<String, DynamicRoutesEnum> _dynamicRoutesEnumMap(){
     return <String, DynamicRoutesEnum>{
-
+      _projectDescriptionPage: DynamicRoutesEnum.projectDescriptionPage
     };
   }
 
   List<String> _dynamicRoutesList() => <String>[
-
+    _projectDescriptionPage
   ];
 
   @override

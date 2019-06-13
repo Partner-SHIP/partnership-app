@@ -34,8 +34,10 @@ class RoutingModule implements IRouting {
 
   void _pushDynamicPage({@required String route, @required BuildContext context, Map<String, dynamic> args}){
     try {
-      MaterialPageRoute(builder: null);
-      Navigator.pushNamed(context, null);
+      if (!this._routes.dynamicRouteList().contains(route))
+        throw Exception("Routing error: trying to reach an unknown dynamic route: "+route);
+      MaterialPageRoute page = MaterialPageRoute(builder: null);
+      Navigator.push(context, page);
     }
     catch(error){
       rethrow;
