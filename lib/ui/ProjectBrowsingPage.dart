@@ -128,7 +128,7 @@ class CustomCard extends StatelessWidget {
 
   Text _buildTitle() {
     return (Text(
-      _project['title'] ?? 'title not found',
+      _project['name'] ?? 'title not found',
       textAlign: TextAlign.left,
       //style: storyHeaderTextStyle,
       maxLines: 1,
