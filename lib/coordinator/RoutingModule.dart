@@ -63,5 +63,5 @@ class RoutingModule implements IRouting {
   }
 
   @override
-  String get initialRoute => this._routes.signInPage;
+  String get initialRoute => this._routes.signUpPage;
 }

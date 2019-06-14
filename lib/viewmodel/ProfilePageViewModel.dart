@@ -28,6 +28,10 @@ class ProfilePageViewModel extends AViewModel {
       }
   }
 
+  void postProfile(Map<String, String> args, Function handler){
+    this.model.postProfile(this.loggedInUser().uid, args, handler);
+  }
+
   void getCurrentUserProfile(Function handler){
     String currentUserUid;
     var user = this.loggedInUser();

@@ -5,13 +5,13 @@ import 'package:partnership/utils/FBCollections.dart';
 
 class ProfilePageModel extends AModel {
   ProfilePageModel(): super();
-  String _firstName = 'Tom';
-  String _lastName = 'Cruise';
-  int _date = 1552386069;
-  String _location = 'New-York';
-  String _studies = 'Harvard';
-  String _workLocation = 'Holywood Entertainment';
-  String _job = "famous comedian";
+  String _firstName = '';
+  String _lastName = '';
+  int _date = 0;
+  String _location = '';
+  String _studies = '';
+  String _workLocation = '';
+  String _job = "";
   String _photoUrl = 'https://pixel.nymag.com/imgs/daily/vulture/2017/06/14/14-tom-cruise.w700.h700.jpg';
   String _backgroundUrl = 'https://firebasestorage.googleapis.com/v0/b/partnership-app-e8d99.appspot.com/o/bubble_texture.jpg?alt=media&token=b4997ecc-dd26-418a-b0a1-20881216995c';
   //////////////////GETTERS
@@ -48,7 +48,13 @@ class ProfilePageModel extends AModel {
     if (uid != null) {
       args['uid'] = uid;
       this.apiClient.getProfile(header: header, args: args, onSuccess: null, onError: null)
-          .then((json) => (json != null) ? this._updateProfile(json as Map<String, dynamic>, handler) : print("network error"));
+          .then((json) => (json != null) ? this._updateProfile(json[0] as Map<String, dynamic>, handler) : print("network error"));
     }
+  }
+
+  void postProfile(String uid, Map<String, String> args, Function handler){
+    this.apiClient.postProfile(header: <String, String>{'uid':uid}, args: args).then((_) {
+      this.getUserProfile(uid: uid, handler: handler);
+    });
   }
 }

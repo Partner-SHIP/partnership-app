@@ -8,12 +8,14 @@ abstract class ApiRoutes {
   static const String getStories = "https://us-central1-partnership-app-e8d99.cloudfunctions.net/getStories";
   static const String helloWorld = "https://us-central1-partnership-app-e8d99.cloudfunctions.net/helloWorld";
   static const String getProfile = "https://us-central1-partnership-app-e8d99.cloudfunctions.net/getProfile2";
+  static const String postProfile = "https://us-central1-partnership-app-e8d99.cloudfunctions.net/postProfiles";
 }
 
 abstract class IApiREST {
   Future<dynamic> getProjectQueryResult({@required Map<String, String> header, Function onSuccess, Function onError});
   Future<dynamic> getStories({@required Map<String, String> header, Function onSuccess, Function onError});
   Future<dynamic> getProfile({@required Map<String, String> header, @required Map<String, String> args, Function onSuccess, Function onError});
+  Future<dynamic> postProfile({@required Map<String, String> header, @required Map<String, String> args, Function onSuccess, Function onError});
 }
 
 class ApiREST implements IApiREST {
@@ -37,11 +39,11 @@ class ApiREST implements IApiREST {
     if (response.statusCode == 200){
       if (onSuccess != null)
         onSuccess(json.decode(response.body));
-      return json.decode(response.body);
+      return true;
     }
     else if (onError != null)
       onError(json.decode(response.body));
-    return null;
+    return false;
   }
 
   String _formatParameters(Map<String, String> args) {
@@ -75,5 +77,10 @@ class ApiREST implements IApiREST {
     if (args.length > 0)
       return _httpGetRequest(path: ApiRoutes.getProfile+this._formatParameters(args), header: header, onSuccess: onSuccess, onError: onError);
     return _httpGetRequest(path: ApiRoutes.getProfile, header: header, onSuccess: onSuccess, onError: onError);
+  }
+
+  @override
+  Future<dynamic> postProfile({Map<String, String> header, Map<String, String> args, Function onSuccess, Function onError}) {
+    return _httpPostRequest(path: ApiRoutes.postProfile+this._formatParameters(args), header: header, onSuccess: onSuccess, onError: onError);
   }
 }

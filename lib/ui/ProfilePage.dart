@@ -137,9 +137,13 @@ class ProfilePageState extends State<ProfilePage>
   void _updateProfile(Map<String, dynamic> newProfile){
     print(newProfile['nickname']);
     this.setState(() {
-      this.firstName = newProfile['nickname'];
-      this.lastName = newProfile['nickname'];
-      this.date = newProfile['registrationDate']['_seconds'];
+      this.firstName = newProfile['firstName'] ?? 'Prenom';
+      this.lastName = newProfile['lastName'] ?? 'Nom';
+      this.date = newProfile['createdAt']['_seconds'] ?? 1552380987;
+      this.job = newProfile['job'] ?? 'Occupation';
+      this.location = newProfile['cityLocation'] ?? 'ville de résidence';
+      this.workLocation = newProfile['workLocation'] ?? 'Employeur';
+      this.studies = newProfile['studies'] ?? 'études réalisées';
     });
   }
 
@@ -243,7 +247,16 @@ class ProfilePageState extends State<ProfilePage>
         if (this.isEditing) {
           if (this._formKey.currentState.validate()) {
             this._formKey.currentState.save();
-            this.values.forEach((s) => print(s));
+            //this.values.forEach((s) => print(s));
+            Map<String, String> args = {
+              'cityLocation': values[0],
+              'studies': values[1],
+              'workLocation': values[2],
+              'job': values[3],
+              'firstName': this.firstName,
+              'lastName': this.lastName
+            };
+            viewModel.postProfile(args, this._updateProfile);
           }
         }
         this.setState(() {
@@ -639,12 +652,12 @@ class ProfilePageState extends State<ProfilePage>
   }
 
   String _formValidation(String value) {
-    if (value.isEmpty) return ("Value can't be empty");
+    //if (value.isEmpty) return ("Value can't be empty");
     return null;
   }
 
   void _onSaved(String value) {
-    this.values.add(value);
+      this.values.add(value);
   }
 
   Widget _spinner() {
