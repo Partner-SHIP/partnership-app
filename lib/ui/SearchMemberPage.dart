@@ -4,6 +4,7 @@ import 'package:partnership/viewmodel/SearchMemberPageViewModel.dart';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/ui/widgets/ThemeContainer.dart';
 import 'package:partnership/ui/widgets/EndDrawer.dart';
+import 'package:partnership/ui/widgets/PageHeader.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SearchMemberPage extends StatefulWidget {
@@ -28,30 +29,38 @@ class SearchMemberPageState extends State<SearchMemberPage> {
       ),
       body: Builder(builder: (BuildContext context){
         return SafeArea(
+          top: false,
           child: ThemeContainer(context, 
-              Container(
-                padding: const EdgeInsets.all(10.0),
-                child: StreamBuilder<QuerySnapshot>(
-                  stream: Firestore.instance.collection('profiles').snapshots(),
-                  builder: (BuildContext context,
-                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if (snapshot.hasError)
-                      return new Text('Error: ${snapshot.error}');
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.waiting:
-                        return new Text('Loading...');
-                      default:
-                        return new ListView(
-                          children: snapshot.data.documents.map((DocumentSnapshot document) {
-                          return new CustomCard(
-                            firstName: document['firstName'],
-                            lastName: document['lastName'],
-                          );
-                      }).toList(),
-                    );
-                }
-              },
-            )),
+              Column(
+                children: <Widget>[
+                  pageHeader(context, 'recherche d\'utilisateurs'),
+                  Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height - 110,
+                      padding: const EdgeInsets.all(10.0),
+                      child: StreamBuilder<QuerySnapshot>(
+                        stream: Firestore.instance.collection('profiles').snapshots(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<QuerySnapshot> snapshot) {
+                          if (snapshot.hasError)
+                            return new Text('Error: ${snapshot.error}');
+                          switch (snapshot.connectionState) {
+                            case ConnectionState.waiting:
+                              return new Text('Loading...');
+                            default:
+                              return new ListView(
+                                children: snapshot.data.documents.map((DocumentSnapshot document) {
+                                  return new CustomCard(
+                                    firstName: document['firstName'],
+                                    lastName: document['lastName'],
+                                  );
+                                }).toList(),
+                              );
+                          }
+                        },
+                      ))
+                ],
+              ),
           ),
         );
       })

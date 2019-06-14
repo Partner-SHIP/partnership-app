@@ -29,6 +29,7 @@ class CreationPageModel extends AModel {
     );
     */
   }
+
   void _cantPost() {
     posting = false;
   }
