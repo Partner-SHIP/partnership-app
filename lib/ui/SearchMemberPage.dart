@@ -44,8 +44,8 @@ class SearchMemberPageState extends State<SearchMemberPage> {
                         return new ListView(
                           children: snapshot.data.documents.map((DocumentSnapshot document) {
                           return new CustomCard(
-                            title: document['nickname'],
-                            test: document['uid'],
+                            firstName: document['firstName'],
+                            lastName: document['lastName'],
                           );
                       }).toList(),
                     );
@@ -60,10 +60,10 @@ class SearchMemberPageState extends State<SearchMemberPage> {
 }
 
 class SecondPage extends StatelessWidget {
-  SecondPage({@required this.title, this.test});
+  SecondPage({@required this.firstName, this.lastName});
 
-  final title;
-  final test;
+  final firstName;
+  final lastName;
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +73,7 @@ class SecondPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Text(test),
+                Text("En cours de réalisation"),
                 RaisedButton(
                     child: Text('Retour'),
                     color: Theme.of(context).primaryColor,
@@ -85,10 +85,10 @@ class SecondPage extends StatelessWidget {
 }
 
 class CustomCard extends StatelessWidget {
-  CustomCard({@required this.title, this.test});
+  CustomCard({@required this.firstName, this.lastName});
 
-  final title;
-  final test;
+  final firstName;
+  final lastName;
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +97,7 @@ class CustomCard extends StatelessWidget {
             padding: const EdgeInsets.only(top: 5.0),
             child: Column(
               children: <Widget>[
-                Text(title),
+                Text(firstName + ' ' + lastName),
                 FlatButton(
                     child: Text("Plus d'info"),
                     onPressed: () {
@@ -105,7 +105,7 @@ class CustomCard extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                               builder: (context) => SecondPage(
-                                  title: title, test: test)));
+                                  firstName: firstName, lastName: lastName)));
                     }
                 ),
               ],
