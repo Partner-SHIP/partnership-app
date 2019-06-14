@@ -24,7 +24,7 @@ class CreationPageViewModel extends AViewModel {
   void postProject(BuildContext context, TextEditingController nameProject, TextEditingController descriptionProject, File image, ) {
     String name = nameProject.text;
     String description = descriptionProject.text;
-    this._model.postProject(name, description, image, "user");
+    this._model.postProject(name, description, image, this.loggedInUser().uid);
     this.changeView(route:"/home_page", widgetContext: context);
   }
   CreationPageModel get model => this._model;

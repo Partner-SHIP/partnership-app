@@ -9,6 +9,7 @@ abstract class ApiRoutes {
   static const String helloWorld = "https://us-central1-partnership-app-e8d99.cloudfunctions.net/helloWorld";
   static const String getProfile = "https://us-central1-partnership-app-e8d99.cloudfunctions.net/getProfile2";
   static const String postProfile = "https://us-central1-partnership-app-e8d99.cloudfunctions.net/postProfiles";
+  static const String postProject = "https://us-central1-partnership-app-e8d99.cloudfunctions.net/postProject2";
 }
 
 abstract class IApiREST {
@@ -16,6 +17,8 @@ abstract class IApiREST {
   Future<dynamic> getStories({@required Map<String, String> header, Function onSuccess, Function onError});
   Future<dynamic> getProfile({@required Map<String, String> header, @required Map<String, String> args, Function onSuccess, Function onError});
   Future<dynamic> postProfile({@required Map<String, String> header, @required Map<String, String> args, Function onSuccess, Function onError});
+  Future<dynamic> postProject({@required Map<String, String> header, @required Map<String, String> args, Function onSuccess, Function onError});
+
 }
 
 class ApiREST implements IApiREST {
@@ -82,5 +85,11 @@ class ApiREST implements IApiREST {
   @override
   Future<dynamic> postProfile({Map<String, String> header, Map<String, String> args, Function onSuccess, Function onError}) {
     return _httpPostRequest(path: ApiRoutes.postProfile+this._formatParameters(args), header: header, onSuccess: onSuccess, onError: onError);
+  }
+
+  @override
+  Future postProject({Map<String, String> header, Map<String, String> args, Function onSuccess, Function onError}) {
+    print(ApiRoutes.postProject+this._formatParameters(args));
+    return _httpPostRequest(path: ApiRoutes.postProject+this._formatParameters(args), header: header, onSuccess: onSuccess, onError: onError);
   }
 }

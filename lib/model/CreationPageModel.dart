@@ -9,7 +9,17 @@ class CreationPageModel extends AModel {
   CreationPageModel() : super();
   bool posting = false;
 
-  void _postProjectRequests(String name, String description, File image, String uid) async {
+  void _postProjectRequests(String name, String description, File image, String uid) {
+
+    print('POST PROJECT UID : $uid');
+    Map<String, String> args = {
+      'name':name,
+      'description':description
+    };
+    Map<String, String> header = {
+      'uid':uid
+    };
+    this.apiClient.postProject(header: header, args: args).then((value)=> print(value));
     /*
 
     AREST WAS CHANGED !!!!
