@@ -13,6 +13,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:partnership/coordinator/AppCoordinator.dart';
 import 'package:partnership/viewmodel/AViewModel.dart';
+import 'package:partnership/ui/widgets/EndDrawer.dart';
 import 'package:partnership/ui/widgets/ThemeContainer.dart';
 import 'package:partnership/viewmodel/NotificationsPageViewModel.dart';
 import 'package:partnership/utils/Routes.dart';
@@ -62,17 +63,28 @@ class _NotificationsPageState extends State<NotificationsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ThemeContainer(
-        context,
-        Column(
-          children: <Widget>[
-            pageHeader(context, 'mes notifications'),
-            Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height - 110,
-                child: NotificationsList(viewModel.loggedInUser().uid))
-          ],
-        ),
+      body: Builder(
+          builder: (BuildContext context) {
+            return SafeArea(
+                top: false,
+                child: ThemeContainer(
+                  context,
+                  Column(
+                    children: <Widget>[
+                      pageHeader(context, 'mes notifications'),
+                      Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height - 110,
+                          child: NotificationsList(viewModel.loggedInUser().uid))
+                    ],
+                  ),
+                )
+            );
+          }
+      ),
+      endDrawer: Theme(
+        data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
+        child: buildEndDrawer(context: context, viewModel: viewModel),
       ),
       // return SizedBox(
       //   child: ListView(

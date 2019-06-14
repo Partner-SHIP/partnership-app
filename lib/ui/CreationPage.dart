@@ -2,6 +2,8 @@ import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:partnership/ui/widgets/ThemeContainer.dart';
+import 'package:partnership/ui/widgets/EndDrawer.dart';
+import 'package:partnership/ui/widgets/PageHeader.dart';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/CreationPageViewModel.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
@@ -55,27 +57,37 @@ class CreationPageState extends State<CreationPage> {
     _scaffoldContext = context;
     return Scaffold(
         resizeToAvoidBottomPadding: false,
-        body: SafeArea(
-            top: false,
-            child: ThemeContainer(
-                context,
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    _creationProjectHeaderWidget(),
-                    SizedBox(width: 0, height: 10),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          left: (MediaQuery.of(context).size.width / 100)),
-                      child: _creationProjectRowImageWidget(),
-                    ),
-                    _form,
-                    Padding(
-                        padding: EdgeInsets.only(
-                            left: (MediaQuery.of(context).size.width / 2.3)),
-                        child: _validatingProject()),
-                  ],
-                ))));
+        body: Builder(
+            builder: (BuildContext context) {
+              return SafeArea(
+                  top: false,
+                  child: ThemeContainer(
+                      context,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          //_creationProjectHeaderWidget(),
+                          pageHeader(context, 'création de projet'),
+                          SizedBox(width: 0, height: 10),
+                          Padding(
+                            padding: EdgeInsets.only(
+                                left: (MediaQuery.of(context).size.width / 100)),
+                            child: _creationProjectRowImageWidget(),
+                          ),
+                          _form,
+                          Padding(
+                              padding: EdgeInsets.only(
+                                  left: (MediaQuery.of(context).size.width / 2.3)),
+                              child: _validatingProject()),
+                        ],
+                      )));
+            }
+        ),
+      endDrawer: Theme(
+        data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
+        child: buildEndDrawer(context: context, viewModel: viewModel),
+      ),
+    );
   }
 
   Form _buildForm() {

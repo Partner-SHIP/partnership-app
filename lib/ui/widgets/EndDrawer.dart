@@ -29,7 +29,7 @@ List<Widget> _buildRightDrawerButtons(
     fullWidth: true,
   );
   LabeledIconButton  projectSearchButton = LabeledIconButton(
-    icon: Icon(Icons.bluetooth_searching, color: Colors.white),
+    icon: Icon(Icons.youtube_searched_for, color: Colors.white),
     toolTip: 'Rechercher un projet',
     onPressed: () => viewModel.changeView(route: '/project_browsing_page', widgetContext: context),
     text: "Rechercher un projet",
