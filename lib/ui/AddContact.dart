@@ -71,13 +71,11 @@ class _ContactListItemN extends ListTile {
       onTap: () {
         convMembers.dest = authID;
         convMembers.send = member.uid;
+        print('context : $context ');
+        print('routing: ' + _routing.chatConvPage);
         conversations_path =
             "chat/" + authID + "/conversations/" + member.uid;
         dest_path = "chat/" + member.uid + "/conversations/" + authID;
-        print(member.fullName);
-        print(conversations_path);
-        print(_routing.chatConvPage);
-        print("TEST    " + conversations_path);
         viewModel.pushDynamicPage(
             route: _routing.chatConvPage,
             widgetContext: context,
