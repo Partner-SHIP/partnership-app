@@ -17,24 +17,25 @@ import 'package:partnership/model/SearchMemberPageModel.dart';
 import 'package:partnership/utils/Routes.dart';
 
 abstract class AModelFactory{
-  static final Map<String, AModel> register = <String, AModel>{};
+  static final Map<String, AModel>  register = <String, AModel>{};
+  static final IRoutes              _routes = Routes();
 
-  static RoutesEnum fetchRoutes(String route, IRoutes routing){
+  static RoutesEnum fetchRoutes(String route){
     RoutesEnum target;
-    routing.routeList().forEach((value){
+    _routes.routeList().forEach((value){
       if (value == route){
-        target = routing.routeEnumMap()[value];
+        target = _routes.routeEnumMap()[value];
         return target;
       }
     });
     return target;
   }
 
-  static DynamicRoutesEnum fetchDynamicRoutes(String route, IRoutes routing){
+  static DynamicRoutesEnum fetchDynamicRoutes(String route){
     DynamicRoutesEnum target;
-    routing.dynamicRouteList().forEach((value){
+    _routes.dynamicRouteList().forEach((value){
       if (value == route){
-        target = routing.dynamicRouteEnumMap()[value];
+        target = _routes.dynamicRouteEnumMap()[value];
         return target;
       }
     });
@@ -47,7 +48,7 @@ abstract class AModelFactory{
     else {
       AModel model;
       IRoutes _routing = Routes();
-      RoutesEnum targetedRoute = fetchRoutes(route, _routing);
+      RoutesEnum targetedRoute = fetchRoutes(route);
       switch (targetedRoute){
         case RoutesEnum.loginPage:
           model = LoginPageModel();
@@ -102,7 +103,7 @@ abstract class AModelFactory{
           register[_routing.chatConvPage] = model;
           break;
         default:
-          model = null;
+          throw Exception("Error while constructing Model: the route \"$route\" provided is unknown !");
           break;
       }
       return model;
@@ -111,14 +112,13 @@ abstract class AModelFactory{
 
   factory AModelFactory.createDynamicModel({@required String route}){
     AModel model;
-    IRoutes _routing = Routes();
-    DynamicRoutesEnum targetedRoute = fetchDynamicRoutes(route, _routing);
+    DynamicRoutesEnum targetedRoute = fetchDynamicRoutes(route);
     switch (targetedRoute) {
       case DynamicRoutesEnum.projectDescriptionPage:
         model = ProjectDescriptionPageModel();
         break;
       default:
-        model = null;
+        throw Exception("Error while constructing dynamic Model: the route \"$route\" provided is unknown !");
         break;
     }
     return model;
