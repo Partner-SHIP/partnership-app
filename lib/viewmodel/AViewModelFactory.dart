@@ -11,6 +11,8 @@ import 'package:partnership/viewmodel/IdeaPageViewModel.dart';
 import 'package:partnership/viewmodel/ProjectDescriptionPageViewModel.dart';
 import 'package:partnership/viewmodel/ProjectBrowsingPageViewModel.dart';
 import 'package:partnership/viewmodel/ChatPageViewModel.dart';
+import 'package:partnership/viewmodel/AddContactViewModel.dart';
+import 'package:partnership/viewmodel/ChatConvViewModel.dart';
 import 'package:partnership/viewmodel/SearchMemberPageViewModel.dart';
 import 'package:partnership/utils/Routes.dart';
 /*
@@ -96,7 +98,15 @@ abstract class AViewModelFactory
         case RoutesEnum.notificationsPage:
           viewModel = NotificationsPageViewModel(_routing.notificationsPage);
           register[_routing.notificationsPage] = viewModel;
-          break;          
+          break;
+        case RoutesEnum.addContactPage:
+          viewModel = AddContactViewModel(_routing.addContactPage);
+          register[_routing.addContactPage] = viewModel;
+          break;
+        case RoutesEnum.chatConvPage:
+          viewModel = ChatConvViewModel(_routing.chatConvPage);
+          register[_routing.chatConvPage] = viewModel;
+          break;
         default:
           throw Exception("Error while constructing ViewModel: the route \"$route\" provided is unknown !");
           break;

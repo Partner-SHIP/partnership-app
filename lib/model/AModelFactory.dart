@@ -10,6 +10,8 @@ import 'package:partnership/model/IdeaPageModel.dart';
 import 'package:partnership/model/ProjectBrowsingPageModel.dart';
 import 'package:partnership/model/ProjectDescriptionPageModel.dart';
 import 'package:partnership/model/ChatPageModel.dart';
+import 'package:partnership/model/ChatConvModel.dart';
+import 'package:partnership/model/AddContactModel.dart';
 import 'package:partnership/model/HomePageModel.dart';
 import 'package:partnership/model/SearchMemberPageModel.dart';
 import 'package:partnership/utils/Routes.dart';
@@ -90,6 +92,14 @@ abstract class AModelFactory{
         case RoutesEnum.notificationsPage:
           model = NotificationsPageModel();
           register[_routing.notificationsPage] = model;
+          break;
+        case RoutesEnum.addContactPage:
+          model = AddContactModel();
+          register[_routing.addContactPage] = model;
+          break;
+        case RoutesEnum.chatConvPage:
+          model = ChatConvModel();
+          register[_routing.chatConvPage] = model;
           break;
         default:
           model = null;
