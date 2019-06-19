@@ -6,16 +6,18 @@ import 'package:partnership/viewmodel/ChatConvViewModel.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 
 class ChatConv extends StatelessWidget {
+  Map<String, dynamic> args;
+  ChatConv(Map<String, dynamic> parameters) : args = parameters;
   IRoutes      _routing = Routes();
   ChatConvViewModel get viewModel => AViewModelFactory.register[_routing.chatConvPage];
   static const routeName = '/chatConv_page';
   @override
   Widget build(BuildContext context) {
-    final ScreenArguments args = ModalRoute.of(context).settings.arguments;
+    //final ScreenArguments args = ModalRoute.of(context).settings.arguments;
     return new Scaffold(
         appBar: new AppBar(
-          title: new Text(args.title),
+          title: new Text(args['Fullname']),
         ),
-        body: new ChatScreen(args.title, args.conversation));
+        body: new ChatScreen(args['Fullname'], args['Conversion_path']));
   }
 }

@@ -6,10 +6,9 @@ import 'ChatPage.dart';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/AddContactViewModel.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
-import 'package:partnership/ui/ChatConv.dart';
 import 'package:partnership/ui/ChatScreen.dart';
 
-class NewContactsPage extends StatelessWidget {
+class AddContact extends StatelessWidget {
   IRoutes      _routing = Routes();
   AddContactViewModel get viewModel => AViewModelFactory.register[_routing.addContactPage];
   static const routeName = '/addContact_page';
@@ -40,9 +39,9 @@ class ContactListN extends State<Contact2> {
     Firestore.instance.collection('profiles').getDocuments().then((onValue) {
       onValue.documents.forEach((f) {
         setState(() {
-          if (f.data['nickname'] != null) {
+          if (f.data['firstName'] != null) {
             members.add(Member(
-                fullName: f.data['nickname'], email: '', uid: f.data['uid']));
+                fullName: f.data['firstName'], email: '', uid: f.data['uid']));
           }
         });
       });
@@ -63,6 +62,8 @@ class ContactListN extends State<Contact2> {
 }
 
 class _ContactListItemN extends ListTile {
+  static IRoutes      _routing = Routes();
+  static AddContactViewModel viewModel = AViewModelFactory.register[_routing.addContactPage];
   _ContactListItemN(Member member, BuildContext context)
       : super(
       title: new Text(member.fullName),
@@ -73,12 +74,20 @@ class _ContactListItemN extends ListTile {
         conversations_path =
             "chat/" + authID + "/conversations/" + member.uid;
         dest_path = "chat/" + member.uid + "/conversations/" + authID;
+        print(member.fullName);
+        print(conversations_path);
+        print(_routing.chatConvPage);
         print("TEST    " + conversations_path);
-        Navigator.pushNamed(
+        viewModel.pushDynamicPage(
+            route: _routing.chatConvPage,
+            widgetContext: context,
+            args: <String, dynamic>{'Fullname': member.fullName, 'Conversation_path': conversations_path}
+        );
+        /*Navigator.pushNamed(
             context, ChatConv.routeName,
             arguments:
             ScreenArguments(member.fullName, "", conversations_path)
-        );
+        );*/
       },
       leading: new CircleAvatar(child: new Text(member.fullName[0])));
 }

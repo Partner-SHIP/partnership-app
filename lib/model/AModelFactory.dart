@@ -98,10 +98,6 @@ abstract class AModelFactory{
           model = AddContactModel();
           register[_routing.addContactPage] = model;
           break;
-        case RoutesEnum.chatConvPage:
-          model = ChatConvModel();
-          register[_routing.chatConvPage] = model;
-          break;
         default:
           throw Exception("Error while constructing Model: the route \"$route\" provided is unknown !");
           break;
@@ -116,6 +112,9 @@ abstract class AModelFactory{
     switch (targetedRoute) {
       case DynamicRoutesEnum.projectDescriptionPage:
         model = ProjectDescriptionPageModel();
+        break;
+      case DynamicRoutesEnum.chatConvPage:
+        model = ChatConvModel();
         break;
       default:
         throw Exception("Error while constructing dynamic Model: the route \"$route\" provided is unknown !");

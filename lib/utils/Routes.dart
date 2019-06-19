@@ -17,7 +17,8 @@ import 'package:partnership/ui/ChatPage.dart';
 import 'package:partnership/ui/AddContact.dart';
 
 enum DynamicRoutesEnum {
-  projectDescriptionPage
+  projectDescriptionPage,
+  chatConvPage,
 }
 
 enum RoutesEnum {
@@ -86,11 +87,11 @@ class Routes implements IRoutes {
   static const String _searchMemberPage = "/search_member_page";
   static const String _notificationsPage = "/notifications_page";
   static const String _addContactPage = "/addContact_page";
-  static const String _chatConvPage = "/chatConv_page";
   /*
   * Dynamic Routes
   */
   static const String _projectDescriptionPage = "/project_description_page";
+  static const String _chatConvPage = "/chatConv_page";
 
   dynamic _routeMap() {
     return {
@@ -105,8 +106,7 @@ class Routes implements IRoutes {
       _chatPage:                  (BuildContext context) => ChatPage(),
       _searchMemberPage:          (BuildContext context) => SearchMemberPage(),
       _notificationsPage:         (BuildContext context) => NotificationsPage(),
-      _addContactPage:            (BuildContext context) => NewContactsPage(),
-      _chatConvPage:              (BuildContext context) => ChatConv(),
+      _addContactPage:            (BuildContext context) => AddContact(),
     };  
   }
   Map<String, RoutesEnum> _routeEnumMap() {
@@ -123,7 +123,6 @@ class Routes implements IRoutes {
       _searchMemberPage:        RoutesEnum.searchMemberPage,
       _notificationsPage:       RoutesEnum.notificationsPage,
       _addContactPage:          RoutesEnum.addContactPage,
-      _chatConvPage:            RoutesEnum.chatConvPage,
     };
   }
 
@@ -140,7 +139,6 @@ class Routes implements IRoutes {
      _searchMemberPage,
      _notificationsPage,
      _addContactPage,
-     _chatConvPage,
    ];
 
   dynamic _getDynamicPage({@required String route, @required Map<String, dynamic> args}){
@@ -148,6 +146,9 @@ class Routes implements IRoutes {
     switch (route){
       case _projectDescriptionPage:
         view = ProjectDescriptionPage(args);
+        break;
+      case _chatConvPage:
+        view = ChatConv(args);
         break;
       default:
         throw Exception('Dynamic Page not found');
@@ -158,12 +159,14 @@ class Routes implements IRoutes {
 
   Map<String, DynamicRoutesEnum> _dynamicRoutesEnumMap(){
     return <String, DynamicRoutesEnum>{
-      _projectDescriptionPage: DynamicRoutesEnum.projectDescriptionPage
+      _projectDescriptionPage: DynamicRoutesEnum.projectDescriptionPage,
+      _chatConvPage: DynamicRoutesEnum.chatConvPage,
     };
   }
 
   List<String> _dynamicRoutesList() => <String>[
-    _projectDescriptionPage
+    _projectDescriptionPage,
+    _chatConvPage,
   ];
 
   @override
@@ -240,5 +243,4 @@ class Routes implements IRoutes {
   dynamic getDynamicPage({String route, Map<String, dynamic> args}) {
     return this._getDynamicPage(route: route, args: args);
   }
-
 }

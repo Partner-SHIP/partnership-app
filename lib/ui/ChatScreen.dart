@@ -47,9 +47,9 @@ class ChatScreenState extends State<ChatScreen> {
     dateFormat = new DateFormat("dd/MM/yyyy 'à' HH:mm:ss");
     Firestore.instance.collection('profiles').getDocuments().then((onValue) {
       onValue.documents.forEach((f) {
-        if (f.data['nickname'] != null && f.data['uid'] == authID) {
+        if (f.data['firstName'] != null && f.data['uid'] == authID) {
           setState(() {
-            _name = f.data['nickname'];
+            _name = f.data['firstName'];
           });
         }
       });

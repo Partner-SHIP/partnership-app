@@ -5,6 +5,7 @@ import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/ui/widgets/ThemeContainer.dart';
 import 'package:partnership/ui/widgets/PageHeader.dart';
 import 'package:partnership/ui/widgets/EndDrawer.dart';
+import 'package:partnership/coordinator/AppCoordinator.dart';
 import 'package:partnership/ui/ContactData.dart';
 import 'package:partnership/ui/ChatConv.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -133,6 +134,8 @@ class ContactsPageState extends State<ContactsPage> {
     authID = "OyhAXtFzv0W9w8049NDRaAaYXFT2";
     convMembers.send = authID;
     //userID = FirebaseAuth.instance.currentUser();
+    Coordinator user = new Coordinator();
+    //authID = user.getLoggedInUser().uid;
     conversations_path = "chat/" + authID + "/conversations";
     conversations_path_db = conversations_path;
   }
@@ -146,7 +149,7 @@ class ContactsPageState extends State<ContactsPage> {
           .listen((onData) {
         setState(() {
           kContacts.add(Contact(
-              fullName: onData.data["nickname"],
+              fullName: onData.data["firstName"],
               message: "",
               documentID: conversation.document.documentID));
         });

@@ -104,10 +104,6 @@ abstract class AViewModelFactory
           viewModel = AddContactViewModel(_routes.addContactPage);
           register[_routes.addContactPage] = viewModel;
           break;
-        case RoutesEnum.chatConvPage:
-          viewModel = ChatConvViewModel(_routes.chatConvPage);
-          register[_routes.chatConvPage] = viewModel;
-          break;
         default:
           throw Exception("Error while constructing ViewModel: the route \"$route\" provided is unknown !");
           break;
@@ -122,6 +118,9 @@ abstract class AViewModelFactory
     switch (target){
       case DynamicRoutesEnum.projectDescriptionPage:
         viewModel = ProjectDescriptionPageViewModel(_routes.projectDescriptionPage);
+        break;
+      case DynamicRoutesEnum.chatConvPage:
+        viewModel = ChatConvViewModel(_routes.chatConvPage);
         break;
       default:
         throw Exception("Error while constructing dynamic ViewModel: the dynamic route \"$route\" provided is unknown !");
