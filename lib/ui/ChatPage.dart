@@ -131,11 +131,10 @@ class ContactsPageState extends State<ContactsPage> {
 
   @override
   void initState() {
+    //authID = user.getLoggedInUser().uid;
     authID = "OyhAXtFzv0W9w8049NDRaAaYXFT2";
     convMembers.send = authID;
-    //userID = FirebaseAuth.instance.currentUser();
     Coordinator user = new Coordinator();
-    //authID = user.getLoggedInUser().uid;
     conversations_path = "chat/" + authID + "/conversations";
     conversations_path_db = conversations_path;
   }

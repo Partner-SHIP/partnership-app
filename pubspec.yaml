@@ -29,7 +29,7 @@ dependencies:
   tuple: ^1.0.2
   connectivity: ^0.4.3+1
   image_picker: ^0.6.0+2
-  flushbar: '1.7.0'
+  flushbar: '1.5.3'
   permission:
     git:
       url: https://github.com/devadrianapostol/permission
