@@ -41,7 +41,7 @@ ChatPageViewModel get viewModel => AViewModelFactory.register[_routing.chatPage]
             children: <Widget>[
               pageHeader(context, 'Messages'),
               /*Other Widgets Here*/
-              Container(child: new ContactsPage(),
+              Container(child: new ContactsPage(viewModel),
               height: MediaQuery.of(context).size.height - 110,
               width: MediaQuery.of(context).size.width),
             ],
@@ -64,7 +64,8 @@ class ScreenArguments {
 
 class _ContactListItem extends StatelessWidget {
   String title, subtitle, conversation, documentID;
-
+  IRoutes _routing = Routes();
+  ChatPageViewModel get viewModel => AViewModelFactory.register[_routing.chatPage];
   _ContactListItem(
       this.title, this.subtitle, this.conversation, this.documentID);
 
@@ -81,9 +82,13 @@ class _ContactListItem extends StatelessWidget {
             "chat/" + authID + "/conversations/" + this.documentID;
         dest_path = "chat/" + this.documentID + "/conversations/" + authID;
         this.conversation = conversations_path;
+        viewModel.pushDynamicPage(route: '/chatConv_page', widgetContext: context, args: <String, dynamic>{
+          'args':ScreenArguments(this.title ?? '', this.subtitle ?? '', conversations_path ?? '')
+        });
+        /*
         Navigator.pushNamed(context, ChatConv.routeName,
             arguments:
-            ScreenArguments(this.title ?? '', this.subtitle ?? '', conversations_path));
+            ScreenArguments(this.title ?? '', this.subtitle ?? '', conversations_path));*/
       },
     );
   }
@@ -119,16 +124,19 @@ class ContactList extends StatelessWidget {
 }
 
 class ContactsPage extends StatefulWidget {
+  ChatPageViewModel _viewModel;
+  ContactsPage(ChatPageViewModel viewmodel) : _viewModel = viewmodel;
   @override
   State<StatefulWidget> createState() {
-    return ContactsPageState();
+    return ContactsPageState(_viewModel);
   }
 }
 
 class ContactsPageState extends State<ContactsPage> {
   String conversations_path_db;
   String userID;
-
+  ChatPageViewModel _viewModel;
+  ContactsPageState(ChatPageViewModel viewModel) : _viewModel = viewModel;
   @override
   void initState() {
     //authID = user.getLoggedInUser().uid;
@@ -179,7 +187,7 @@ class ContactsPageState extends State<ContactsPage> {
           body: ContactList(kContacts, conversations_path_db),
           floatingActionButton: FloatingActionButton(
               child: Text('New'),
-              onPressed: () => Navigator.of(context).pushNamed('/addContact_page')),
+              onPressed: () => _viewModel.changeView(route: '/addContact_page', widgetContext: context)),//Navigator.of(context).pushNamed('/addContact_page')),
         );
       },
     );

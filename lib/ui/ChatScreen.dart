@@ -135,7 +135,7 @@ class ChatScreenState extends State<ChatScreen> {
                 _messages.length < list.length &&
                 _name != null) {
               for (int i = _messages.length; i < list.length; i++) {
-                DateTime dateTime = list.elementAt(i)["timestamp"];
+                DateTime dateTime = list.elementAt(i)["timestamp"].toDate();
                 dateTime = dateTime.toUtc().add(new Duration(hours: 2));
                 String _date = dateFormat.format(dateTime);
                 _handleSubmitted(list.elementAt(i)["name"].toString(),

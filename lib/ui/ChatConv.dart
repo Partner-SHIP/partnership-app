@@ -16,8 +16,8 @@ class ChatConv extends StatelessWidget {
     //final ScreenArguments args = ModalRoute.of(context).settings.arguments;
     return new Scaffold(
         appBar: new AppBar(
-          title: new Text(args['Fullname']),
+          title: new Text(args['args'] != null ? args['args'].title : ''),
         ),
-        body: new ChatScreen(args['Fullname'], args['Conversion_path']));
+        body: new ChatScreen(args['args'] != null ? args['args'].message : '', args['args'] != null ? args['args'].conversation : ''));
   }
 }

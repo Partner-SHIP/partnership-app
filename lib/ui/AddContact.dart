@@ -14,6 +14,7 @@ class AddContact extends StatelessWidget {
   static const routeName = '/addContact_page';
   @override
   Widget build(BuildContext context) {
+    print(viewModel);
     return new Scaffold(
         appBar: new AppBar(
           title: new Text("Contacts"),
@@ -79,13 +80,8 @@ class _ContactListItemN extends ListTile {
         viewModel.pushDynamicPage(
             route: _routing.chatConvPage,
             widgetContext: context,
-            args: <String, dynamic>{'Fullname': member.fullName, 'Conversation_path': conversations_path}
+            args: <String, dynamic>{'Fullname': member.fullName ?? '', 'Conversation_path': conversations_path ?? ''}
         );
-        /*Navigator.pushNamed(
-            context, ChatConv.routeName,
-            arguments:
-            ScreenArguments(member.fullName, "", conversations_path)
-        );*/
       },
       leading: new CircleAvatar(child: new Text(member.fullName[0])));
 }
