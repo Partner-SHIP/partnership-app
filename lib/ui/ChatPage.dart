@@ -139,10 +139,10 @@ class ContactsPageState extends State<ContactsPage> {
   ContactsPageState(ChatPageViewModel viewModel) : _viewModel = viewModel;
   @override
   void initState() {
-    //authID = user.getLoggedInUser().uid;
-    authID = "OyhAXtFzv0W9w8049NDRaAaYXFT2";
-    convMembers.send = authID;
     Coordinator user = new Coordinator();
+    authID = user.getLoggedInUser().uid;
+    //authID = "OyhAXtFzv0W9w8049NDRaAaYXFT2";
+    convMembers.send = authID;
     conversations_path = "chat/" + authID + "/conversations";
     conversations_path_db = conversations_path;
   }

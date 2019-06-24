@@ -6,47 +6,61 @@ import 'package:partnership/ui/widgets/LabeledIconButtonList.dart';
 import 'package:partnership/viewmodel/AViewModel.dart';
 
 List<Widget> _buildRightDrawerButtons(
-    {@required BuildContext context, 
-    @required AViewModel viewModel, 
-    @required bool profile, 
-    @required bool disconnect, 
+    {@required BuildContext context,
+    @required AViewModel viewModel,
+    @required bool profile,
+    @required bool disconnect,
     @required bool searchMember,
     @required bool projectSearch,
     @required bool projectCreation,
-    @required bool notification}) {
+    @required bool notification,
+    @required bool chat}) {
   LabeledIconButton profileButton = LabeledIconButton(
     icon: Icon(Icons.account_circle, color: Colors.white),
     toolTip: 'Accéder à mon profil',
-    onPressed: () => viewModel.changeView(route: '/profile_page', widgetContext: context),
+    onPressed: () =>
+        viewModel.changeView(route: '/profile_page', widgetContext: context),
     text: "Accéder à mon profil",
     fullWidth: true,
   );
-  LabeledIconButton  searchMemberButton = LabeledIconButton(
+  LabeledIconButton searchMemberButton = LabeledIconButton(
     icon: Icon(Icons.search, color: Colors.white),
     toolTip: 'Rechercher un profil',
-    onPressed: () => viewModel.changeView(route: '/search_member_page', widgetContext: context),
+    onPressed: () => viewModel.changeView(
+        route: '/search_member_page', widgetContext: context),
     text: "Rechercher un profil",
     fullWidth: true,
   );
-  LabeledIconButton  projectSearchButton = LabeledIconButton(
+  LabeledIconButton projectSearchButton = LabeledIconButton(
     icon: Icon(Icons.youtube_searched_for, color: Colors.white),
     toolTip: 'Rechercher un projet',
-    onPressed: () => viewModel.changeView(route: '/project_browsing_page', widgetContext: context),
+    onPressed: () => viewModel.changeView(
+        route: '/project_browsing_page', widgetContext: context),
     text: "Rechercher un projet",
     fullWidth: true,
   );
-    LabeledIconButton  projectCreationButton = LabeledIconButton(
+  LabeledIconButton projectCreationButton = LabeledIconButton(
     icon: Icon(Icons.create, color: Colors.white),
     toolTip: 'Créer un projet',
-    onPressed: () => viewModel.changeView(route: '/creation_page', widgetContext: context),
+    onPressed: () =>
+        viewModel.changeView(route: '/creation_page', widgetContext: context),
     text: "Créer un projet",
     fullWidth: true,
   );
-    LabeledIconButton  notificationButton = LabeledIconButton(
+  LabeledIconButton notificationButton = LabeledIconButton(
     icon: Icon(Icons.notifications, color: Colors.white),
     toolTip: 'Accéder aux notifications',
-    onPressed: () => viewModel.changeView(route: '/notifications_page', widgetContext: context),
+    onPressed: () => viewModel.changeView(
+        route: '/notifications_page', widgetContext: context),
     text: "Mes notifications",
+    fullWidth: true,
+  );
+  LabeledIconButton chatButton = LabeledIconButton(
+    icon: Icon(Icons.email, color: Colors.white),
+    toolTip: 'Chat',
+    onPressed: () =>
+        viewModel.changeView(route: '/chat_page', widgetContext: context),
+    text: "Chat",
     fullWidth: true,
   );
   LabeledIconButton disconnectButton = LabeledIconButton(
@@ -58,29 +72,25 @@ List<Widget> _buildRightDrawerButtons(
   );
 
   List<LabeledIconButton> result = new List<LabeledIconButton>();
-  if (profile)
-    result.add(profileButton);
-  if (searchMember)
-    result.add(searchMemberButton);
-  if (projectSearch)
-    result.add(projectSearchButton);
-  if (projectCreation)
-    result.add(projectCreationButton);
-  if (notification)
-    result.add(notificationButton);
-  if (disconnect)
-    result.add(disconnectButton);
+  if (profile) result.add(profileButton);
+  if (searchMember) result.add(searchMemberButton);
+  if (projectSearch) result.add(projectSearchButton);
+  if (projectCreation) result.add(projectCreationButton);
+  if (notification) result.add(notificationButton);
+  if (chat) result.add(chatButton);
+  if (disconnect) result.add(disconnectButton);
   return (result);
 }
 
 Widget _buildRightDrawer(
     {@required BuildContext context, @required List<Widget> buttonsList}) {
-  BoxDecoration drawerDecoration =
-  new BoxDecoration(
+  BoxDecoration drawerDecoration = new BoxDecoration(
     gradient: AThemes.selectedTheme.bgGradient,
   );
   LabeledIconButtonList drawerContent = LabeledIconButtonList(
-    childs: buttonsList, forceFullWidth: true,);
+    childs: buttonsList,
+    forceFullWidth: true,
+  );
   Widget drawerContentPositioning = Padding(
     child: drawerContent,
     padding: EdgeInsets.only(top: 24.0),
@@ -97,14 +107,18 @@ Widget _buildRightDrawer(
   ));
 }
 
-Widget buildEndDrawer({@required BuildContext context, 
-@required AViewModel viewModel,
-bool profile = true,
-bool disconnect = true, 
-bool searchMember = true,
-bool projectSearch = true,
-bool projectCreation = true,
-bool notification = true}) {
+// I/flutter (12011): Exception: Error while constructing ViewModel: the route "/chat_page " provided is unknown !
+
+Widget buildEndDrawer(
+    {@required BuildContext context,
+    @required AViewModel viewModel,
+    bool profile = true,
+    bool disconnect = true,
+    bool searchMember = true,
+    bool projectSearch = true,
+    bool projectCreation = true,
+    bool notification = true,
+    bool chat = true}) {
   List<Widget> buttonsList = _buildRightDrawerButtons(
       context: context,
       viewModel: viewModel,
@@ -113,6 +127,7 @@ bool notification = true}) {
       searchMember: searchMember,
       projectSearch: projectSearch,
       projectCreation: projectCreation,
-      notification: notification);
+      notification: notification,
+      chat: chat);
   return _buildRightDrawer(context: context, buttonsList: buttonsList);
 }
