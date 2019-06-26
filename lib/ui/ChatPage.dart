@@ -31,19 +31,21 @@ ChatPageViewModel get viewModel => AViewModelFactory.register[_routing.chatPage]
       resizeToAvoidBottomPadding: true,
       endDrawer: Theme(
           data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
-          child: buildEndDrawer(context: null, viewModel: viewModel)
+          child: buildEndDrawer(context: context, viewModel: viewModel)
       ),
       body: Builder(builder: (BuildContext context){
         return SafeArea(
           top: false,
           child: ThemeContainer(context,
           Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               pageHeader(context, 'Messages'),
               /*Other Widgets Here*/
               Container(child: new ContactsPage(viewModel),
               height: MediaQuery.of(context).size.height - 110,
-              width: MediaQuery.of(context).size.width),
+             width: MediaQuery.of(context).size.width),
             ],
           )
           ),
