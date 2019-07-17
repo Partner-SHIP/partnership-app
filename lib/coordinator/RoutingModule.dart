@@ -8,7 +8,9 @@ abstract class IRouting {
   void navigateTo({@required String route, @required BuildContext context, bool popStack = false});
   void pushDynamicPage({@required String route, @required BuildContext context, @required Map<String, dynamic> args});
   dynamic  routeMap();
+  Map<String, Widget> materialPageMap();
   String get initialRoute;
+  String get homeRoute;
 }
 
 class RoutingModule implements IRouting {
@@ -63,5 +65,13 @@ class RoutingModule implements IRouting {
   }
 
   @override
+  Map<String, Widget> materialPageMap() {
+    return this._routes.materialPagesMap();
+  }
+
+  @override
   String get initialRoute => this._routes.loginPage;
+
+  @override
+  String get homeRoute => this._routes.homePage;
 }

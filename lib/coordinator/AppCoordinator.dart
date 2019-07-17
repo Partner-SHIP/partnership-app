@@ -14,15 +14,16 @@ import 'package:partnership/viewmodel/AViewModelFactory.dart';
 */
 
 abstract class ICoordinator{
-  bool fetchRegisterToNavigate({@required String route, @required BuildContext context, bool navigate = true, bool popStack = false});
-  bool navigateToDynamicPage({@required String route, @required BuildContext context, @required Map<String, dynamic> args});
-  String getInitialRoute();
-  Future<FirebaseUser> loginByEmail({@required String userEmail, @required String userPassword});
-  Future<FirebaseUser> signUpByEmail({@required String newEmail, @required String newPassword});
-  StreamSubscription   subscribeToConnectivity(Function handler);
-  void                 showConnectivityAlert(BuildContext context);
-  FirebaseUser         getLoggedInUser();
-  AssetBundle          getAssetBundle();
+  bool                  fetchRegisterToNavigate({@required String route, @required BuildContext context, bool navigate = true, bool popStack = false});
+  bool                  navigateToDynamicPage({@required String route, @required BuildContext context, @required Map<String, dynamic> args});
+  String                getInitialRoute();
+  Future<FirebaseUser>  loginByEmail({@required String userEmail, @required String userPassword});
+  Future<FirebaseUser>  signUpByEmail({@required String newEmail, @required String newPassword});
+  Future<void>          disconnect();
+  StreamSubscription    subscribeToConnectivity(Function handler);
+  void                  showConnectivityAlert(BuildContext context);
+  FirebaseUser          getLoggedInUser();
+  AssetBundle           getAssetBundle();
 }
 
 class Coordinator extends State<PartnershipApp> implements ICoordinator {
@@ -70,21 +71,35 @@ class Coordinator extends State<PartnershipApp> implements ICoordinator {
         primarySwatch: Colors.blue,
       ),
       routes: this._router.routeMap(),
-      //onGenerateRoute: this._router.generator(),
-      //home: LoginPage(),
-      initialRoute: this._setUpInitialRoute(),
+      home: FutureBuilder<FirebaseUser>(
+        future: authentication.getCurrentUser(),
+        builder: (BuildContext context, AsyncSnapshot<FirebaseUser> snapshot){
+          switch (snapshot.connectionState){
+            case ConnectionState.none:
+            case ConnectionState.waiting:
+              return CircularProgressIndicator();
+              break;
+            default:
+              this._setUpInitialRoutes();
+              if (snapshot.hasError)
+                return _router.materialPageMap()["/login_page"];
+              else {
+                if (snapshot.data == null)
+                  return _router.materialPageMap()["/login_page"];
+                else
+                  return _router.materialPageMap()["/home_page"];
+              }
+          }
+        },
+      ),
     );
     this._assetBundle = DefaultAssetBundle.of(_context);
-    //this._setUpInitialRoute();
     return app;
   }
 
-  String _setUpInitialRoute(){
-    if (!this.fetchRegisterToNavigate(route: "/", context: null, navigate: false))
-      return null;
-    if (this.fetchRegisterToNavigate(route: this._router.initialRoute, context: null, navigate: false))
-      return this._router.initialRoute;
-    return null;
+  void _setUpInitialRoutes(){
+    this.fetchRegisterToNavigate(route: "/login_page", context: null, navigate: false);
+    this.fetchRegisterToNavigate(route: "/home_page", context: null, navigate: false);
   }
 
   bool _fetchRegisterToNavigate({@required String route, @required BuildContext context, bool navigate = true, bool popStack = false}) {
@@ -159,8 +174,12 @@ class Coordinator extends State<PartnershipApp> implements ICoordinator {
 
   @override
   bool navigateToDynamicPage({@required String route, @required BuildContext context, @required Map<String, dynamic> args}) {
-    print('2 - $route');
     return _navigateToDynamicPage(route: route, context: context, args: args);
+  }
+
+  @override
+  Future<void> disconnect() {
+    return this._authentication.logOut();
   }
 }
 
