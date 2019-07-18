@@ -156,7 +156,6 @@ class CustomCard extends StatelessWidget {
     final double sidePadding = 10;
     Widget result = GestureDetector(
         onTap: () {
-          String r = _routing.projectDescriptionPage;
           this._viewModel.pushDynamicPage(
               route: _routing.projectDescriptionPage,
               widgetContext: context,

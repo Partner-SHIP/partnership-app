@@ -71,12 +71,6 @@ abstract class AViewModelFactory
           viewModel = HomePageViewModel(_routing.homePage);
           register[_routing.homePage] = viewModel;
           break;
-          /*
-        case RoutesEnum.projectDescriptionPage:
-          viewModel = ProjectDescriptionPageViewModel(_routing.projectDescriptionPage);
-          register[_routing.projectDescriptionPage] = viewModel;
-          break;
-          */
         case RoutesEnum.projectBrowsingPage:
           viewModel = ProjectBrowsingPageViewModel(_routing.projectBrowsingPage);
           register[_routing.projectBrowsingPage] = viewModel;
