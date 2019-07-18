@@ -198,7 +198,6 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
                     });
                     this.viewModel.signInAction(this._data).then((value){
                       if (value) {
-                        print("coucou !");
                         this.viewModel.afterSignIn(context);
                       }
                       setState(() {

@@ -66,7 +66,7 @@ List<Widget> _buildRightDrawerButtons(
   LabeledIconButton disconnectButton = LabeledIconButton(
     icon: Icon(Icons.power_settings_new, color: Colors.white),
     toolTip: 'Me déconnecter',
-    onPressed: () => viewModel.changeView(route: '/', widgetContext: context),
+    onPressed: () => viewModel.disconnect(widgetContext: context),
     text: "Me déconnecter",
     fullWidth: true,
   );

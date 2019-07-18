@@ -57,6 +57,7 @@ abstract class  IRoutes {
   String        get chatConvPage;
 
   dynamic            routeMap();
+  Map<String, Widget> materialPagesMap();
   List<String>   routeList();
   Map<String, RoutesEnum> routeEnumMap();
   List<String> dynamicRouteList();
@@ -74,7 +75,7 @@ class Routes implements IRoutes {
   /*
   *  Static Routes
   */
-  static const String _loginPage = "/";
+  static const String _loginPage = "/login_page";
   static const String _signInPage = "/signin_page";
   static const String _signUpPage = "/signup_page";
   static const String _profilePage = "/profile_page";
@@ -92,6 +93,22 @@ class Routes implements IRoutes {
   */
   static const String _projectDescriptionPage = "/project_description_page";
   static const String _chatConvPage = "/chatConv_page";
+
+  Map<String, Widget> _materialPagesMap() {
+    return {
+      _loginPage:                 LoginPage(),
+      _signInPage:                SignInPage(),
+      _signUpPage:                SignUpPage(),
+      _profilePage:               ProfilePage(),
+      _homePage:                  HomePage(),
+      _projectBrowsingPage:       ProjectBrowsingPage(),
+      _creationPage:              CreationPage(),
+      _ideaPage:                  IdeaPage(),
+      _chatPage:                  ChatPage(),
+      _searchMemberPage:          SearchMemberPage(),
+      _notificationsPage:         NotificationsPage(),
+    };
+  }
 
   dynamic _routeMap() {
     return {
@@ -242,5 +259,10 @@ class Routes implements IRoutes {
   @override
   dynamic getDynamicPage({String route, Map<String, dynamic> args}) {
     return this._getDynamicPage(route: route, args: args);
+  }
+
+  @override
+  Map<String, Widget> materialPagesMap() {
+    return this._materialPagesMap();
   }
 }

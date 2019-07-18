@@ -10,15 +10,21 @@ class SignInPageViewModel extends AViewModel {
     super.initModel(route);
     this._model = super.abstractModel;
   }
-  Future<bool> signInAction(SignInData inputs){
+  Future<bool> signInAction(SignInData inputs) {
     Future<bool> ret = this.signIn(email: inputs.email, password: inputs.password).then((result){
-      if (result != null)
+      if (result != null){
+        /*
+        this.getSharedPrefs().setString('account_mail', inputs.email);
+        this.getSharedPrefs().setString('account_mdp', inputs.password);
+        */
         return true;
+      }
       else
         return false;
     });
     return ret;
   }
+
   void afterSignIn(BuildContext context) {
     print("after signin $context");
     this.changeView(

@@ -56,6 +56,11 @@ abstract class AViewModel implements AViewModelFactory
   Future<FirebaseUser> signIn({@required String email, @required String password}) {
     return this._coordinator.loginByEmail(userEmail: email, userPassword: password);
   }
+
+  Future<void> disconnect({@required BuildContext widgetContext}){
+    this._coordinator.disconnect().then((_) => this.changeView(route: "/login_page", widgetContext: widgetContext, popStack: true));
+  }
+
   FirebaseUser loggedInUser(){
     return this._coordinator.getLoggedInUser();
   }
@@ -67,8 +72,5 @@ abstract class AViewModel implements AViewModelFactory
   }
   void showConnectivityAlert(BuildContext context){
     this._coordinator.showConnectivityAlert(context);
-  }
-  String getInitialRoute(){
-    return this._coordinator.getInitialRoute();
   }
 }
