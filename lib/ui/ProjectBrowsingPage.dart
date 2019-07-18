@@ -123,7 +123,7 @@ class CustomCard extends StatelessWidget {
     //                 }),
     //           ],
     //         )));
-    return (_buildContainer(width: MediaQuery.of(context).size.width));
+    return (_buildContainer(width: MediaQuery.of(context).size.width, context: context));
   }
 
   Text _buildTitle() {
