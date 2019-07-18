@@ -123,7 +123,7 @@ class CustomCard extends StatelessWidget {
     //                 }),
     //           ],
     //         )));
-    return (_buildContainer(width: MediaQuery.of(context).size.width));
+    return (_buildContainer(width: MediaQuery.of(context).size.width, context: context));
   }
 
   Text _buildTitle() {
@@ -156,7 +156,6 @@ class CustomCard extends StatelessWidget {
     final double sidePadding = 10;
     Widget result = GestureDetector(
         onTap: () {
-          String r = _routing.projectDescriptionPage;
           this._viewModel.pushDynamicPage(
               route: _routing.projectDescriptionPage,
               widgetContext: context,

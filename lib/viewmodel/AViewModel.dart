@@ -24,10 +24,15 @@ abstract class AViewModel implements AViewModelFactory
   void initModel(String route){
     try {
       this._route = route;
-      AModelFactory(this._route);
-      if (!AModelFactory.register.containsKey(this._route) || !(AModelFactory.register[this._route] != null))
-        throw Exception("Missing Model for "+this._route);
-      this._abstractModel = AModelFactory.register[this._route];
+      if (AModelFactory.fetchDynamicRoutes(route) != null){
+        this._abstractModel = AModelFactory.createDynamicModel(route: route);
+      }
+      else {
+        AModelFactory(this._route);
+        if (!AModelFactory.register.containsKey(this._route) || !(AModelFactory.register[this._route] != null))
+          throw Exception("Missing Model for "+this._route);
+        this._abstractModel = AModelFactory.register[this._route];
+      }
     }
     catch (error){
       print(error);
