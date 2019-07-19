@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/viewmodel/ProjectDescriptionPageViewModel.dart';
+import 'package:partnership/ui/widgets/ThemeContainer.dart';
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 
 final String lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
@@ -28,6 +31,9 @@ class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
   @override
   void initState(){
     super.initState();
+    DocumentSnapshot project = args['project'];
+    var data = project.data;
+    print('ARGUMENT : $data');
     viewModel = AViewModelFactory.createDynamicViewModel(route: _routing.projectDescriptionPage);
     this._connectivitySub = viewModel.subscribeToConnectivity(this._connectivityHandler);
   }
@@ -38,24 +44,57 @@ class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
     super.dispose();
   }
 
-  Row _buildBanner(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    Row result;
-    Image img = Image.asset(
-            'assets/img/logo_partnership.png',
-            height: 150,
-            width: width,
-
-          );
-    Image banner =Image.asset('assets/blue_texture.jpg');
-    BoxDecoration bd =BoxDecoration(color: Colors.red, image:DecorationImage(fit: BoxFit.fill,image:AssetImage("assets/blue_texture.jpg")));
-    result = Row(children: <Widget>[Container(decoration: bd, child:img, height: 180)], mainAxisSize: MainAxisSize.max, mainAxisAlignment: MainAxisAlignment.spaceEvenly,);
-    return (result);
+  Image _buildBanner(BuildContext context) {
+    return Image.network(
+      args['project'].data['bannerPath'],
+      width: MediaQuery.of(context).size.width,
+      height: 250,
+      fit: BoxFit.cover,
+    );
   }
-  Row _buildTitle () {
-    Text title = Text("Titre Projet", style: TextStyle(color:Colors.blueGrey, fontFamily: "Roboto", fontSize: 30),);
-    Row result =Row(children: <Widget>[title], mainAxisSize: MainAxisSize.max, mainAxisAlignment: MainAxisAlignment.spaceEvenly,);
-    return (result);
+  Container _buildTitle () {
+    return Container(
+      padding: const EdgeInsets.all(25),
+      child: Row(
+        children: [
+          Expanded(
+            /*1*/
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                /*2*/
+                Container(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: AutoSizeText(
+                    args['project'].data['name'],
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Orkney',
+                      fontSize: 20
+                    ),
+                  ),
+                ),
+                AutoSizeText(
+                  args['project'].data['description'],
+                  style: TextStyle(
+                    color: Colors.grey[500],
+                    fontFamily: 'Orkney'
+                  ),
+                ),
+              ],
+            ),
+          ),
+          /*
+          Icon(
+            Icons.loyalty,
+            color: Colors.red[500],
+          ),
+          AutoSizeText('410', style: TextStyle(color: Colors.white, fontFamily: 'Orkney')),
+          */
+        ],
+      ),
+    );
   }
   Row _buildDescription (BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -65,23 +104,61 @@ class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
     Row result = Row(children: <Widget>[Column(children: <Widget>[padding],mainAxisSize: MainAxisSize.max,)], mainAxisSize: MainAxisSize.max,);
     return (result);
   }
+
+  Column _buildButtonColumn(Color color, IconData icon, String label) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(icon, color: color),
+        Container(
+          child: Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              fontFamily: 'Orkney',
+              color: color,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    Row bannerRow;
-    Row titleRow;
-    Row descriptionRow;
-
-    bannerRow = _buildBanner(context);
-    titleRow =_buildTitle();
-    descriptionRow = _buildDescription(context);
-    Column column = Column( 
-      mainAxisSize: MainAxisSize.max,
-      children: <Widget>[bannerRow, Padding(child:titleRow, padding: EdgeInsets.only(top: 10)), descriptionRow],
+    Container buttonSection = Container(
+      margin: EdgeInsets.all(8),
+      padding: EdgeInsets.all(8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          _buildButtonColumn(Colors.white, Icons.loyalty, 'SUIVRE'),
+          _buildButtonColumn(Colors.white, Icons.people, 'REJOINDRE'),
+          _buildButtonColumn(Colors.white, Icons.share, 'PARTAGER'),
+        ],
+      ),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.white, style: BorderStyle.solid),
+        borderRadius: BorderRadius.all(Radius.circular(10))
+      ),
     );
     return Scaffold(
-        resizeToAvoidBottomPadding: true,
-        backgroundColor: Colors.grey[300],
-        body: SingleChildScrollView(child:Container(child: column,), padding: EdgeInsets.only(top:24),));
+      body: SafeArea(
+        top: false,
+        child: ThemeContainer(
+          context,
+          ListView(
+            children: <Widget>[
+              _buildBanner(context),
+              _buildTitle(),
+              buttonSection,
+              _buildDescription(context)
+            ],
+          )
+        ),
+      ),
+    );
   }
 
   void _connectivityHandler(bool value) {
