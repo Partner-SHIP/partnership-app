@@ -17,4 +17,8 @@ class AddContactViewModel extends AViewModel {
       this._model = super.abstractModel;
     }
     AddContactModel get model => this._model;
+
+    String test(){
+      return "OK";
+    }
   }

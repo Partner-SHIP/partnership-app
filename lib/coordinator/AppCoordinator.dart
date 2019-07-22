@@ -8,6 +8,8 @@ import 'package:partnership/coordinator/AuthenticationModule.dart';
 import 'package:partnership/coordinator/NotificationModule.dart';
 import 'package:partnership/viewmodel/AViewModel.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
+
+import 'ChatModule.dart';
 /*
     Head of the App, brings severals utility modules like Routing, internet connectivity etc...
     Responsible of ViewModels's management.
@@ -23,6 +25,8 @@ abstract class ICoordinator{
   void                 showConnectivityAlert(BuildContext context);
   FirebaseUser         getLoggedInUser();
   AssetBundle          getAssetBundle();
+  String               getContactId();
+  void                 setContactId(String contactId);
 }
 
 class Coordinator extends State<PartnershipApp> implements ICoordinator {
@@ -31,6 +35,7 @@ class Coordinator extends State<PartnershipApp> implements ICoordinator {
   final IConnectivity           _connectivity = ConnectivityModule();
   final INotification           _notification = NotificationModule();
   final IAuthentication         _authentication = AuthenticationModule();
+  final IChat                   _chat = ChatModule();
   final Map<String, AViewModel> _viewModels = AViewModelFactory.register;
   AssetBundle                   _assetBundle;
   StreamSubscription<bool>      _connectivitySub;
@@ -47,6 +52,7 @@ class Coordinator extends State<PartnershipApp> implements ICoordinator {
     IAuthentication get authentication => this._authentication;
     IConnectivity   get connectivity => this._connectivity;
     INotification   get notification => this._notification;
+    IChat           get chat => this._chat;
 
   @override
   void initState(){
@@ -161,6 +167,18 @@ class Coordinator extends State<PartnershipApp> implements ICoordinator {
   bool navigateToDynamicPage({@required String route, @required BuildContext context, @required Map<String, dynamic> args}) {
     print('2 - $route');
     return _navigateToDynamicPage(route: route, context: context, args: args);
+  }
+
+  @override
+  String getContactId() {
+    return this._chat.getContactId();
+    return null;
+  }
+
+  @override
+  void setContactId(String contactId) {
+    this._chat.setContactId(contactId);
+    // TODO: implement setContactId
   }
 }
 
