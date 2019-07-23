@@ -3,6 +3,7 @@ import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/viewmodel/ProjectDescriptionPageViewModel.dart';
 import 'package:partnership/ui/widgets/ThemeContainer.dart';
+import 'package:partnership/style/theme.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
@@ -52,17 +53,37 @@ class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
       fit: BoxFit.cover,
     );
   }
+
+  Widget _buildLogo() {
+    return ClipPath(
+      child: Container(
+        margin: EdgeInsets.only(top: 0),
+        width: MediaQuery.of(context).size.width,
+        height: 60,
+        decoration: BoxDecoration(
+          gradient: AThemes.selectedTheme.bgGradient
+        ),
+        child: Stack(
+          alignment: Alignment.center,
+          children: <Widget>[
+            AutoSizeText("LOGO PLACEHOLDER"),
+            Image.network(args['project'].data['logoPath'], fit: BoxFit.fitHeight),
+          ],
+        )
+      ),
+      clipper: LogoClipper(),
+    );
+  }
+
   Container _buildTitle () {
     return Container(
       padding: const EdgeInsets.all(25),
       child: Row(
         children: [
           Expanded(
-            /*1*/
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                /*2*/
                 Container(
                   padding: const EdgeInsets.only(bottom: 8),
                   child: AutoSizeText(
@@ -85,83 +106,129 @@ class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
               ],
             ),
           ),
-          /*
-          Icon(
-            Icons.loyalty,
-            color: Colors.red[500],
-          ),
-          AutoSizeText('410', style: TextStyle(color: Colors.white, fontFamily: 'Orkney')),
-          */
         ],
       ),
     );
   }
+
   Row _buildDescription (BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    final double paddingvalue = 5;
-    Text text =Text(lorem);
-    Padding padding =Padding(child: Container(child:text, width: width - paddingvalue * 2,), padding: EdgeInsets.all(paddingvalue),);
-    Row result = Row(children: <Widget>[Column(children: <Widget>[padding],mainAxisSize: MainAxisSize.max,)], mainAxisSize: MainAxisSize.max,);
+    AutoSizeText text = AutoSizeText(lorem, style: TextStyle(color: Colors.grey[500], fontSize: 18), softWrap: true,);
+    Row result = Row(
+      children: <Widget>[
+        Container(
+          width: MediaQuery.of(context).size.width,
+          padding: EdgeInsets.all(24),
+          child: text,
+        )
+      ],
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.center,
+    );
     return (result);
   }
 
-  Column _buildButtonColumn(Color color, IconData icon, String label) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(icon, color: color),
-        Container(
-          child: Text(
-            label,
-            style: TextStyle(
-              fontSize: 12,
-              fontFamily: 'Orkney',
-              color: color,
+  Widget _buildButtonColumn(Color color, IconData icon, String label, BuildContext context) {
+    return InkWell(
+      onTap: () => Scaffold.of(context).showSnackBar(SnackBar(content: Text("RIPPLE"))),
+      child: ShaderMask(
+        blendMode: BlendMode.srcATop,
+        shaderCallback: (Rect bounds){
+          return AThemes.selectedTheme.btnGradient.createShader(bounds);
+        },
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, color: color, size: 50),
+            Container(
+              child: Text(
+                label,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontFamily: 'Orkney',
+                  color: color,
+                ),
+              ),
             ),
-          ),
+          ],
         ),
-      ],
+      )
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    Container buttonSection = Container(
+  Widget _buildButtons(BuildContext context){
+    return Container(
       margin: EdgeInsets.all(8),
       padding: EdgeInsets.all(8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          _buildButtonColumn(Colors.white, Icons.loyalty, 'SUIVRE'),
-          _buildButtonColumn(Colors.white, Icons.people, 'REJOINDRE'),
-          _buildButtonColumn(Colors.white, Icons.share, 'PARTAGER'),
+          _buildButtonColumn(Colors.white, Icons.loyalty, 'SUIVRE', context),
+          _buildButtonColumn(Colors.white, Icons.people, 'REJOINDRE', context),
+          _buildButtonColumn(Colors.white, Icons.share, 'PARTAGER', context),
         ],
       ),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.white, style: BorderStyle.solid),
-        borderRadius: BorderRadius.all(Radius.circular(10))
+          border: Border.all(color: Colors.white, style: BorderStyle.solid),
+          borderRadius: BorderRadius.all(Radius.circular(10))
       ),
     );
+  }
+  
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        top: false,
-        child: ThemeContainer(
-          context,
-          ListView(
-            children: <Widget>[
-              _buildBanner(context),
-              _buildTitle(),
-              buttonSection,
-              _buildDescription(context)
-            ],
-          )
-        ),
-      ),
+      body: Builder(builder: (BuildContext context){
+        return SafeArea(
+          top: false,
+          child: ThemeContainer(
+              context,
+              ListView(
+                children: <Widget>[
+                  _buildBanner(context),
+                  _buildLogo(),
+                  _buildTitle(),
+                  _buildButtons(context),
+                  _buildDescription(context)
+                ],
+              )
+          ),
+        );
+      }),
     );
   }
 
   void _connectivityHandler(bool value) {
 
+  }
+}
+
+class LogoClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    Path path = Path();
+    /*
+    path.lineTo(0.0, size.height / 6.0);
+    path.lineTo(size.width / 2, size.height / 3.0);
+    path.lineTo(size.width, size.height / 6.0);
+    path.lineTo(size.width, 0.0);
+    */
+    path.lineTo(0.0, size.height - 20.0);
+    path.lineTo(10.0, size.height - 10.0);
+    path.lineTo(size.width / 4, size.height - 10.0);
+    path.lineTo(size.width / 3, size.height);
+    path.lineTo(size.width - (size.width / 3), size.height);
+    path.lineTo(size.width - (size.width / 4), size.height - 10.0);
+    path.lineTo(size.width - 10.0, size.height - 10.0);
+    path.lineTo(size.width, size.height - 20.0);
+    path.lineTo(size.width, 0.0);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) {
+    // TODO: implement shouldReclip
+    return true;
   }
 }
