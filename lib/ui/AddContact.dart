@@ -30,10 +30,10 @@ class Contact2 extends StatefulWidget {
 }
 
 class ContactListN extends State<Contact2> {
-  List<Member> members = new List();
-  int i = 0;
-
-  // ContactListN();
+  static IRoutes      _routing = Routes();
+  static AddContactViewModel viewModel = AViewModelFactory.register[_routing.addContactPage];
+  static Coordinator user = new Coordinator();
+   ContactListN();
 
   @override
   void initState() {
@@ -41,10 +41,7 @@ class ContactListN extends State<Contact2> {
     Firestore.instance.collection('profiles').getDocuments().then((onValue) {
       onValue.documents.forEach((f) {
         setState(() {
-          if (f.data['firstName'] != null) {
-            members.add(Member(
-                fullName: f.data['firstName'], email: '', uid: f.data['uid']));
-          }
+          viewModel.addMember(f);
         });
       });
     });
@@ -56,9 +53,9 @@ class ContactListN extends State<Contact2> {
     return new ListView.builder(
       padding: new EdgeInsets.symmetric(vertical: 8.0),
       itemBuilder: (context, index) {
-        return new _ContactListItemN(members[index], context);
+        return new _ContactListItemN(viewModel.getListMember()[index],context);
       },
-      itemCount: members.length,
+      itemCount: viewModel.getListMember().length,
     );
   }
 }
@@ -67,7 +64,7 @@ class _ContactListItemN extends ListTile {
   static IRoutes      _routing = Routes();
   static AddContactViewModel viewModel = AViewModelFactory.register[_routing.addContactPage];
   static Coordinator user = new Coordinator();
-  _ContactListItemN(Member member, BuildContext context)
+  _ContactListItemN(var member, BuildContext context)
       : super(
       title: new Text(member.fullName),
       subtitle: new Text(member.email),
@@ -76,13 +73,7 @@ class _ContactListItemN extends ListTile {
         print(new Coordinator().getContactId());
         viewModel.changeView(route: _routing.chatScreenPage, widgetContext: context);
       },
-      leading: new CircleAvatar(child: new Text(member.fullName[0])));
+      leading: new CircleAvatar(child: new Text(member .fullName[0])));
 }
 
-class Member {
-  final String fullName;
-  final String email;
-  final String uid;
 
-  const Member({this.fullName, this.email, this.uid});
-}
