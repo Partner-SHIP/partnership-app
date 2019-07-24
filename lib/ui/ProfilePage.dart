@@ -30,7 +30,8 @@ class ProfilePageState extends State<ProfilePage>
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _mainKey = GlobalKey<ScaffoldState>();
   StreamSubscription _connectivitySub;
-  Map<String, Tuple2<Key, TextEditingController>> _keyMap = Map<String, Tuple2<Key, TextEditingController>>();
+  Map<String, Tuple2<Key, TextEditingController>> _keyMap =
+      Map<String, Tuple2<Key, TextEditingController>>();
   List<String> values = List<String>();
   List<MyItems> items = [
     MyItems("Mes Projets", "pas encore disponible"),
@@ -41,21 +42,22 @@ class ProfilePageState extends State<ProfilePage>
   bool isBusy = false;
   File imagePickerFile;
   /////////////////////////////////////GETTERS
-  String  firstName = viewModel.firstName;
-  String  lastName = viewModel.lastName;
-  String  location = viewModel.location;
-  int     date = viewModel.date;
-  String  workLocation = viewModel.workLocation;
-  String  job = viewModel.job;
-  String  studies = viewModel.studies;
-  String  photoUrl = viewModel.photoUrl;
-  String  backgroundUrl = viewModel.backgroundUrl;
+  String firstName = viewModel.firstName;
+  String lastName = viewModel.lastName;
+  String location = viewModel.location;
+  int date = viewModel.date;
+  String workLocation = viewModel.workLocation;
+  String job = viewModel.job;
+  String studies = viewModel.studies;
+  String photoUrl = viewModel.photoUrl;
+  String backgroundUrl = viewModel.backgroundUrl;
   ////////////////////////////////////
   TabController _tabController;
   @override
   void initState() {
     super.initState();
-    this._connectivitySub = viewModel.subscribeToConnectivity(this._connectivityHandler);
+    this._connectivitySub =
+        viewModel.subscribeToConnectivity(this._connectivityHandler);
     _tabController = TabController(vsync: this, length: 2);
     viewModel.getCurrentUserProfile(this._updateProfile);
   }
@@ -104,15 +106,20 @@ class ProfilePageState extends State<ProfilePage>
                 context,
                 SingleChildScrollView(
                   child: Form(
-                    key: _formKey,
-                    child: Column(
+                      key: _formKey,
+                      child: Column(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           pageHeader(context, 'Profil'),
                           _profilePicture(),
-                          Padding(child: _nameWidget(), padding: EdgeInsets.only(top: 10, bottom: 5, left: 5, right: 5)),
-                          Padding(child: _registrationDateWidget(), padding: EdgeInsets.all(5)),
+                          Padding(
+                              child: _nameWidget(),
+                              padding: EdgeInsets.only(
+                                  top: 10, bottom: 5, left: 5, right: 5)),
+                          Padding(
+                              child: _registrationDateWidget(),
+                              padding: EdgeInsets.all(5)),
                           _livesAtWidget(),
                           _studiedAtWidget(),
                           _worksAtWidget(),
@@ -120,23 +127,24 @@ class ProfilePageState extends State<ProfilePage>
                           _profilePanelList(),
                           SizedBox(height: 80)
                         ],
-                      )
-                  ),
-                )
-            )
-        );
+                      )),
+                )));
       }),
       resizeToAvoidBottomPadding: true,
       endDrawer: Theme(
         data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
-        child: buildEndDrawer(context: context, viewModel: viewModel, profile: false),
+        child: buildEndDrawer(
+            context: context, viewModel: viewModel, profile: false),
       ),
     );
   }
 
-  void _updateProfile(Map<String, dynamic> newProfile){
+  void _updateProfile(Map<String, dynamic> newProfile) {
     print(newProfile['nickname']);
     this.setState(() {
+      print('yessssss');
+      print(newProfile);
+      print('nooooooooo');
       this.firstName = newProfile['firstName'] ?? 'Prenom';
       this.lastName = newProfile['lastName'] ?? 'Nom';
       this.date = newProfile['createdAt']['_seconds'] ?? 1552380987;
@@ -144,6 +152,11 @@ class ProfilePageState extends State<ProfilePage>
       this.location = newProfile['cityLocation'] ?? 'ville de résidence';
       this.workLocation = newProfile['workLocation'] ?? 'Employeur';
       this.studies = newProfile['studies'] ?? 'études réalisées';
+      //this.photoUrl = newProfile['photoUrl'] ?? 'https://pixel.nymag.com/imgs/daily/vulture/2017/06/14/14-tom-cruise.w700.h700.jpg' ;
+      //this.photoUrl = newProfile['photoUrl'] ?? 'https://firebasestorage.googleapis.com/v0/b/partnership-app-e8d99.appspot.com/o/Jeff.png?alt=media&token=eca3cf05-67ce-415f-adab-5f989911ef75' ;
+      //dans le else, image par défaut si l'utilisateur n'en a pas uploadé une
+      this.photoUrl = newProfile['photoUrl'] ??
+          'https://firebasestorage.googleapis.com/v0/b/partnership-app-e8d99.appspot.com/o/unknowprofilepicture.png?alt=media&token=80d8fd66-ab70-4c8a-bd9f-bed1897e3234';
     });
   }
 
@@ -165,10 +178,14 @@ class ProfilePageState extends State<ProfilePage>
                             : NetworkImage(this.photoUrl),
                         fit: BoxFit.cover),
                     borderRadius: BorderRadius.all(Radius.circular(45.0)),
-                    boxShadow: [BoxShadow(blurRadius: 7.0, color: Colors.black)]),
+                    boxShadow: [
+                      BoxShadow(blurRadius: 7.0, color: Colors.black)
+                    ]),
               ),
             ),
-            this.isEditing ? _changePhotoButton() : SizedBox(width: 0, height: 0),
+            this.isEditing
+                ? _changePhotoButton()
+                : SizedBox(width: 0, height: 0),
             this.isBusy ? _spinner() : SizedBox(width: 0, height: 0)
           ],
         )
@@ -176,39 +193,34 @@ class ProfilePageState extends State<ProfilePage>
     );
   }
 
-  Widget _registrationDateWidget(){
+  Widget _registrationDateWidget() {
     String date = DateTime.fromMicrosecondsSinceEpoch(this.date).toString();
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        AutoSizeText("Inscrit depuis le : ", style: TextStyle(
-            fontSize: 15,
-            fontFamily: 'Orkney',
-            fontWeight: FontWeight.bold,
-            color: Colors.white
-          )
-        ),
-      AutoSizeText(date, style: TextStyle(
-            fontSize: 15,
-            fontFamily: 'Orkney',
-            color: Colors.white
-          )
-       )
+        AutoSizeText("Inscrit depuis le : ",
+            style: TextStyle(
+                fontSize: 15,
+                fontFamily: 'Orkney',
+                fontWeight: FontWeight.bold,
+                color: Colors.white)),
+        AutoSizeText(date,
+            style: TextStyle(
+                fontSize: 15, fontFamily: 'Orkney', color: Colors.white))
       ],
     );
   }
 
-  Widget _nameWidget(){
+  Widget _nameWidget() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        AutoSizeText(this.firstName+' '+this.lastName, style: TextStyle(
-            fontSize: 25,
-            fontFamily: 'Orkney',
-            fontWeight: FontWeight.bold,
-            color: Colors.white
-        )
-        )
+        AutoSizeText(this.firstName + ' ' + this.lastName,
+            style: TextStyle(
+                fontSize: 25,
+                fontFamily: 'Orkney',
+                fontWeight: FontWeight.bold,
+                color: Colors.white))
       ],
     );
   }
@@ -324,15 +336,14 @@ class ProfilePageState extends State<ProfilePage>
         height: 120,
         decoration: BoxDecoration(
             border: Border(
-          bottom: BorderSide(
-            width: 1.0,
-            color: Colors.white,
-          ),
-          top: BorderSide(
-            width: 1.0,
-            color: Colors.white,
-          )
-        )),
+                bottom: BorderSide(
+                  width: 1.0,
+                  color: Colors.white,
+                ),
+                top: BorderSide(
+                  width: 1.0,
+                  color: Colors.white,
+                ))),
         //color: Colors.cyan,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -349,8 +360,8 @@ class ProfilePageState extends State<ProfilePage>
                   color: Colors.white),
             ),
             this.isEditing
-                ? this._editablePresenter(this.location, "modifier içi",
-                    "location")
+                ? this._editablePresenter(
+                    this.location, "modifier içi", "location")
                 : Text(this.location,
                     softWrap: false,
                     overflow: TextOverflow.fade,
@@ -390,8 +401,8 @@ class ProfilePageState extends State<ProfilePage>
                   color: Colors.white),
             ),
             this.isEditing
-                ? this._editablePresenter(this.studies,
-                    "modifier içi", "studies")
+                ? this
+                    ._editablePresenter(this.studies, "modifier içi", "studies")
                 : Text(this.studies,
                     softWrap: false,
                     overflow: TextOverflow.fade,
@@ -431,8 +442,8 @@ class ProfilePageState extends State<ProfilePage>
                   color: Colors.white),
             ),
             this.isEditing
-                ? this._editablePresenter(this.workLocation,
-                    "modifier içi", "workLocation")
+                ? this._editablePresenter(
+                    this.workLocation, "modifier içi", "workLocation")
                 : Text(this.workLocation,
                     softWrap: false,
                     overflow: TextOverflow.fade,
@@ -472,8 +483,7 @@ class ProfilePageState extends State<ProfilePage>
                   color: Colors.white),
             ),
             this.isEditing
-                ? this._editablePresenter(
-                    this.job, "modifier içi", "job")
+                ? this._editablePresenter(this.job, "modifier içi", "job")
                 : Text(this.job,
                     softWrap: false,
                     overflow: TextOverflow.fade,
@@ -552,8 +562,7 @@ class ProfilePageState extends State<ProfilePage>
       children: <Widget>[
         Expanded(
           child: Padding(
-              padding: EdgeInsets.only(left: 10.0, bottom: 5.0),
-              child: input),
+              padding: EdgeInsets.only(left: 10.0, bottom: 5.0), child: input),
         ),
         FlatButton.icon(
             onPressed: () => controller.clear(),
@@ -561,19 +570,18 @@ class ProfilePageState extends State<ProfilePage>
             label: Text(
               "effacer",
               style: TextStyle(color: Colors.red),
-            )
-        )
+            ))
       ],
     );
-    this._keyMap[keyLabel] = Tuple2<Key, TextEditingController>(key, controller);
+    this._keyMap[keyLabel] =
+        Tuple2<Key, TextEditingController>(key, controller);
     return ret;
   }
 
   Widget _profileNameWidget() {
     var ret;
     if (this.isEditing) {
-      ret = this._editablePresenter(
-          this.firstName, "change name here", "name");
+      ret = this._editablePresenter(this.firstName, "change name here", "name");
     } else {
       ret = Text(
         this.firstName,
@@ -657,16 +665,12 @@ class ProfilePageState extends State<ProfilePage>
   }
 
   void _onSaved(String value) {
-      this.values.add(value);
+    this.values.add(value);
   }
 
   Widget _spinner() {
     if (this.isBusy)
-      return Positioned(
-          child: CircularProgressIndicator(),
-          top: 50,
-          left: 50
-      );
+      return Positioned(child: CircularProgressIndicator(), top: 50, left: 50);
     return SizedBox(width: 0, height: 0);
   }
 

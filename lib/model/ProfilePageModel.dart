@@ -12,8 +12,8 @@ class ProfilePageModel extends AModel {
   String _studies = '';
   String _workLocation = '';
   String _job = "";
-  String _photoUrl = 'https://pixel.nymag.com/imgs/daily/vulture/2017/06/14/14-tom-cruise.w700.h700.jpg';
-  String _backgroundUrl = 'https://firebasestorage.googleapis.com/v0/b/partnership-app-e8d99.appspot.com/o/bubble_texture.jpg?alt=media&token=b4997ecc-dd26-418a-b0a1-20881216995c';
+  String _photoUrl = '';
+  String _backgroundUrl = '';
   //////////////////GETTERS
   int get date => this._date;
   String get firstName => this._firstName;
