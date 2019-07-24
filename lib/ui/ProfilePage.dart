@@ -12,6 +12,8 @@ import 'package:partnership/ui/widgets/PageHeader.dart';
 import 'package:partnership/ui/widgets/EndDrawer.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
+import 'package:intl/intl.dart';
+
 class ProfilePage extends StatefulWidget {
   @override
   ProfilePageState createState() => ProfilePageState();
@@ -144,7 +146,7 @@ class ProfilePageState extends State<ProfilePage>
     this.setState(() {
       print('yessssss');
       print(newProfile);
-      print('nooooooooo');
+      print(newProfile['createdAt']['_seconds']);
       this.firstName = newProfile['firstName'] ?? 'Prenom';
       this.lastName = newProfile['lastName'] ?? 'Nom';
       this.date = newProfile['createdAt']['_seconds'] ?? 1552380987;
@@ -194,7 +196,9 @@ class ProfilePageState extends State<ProfilePage>
   }
 
   Widget _registrationDateWidget() {
-    String date = DateTime.fromMicrosecondsSinceEpoch(this.date).toString();
+    final myDateFormat = new DateFormat('dd-MM-yyyy');
+    String date = myDateFormat
+        .format(new DateTime.fromMillisecondsSinceEpoch(this.date * 1000));
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
