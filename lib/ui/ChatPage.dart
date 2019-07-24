@@ -58,15 +58,15 @@ class ChatPageState extends State<ChatPage> {
   }
 }
 
-class ScreenArguments {
+/*class ScreenArguments {
   String title;
   String message;
   String conversation;
 
   ScreenArguments(this.title, this.message, this.conversation);
-}
+}*/
 
-class _ContactListItem extends StatelessWidget {
+/*class _ContactListItem extends StatelessWidget {
   String title, subtitle, documentID;
   IRoutes _routing = Routes();
 
@@ -89,9 +89,12 @@ class _ContactListItem extends StatelessWidget {
               route: _routing.chatScreenPage, widgetContext: context);
         });
   }
-}
+}*/
 
 class ContactList extends StatelessWidget {
+  IRoutes _routing = Routes();
+  ChatPageViewModel get viewModel =>
+      AViewModelFactory.register[_routing.chatPage];
   final List<Contact> _contacts;
 
   ContactList(this._contacts);
@@ -101,21 +104,31 @@ class ContactList extends StatelessWidget {
     return ListView.builder(
       padding: new EdgeInsets.symmetric(vertical: 8.0),
       itemBuilder: (context, index) {
-        return _ContactListItem(
+        return  ListTile(
+            title: Text( _contacts[index].fullName ?? ''),
+            subtitle: Text( _contacts[index].message ?? ''),
+            leading: CircleAvatar(child: Text( _contacts[index].fullName ?? '')),
+            onTap: () {
+              new Coordinator().setContactId( _contacts[index].documentID);
+              print(new Coordinator().getContactId());
+              viewModel.changeView(
+                  route: _routing.chatScreenPage, widgetContext: context);
+            });
+       /* return _ContactListItem(
             _contacts[index].fullName,
             _contacts[index].message,
-            _contacts[index].documentID);
+            _contacts[index].documentID);*/
       },
-      itemCount: _contacts.length,
+      itemCount: _contacts.length   ,
     );
   }
 
-  List<_ContactListItem> _buildContactList() {
+/*  List<_ContactListItem> _buildContactList() {
     return _contacts
         .map((contact) => _ContactListItem(contact.fullName, contact.message,
         contact.documentID))
         .toList();
-  }
+  }*/
 }
 
 class ContactsPage extends StatefulWidget {
