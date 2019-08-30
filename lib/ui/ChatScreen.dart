@@ -3,8 +3,6 @@ import 'package:partnership/ui/ChatMessage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:partnership/ui/ContactData.dart';
-import 'package:partnership/viewmodel/ChatScreenViewModel.dart';
-import 'package:partnership/viewmodel/AViewModelFactory.dart';
 
 class Chat extends StatelessWidget {
   @override

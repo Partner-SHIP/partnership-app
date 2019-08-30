@@ -1,0 +1,5 @@
+@startuml
+
+!include app.md
+
+@enduml
