@@ -19,7 +19,7 @@ package viewmodel {
     }
 }
 
-SignUpPageViewModel --> SignUpData
+SignUpPageViewModel --> SignUpData : uses
 
 @enduml
 ```

@@ -129,7 +129,7 @@ class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
 
   Widget _buildButtonColumn(Color color, IconData icon, String label, BuildContext context) {
     return InkWell(
-      onTap: () => Scaffold.of(context).showSnackBar(SnackBar(content: Text("RIPPLE"))),
+      onTap: () => Scaffold.of(context).showSnackBar(SnackBar(content: Text("BUTTON PUSHED"))),
       child: ShaderMask(
         blendMode: BlendMode.srcATop,
         shaderCallback: (Rect bounds){

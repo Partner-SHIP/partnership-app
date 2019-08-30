@@ -2,6 +2,14 @@
 @startuml ConnectivityModule
 
 package coordinator {
+
+    interface IConnectivity {
+        +  StreamSubscription subscribeToConnectivity(Function handler);
+        +  Stream<bool>  connectionChangeStream();
+        +  void    initializeConnectivityModule();
+        +  void    showAlert(BuildContext context);
+    }
+    
     class   ConnectivityModule {
         --fields
         {static} + ConnectivityModule instance

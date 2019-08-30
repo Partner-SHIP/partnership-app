@@ -20,7 +20,7 @@ package views {
     class   ProfileClipper {
         -- methods --
         + Pass getClip(Size size) <<Override>>
-        + bool shouldRepeat(CustomCipper<Pass>)
+        + bool shouldRepeat(CustomClipper<Pass>)
     }
 }
 
