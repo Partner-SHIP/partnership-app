@@ -10,11 +10,16 @@ import 'package:partnership/model/IdeaPageModel.dart';
 import 'package:partnership/model/ProjectBrowsingPageModel.dart';
 import 'package:partnership/model/ProjectDescriptionPageModel.dart';
 import 'package:partnership/model/ChatPageModel.dart';
+import 'package:partnership/model/GroupsPageModel.dart';
 import 'package:partnership/model/ChatConvModel.dart';
 import 'package:partnership/model/AddContactModel.dart';
 import 'package:partnership/model/HomePageModel.dart';
 import 'package:partnership/model/SearchMemberPageModel.dart';
+import 'package:partnership/model/NavigPageModel.dart';
+
 import 'package:partnership/utils/Routes.dart';
+
+import 'ChatScreenModel.dart';
 
 abstract class AModelFactory{
   static final Map<String, AModel>  register = <String, AModel>{};
@@ -86,6 +91,10 @@ abstract class AModelFactory{
           model = ChatPageModel();
           register[_routing.chatPage] = model;
           break;
+        case RoutesEnum.chatScreenPage:
+          model = ChatScreenModel();
+          register[_routing.chatScreenPage] = model;
+          break;
         case RoutesEnum.searchMemberPage:
           model = SearchMemberPageModel();
           register[_routing.searchMemberPage] = model;
@@ -97,6 +106,14 @@ abstract class AModelFactory{
         case RoutesEnum.addContactPage:
           model = AddContactModel();
           register[_routing.addContactPage] = model;
+          break;
+        case RoutesEnum.navigPage:
+          model = NavigPageModel();
+          register[_routing.navigPage] = model;
+          break;
+        case RoutesEnum.groupsPage:
+          model = GroupsPageModel();
+          register[_routing.groupsPage] = model;
           break;
         default:
           throw Exception("Error while constructing Model: the route \"$route\" provided is unknown !");

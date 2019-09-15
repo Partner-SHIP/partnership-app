@@ -141,8 +141,8 @@ class ProfilePageState extends State<ProfilePage>
     );
   }
 
-  void _updateProfile(Map<String, dynamic> newProfile) {
-    print(newProfile['nickname']);
+  void _updateProfile(Map<String, dynamic> newProfile){
+    print(newProfile);
     this.setState(() {
       print('yessssss');
       print(newProfile);

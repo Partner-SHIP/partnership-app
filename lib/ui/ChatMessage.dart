@@ -21,20 +21,29 @@ class ChatMessage extends StatelessWidget {
           new Container(
             margin: const EdgeInsets.only(right: 16.0),
             child: new CircleAvatar(
-              child: new Text(name),
+              child: new Text(name,
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ),
           new Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              new Text(name, style: Theme.of(context).textTheme.subhead),
-              new Container(
-                margin: const EdgeInsets.only(top: 5.0),
-                child: new Text(text),
+              new Text(name,
+                style: TextStyle(color: Colors.white),
               ),
               new Container(
                 margin: const EdgeInsets.only(top: 5.0),
-                child: new Text(date),
+                child: new Text(text,
+                  style: TextStyle(color: Colors.white),
+                ),
+
+              ),
+              new Container(
+                margin: const EdgeInsets.only(top: 5.0),
+                child: new Text(date,
+                  style: TextStyle(color: Colors.white),
+                ),
               )
             ],
           )
