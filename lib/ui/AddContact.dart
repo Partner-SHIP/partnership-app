@@ -84,6 +84,7 @@ class ContactListN extends State<Contact2> {
     Firestore.instance.collection('profiles').getDocuments().then((onValue) {
       onValue.documents.forEach((f) {
         setState(() {
+          if (onValue.documents.length > viewModel.getListMember().length)
           viewModel.addMember(f);
         });
       });
