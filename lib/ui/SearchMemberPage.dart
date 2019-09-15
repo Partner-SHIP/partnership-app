@@ -53,6 +53,8 @@ class SearchMemberPageState extends State<SearchMemberPage> {
                                   return new CustomCard(
                                     firstName: document['firstName'],
                                     lastName: document['lastName'],
+                                    cityLocation: document['cityLocation'],
+                                    studies: document['studies']
                                   );
                                 }).toList(),
                               );
@@ -68,58 +70,81 @@ class SearchMemberPageState extends State<SearchMemberPage> {
   }
 }
 
-class SecondPage extends StatelessWidget {
-  SecondPage({@required this.firstName, this.lastName});
+class CustomCard extends StatelessWidget {
+  CustomCard({@required this.firstName, this.lastName, this.cityLocation, this.studies});
 
   final firstName;
   final lastName;
+  final cityLocation;
+  final studies;
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        body: Center(
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text("En cours de réalisation"),
-                RaisedButton(
-                    child: Text('Retour'),
-                    color: Theme.of(context).primaryColor,
-                    textColor: Colors.white,
-                    onPressed: () => Navigator.pop(context)),
-              ]),
-        ));
-  }
+Widget get memberImage {
+  return Container(
+    width: 100.0,
+    height: 100.0,
+    decoration: BoxDecoration(
+      shape: BoxShape.circle,
+      image: DecorationImage(
+        fit: BoxFit.cover,
+        image: NetworkImage('https://marineprofessionals.com/wp-content/uploads/2018/12/anonymous.png'),
+      ),
+    ),
+  );
 }
 
-class CustomCard extends StatelessWidget {
-  CustomCard({@required this.firstName, this.lastName});
-
-  final firstName;
-  final lastName;
-
-  @override
+Widget get memberCard {
+  return Container(
+    width: 290.0,
+    height: 115.0,
+    child: Card(
+      color: Colors.white54,
+      child: Padding(
+        padding: const EdgeInsets.only(
+          top: 8.0,
+          bottom: 8.0,
+          left: 64.0,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            Text(firstName + ' ' + lastName, style: TextStyle(
+            fontSize: 20,
+            fontFamily: 'Orkney',
+            fontWeight: FontWeight.bold,
+            color: Colors.black87,
+          )
+        ),
+           Text(cityLocation + ' / ' + studies, style: TextStyle(
+            fontSize: 15,
+            fontFamily: 'Orkney',
+            fontWeight: FontWeight.normal,
+            color: Colors.black87,
+          )
+           ),
+          ],
+        ),
+      ),
+      
+    ),
+  );
+}
+ @override
   Widget build(BuildContext context) {
-    return Card(
-        child: Container(
-            padding: const EdgeInsets.only(top: 5.0),
-            child: Column(
-              children: <Widget>[
-                Text(firstName + ' ' + lastName),
-                FlatButton(
-                    child: Text("Plus d'info"),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SecondPage(
-                                  firstName: firstName, lastName: lastName)));
-                    }
-                ),
-              ],
-            )
-        )
-    );
+ return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+    child: Container(
+      height: 115.0,
+      child: Stack(
+        children: <Widget>[
+          Positioned(
+            left: 50.0,
+            child: memberCard,
+          ),
+          Positioned(top: 7.5, child: memberImage),
+        ],
+      ),
+    ),
+  );
   }
 }
