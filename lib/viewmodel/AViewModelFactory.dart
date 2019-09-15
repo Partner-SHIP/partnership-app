@@ -17,6 +17,8 @@ import 'package:partnership/viewmodel/ChatConvViewModel.dart';
 import 'package:partnership/viewmodel/NavigPageViewModel.dart';
 import 'package:partnership/viewmodel/SearchMemberPageViewModel.dart';
 import 'package:partnership/utils/Routes.dart';
+
+import 'ChatScreenViewModel.dart';
 /*
     Responsible for creating/managing all the ViewModel, accessible from the Coordinator.
 */
@@ -94,6 +96,10 @@ abstract class AViewModelFactory
           viewModel = ChatPageViewModel(_routes.chatPage);
           register[_routes.chatPage] = viewModel;
           print(viewModel);
+          break;
+        case RoutesEnum.chatScreenPage:
+          viewModel = ChatScreenViewModel(_routes.chatScreenPage);
+          register[_routes.chatScreenPage] = viewModel;
           break;
         case RoutesEnum.searchMemberPage:
           viewModel = SearchMemberPageViewModel(_routes.searchMemberPage);

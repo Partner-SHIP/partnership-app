@@ -19,6 +19,8 @@ import 'package:partnership/model/NavigPageModel.dart';
 
 import 'package:partnership/utils/Routes.dart';
 
+import 'ChatScreenModel.dart';
+
 abstract class AModelFactory{
   static final Map<String, AModel>  register = <String, AModel>{};
   static final IRoutes              _routes = Routes();
@@ -88,6 +90,10 @@ abstract class AModelFactory{
         case RoutesEnum.chatPage:
           model = ChatPageModel();
           register[_routing.chatPage] = model;
+          break;
+        case RoutesEnum.chatScreenPage:
+          model = ChatScreenModel();
+          register[_routing.chatScreenPage] = model;
           break;
         case RoutesEnum.searchMemberPage:
           model = SearchMemberPageModel();

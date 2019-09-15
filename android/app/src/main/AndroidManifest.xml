@@ -16,7 +16,7 @@
         android:name="io.flutter.app.FlutterApplication"
         android:label="partnership"
         android:icon="@mipmap/ic_launcher_partnership">
-        <service android:name=".java.MyFirebaseMessagingService">
+        <service android:name="com.android.notification.MyFirebaseMessagingService" android:enabled="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

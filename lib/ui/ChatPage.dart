@@ -22,112 +22,120 @@ class ChatPage extends StatefulWidget {
   }
 }
 
-class ChatPageState extends State<ChatPage>{
+class ChatPageState extends State<ChatPage> {
   IRoutes _routing = Routes();
-ChatPageViewModel get viewModel => AViewModelFactory.register[_routing.chatPage];
+
+  ChatPageViewModel get viewModel =>
+      AViewModelFactory.register[_routing.chatPage];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: true,
       endDrawer: Theme(
           data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
-          child: buildEndDrawer(context: context, viewModel: viewModel)
-      ),
-      body: Builder(builder: (BuildContext context){
+          child: buildEndDrawer(context: context, viewModel: viewModel)),
+      body: Builder(builder: (BuildContext context) {
         return SafeArea(
           top: false,
-          child: ThemeContainer(context,
-          Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              pageHeader(context, 'Messages'),
-              /*Other Widgets Here*/
-              Container(child: new ContactsPage(viewModel),
-              height: MediaQuery.of(context).size.height - 110,
-             width: MediaQuery.of(context).size.width),
-            ],
-          )
-          ),
+          child: ThemeContainer(
+              context,
+              Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  pageHeader(context, 'Messages'),
+                  /*Other Widgets Here*/
+                  Container(
+                      child: new ContactsPage(viewModel),
+                      height: MediaQuery.of(context).size.height - 110,
+                      width: MediaQuery.of(context).size.width),
+                ],
+              )),
         );
       }),
     );
   }
-
 }
 
-class ScreenArguments {
+/*class ScreenArguments {
   String title;
   String message;
   String conversation;
 
   ScreenArguments(this.title, this.message, this.conversation);
-}
+}*/
 
-class _ContactListItem extends StatelessWidget {
-  String title, subtitle, conversation, documentID;
+/*class _ContactListItem extends StatelessWidget {
+  String title, subtitle, documentID;
   IRoutes _routing = Routes();
-  ChatPageViewModel get viewModel => AViewModelFactory.register[_routing.chatPage];
+
+  ChatPageViewModel get viewModel =>
+      AViewModelFactory.register[_routing.chatPage];
+
   _ContactListItem(
-      this.title, this.subtitle, this.conversation, this.documentID);
+      this.title, this.subtitle, this.documentID);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(this.title ?? ''),
-      subtitle: Text(subtitle ?? ''),
-      leading: CircleAvatar(child: Text(this.title ?? '')),
-      onTap: () {
-        convMembers.dest = this.documentID;
-        print(convMembers.dest);
-        conversations_path =
-            "chat/" + authID + "/conversations/" + this.documentID;
-        dest_path = "chat/" + this.documentID + "/conversations/" + authID;
-        this.conversation = conversations_path;
-        viewModel.pushDynamicPage(route: '/chatConv_page', widgetContext: context, args: <String, dynamic>{
-          'args':ScreenArguments(this.title ?? '', this.subtitle ?? '', conversations_path ?? '')
+        title: Text(this.title ?? ''),
+        subtitle: Text(subtitle ?? ''),
+        leading: CircleAvatar(child: Text(this.title ?? '')),
+        onTap: () {
+          new Coordinator().setContactId(this.documentID);
+          print(new Coordinator().getContactId());
+          viewModel.changeView(
+              route: _routing.chatScreenPage, widgetContext: context);
         });
-        /*
-        Navigator.pushNamed(context, ChatConv.routeName,
-            arguments:
-            ScreenArguments(this.title ?? '', this.subtitle ?? '', conversations_path));*/
-      },
-    );
   }
-}
+}*/
 
 class ContactList extends StatelessWidget {
+  IRoutes _routing = Routes();
+  ChatPageViewModel get viewModel =>
+      AViewModelFactory.register[_routing.chatPage];
   final List<Contact> _contacts;
-  final String conversation;
 
-  ContactList(this._contacts, this.conversation);
+  ContactList(this._contacts);
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
       padding: new EdgeInsets.symmetric(vertical: 8.0),
       itemBuilder: (context, index) {
-        return _ContactListItem(
+        return  ListTile(
+            title: Text( _contacts[index].fullName ?? ''),
+            subtitle: Text( _contacts[index].message ?? ''),
+            leading: CircleAvatar(child: Text( _contacts[index].fullName ?? '')),
+            onTap: () {
+              new Coordinator().setContactId( _contacts[index].documentID);
+              print(new Coordinator().getContactId());
+              viewModel.changeView(
+                  route: _routing.chatScreenPage, widgetContext: context);
+            });
+       /* return _ContactListItem(
             _contacts[index].fullName,
             _contacts[index].message,
-            this.conversation,
-            _contacts[index].documentID);
+            _contacts[index].documentID);*/
       },
-      itemCount: _contacts.length,
+      itemCount: _contacts.length   ,
     );
   }
 
-  List<_ContactListItem> _buildContactList() {
+/*  List<_ContactListItem> _buildContactList() {
     return _contacts
         .map((contact) => _ContactListItem(contact.fullName, contact.message,
-        this.conversation, contact.documentID))
+        contact.documentID))
         .toList();
-  }
+  }*/
 }
 
 class ContactsPage extends StatefulWidget {
   ChatPageViewModel _viewModel;
+
   ContactsPage(ChatPageViewModel viewmodel) : _viewModel = viewmodel;
+
   @override
   State<StatefulWidget> createState() {
     return ContactsPageState(_viewModel);
@@ -135,18 +143,13 @@ class ContactsPage extends StatefulWidget {
 }
 
 class ContactsPageState extends State<ContactsPage> {
-  String conversations_path_db;
-  String userID;
   ChatPageViewModel _viewModel;
+
   ContactsPageState(ChatPageViewModel viewModel) : _viewModel = viewModel;
+
   @override
   void initState() {
     Coordinator user = new Coordinator();
-    authID = user.getLoggedInUser().uid;
-    //authID = "OyhAXtFzv0W9w8049NDRaAaYXFT2";
-    convMembers.send = authID;
-    conversations_path = "chat/" + authID + "/conversations";
-    conversations_path_db = conversations_path;
   }
 
   void setConversationsList(List<DocumentChange> conversations) {
@@ -167,9 +170,9 @@ class ContactsPageState extends State<ContactsPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext ctextontext) {
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection(conversations_path_db).snapshots(),
+      stream: Firestore.instance.collection("chat/" + new Coordinator().getLoggedInUser().uid + "/conversations").snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasError &&
             snapshot.connectionState == ConnectionState.active &&
@@ -180,16 +183,19 @@ class ContactsPageState extends State<ContactsPage> {
             if (f.type != DocumentChangeType.removed && kContacts.length > 0) {
               List messages = f.document.data["messages"];
               kContacts[kContacts.indexWhere((contacts) =>
-              contacts.documentID == f.document.documentID)]
+                      contacts.documentID == f.document.documentID)]
                   .message = messages.last["message"];
             }
           });
         }
         return Scaffold(
-          body: ContactList(kContacts, conversations_path_db),
+          body: ContactList(kContacts),
           floatingActionButton: FloatingActionButton(
-              child: Text('New'),
-              onPressed: () => _viewModel.changeView(route: '/addContact_page', widgetContext: context)),//Navigator.of(context).pushNamed('/addContact_page')),
+              child: Text('+'),
+              onPressed: () => _viewModel.changeView(
+                  route: '/addContact_page',
+                  widgetContext:
+                      context)),
         );
       },
     );
