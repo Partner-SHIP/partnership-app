@@ -21,12 +21,21 @@ class CreationPageState extends State<CreationPage> {
       AViewModelFactory.register[_routing.creationPage];
 
   File _image;
+  File _logo;
 
   Future _getImage() async {
     var image = await ImagePicker.pickImage(
         source: ImageSource.gallery, maxHeight: 250, maxWidth: 250);
     setState(() {
       _image = image;
+    });
+  }
+
+    Future _getLogo() async {
+    var logo = await ImagePicker.pickImage(
+        source: ImageSource.gallery, maxHeight: 250, maxWidth: 250);
+    setState(() {
+      _logo = logo;
     });
   }
 
@@ -67,17 +76,23 @@ class CreationPageState extends State<CreationPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           //_creationProjectHeaderWidget(),
-                          pageHeader(context, 'création de projet'),
+                          pageHeader(context, 'Création de projet'),
                           SizedBox(width: 0, height: 10),
                           Padding(
                             padding: EdgeInsets.only(
                                 left: (MediaQuery.of(context).size.width / 100)),
                             child: _creationProjectRowImageWidget(),
                           ),
+                          Padding(
+                             padding: EdgeInsets.only(
+                               top: (MediaQuery.of(context).size.width / 10),
+                               left: (MediaQuery.of(context).size.width / 100)),
+                             child: _creationProjectRowLogoWidget(),
+                           ),
                           _form,
                           Padding(
                               padding: EdgeInsets.only(
-                                  left: (MediaQuery.of(context).size.width / 2.3)),
+                                  left: (MediaQuery.of(context).size.width / 2.5)),
                               child: _validatingProject()),
                         ],
                       )));
@@ -137,7 +152,10 @@ class CreationPageState extends State<CreationPage> {
             alignment: Alignment.center,
             children: <Widget>[
               _creationProjectImageWidget(),
-              this._changePhotoButton()
+              Positioned (
+                bottom: 0,
+                right: 10,
+                child: this._changePhotoButton())
             ],
           ),
         ),
@@ -148,35 +166,76 @@ class CreationPageState extends State<CreationPage> {
   Widget _creationProjectImageWidget() {
     if (_image == null) {
       return Container(
-        width: 100,
+        width: (MediaQuery.of(context).size.width / 1.1),
         height: 100,
         decoration: BoxDecoration(
             color: Colors.red,
             image: DecorationImage(image: image, fit: BoxFit.cover),
-            borderRadius: BorderRadius.all(Radius.circular(75.0)),
+            borderRadius: BorderRadius.all(Radius.circular(30.0)),
             boxShadow: [BoxShadow(blurRadius: 7.0, color: Colors.black)]),
       );
     } else {
       return Container(
-        width: 100,
+        width: (MediaQuery.of(context).size.width / 1.1),
         height: 100,
         decoration: BoxDecoration(
             color: Colors.red,
-            image: DecorationImage(
-              image: FileImage(_image),
-            ),
-            borderRadius: BorderRadius.all(Radius.circular(75.0)),
+            image: DecorationImage(image: FileImage(_image), fit: BoxFit.cover),
+            borderRadius: BorderRadius.all(Radius.circular(30.0)),
             boxShadow: [BoxShadow(blurRadius: 7.0, color: Colors.black)]),
       );
     }
   }
 
+  Widget _creationProjectRowLogoWidget() {
+  return Row(
+    children: <Widget>[
+      Expanded(
+        child: Stack(
+          alignment: Alignment.center,
+          children: <Widget>[
+            _creationProjectLogoWidget(),
+            Positioned (
+              bottom: 0,
+              right: 100,
+              child: this._changeLogo())
+          ],
+        ),
+      ),
+    ],
+  );
+}
+
+  Widget _creationProjectLogoWidget() {
+  if (_logo == null) {
+    return Container(
+      width: (MediaQuery.of(context).size.width / 3.5),
+      height: 100,
+      decoration: BoxDecoration(
+        color: Colors.red,
+        image: DecorationImage(image: image, fit: BoxFit.cover),
+        borderRadius: BorderRadius.all(Radius.circular(80.0)),
+        boxShadow: [BoxShadow(blurRadius: 7.0, color: Colors.black)]),
+  );
+} else {
+return Container(
+        width: (MediaQuery.of(context).size.width / 3.5),
+        height: 100,
+        decoration: BoxDecoration(
+        color: Colors.red,
+        image: DecorationImage(image: FileImage(_logo), fit: BoxFit.cover),
+        borderRadius: BorderRadius.all(Radius.circular(80.0)),
+        boxShadow: [BoxShadow(blurRadius: 7.0, color: Colors.black)]),
+    );
+  }
+}
+
   Widget _creationProjectDescWidget() {
     return Container(
-      padding: const EdgeInsets.all(1.0),
+      padding: const EdgeInsets.all(30.0),
       child: new Center(
           child: new Column(children: [
-        new Padding(padding: EdgeInsets.only(top: 1.0)),
+        //new Padding(padding: EdgeInsets.only(top: 1.0)),
         new Text(
           'Description',
           style: new TextStyle(
@@ -185,7 +244,7 @@ class CreationPageState extends State<CreationPage> {
             fontFamily: "Orkney",
           ),
         ),
-        new Padding(padding: EdgeInsets.only(top: 1.0)),
+        new Padding(padding: EdgeInsets.only(top: 15.0)),
         new TextFormField(
           controller: _descriptionProject,
           validator: (_validateDesc) {
@@ -219,7 +278,7 @@ class CreationPageState extends State<CreationPage> {
       padding: const EdgeInsets.all(30.0),
       child: new Center(
           child: new Column(children: [
-        new Padding(padding: EdgeInsets.only(top: 20.0)),
+        //new Padding(padding: EdgeInsets.only(top: 10.0)),
         new Text(
           'Nom du projet',
           style: new TextStyle(
@@ -228,7 +287,7 @@ class CreationPageState extends State<CreationPage> {
             fontFamily: "Orkney",
           ),
         ),
-        new Padding(padding: EdgeInsets.only(top: 1.0)),
+        new Padding(padding: EdgeInsets.only(top: 15.0)),
         new TextFormField(
           controller: _nameProject,
           validator: (_validateDesc) {
@@ -264,13 +323,20 @@ class CreationPageState extends State<CreationPage> {
         child: Icon(Icons.photo_camera, size: 35));
   }
 
-  Widget _validatingProject() {
+  Widget _changeLogo() {
     return FloatingActionButton(
+        heroTag: "changeLogo",
+        onPressed: _getLogo,
+        child: Icon(Icons.photo_camera, size: 35));
+  }
+
+  Widget _validatingProject() {
+    return FloatingActionButton.extended(
       onPressed: () {this.viewModel.postProject(context, _nameProject, _descriptionProject, _image);},
       heroTag: "postProject",
-      child: Icon(Icons.add, size: 35),
+      label: Text("Créer"),
       tooltip: "Créer le projet",
-      backgroundColor: Colors.grey,
+      backgroundColor: Colors.blue,
       foregroundColor: Colors.white,
     );
   }
