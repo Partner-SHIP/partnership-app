@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/viewmodel/ProjectDescriptionPageViewModel.dart';
+import 'package:partnership/ui/widgets/ThemeContainer.dart';
+import 'package:partnership/style/theme.dart';
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 
 final String lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
@@ -28,6 +32,9 @@ class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
   @override
   void initState(){
     super.initState();
+    DocumentSnapshot project = args['project'];
+    var data = project.data;
+    print('ARGUMENT : $data');
     viewModel = AViewModelFactory.createDynamicViewModel(route: _routing.projectDescriptionPage);
     this._connectivitySub = viewModel.subscribeToConnectivity(this._connectivityHandler);
   }
@@ -38,53 +45,190 @@ class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
     super.dispose();
   }
 
-  Row _buildBanner(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    Row result;
-    Image img = Image.asset(
-            'assets/img/logo_partnership.png',
-            height: 150,
-            width: width,
+  Image _buildBanner(BuildContext context) {
+    return Image.network(
+      args['project'].data['bannerPath'],
+      width: MediaQuery.of(context).size.width,
+      height: 250,
+      fit: BoxFit.cover,
+    );
+  }
 
-          );
-    Image banner =Image.asset('assets/blue_texture.jpg');
-    BoxDecoration bd =BoxDecoration(color: Colors.red, image:DecorationImage(fit: BoxFit.fill,image:AssetImage("assets/blue_texture.jpg")));
-    result = Row(children: <Widget>[Container(decoration: bd, child:img, height: 180)], mainAxisSize: MainAxisSize.max, mainAxisAlignment: MainAxisAlignment.spaceEvenly,);
-    return (result);
+  Widget _buildLogo() {
+    return ClipPath(
+      child: Container(
+        margin: EdgeInsets.only(top: 0),
+        width: MediaQuery.of(context).size.width,
+        height: 60,
+        decoration: BoxDecoration(
+          gradient: AThemes.selectedTheme.bgGradient
+        ),
+        child: Stack(
+          alignment: Alignment.center,
+          children: <Widget>[
+            AutoSizeText("LOGO PLACEHOLDER"),
+            Image.network(args['project'].data['logoPath'], fit: BoxFit.fitHeight),
+          ],
+        )
+      ),
+      clipper: LogoClipper(),
+    );
   }
-  Row _buildTitle () {
-    Text title = Text("Titre Projet", style: TextStyle(color:Colors.blueGrey, fontFamily: "Roboto", fontSize: 30),);
-    Row result =Row(children: <Widget>[title], mainAxisSize: MainAxisSize.max, mainAxisAlignment: MainAxisAlignment.spaceEvenly,);
-    return (result);
+
+  Container _buildTitle () {
+    return Container(
+      padding: const EdgeInsets.all(25),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: AutoSizeText(
+                    args['project'].data['name'],
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Orkney',
+                      fontSize: 20
+                    ),
+                  ),
+                ),
+                AutoSizeText(
+                  args['project'].data['description'],
+                  style: TextStyle(
+                    color: Colors.grey[500],
+                    fontFamily: 'Orkney'
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
+
   Row _buildDescription (BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    final double paddingvalue = 5;
-    Text text =Text(lorem);
-    Padding padding =Padding(child: Container(child:text, width: width - paddingvalue * 2,), padding: EdgeInsets.all(paddingvalue),);
-    Row result = Row(children: <Widget>[Column(children: <Widget>[padding],mainAxisSize: MainAxisSize.max,)], mainAxisSize: MainAxisSize.max,);
+    AutoSizeText text = AutoSizeText(lorem, style: TextStyle(color: Colors.grey[500], fontSize: 18), softWrap: true,);
+    Row result = Row(
+      children: <Widget>[
+        Container(
+          width: MediaQuery.of(context).size.width,
+          padding: EdgeInsets.all(24),
+          child: text,
+        )
+      ],
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.center,
+    );
     return (result);
   }
+
+  Widget _buildButtonColumn(Color color, IconData icon, String label, BuildContext context) {
+    return InkWell(
+      onTap: () => Scaffold.of(context).showSnackBar(SnackBar(content: Text("BUTTON PUSHED"))),
+      child: ShaderMask(
+        blendMode: BlendMode.srcATop,
+        shaderCallback: (Rect bounds){
+          return AThemes.selectedTheme.btnGradient.createShader(bounds);
+        },
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, color: color, size: 50),
+            Container(
+              child: Text(
+                label,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontFamily: 'Orkney',
+                  color: color,
+                ),
+              ),
+            ),
+          ],
+        ),
+      )
+    );
+  }
+
+  Widget _buildButtons(BuildContext context){
+    return Container(
+      margin: EdgeInsets.all(8),
+      padding: EdgeInsets.all(8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          _buildButtonColumn(Colors.white, Icons.loyalty, 'SUIVRE', context),
+          _buildButtonColumn(Colors.white, Icons.people, 'REJOINDRE', context),
+          _buildButtonColumn(Colors.white, Icons.share, 'PARTAGER', context),
+        ],
+      ),
+      decoration: BoxDecoration(
+          border: Border.all(color: Colors.white, style: BorderStyle.solid),
+          borderRadius: BorderRadius.all(Radius.circular(10))
+      ),
+    );
+  }
+  
   @override
   Widget build(BuildContext context) {
-    Row bannerRow;
-    Row titleRow;
-    Row descriptionRow;
-
-    bannerRow = _buildBanner(context);
-    titleRow =_buildTitle();
-    descriptionRow = _buildDescription(context);
-    Column column = Column( 
-      mainAxisSize: MainAxisSize.max,
-      children: <Widget>[bannerRow, Padding(child:titleRow, padding: EdgeInsets.only(top: 10)), descriptionRow],
-    );
     return Scaffold(
-        resizeToAvoidBottomPadding: true,
-        backgroundColor: Colors.grey[300],
-        body: SingleChildScrollView(child:Container(child: column,), padding: EdgeInsets.only(top:24),));
+      body: Builder(builder: (BuildContext context){
+        return SafeArea(
+          top: false,
+          child: ThemeContainer(
+              context,
+              ListView(
+                children: <Widget>[
+                  _buildBanner(context),
+                  _buildLogo(),
+                  _buildTitle(),
+                  _buildButtons(context),
+                  _buildDescription(context)
+                ],
+              )
+          ),
+        );
+      }),
+    );
   }
 
   void _connectivityHandler(bool value) {
 
+  }
+}
+
+class LogoClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    Path path = Path();
+    /*
+    path.lineTo(0.0, size.height / 6.0);
+    path.lineTo(size.width / 2, size.height / 3.0);
+    path.lineTo(size.width, size.height / 6.0);
+    path.lineTo(size.width, 0.0);
+    */
+    path.lineTo(0.0, size.height - 20.0);
+    path.lineTo(10.0, size.height - 10.0);
+    path.lineTo(size.width / 4, size.height - 10.0);
+    path.lineTo(size.width / 3, size.height);
+    path.lineTo(size.width - (size.width / 3), size.height);
+    path.lineTo(size.width - (size.width / 4), size.height - 10.0);
+    path.lineTo(size.width - 10.0, size.height - 10.0);
+    path.lineTo(size.width, size.height - 20.0);
+    path.lineTo(size.width, 0.0);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) {
+    // TODO: implement shouldReclip
+    return true;
   }
 }

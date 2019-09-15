@@ -76,21 +76,35 @@ class Coordinator extends State<PartnershipApp> implements ICoordinator {
         primarySwatch: Colors.blue,
       ),
       routes: this._router.routeMap(),
-      //onGenerateRoute: this._router.generator(),
-      //home: LoginPage(),
-      initialRoute: this._setUpInitialRoute(),
+      home: FutureBuilder<FirebaseUser>(
+        future: authentication.getCurrentUser(),
+        builder: (BuildContext context, AsyncSnapshot<FirebaseUser> snapshot){
+          switch (snapshot.connectionState){
+            case ConnectionState.none:
+            case ConnectionState.waiting:
+              return CircularProgressIndicator();
+              break;
+            default:
+              this._setUpInitialRoutes();
+              if (snapshot.hasError)
+                return _router.materialPageMap()[_router.routes.loginPage];
+              else {
+                if (snapshot.data == null)
+                  return _router.materialPageMap()[_router.routes.loginPage];
+                else
+                  return _router.materialPageMap()[_router.routes.homePage];
+              }
+          }
+        },
+      ),
     );
     this._assetBundle = DefaultAssetBundle.of(_context);
-    //this._setUpInitialRoute();
     return app;
   }
 
-  String _setUpInitialRoute(){
-    if (!this.fetchRegisterToNavigate(route: "/", context: null, navigate: false))
-      return null;
-    if (this.fetchRegisterToNavigate(route: this._router.initialRoute, context: null, navigate: false))
-      return this._router.initialRoute;
-    return null;
+  void _setUpInitialRoutes(){
+    this.fetchRegisterToNavigate(route: _router.routes.loginPage, context: null, navigate: false);
+    this.fetchRegisterToNavigate(route: _router.routes.homePage, context: null, navigate: false);
   }
 
   bool _fetchRegisterToNavigate({@required String route, @required BuildContext context, bool navigate = true, bool popStack = false}) {
@@ -159,14 +173,13 @@ class Coordinator extends State<PartnershipApp> implements ICoordinator {
   }
 
   @override
-  String getInitialRoute() {
-    return this._router.initialRoute;
+  bool navigateToDynamicPage({@required String route, @required BuildContext context, @required Map<String, dynamic> args}) {
+    return _navigateToDynamicPage(route: route, context: context, args: args);
   }
 
   @override
-  bool navigateToDynamicPage({@required String route, @required BuildContext context, @required Map<String, dynamic> args}) {
-    print('2 - $route');
-    return _navigateToDynamicPage(route: route, context: context, args: args);
+  Future<void> disconnect() {
+    return this._authentication.logOut();
   }
 
   @override

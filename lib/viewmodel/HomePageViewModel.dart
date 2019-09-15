@@ -11,10 +11,6 @@ class HomePageViewModel extends AViewModel {
     _homePageModel = super.abstractModel;
   }
 
-  void disconnect(BuildContext context) {
-    this.changeView(
-        widgetContext: context, route: "/" , popStack: true);
-  }
   void goToBrowsingProjectPage(BuildContext context) {
     this.changeView(widgetContext: context, route: "/project_browsing_page");
   }

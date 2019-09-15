@@ -117,6 +117,7 @@ abstract class AThemes {
   void changeTheme({@required enumTheme newTheme}){
     selectedTheme = _themesMap[newTheme];
   }
+  
 // OLD THEME BELOW
   static const Color loginGradientStart = const Color(0xFF99DAFF);
   static const Color loginGradientEnd = const Color(0xFF008080);
