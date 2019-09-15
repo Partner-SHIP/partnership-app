@@ -14,7 +14,7 @@ List<Widget> _buildRightDrawerButtons(
     @required bool projectSearch,
     @required bool projectCreation,
     @required bool notification,
-    @required bool chat}) {
+    @required bool navigPage,}) {
   LabeledIconButton profileButton = LabeledIconButton(
     icon: Icon(Icons.account_circle, color: Colors.white),
     toolTip: 'Accéder à mon profil',
@@ -59,7 +59,7 @@ List<Widget> _buildRightDrawerButtons(
     icon: Icon(Icons.email, color: Colors.white),
     toolTip: 'Chat',
     onPressed: () =>
-        viewModel.changeView(route: '/chat_page', widgetContext: context),
+        viewModel.changeView(route: '/navig_page', widgetContext: context),
     text: "Chat",
     fullWidth: true,
   );
@@ -77,7 +77,7 @@ List<Widget> _buildRightDrawerButtons(
   if (projectSearch) result.add(projectSearchButton);
   if (projectCreation) result.add(projectCreationButton);
   if (notification) result.add(notificationButton);
-  if (chat) result.add(chatButton);
+  if (navigPage) result.add(chatButton);
   if (disconnect) result.add(disconnectButton);
   return (result);
 }
@@ -118,7 +118,7 @@ Widget buildEndDrawer(
     bool projectSearch = true,
     bool projectCreation = true,
     bool notification = true,
-    bool chat = true}) {
+    bool navigPage = true}) {
   List<Widget> buttonsList = _buildRightDrawerButtons(
       context: context,
       viewModel: viewModel,
@@ -128,6 +128,6 @@ Widget buildEndDrawer(
       projectSearch: projectSearch,
       projectCreation: projectCreation,
       notification: notification,
-      chat: chat);
+      navigPage: navigPage);
   return _buildRightDrawer(context: context, buttonsList: buttonsList);
 }
