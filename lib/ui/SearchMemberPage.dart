@@ -70,32 +70,6 @@ class SearchMemberPageState extends State<SearchMemberPage> {
   }
 }
 
-class SecondPage extends StatelessWidget {
-  SecondPage({@required this.firstName, this.lastName});
-
-  final firstName;
-  final lastName;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        body: Center(
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text("En cours de réalisation"),
-                RaisedButton(
-                    child: Text('Retour'),
-                    color: Theme.of(context).primaryColor,
-                    textColor: Colors.white,
-                    onPressed: () => Navigator.pop(context)),
-              ]),
-        ));
-  }
-}
-
-
 class CustomCard extends StatelessWidget {
   CustomCard({@required this.firstName, this.lastName, this.cityLocation, this.studies});
 
@@ -112,7 +86,7 @@ Widget get memberImage {
       shape: BoxShape.circle,
       image: DecorationImage(
         fit: BoxFit.cover,
-        image: NetworkImage('https://pixel.nymag.com/imgs/daily/vulture/2017/06/14/14-tom-cruise.w700.h700.jpg'),
+        image: NetworkImage('https://marineprofessionals.com/wp-content/uploads/2018/12/anonymous.png'),
       ),
     ),
   );
