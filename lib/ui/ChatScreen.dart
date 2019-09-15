@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:partnership/coordinator/AppCoordinator.dart';
+import 'package:partnership/ui/widgets/ThemeContainer.dart';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/ChatScreenViewModel.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
@@ -41,7 +42,9 @@ class ChatScreenState extends State<ChatScreen> {
             new Flexible(
               child: new TextField(
                 decoration:
-                    new InputDecoration.collapsed(hintText: "Send a message"),
+                    new InputDecoration.collapsed(hintText: "Envoyer un message",
+                        fillColor: Colors.transparent
+                    ),
                 controller: _textController,
                 onSubmitted: viewModel.sendingMessages,
               ),
@@ -49,7 +52,8 @@ class ChatScreenState extends State<ChatScreen> {
             new Container(
               margin: const EdgeInsets.symmetric(horizontal: 4.0),
               child: new IconButton(
-                icon: new Icon(Icons.send),
+                icon: new Icon(Icons.send ,
+                  color: Colors.deepPurple),
                 onPressed: () {
                   viewModel.sendingMessages(_textController.text);
                   _textController.clear();
@@ -77,32 +81,40 @@ class ChatScreenState extends State<ChatScreen> {
         }
         return new Scaffold(
             appBar: new AppBar(
-              title: new Text(viewModel.getContactName() != null
+              backgroundColor: Colors.indigo,
+              title: new Text(
+                  viewModel.getContactName() != null
                   ? viewModel.getContactName()
-                  : ''),
+                  : '',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
-            body: new Column(
-              children: <Widget>[
-                new Flexible(
-                  child: new ListView.builder(
-                    padding: new EdgeInsets.all(8.0),
-                    reverse: true,
-                    itemBuilder: (_, int index) =>
+            body:  ThemeContainer(
+                context,
+                new Column(
+                  children: <Widget>[
+                    new Flexible(
+                      child: new ListView.builder(
+                        padding: new EdgeInsets.all(8.0),
+                        reverse: true,
+                        itemBuilder: (_, int index) =>
                         viewModel.getMessages()[index],
-                    itemCount: viewModel.getMessages().length,
-                  ),
-                ),
-                new Divider(
-                  height: 1.0,
-                ),
-                new Container(
-                  decoration: new BoxDecoration(
-                    color: Theme.of(context).cardColor,
-                  ),
-                  child: _textComposerWidget(),
-                ),
-              ],
-            ));
+                        itemCount: viewModel.getMessages().length,
+                      ),
+                    ),
+                    new Divider(
+                      height: 1.0,
+                    ),
+                    new Container(
+                      decoration: new BoxDecoration(
+                        color: Theme.of(context).cardColor,
+                      ),
+                      child: _textComposerWidget(),
+                    ),
+                  ],
+                )
+            )
+        );
       },
     );
   }

@@ -170,7 +170,7 @@ class ContactsPageState extends State<ContactsPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext ctextontext) {
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance.collection("chat/" + new Coordinator().getLoggedInUser().uid + "/conversations").snapshots(),
       builder: (context, snapshot) {
@@ -191,7 +191,7 @@ class ContactsPageState extends State<ContactsPage> {
         return Scaffold(
           body: ContactList(kContacts),
           floatingActionButton: FloatingActionButton(
-              child: Text('New'),
+              child: Text('+'),
               onPressed: () => _viewModel.changeView(
                   route: '/addContact_page',
                   widgetContext:
