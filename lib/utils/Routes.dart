@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:partnership/ui/ChatScreen.dart';
 import 'package:partnership/ui/HomePage.dart';
 import 'package:partnership/ui/LoginPage.dart';
 import 'package:partnership/ui/SignInPage.dart';
@@ -33,6 +34,7 @@ enum RoutesEnum {
   creationPage,
   ideaPage,
   chatPage,
+  chatScreenPage,
   addContactPage,
   chatConvPage,
   searchMemberPage,
@@ -51,6 +53,7 @@ abstract class  IRoutes {
   String        get projectDescriptionPage;
   String        get projectBrowsingPage;
   String        get chatPage;
+  String        get chatScreenPage;
   String        get searchMemberPage;
   String        get notificationsPage;
   String        get addContactPage;
@@ -85,6 +88,7 @@ class Routes implements IRoutes {
   static const String _creationPage = "/creation_page";
   static const String _ideaPage = "/idea_page";
   static const String _chatPage = "/chat_page";
+  static const String _chatScreenPage = "/chatScreen_page";
   static const String _searchMemberPage = "/search_member_page";
   static const String _notificationsPage = "/notifications_page";
   static const String _addContactPage = "/addContact_page";
@@ -93,6 +97,7 @@ class Routes implements IRoutes {
   */
   static const String _projectDescriptionPage = "/project_description_page";
   static const String _chatConvPage = "/chatConv_page";
+
 
   Map<String, Widget> _materialPagesMap() {
     return {
@@ -121,6 +126,7 @@ class Routes implements IRoutes {
       _creationPage:              (BuildContext context) => CreationPage(),
       _ideaPage:                  (BuildContext context) => IdeaPage(),
       _chatPage:                  (BuildContext context) => ChatPage(),
+      _chatScreenPage:            (BuildContext context) => ChatScreen(),
       _searchMemberPage:          (BuildContext context) => SearchMemberPage(),
       _notificationsPage:         (BuildContext context) => NotificationsPage(),
       _addContactPage:            (BuildContext context) => AddContact(),
@@ -137,6 +143,7 @@ class Routes implements IRoutes {
       _creationPage:            RoutesEnum.creationPage,
       _ideaPage:                RoutesEnum.ideaPage,
       _chatPage:                RoutesEnum.chatPage,
+      _chatScreenPage:          RoutesEnum.chatScreenPage,
       _searchMemberPage:        RoutesEnum.searchMemberPage,
       _notificationsPage:       RoutesEnum.notificationsPage,
       _addContactPage:          RoutesEnum.addContactPage,
@@ -153,6 +160,7 @@ class Routes implements IRoutes {
      _creationPage,
      _ideaPage,
      _chatPage,
+     _chatScreenPage,
      _searchMemberPage,
      _notificationsPage,
      _addContactPage,
@@ -164,8 +172,8 @@ class Routes implements IRoutes {
       case _projectDescriptionPage:
         view = ProjectDescriptionPage(args);
         break;
-      case _chatConvPage:
-        view = ChatConv(args);
+      case _chatPage:
+        view = ChatPage();
         break;
       default:
         throw Exception('Dynamic Page not found');
@@ -218,6 +226,9 @@ class Routes implements IRoutes {
 
   @override
   String get chatPage => _chatPage;
+
+  @override
+  String get chatScreenPage => _chatScreenPage;
 
   @override
   String get searchMemberPage => _searchMemberPage;
