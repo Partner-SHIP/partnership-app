@@ -21,12 +21,21 @@ class CreationPageState extends State<CreationPage> {
       AViewModelFactory.register[_routing.creationPage];
 
   File _image;
+  File _logo;
 
   Future _getImage() async {
     var image = await ImagePicker.pickImage(
         source: ImageSource.gallery, maxHeight: 250, maxWidth: 250);
     setState(() {
       _image = image;
+    });
+  }
+
+    Future _getLogo() async {
+    var logo = await ImagePicker.pickImage(
+        source: ImageSource.gallery, maxHeight: 250, maxWidth: 250);
+    setState(() {
+      _logo = logo;
     });
   }
 
@@ -198,7 +207,7 @@ class CreationPageState extends State<CreationPage> {
 }
 
   Widget _creationProjectLogoWidget() {
-  if (_image == null) {
+  if (_logo == null) {
     return Container(
       width: (MediaQuery.of(context).size.width / 3.5),
       height: 100,
@@ -214,7 +223,7 @@ return Container(
         height: 100,
         decoration: BoxDecoration(
         color: Colors.red,
-        image: DecorationImage(image: FileImage(_image), fit: BoxFit.cover),
+        image: DecorationImage(image: FileImage(_logo), fit: BoxFit.cover),
         borderRadius: BorderRadius.all(Radius.circular(80.0)),
         boxShadow: [BoxShadow(blurRadius: 7.0, color: Colors.black)]),
     );
@@ -314,10 +323,10 @@ return Container(
         child: Icon(Icons.photo_camera, size: 35));
   }
 
-    Widget _changeLogo() {
+  Widget _changeLogo() {
     return FloatingActionButton(
         heroTag: "changeLogo",
-        onPressed: _getImage,
+        onPressed: _getLogo,
         child: Icon(Icons.photo_camera, size: 35));
   }
 
