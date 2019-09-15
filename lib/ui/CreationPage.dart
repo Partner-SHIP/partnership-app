@@ -74,12 +74,12 @@ class CreationPageState extends State<CreationPage> {
                                 left: (MediaQuery.of(context).size.width / 100)),
                             child: _creationProjectRowImageWidget(),
                           ),
-                          // Padding(
-                          //   padding: EdgeInsets.only(
-                          //     //top: (MediaQuery.of(context).size.width / 25),
-                          //     left: (MediaQuery.of(context).size.width / 100)),
-                          //   child: _creationProjectRowLogoWidget(),
-                          // ),
+                          Padding(
+                             padding: EdgeInsets.only(
+                               top: (MediaQuery.of(context).size.width / 10),
+                               left: (MediaQuery.of(context).size.width / 100)),
+                             child: _creationProjectRowLogoWidget(),
+                           ),
                           _form,
                           Padding(
                               padding: EdgeInsets.only(
@@ -145,7 +145,7 @@ class CreationPageState extends State<CreationPage> {
               _creationProjectImageWidget(),
               Positioned (
                 bottom: 0,
-                right: 30,
+                right: 10,
                 child: this._changePhotoButton())
             ],
           ),
@@ -157,22 +157,22 @@ class CreationPageState extends State<CreationPage> {
   Widget _creationProjectImageWidget() {
     if (_image == null) {
       return Container(
-        width: (MediaQuery.of(context).size.width / 1.3),
+        width: (MediaQuery.of(context).size.width / 1.1),
         height: 100,
         decoration: BoxDecoration(
             color: Colors.red,
             image: DecorationImage(image: image, fit: BoxFit.cover),
-            borderRadius: BorderRadius.all(Radius.circular(75.0)),
+            borderRadius: BorderRadius.all(Radius.circular(30.0)),
             boxShadow: [BoxShadow(blurRadius: 7.0, color: Colors.black)]),
       );
     } else {
       return Container(
-        width: (MediaQuery.of(context).size.width / 1.3),
+        width: (MediaQuery.of(context).size.width / 1.1),
         height: 100,
         decoration: BoxDecoration(
             color: Colors.red,
             image: DecorationImage(image: FileImage(_image), fit: BoxFit.cover),
-            borderRadius: BorderRadius.all(Radius.circular(75.0)),
+            borderRadius: BorderRadius.all(Radius.circular(30.0)),
             boxShadow: [BoxShadow(blurRadius: 7.0, color: Colors.black)]),
       );
     }
@@ -188,8 +188,8 @@ class CreationPageState extends State<CreationPage> {
             _creationProjectLogoWidget(),
             Positioned (
               bottom: 0,
-              right: 30,
-              child: this._changePhotoButton())
+              right: 100,
+              child: this._changeLogo())
           ],
         ),
       ),
@@ -200,22 +200,22 @@ class CreationPageState extends State<CreationPage> {
   Widget _creationProjectLogoWidget() {
   if (_image == null) {
     return Container(
-      width: (MediaQuery.of(context).size.width / 2),
+      width: (MediaQuery.of(context).size.width / 3.5),
       height: 100,
       decoration: BoxDecoration(
         color: Colors.red,
         image: DecorationImage(image: image, fit: BoxFit.cover),
-        borderRadius: BorderRadius.all(Radius.circular(75.0)),
+        borderRadius: BorderRadius.all(Radius.circular(80.0)),
         boxShadow: [BoxShadow(blurRadius: 7.0, color: Colors.black)]),
   );
 } else {
 return Container(
-        width: (MediaQuery.of(context).size.width / 2),
+        width: (MediaQuery.of(context).size.width / 3.5),
         height: 100,
         decoration: BoxDecoration(
         color: Colors.red,
         image: DecorationImage(image: FileImage(_image), fit: BoxFit.cover),
-        borderRadius: BorderRadius.all(Radius.circular(75.0)),
+        borderRadius: BorderRadius.all(Radius.circular(80.0)),
         boxShadow: [BoxShadow(blurRadius: 7.0, color: Colors.black)]),
     );
   }
@@ -226,7 +226,7 @@ return Container(
       padding: const EdgeInsets.all(30.0),
       child: new Center(
           child: new Column(children: [
-        new Padding(padding: EdgeInsets.only(top: 1.0)),
+        //new Padding(padding: EdgeInsets.only(top: 1.0)),
         new Text(
           'Description',
           style: new TextStyle(
@@ -269,7 +269,7 @@ return Container(
       padding: const EdgeInsets.all(30.0),
       child: new Center(
           child: new Column(children: [
-        new Padding(padding: EdgeInsets.only(top: 20.0)),
+        //new Padding(padding: EdgeInsets.only(top: 10.0)),
         new Text(
           'Nom du projet',
           style: new TextStyle(
@@ -310,6 +310,13 @@ return Container(
   Widget _changePhotoButton() {
     return FloatingActionButton(
         heroTag: "changePhoto",
+        onPressed: _getImage,
+        child: Icon(Icons.photo_camera, size: 35));
+  }
+
+    Widget _changeLogo() {
+    return FloatingActionButton(
+        heroTag: "changeLogo",
         onPressed: _getImage,
         child: Icon(Icons.photo_camera, size: 35));
   }
