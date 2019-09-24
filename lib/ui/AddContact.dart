@@ -40,7 +40,7 @@ class AddContact extends StatelessWidget {
                 /*Other Widgets Here*/
                 Container(
                     child: new Contact2(),
-                    height: MediaQuery.of(context).size.height - 110,
+                    height: MediaQuery.of(context).size.height - 128,
                     width: MediaQuery.of(context).size.width),
               ],
             )

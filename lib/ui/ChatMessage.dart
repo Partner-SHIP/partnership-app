@@ -3,6 +3,7 @@ import 'package:partnership/ui/ChatConv.dart';
 import 'package:partnership/viewmodel/ChatMessageViewModel.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/utils/Routes.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class ChatMessage extends StatelessWidget {
   final String text;
@@ -16,7 +17,7 @@ class ChatMessage extends StatelessWidget {
     return new Container(
       margin: const EdgeInsets.symmetric(vertical: 10.0),
       child: new Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           new Container(
             margin: const EdgeInsets.only(right: 16.0),
@@ -26,27 +27,24 @@ class ChatMessage extends StatelessWidget {
               ),
             ),
           ),
-          new Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              new Text(name,
-                style: TextStyle(color: Colors.white),
-              ),
-              new Container(
-                margin: const EdgeInsets.only(top: 5.0),
-                child: new Text(text,
-                  style: TextStyle(color: Colors.white),
+          Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                new AutoSizeText(name, overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.white),),
+                new Container(
+                  margin: const EdgeInsets.only(top: 5.0),
+                  child: new AutoSizeText(text, overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.white),),
                 ),
+                new Container(
+                  margin: const EdgeInsets.only(top: 5.0),
+                  child: new AutoSizeText(date, overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.white),),
+                )
+              ],
+            ),
+            width: MediaQuery.of(context).size.width / 1.3,
+          ),
 
-              ),
-              new Container(
-                margin: const EdgeInsets.only(top: 5.0),
-                child: new Text(date,
-                  style: TextStyle(color: Colors.white),
-                ),
-              )
-            ],
-          )
         ],
       ),
     );

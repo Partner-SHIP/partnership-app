@@ -18,9 +18,9 @@ import 'ChatModule.dart';
 abstract class ICoordinator{
   bool fetchRegisterToNavigate({@required String route, @required BuildContext context, bool navigate = true, bool popStack = false});
   bool navigateToDynamicPage({@required String route, @required BuildContext context, @required Map<String, dynamic> args});
-  String getInitialRoute();
   Future<FirebaseUser> loginByEmail({@required String userEmail, @required String userPassword});
   Future<FirebaseUser> signUpByEmail({@required String newEmail, @required String newPassword});
+  Future<void>         disconnect();
   StreamSubscription   subscribeToConnectivity(Function handler);
   void                 showConnectivityAlert(BuildContext context);
   FirebaseUser         getLoggedInUser();

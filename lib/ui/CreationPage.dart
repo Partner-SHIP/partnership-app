@@ -72,30 +72,36 @@ class CreationPageState extends State<CreationPage> {
                   top: false,
                   child: ThemeContainer(
                       context,
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          //_creationProjectHeaderWidget(),
-                          pageHeader(context, 'Création de projet'),
-                          SizedBox(width: 0, height: 10),
-                          Padding(
-                            padding: EdgeInsets.only(
-                                left: (MediaQuery.of(context).size.width / 100)),
-                            child: _creationProjectRowImageWidget(),
-                          ),
-                          Padding(
-                             padding: EdgeInsets.only(
-                               top: (MediaQuery.of(context).size.width / 10),
-                               left: (MediaQuery.of(context).size.width / 100)),
-                             child: _creationProjectRowLogoWidget(),
-                           ),
-                          _form,
-                          Padding(
+                      SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            //_creationProjectHeaderWidget(),
+                            pageHeader(context, 'Création de projet'),
+                            SizedBox(width: 0, height: 10),
+                            Padding(
                               padding: EdgeInsets.only(
-                                  left: (MediaQuery.of(context).size.width / 2.5)),
-                              child: _validatingProject()),
-                        ],
-                      )));
+                                  left: (MediaQuery.of(context).size.width / 100)),
+                              child: _creationProjectRowImageWidget(),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  top: (MediaQuery.of(context).size.width / 10),
+                                  left: (MediaQuery.of(context).size.width / 100)),
+                              child: _creationProjectRowLogoWidget(),
+                            ),
+                            _form,
+                            Padding(
+                                padding: EdgeInsets.only(
+                                    left: (MediaQuery.of(context).size.width / 2.5),
+                                    bottom: 35
+                                ),
+                                child: _validatingProject()),
+                          ],
+                        ),
+                      )
+                  )
+              );
             }
         ),
       endDrawer: Theme(

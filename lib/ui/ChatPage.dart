@@ -48,7 +48,7 @@ class ChatPageState extends State<ChatPage> {
                   /*Other Widgets Here*/
                   Container(
                       child: new ContactsPage(viewModel),
-                      height: MediaQuery.of(context).size.height - 110,
+                      height: MediaQuery.of(context).size.height - 158,
                       width: MediaQuery.of(context).size.width),
                 ],
               )),
@@ -190,12 +190,6 @@ class ContactsPageState extends State<ContactsPage> {
         }
         return Scaffold(
           body: ContactList(kContacts),
-          floatingActionButton: FloatingActionButton(
-              child: Text('+'),
-              onPressed: () => _viewModel.changeView(
-                  route: '/addContact_page',
-                  widgetContext:
-                      context)),
         );
       },
     );

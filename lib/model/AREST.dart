@@ -38,7 +38,9 @@ class ApiREST implements IApiREST {
   }
 
   Future<dynamic> _httpPostRequest({@required String path, @required Map<String, String> header, Function onSuccess, Function onError}) async {
+    print('REQUEST LAUNCHED');
     final response = await http.post(Uri.encodeFull(path), headers: header);
+    print(response.body);
     if (response.statusCode == 200){
       if (onSuccess != null)
         onSuccess(json.decode(response.body));
@@ -88,7 +90,7 @@ class ApiREST implements IApiREST {
   }
 
   @override
-  Future postProject({Map<String, String> header, Map<String, String> args, Function onSuccess, Function onError}) {
+  Future<dynamic> postProject({Map<String, String> header, Map<String, String> args, Function onSuccess, Function onError}) {
     print(ApiRoutes.postProject+this._formatParameters(args));
     return _httpPostRequest(path: ApiRoutes.postProject+this._formatParameters(args), header: header, onSuccess: onSuccess, onError: onError);
   }

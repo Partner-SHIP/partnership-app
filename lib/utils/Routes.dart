@@ -41,6 +41,7 @@ enum RoutesEnum {
   chatConvPage,
   searchMemberPage,
   notificationsPage,
+  groupsPage,
   navigPage,
 }
 
