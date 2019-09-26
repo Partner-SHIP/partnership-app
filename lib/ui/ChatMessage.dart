@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:partnership/ui/ChatConv.dart';
 import 'package:partnership/viewmodel/ChatMessageViewModel.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/utils/Routes.dart';

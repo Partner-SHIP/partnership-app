@@ -5,12 +5,9 @@ import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/ui/widgets/ThemeContainer.dart';
 import 'package:partnership/ui/widgets/PageHeader.dart';
 import 'package:partnership/ui/widgets/EndDrawer.dart';
-import 'package:partnership/coordinator/AppCoordinator.dart';
 import 'package:partnership/ui/ContactData.dart';
-import 'package:partnership/ui/ChatConv.dart';
+import 'package:partnership/coordinator/AppCoordinator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:partnership/viewmodel/AViewModel.dart';
-import 'package:partnership/ui/ChatConv.dart';
 
 // CONTACT_VIEW
 
@@ -47,7 +44,7 @@ class ChatPageState extends State<ChatPage> {
                   pageHeader(context, 'Messages'),
                   /*Other Widgets Here*/
                   Container(
-                      child: new ContactsPage(viewModel),
+                      child: new Contacts(viewModel),
                       height: MediaQuery.of(context).size.height - 158,
                       width: MediaQuery.of(context).size.width),
                 ],
@@ -131,10 +128,10 @@ class ContactList extends StatelessWidget {
   }*/
 }
 
-class ContactsPage extends StatefulWidget {
+class Contacts extends StatefulWidget {
   ChatPageViewModel _viewModel;
 
-  ContactsPage(ChatPageViewModel viewmodel) : _viewModel = viewmodel;
+  Contacts(ChatPageViewModel viewmodel) : _viewModel = viewmodel;
 
   @override
   State<StatefulWidget> createState() {
@@ -142,7 +139,7 @@ class ContactsPage extends StatefulWidget {
   }
 }
 
-class ContactsPageState extends State<ContactsPage> {
+class ContactsPageState extends State<Contacts> {
   ChatPageViewModel _viewModel;
 
   ContactsPageState(ChatPageViewModel viewModel) : _viewModel = viewModel;

@@ -103,10 +103,6 @@ abstract class AModelFactory{
           model = NotificationsPageModel();
           register[_routing.notificationsPage] = model;
           break;
-        case RoutesEnum.addContactPage:
-          model = AddContactModel();
-          register[_routing.addContactPage] = model;
-          break;
         case RoutesEnum.navigPage:
           model = NavigPageModel();
           register[_routing.navigPage] = model;

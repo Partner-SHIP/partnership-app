@@ -109,10 +109,6 @@ abstract class AViewModelFactory
           viewModel = NotificationsPageViewModel(_routes.notificationsPage);
           register[_routes.notificationsPage] = viewModel;
           break;
-        case RoutesEnum.addContactPage:
-          viewModel = AddContactViewModel(_routes.addContactPage);
-          register[_routes.addContactPage] = viewModel;
-          break;
         case RoutesEnum.groupsPage:
           viewModel = GroupsPageViewModel(_routes.groupsPage);
           register[_routes.groupsPage] = viewModel;
@@ -122,7 +118,6 @@ abstract class AViewModelFactory
           register[_routes.navigPage] = viewModel;
           print(viewModel);
           register[_routes.chatPage] = ChatPageViewModel(_routes.chatPage);
-          register[_routes.addContactPage] = AddContactViewModel(_routes.addContactPage);
           register[_routes.groupsPage] = GroupsPageViewModel(_routes.groupsPage);
           break;
         default:

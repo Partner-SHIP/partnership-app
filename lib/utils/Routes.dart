@@ -13,10 +13,6 @@ import 'package:partnership/ui/ChatPage.dart';
 import 'package:partnership/ui/GroupsPage.dart';
 import 'package:partnership/ui/SearchMemberPage.dart';
 import 'package:partnership/ui/widgets/NotificationsPage.dart';
-import 'package:path/path.dart';
-import 'package:partnership/ui/ChatConv.dart';
-import 'package:partnership/ui/ChatPage.dart';
-import 'package:partnership/ui/AddContact.dart';
 import 'package:partnership/ui/NavigPage.dart';
 
 enum DynamicRoutesEnum {
@@ -37,7 +33,6 @@ enum RoutesEnum {
   ideaPage,
   chatPage,
   chatScreenPage,
-  addContactPage,
   chatConvPage,
   searchMemberPage,
   notificationsPage,
@@ -60,7 +55,6 @@ abstract class  IRoutes {
   String        get chatScreenPage;
   String        get searchMemberPage;
   String        get notificationsPage;
-  String        get addContactPage;
   String        get chatConvPage;
   String        get navigPage;
   String        get groupsPage;
@@ -97,7 +91,6 @@ class Routes implements IRoutes {
   static const String _chatScreenPage = "/chatScreen_page";
   static const String _searchMemberPage = "/search_member_page";
   static const String _notificationsPage = "/notifications_page";
-  static const String _addContactPage = "/addContact_page";
   static const String _navigPage = "/navig_page";
   static const String _groupsPage = "/groups_page";
 
@@ -140,7 +133,6 @@ class Routes implements IRoutes {
       _chatScreenPage:            (BuildContext context) => ChatScreen(),
       _searchMemberPage:          (BuildContext context) => SearchMemberPage(),
       _notificationsPage:         (BuildContext context) => NotificationsPage(),
-      _addContactPage:            (BuildContext context) => AddContact(),
       _navigPage:                 (BuildContext context) => NavigPage(),
       _groupsPage:                (BuildContext context) => GroupsPage(),
     };  
@@ -159,7 +151,6 @@ class Routes implements IRoutes {
       _chatScreenPage:          RoutesEnum.chatScreenPage,
       _searchMemberPage:        RoutesEnum.searchMemberPage,
       _notificationsPage:       RoutesEnum.notificationsPage,
-      _addContactPage:          RoutesEnum.addContactPage,
       _navigPage:               RoutesEnum.navigPage,
       _groupsPage:              RoutesEnum.groupsPage,
     };
@@ -178,7 +169,6 @@ class Routes implements IRoutes {
      _chatScreenPage,
      _searchMemberPage,
      _notificationsPage,
-     _addContactPage,
      _navigPage,
      _groupsPage,
    ];
@@ -252,9 +242,6 @@ class Routes implements IRoutes {
 
   @override
   String get notificationsPage => _notificationsPage;
-
-  @override
-  String get addContactPage => _addContactPage;
 
   @override
   String get chatConvPage => _chatConvPage;

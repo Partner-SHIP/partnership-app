@@ -2,19 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:partnership/ui/ChatPage.dart';
 import 'package:partnership/ui/GroupsPage.dart';
 import 'package:partnership/ui/ChatMessage.dart';
-import 'package:partnership/ui/ChatScreen.dart';
+import 'package:partnership/ui/ContactsPage.dart';
 import 'package:partnership/ui/widgets/EndDrawer.dart';
-import 'package:partnership/ui/widgets/PageHeader.dart';
-import 'package:partnership/ui/widgets/ThemeContainer.dart';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/viewmodel/NavigPageViewModel.dart';
-import 'package:partnership/ui/AddContact.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:intl/intl.dart';
-import 'package:partnership/ui/ContactData.dart';
-import 'package:partnership/viewmodel/ChatScreenViewModel.dart';
-import 'package:partnership/viewmodel/AViewModelFactory.dart';
+
 
 class NavigPage extends StatefulWidget {
   @override
@@ -56,7 +49,7 @@ class NavigPageState extends State<NavigPage> with SingleTickerProviderStateMixi
       // Set the TabBar view as the body of the Scaffold
       body: TabBarView(
         // Add tabs as widgets
-        children: <Widget>[ChatPage(), AddContact(), GroupsPage()],
+        children: <Widget>[ChatPage(), ContactsPage(), GroupsPage()],
         // set the controller
         controller: controller,
       ),
