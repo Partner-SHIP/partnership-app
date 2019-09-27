@@ -156,12 +156,17 @@ class ContactsPageState extends State<Contacts> {
           .document(conversation.document.documentID)
           .snapshots()
           .listen((onData) {
+            if (mounted){
         setState(() {
-          kContacts.add(Contact(
-              fullName: onData.data["firstName"],
-              message: "",
-              documentID: conversation.document.documentID));
+          if (mounted) {
+            kContacts.add(Contact(
+                fullName: onData.data["firstName"],
+                message: "",
+                documentID: conversation.document.documentID));
+          }
         });
+        }
+
       });
     });
   }
