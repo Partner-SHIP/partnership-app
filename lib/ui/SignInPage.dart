@@ -5,6 +5,7 @@ import 'package:partnership/viewmodel/SignInPageViewModel.dart';
 import 'package:partnership/ui/widgets/ThemeContainer.dart';
 import 'package:partnership/ui/widgets/RoundedGradientButton.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flare_flutter/flare_actor.dart';
 import 'dart:async';
 import 'dart:ui';
 
@@ -35,21 +36,6 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
   void initState(){
     super.initState();
     this._connectivitySub = viewModel.subscribeToConnectivity(this._connectivityHandler);
-    /*
-    _focusNode.addListener(() {
-      if (_focusNode.hasFocus) {
-        //_controller.forward();
-        setState(() {
-          _formAlignment = MainAxisAlignment.start;
-        });
-      } else {
-        //_controller.reverse();
-        setState(() {
-          _formAlignment = MainAxisAlignment.center;
-        });
-      }
-    });
-    */
   }
 
   @override
@@ -61,6 +47,64 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
+
+    return Scaffold(
+        resizeToAvoidBottomPadding: true,
+        body: Builder(
+            builder: (BuildContext context) {
+              return InkWell(
+                  onTap: () {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                  },
+                  splashColor: Colors.transparent,
+                  child: SafeArea(
+                      top: false,
+                      child: ThemeContainer(
+                          context,
+                          SingleChildScrollView(
+                            child: Column(
+                              children: <Widget>[
+                                Padding(
+                                  child: Image.asset('assets/img/partnership_logo.png', width:110, height: 110),
+                                  padding: EdgeInsets.only(top: 15, bottom: 15),
+                                ),
+                                AutoSizeText(
+                                  'Connexion',
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 35,
+                                      fontFamily: 'Orkney'
+                                  ),
+                                ),
+                                createLoginSwitcher(context),
+                                Padding(
+                                  child: _switch ? createProvidersContainer(context) : createFormContainer(context),
+                                  padding: EdgeInsets.only(top: 10),
+                                ),
+                                _switch ? Container(
+                                  alignment: Alignment.center,
+                                  width: 200,
+                                  height: 75,
+                                  child: AutoSizeText('Bientôt disponible'),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                                    color: Colors.white.withOpacity(0.3),
+
+                                  ),
+                                ) : SizedBox(width: 0, height: 0)
+                              ],
+                            ),
+                          )
+                      )
+                  )
+              );
+            }
+        )
+    );
+  }
+  
+  Widget createLoginSwitcher(BuildContext context){
     final loginSwitcher = Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height / 8,
@@ -69,17 +113,17 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
         children: <Widget>[
           Expanded(
             child: FlatButton(
-                onPressed: () => setState(() => _switch = !_switch),
-                child: AutoSizeText(
-                  'Email',
-                  maxLines: 1,
-                  softWrap: false,
-                  style: TextStyle(
-                      color: _switch ? Colors.grey : Colors.white,
-                      fontFamily: 'Orkney',
-                      fontSize: 15
-                  ),
+              onPressed: () => setState(() => _switch = !_switch),
+              child: AutoSizeText(
+                'Email',
+                maxLines: 1,
+                softWrap: false,
+                style: TextStyle(
+                    color: _switch ? Colors.grey : Colors.white,
+                    fontFamily: 'Orkney',
+                    fontSize: 15
                 ),
+              ),
             ),
           ),
           ClipRect(
@@ -112,7 +156,10 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
         ],
       ),
     );
+    return loginSwitcher;
+  }
 
+  Widget createFormContainer(BuildContext context){
     final formContainer = Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height / 2,
@@ -123,58 +170,58 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Padding(
-              child: TextFormField(
-                keyboardType: TextInputType.emailAddress,
-                maxLines: 1,
-                maxLength: 30,
-                //focusNode: _focusNode,
-                validator: (String value){
-                  if (value.isEmpty) {
-                    return ('Veuillez saisir une adresse email valide');
-                  }
-                  bool emailValid =
-                  RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                      .hasMatch(value);
-                  if (!emailValid) {
-                    return ('Email invalide');
-                  }
-                },
-                onSaved: (value) => this._data.email = value,
-                decoration: InputDecoration(
-                  hintText: 'Adresse email valide',
-                  labelStyle: TextStyle(fontFamily: "Orkney"),
-                  hintStyle: TextStyle(fontFamily: "Orkney"),
-                  icon: Padding(
-                    child: Icon(Icons.mail, size: 30, color: Colors.white),
-                    padding: EdgeInsets.only(top: 25)
-                  )
+                child: TextFormField(
+                    keyboardType: TextInputType.emailAddress,
+                    maxLines: 1,
+                    maxLength: 30,
+                    //focusNode: _focusNode,
+                    validator: (String value){
+                      if (value.isEmpty) {
+                        return ('Veuillez saisir une adresse email valide');
+                      }
+                      bool emailValid =
+                      RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                          .hasMatch(value);
+                      if (!emailValid) {
+                        return ('Email invalide');
+                      }
+                    },
+                    onSaved: (value) => this._data.email = value,
+                    decoration: InputDecoration(
+                        hintText: 'Adresse email valide',
+                        labelStyle: TextStyle(fontFamily: "Orkney"),
+                        hintStyle: TextStyle(fontFamily: "Orkney"),
+                        icon: Padding(
+                            child: Icon(Icons.mail, size: 30, color: Colors.white),
+                            padding: EdgeInsets.only(top: 25)
+                        )
+                    )
+                ),
+                padding: EdgeInsets.only(
+                    left: MediaQuery.of(context).size.width / 5,
+                    right: MediaQuery.of(context).size.width / 5
                 )
-              ),
-              padding: EdgeInsets.only(
-                left: MediaQuery.of(context).size.width / 5,
-                right: MediaQuery.of(context).size.width / 5
-              )
             ),
             Padding(
-              child: TextFormField(
-                maxLines: 1,
-                maxLength: 30,
-                obscureText: true,
-                //focusNode: _focusNode,
-                validator: (String value){
-                  if (value.isEmpty) {
-                    return ('Veuillez saisir un mot de passe');
-                  }
-                },
-                onSaved: (value) => this._data.password = value,
-                decoration: InputDecoration(
-                  hintText: 'Mot de passe',
-                  icon: Padding(
-                    child: Icon(Icons.vpn_key, size: 30, color: Colors.white),
-                    padding: EdgeInsets.only(top: 25)
-                  )
+                child: TextFormField(
+                  maxLines: 1,
+                  maxLength: 30,
+                  obscureText: true,
+                  //focusNode: _focusNode,
+                  validator: (String value){
+                    if (value.isEmpty) {
+                      return ('Veuillez saisir un mot de passe');
+                    }
+                  },
+                  onSaved: (value) => this._data.password = value,
+                  decoration: InputDecoration(
+                      hintText: 'Mot de passe',
+                      icon: Padding(
+                          child: Icon(Icons.vpn_key, size: 30, color: Colors.white),
+                          padding: EdgeInsets.only(top: 25)
+                      )
+                  ),
                 ),
-              ),
                 padding: EdgeInsets.only(
                     left: MediaQuery.of(context).size.width / 5,
                     right: MediaQuery.of(context).size.width / 5
@@ -182,32 +229,50 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
             ),
             Padding(
               child: RoundedGradientButton(
-                child: AutoSizeText(
-                  'CONNEXION',
-                  maxLines: 1,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'Orkney'
+                  child: AutoSizeText(
+                    'CONNEXION',
+                    maxLines: 1,
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'Orkney'
+                    ),
                   ),
-                ),
-                callback: () {
-                  if (_formKey.currentState.validate()) {
-                    this._formKey.currentState.save();
-                    setState(() {
-                      busy = true;
-                    });
-                    this.viewModel.signInAction(this._data).then((value){
-                      if (value) {
-                        this.viewModel.afterSignIn(context);
-                      }
+                  callback: () {
+                    if (_formKey.currentState.validate()) {
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext context) {
+                          return Material(
+                            type: MaterialType.transparency,
+                            child: Center(
+                                child: FlareActor('assets/animations/Liquid Loader.flr', animation: 'Untitled')
+                            ),
+                          );
+                        },
+                      );
+                      this._formKey.currentState.save();
                       setState(() {
-                        busy = false;
+                        busy = true;
                       });
-                    });
-                  }
-                },
-                increaseWidthBy: 80,
-                increaseHeightBy: 10
+                      this.viewModel.signInAction(this._data).then((value){
+                        Navigator.of(context).pop();
+                        if (value) {
+                          this.viewModel.afterSignIn(context);
+                        }
+                        else {
+                          Scaffold.of(context).showSnackBar(new SnackBar(
+                            content: new Text("Connexion échouée, veuillez vérifier vos identifiants"),
+                          ));
+                        }
+                        setState(() {
+                          busy = false;
+                        });
+                      });
+                    }
+                  },
+                  increaseWidthBy: 80,
+                  increaseHeightBy: 10
               ),
               padding: EdgeInsets.only(top: 40),
             ),
@@ -216,7 +281,10 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
         ),
       ),
     );
+    return formContainer;
+  }
 
+  Widget createProvidersContainer(BuildContext context){
     final providersContainer = Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height / 2,
@@ -277,51 +345,13 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
                 ],
               )
             ],
-          )
+          ),
         ],
       ),
     );
-
-    return Scaffold(
-        resizeToAvoidBottomPadding: true,
-        body: InkWell(
-          onTap: () {
-            FocusScope.of(context).requestFocus(FocusNode());
-          },
-          splashColor: Colors.transparent,
-          child: SafeArea(
-              top: false,
-              child: ThemeContainer(
-                  context,
-                  SingleChildScrollView(
-                    child: Column(
-                      children: <Widget>[
-                        Padding(
-                          child: Image.asset('assets/img/partnership_logo.png', width:110, height: 110),
-                          padding: EdgeInsets.only(top: 15, bottom: 15),
-                        ),
-                        AutoSizeText(
-                          'Connexion',
-                          maxLines: 1,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 35,
-                              fontFamily: 'Orkney'
-                          ),
-                        ),
-                        loginSwitcher,
-                        Padding(
-                          child: _switch ? providersContainer : formContainer,
-                          padding: EdgeInsets.only(top: 10),
-                        )
-                      ],
-                    ),
-                  )
-              )
-          )
-        )
-    );
+    return providersContainer;
   }
+
   void _connectivityHandler(bool value) {
 
   }

@@ -69,6 +69,7 @@ class Coordinator extends State<PartnershipApp> implements ICoordinator {
   @override
   Widget build(BuildContext _context) {
     MaterialApp app = MaterialApp(
+      debugShowCheckedModeBanner: false,
       onGenerateTitle: (context) {
       return 'PartnerSHIP';
       },

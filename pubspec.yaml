@@ -30,6 +30,7 @@ dependencies:
   connectivity: ^0.4.3+1
   image_picker: ^0.6.0+2
   flushbar: '1.8.0'
+  flare_flutter: ^1.5.9
   permission:
     git:
       url: https://github.com/devadrianapostol/permission
@@ -61,6 +62,7 @@ flutter:
     - assets/img/login_logo.png
     - assets/blue_texture.jpg
     - assets/bubble_texture.jpg
+    - assets/animations/Liquid Loader.flr
     - assets/
 
   fonts:
