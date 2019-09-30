@@ -15,23 +15,15 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateMixin {
-  final GlobalKey<ScaffoldState> _mainKey = GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final SignInData           _data = SignInData();
-  bool                        busy = false;
   bool                       _switch = false;
   StreamSubscription _connectivitySub;
-  //FocusNode _focusNode = FocusNode();
-  //MainAxisAlignment _formAlignment = MainAxisAlignment.center;
   IRoutes _routing = Routes();
   SignInPageViewModel get viewModel =>
       AViewModelFactory.register[_routing.signInPage];
 
-  void  displaySuccessSnackBar()
-    {
-      var snackbar = SnackBar(content: Text("SignIn successful!"), duration: Duration(milliseconds: 5000));
-                  this._mainKey.currentState.showSnackBar(snackbar);
-    }
+
   @override
   void initState(){
     super.initState();
@@ -41,7 +33,6 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
   @override
   void dispose(){
     this._connectivitySub.cancel();
-    //_focusNode.dispose();
     super.dispose();
   }
 
@@ -163,7 +154,6 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
     final formContainer = Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height / 2,
-      //color: Colors.blue,
       child: Form(
         key: _formKey,
         child: Column(
@@ -172,9 +162,9 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
             Padding(
                 child: TextFormField(
                     keyboardType: TextInputType.emailAddress,
+                    style: TextStyle(color: Colors.white),
                     maxLines: 1,
                     maxLength: 30,
-                    //focusNode: _focusNode,
                     validator: (String value){
                       if (value.isEmpty) {
                         return ('Veuillez saisir une adresse email valide');
@@ -204,10 +194,10 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
             ),
             Padding(
                 child: TextFormField(
+                  style: TextStyle(color: Colors.white),
                   maxLines: 1,
                   maxLength: 30,
                   obscureText: true,
-                  //focusNode: _focusNode,
                   validator: (String value){
                     if (value.isEmpty) {
                       return ('Veuillez saisir un mot de passe');
@@ -252,9 +242,6 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
                         },
                       );
                       this._formKey.currentState.save();
-                      setState(() {
-                        busy = true;
-                      });
                       this.viewModel.signInAction(this._data).then((value){
                         Navigator.of(context).pop();
                         if (value) {
@@ -265,9 +252,6 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
                             content: new Text("Connexion échouée, veuillez vérifier vos identifiants"),
                           ));
                         }
-                        setState(() {
-                          busy = false;
-                        });
                       });
                     }
                   },
@@ -276,7 +260,6 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
               ),
               padding: EdgeInsets.only(top: 40),
             ),
-            //SizedBox(height: _animation.value)
           ],
         ),
       ),
@@ -288,7 +271,6 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
     final providersContainer = Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height / 2,
-//      color: Colors.blue,
       child: Stack(
         children: <Widget>[
           Center(child: ClipRect(
