@@ -87,6 +87,16 @@ class Gradients {
     Color(0xffbdbdbd),
   ]);
 
+  static LinearGradient verticalOcean = buildGradient(_topCenterBeginAlignment, _bottomCenterEndAlignment, const [
+    Color(0xff073050),
+    Color(0xff1a9f93)
+  ]);
+
+  static LinearGradient verticalMarine = buildGradient(_topCenterBeginAlignment, _bottomCenterEndAlignment, const [
+    Color(0xff082f4a),
+    Color(0xff229f5c)
+  ]);
+
   static LinearGradient verticalDawn = buildGradient(_topCenterBeginAlignment, _bottomCenterEndAlignment, const [
     Color(0xff14244a),
     Color(0xff82365c)
@@ -106,14 +116,21 @@ class AppTheme {
 
 enum enumTheme {
   DAWN,
+  OCEAN,
+  MARINE
 }
 
 abstract class AThemes {
   static final AppTheme _dawnTheme = AppTheme(backgroundGradient: Gradients.verticalDawn, buttonGradient: Gradients.metallic);
+  static final AppTheme _oceanTheme = AppTheme(backgroundGradient: Gradients.verticalOcean, buttonGradient: Gradients.metallic);
+  static final AppTheme _marineTheme = AppTheme(backgroundGradient: Gradients.verticalMarine, buttonGradient: Gradients.metallic);
+
   static final Map<enumTheme, AppTheme> _themesMap = {
-    enumTheme.DAWN: _dawnTheme
+    enumTheme.DAWN: _dawnTheme,
+    enumTheme.OCEAN: _oceanTheme,
+    enumTheme.MARINE: _marineTheme
   };
-  static AppTheme selectedTheme = _themesMap[enumTheme.DAWN];
+  static AppTheme selectedTheme = _themesMap[enumTheme.MARINE];
   void changeTheme({@required enumTheme newTheme}){
     selectedTheme = _themesMap[newTheme];
   }

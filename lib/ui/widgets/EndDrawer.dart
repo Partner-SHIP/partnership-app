@@ -3,18 +3,24 @@ import 'package:flutter/foundation.dart';
 import 'package:partnership/style/theme.dart';
 import 'package:partnership/ui/widgets/LabeledIconButton.dart';
 import 'package:partnership/ui/widgets/LabeledIconButtonList.dart';
+import 'package:partnership/ui/widgets/CustomDialogs.dart';
 import 'package:partnership/viewmodel/AViewModel.dart';
 
 List<Widget> _buildRightDrawerButtons(
-    {@required BuildContext context,
-    @required AViewModel viewModel,
-    @required bool profile,
-    @required bool disconnect,
-    @required bool searchMember,
-    @required bool projectSearch,
-    @required bool projectCreation,
-    @required bool notification,
-    @required bool navigPage,}) {
+    {
+        @required BuildContext context,
+        @required AViewModel viewModel,
+        @required bool profile,
+        @required bool disconnect,
+        @required bool searchMember,
+        @required bool projectSearch,
+        @required bool projectCreation,
+        @required bool notification,
+        @required bool navigPage,
+        @required bool settings,
+        @required bool about
+    })
+{
   LabeledIconButton profileButton = LabeledIconButton(
     icon: Icon(Icons.account_circle, color: Colors.white),
     toolTip: 'Accéder à mon profil',
@@ -63,6 +69,22 @@ List<Widget> _buildRightDrawerButtons(
     text: "Chat",
     fullWidth: true,
   );
+  LabeledIconButton settingsButton = LabeledIconButton(
+    icon: Icon(Icons.settings, color: Colors.white),
+    toolTip: 'Réglages',
+    onPressed: () => print('options'),
+    text: "Réglages",
+    fullWidth: true,
+  );
+  LabeledIconButton aboutButton = LabeledIconButton(
+    icon: Icon(Icons.description, color: Colors.white),
+    toolTip: 'À propos',
+    onPressed: () => viewModel.getAssetBundle()
+                              .loadString('assets/texts/about.txt')
+                              .then((text) => openTextDialog(context, "À propos", text)),
+    text: "À propos",
+    fullWidth: true,
+  );
   LabeledIconButton disconnectButton = LabeledIconButton(
     icon: Icon(Icons.power_settings_new, color: Colors.white),
     toolTip: 'Me déconnecter',
@@ -74,10 +96,12 @@ List<Widget> _buildRightDrawerButtons(
   List<LabeledIconButton> result = new List<LabeledIconButton>();
   if (profile) result.add(profileButton);
   if (searchMember) result.add(searchMemberButton);
-  if (projectSearch) result.add(projectSearchButton);
   if (projectCreation) result.add(projectCreationButton);
+  if (projectSearch) result.add(projectSearchButton);
   if (notification) result.add(notificationButton);
   if (navigPage) result.add(chatButton);
+  if (settings) result.add(settingsButton);
+  if (about) result.add(aboutButton);
   if (disconnect) result.add(disconnectButton);
   return (result);
 }
@@ -107,18 +131,20 @@ Widget _buildRightDrawer(
   ));
 }
 
-// I/flutter (12011): Exception: Error while constructing ViewModel: the route "/chat_page " provided is unknown !
-
-Widget buildEndDrawer(
-    {@required BuildContext context,
-    @required AViewModel viewModel,
-    bool profile = true,
-    bool disconnect = true,
-    bool searchMember = true,
-    bool projectSearch = true,
-    bool projectCreation = true,
-    bool notification = true,
-    bool navigPage = true}) {
+Widget buildEndDrawer({
+      @required BuildContext context,
+      @required AViewModel viewModel,
+      bool profile = true,
+      bool disconnect = true,
+      bool searchMember = true,
+      bool projectSearch = true,
+      bool projectCreation = true,
+      bool notification = true,
+      bool navigPage = true,
+      bool settings = true,
+      bool about = true
+    })
+{
   List<Widget> buttonsList = _buildRightDrawerButtons(
       context: context,
       viewModel: viewModel,
@@ -128,6 +154,9 @@ Widget buildEndDrawer(
       projectSearch: projectSearch,
       projectCreation: projectCreation,
       notification: notification,
-      navigPage: navigPage);
+      navigPage: navigPage,
+      settings: settings,
+      about: about,
+  );
   return _buildRightDrawer(context: context, buttonsList: buttonsList);
 }

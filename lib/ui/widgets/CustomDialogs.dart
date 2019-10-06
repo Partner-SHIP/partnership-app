@@ -1,6 +1,48 @@
 import 'package:flutter/material.dart';
 //import 'dart:math';
 import 'package:flare_flutter/flare_actor.dart';
+
+void openTextDialog(BuildContext context, String title, String text){
+  showDialog(
+    context: context,
+    barrierDismissible: true,
+    builder: (BuildContext context){
+      return AlertDialog(
+        title: Text(title),
+        content: SingleChildScrollView(
+          child: Text(text),
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text("Fermer"),
+            onPressed: () =>
+                Navigator.of(context).pop(),
+          )
+        ],
+      );
+    }
+  );
+}
+
+void openSpinnerInDialog(BuildContext context){
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return Material(
+        type: MaterialType.transparency,
+        child: Center(
+          child: FlareActor('assets/animations/Liquid Loader.flr', animation: 'Untitled')
+        ),
+      );
+    },
+  );
+  Future.delayed(Duration(seconds: 5), () {
+    Navigator.pop(context); //pop dialog
+  }
+  );
+}
+
 /*
 class CustomSpinner extends StatefulWidget {
   @override
@@ -89,21 +131,3 @@ class CustomSpinnerState extends State<CustomSpinner> with SingleTickerProviderS
   }
 }
 */
-void openSpinnerInDialog(BuildContext context){
-  showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (BuildContext context) {
-      return Material(
-        type: MaterialType.transparency,
-        child: Center(
-          child: FlareActor('assets/animations/Liquid Loader.flr', animation: 'Untitled')
-        ),
-      );
-    },
-  );
-  Future.delayed(Duration(seconds: 5), () {
-    Navigator.pop(context); //pop dialog
-  }
-  );
-}

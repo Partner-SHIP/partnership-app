@@ -50,6 +50,7 @@ flutter:
 
   assets:
     - assets/texts/terms&conditions.txt
+    - assets/texts/about.txt
     - assets/test.png
     - assets/img/back.png
     - assets/img/logo_partnership.png

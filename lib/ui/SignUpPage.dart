@@ -5,6 +5,7 @@ import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/viewmodel/SignUpPageViewModel.dart';
 import 'package:partnership/ui/widgets/ThemeContainer.dart';
 import 'package:partnership/ui/widgets/RoundedGradientButton.dart';
+import 'package:partnership/ui/widgets/CustomDialogs.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'dart:async';
@@ -275,24 +276,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                     viewModel
                                         .getAssetBundle()
                                         .loadString('assets/texts/terms&conditions.txt')
-                                        .then((value) {
-                                      showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return AlertDialog(
-                                              title: Text("Conditions d'utilisations"),
-                                              content: SingleChildScrollView(
-                                                  child: Text(value)),
-                                              actions: <Widget>[
-                                                FlatButton(
-                                                  child: Text("Annuler"),
-                                                  onPressed: () =>
-                                                      Navigator.of(context).pop(),
-                                                )
-                                              ],
-                                            );
-                                          });
-                                    });
+                                        .then((text) => openTextDialog(context, "Termes et Conditions d'utilisation", text));
                                   })
                           ]
                           )
