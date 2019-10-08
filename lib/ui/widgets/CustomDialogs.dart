@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 //import 'dart:math';
 import 'package:flare_flutter/flare_actor.dart';
+import 'package:partnership/style/theme.dart';
 
 void openTextDialog(BuildContext context, String title, String text){
   showDialog(
@@ -23,6 +24,66 @@ void openTextDialog(BuildContext context, String title, String text){
     }
   );
 }
+
+void openSettingsDialog(BuildContext context, String title){
+  showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context){
+        return AlertDialog(
+          title: Text(title),
+          content: SingleChildScrollView(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(gradient: AThemes.getTheme(theme: enumTheme.DAWN).bgGradient),
+                ),
+                Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(gradient: AThemes.getTheme(theme: enumTheme.OCEAN).bgGradient),
+                ),
+                Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(gradient: AThemes.getTheme(theme: enumTheme.MARINE).bgGradient),
+                )
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("DAWN"),
+              onPressed: () {
+                AThemes.changeTheme(newTheme: enumTheme.DAWN);
+              }
+            ),
+            FlatButton(
+              child: Text("OCEAN"),
+              onPressed: () =>
+                  AThemes.changeTheme(newTheme: enumTheme.OCEAN),
+            ),
+            FlatButton(
+              child: Text("MARINE"),
+              onPressed: () =>
+                  AThemes.changeTheme(newTheme: enumTheme.MARINE),
+            ),
+            FlatButton(
+              child: Text("Fermer"),
+              onPressed: () =>
+                  Navigator.of(context).pop(),
+            )
+
+          ],
+        );
+      }
+  );
+}
+
+
 
 void openSpinnerInDialog(BuildContext context){
   showDialog(

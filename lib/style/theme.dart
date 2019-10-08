@@ -131,9 +131,9 @@ abstract class AThemes {
     enumTheme.MARINE: _marineTheme
   };
   static AppTheme selectedTheme = _themesMap[enumTheme.MARINE];
-  void changeTheme({@required enumTheme newTheme}){
-    selectedTheme = _themesMap[newTheme];
-  }
+  static AppTheme getTheme({@required enumTheme theme}) => _themesMap[theme];
+  static changeTheme({@required enumTheme newTheme}) => selectedTheme = _themesMap[newTheme];
+
   
 // OLD THEME BELOW
   static const Color loginGradientStart = const Color(0xFF99DAFF);

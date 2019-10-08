@@ -42,6 +42,10 @@ abstract class AViewModel implements AViewModelFactory
   AModel get abstractModel => this._abstractModel;
   String get route => this._route;
 
+  void setPageContext(newPageContext) {
+    this._coordinator.setPageContext(newPageContext);
+  }
+
   bool changeView({@required String route,@required BuildContext widgetContext, bool popStack = false}){
       return this._coordinator.fetchRegisterToNavigate(route: route, context: widgetContext, popStack: popStack);
   }

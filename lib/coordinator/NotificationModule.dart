@@ -1,7 +1,16 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'dart:async';
+import 'dart:io';
 
 abstract class INotification {
   void initializeNotificationModule();
+  StreamSubscription subscribeToNotification(Function handler);
+}
+
+enum EnumNotification {
+  NOTIFICATION_MESSAGE,
+  NOTIFICATION_LAUNCH,
+  NOTIFICATION_RESUME
 }
 
 class NotificationModule implements INotification {
@@ -10,19 +19,23 @@ class NotificationModule implements INotification {
     return _instance;
   }
   NotificationModule._internal();
-
   FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
-
+  StreamController<EnumNotification> _notificationController = StreamController<EnumNotification>();
   void _initialize() {
     firebaseMessaging.configure(
       onLaunch: (Map<String, dynamic> msg) {
         print("onLaunch called");
+        _notificationController.add(EnumNotification.NOTIFICATION_LAUNCH);
       },
       onResume: (Map<String, dynamic> msg) {
         print("onResume called");
+        //_notificationController.add(EnumNotification.NOTIFICATION_RESUME);
       },
       onMessage: (Map<String, dynamic> msg) {
         print("onMessage called");
+        print(_notificationController.hasListener);
+        _notificationController.add(EnumNotification.NOTIFICATION_MESSAGE);
+
       }
     );
     firebaseMessaging.requestNotificationPermissions(
@@ -47,6 +60,11 @@ class NotificationModule implements INotification {
   @override
   void initializeNotificationModule() {
     this._initialize();
+  }
+
+  @override
+  StreamSubscription subscribeToNotification(Function handler) {
+    return _notificationController.stream.listen(handler);
   }
 }
 

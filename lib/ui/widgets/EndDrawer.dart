@@ -72,7 +72,7 @@ List<Widget> _buildRightDrawerButtons(
   LabeledIconButton settingsButton = LabeledIconButton(
     icon: Icon(Icons.settings, color: Colors.white),
     toolTip: 'Réglages',
-    onPressed: () => print('options'),
+    onPressed: () => openSettingsDialog(context, 'Réglages'),
     text: "Réglages",
     fullWidth: true,
   );

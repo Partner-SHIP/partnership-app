@@ -102,6 +102,7 @@ class ProfilePageState extends State<ProfilePage>
       floatingActionButton: _editingButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: Builder(builder: (BuildContext context) {
+        viewModel.setPageContext(Tuple2<BuildContext, String>(context, _routing.profilePage));
         return SafeArea(
             top: false,
             child: ThemeContainer(
