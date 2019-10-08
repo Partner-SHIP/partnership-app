@@ -14,6 +14,7 @@ import 'package:partnership/ui/GroupsPage.dart';
 import 'package:partnership/ui/SearchMemberPage.dart';
 import 'package:partnership/ui/widgets/NotificationsPage.dart';
 import 'package:partnership/ui/NavigPage.dart';
+import 'package:partnership/ui/GroupsChat.dart';
 
 enum DynamicRoutesEnum {
   projectDescriptionPage,
@@ -38,6 +39,7 @@ enum RoutesEnum {
   notificationsPage,
   groupsPage,
   navigPage,
+  groupsChat
 }
 
 abstract class  IRoutes {
@@ -58,6 +60,7 @@ abstract class  IRoutes {
   String        get chatConvPage;
   String        get navigPage;
   String        get groupsPage;
+  String        get groupsChat;
 
   dynamic            routeMap();
   Map<String, Widget> materialPagesMap();
@@ -93,7 +96,7 @@ class Routes implements IRoutes {
   static const String _notificationsPage = "/notifications_page";
   static const String _navigPage = "/navig_page";
   static const String _groupsPage = "/groups_page";
-
+  static const String _groupsChat = "/groups_chat";
   /*
   * Dynamic Routes
   */
@@ -114,7 +117,8 @@ class Routes implements IRoutes {
       _chatPage:                  ChatPage(),
       _groupsPage:                GroupsPage(),
       _navigPage:                 NavigPage(),
-      _searchMemberPage:          SearchMemberPage(),
+      _groupsChat:                GroupsPage(),
+    _searchMemberPage:          SearchMemberPage(),
       _notificationsPage:         NotificationsPage(),
     };
   }
@@ -135,7 +139,8 @@ class Routes implements IRoutes {
       _notificationsPage:         (BuildContext context) => NotificationsPage(),
       _navigPage:                 (BuildContext context) => NavigPage(),
       _groupsPage:                (BuildContext context) => GroupsPage(),
-    };  
+      _groupsChat:                 (BuildContext context) => GroupsChat(),
+  };
   }
   Map<String, RoutesEnum> _routeEnumMap() {
     return <String, RoutesEnum>{
@@ -153,6 +158,7 @@ class Routes implements IRoutes {
       _notificationsPage:       RoutesEnum.notificationsPage,
       _navigPage:               RoutesEnum.navigPage,
       _groupsPage:              RoutesEnum.groupsPage,
+      _groupsChat:              RoutesEnum.groupsChat,
     };
   }
 
@@ -171,6 +177,7 @@ class Routes implements IRoutes {
      _notificationsPage,
      _navigPage,
      _groupsPage,
+     _groupsChat,
    ];
 
   dynamic _getDynamicPage({@required String route, @required Map<String, dynamic> args}){
@@ -252,6 +259,8 @@ class Routes implements IRoutes {
   @override
   String get groupsPage => _groupsPage;
 
+  @override
+  String get groupsChat => _groupsChat;
 
   @override
   List<String> routeList() {

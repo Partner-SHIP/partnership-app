@@ -29,6 +29,7 @@ class ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: true,
+     // appBar: PreferredSize(child: ThemeContainer(context, pageHeader(context, "")), preferredSize: Size(100,100)),
       endDrawer: Theme(
           data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
           child: buildEndDrawer(context: context, viewModel: viewModel)),
@@ -41,7 +42,7 @@ class ChatPageState extends State<ChatPage> {
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  pageHeader(context, 'Messages'),
+                //  pageHeader(context, 'Messages'),
                   /*Other Widgets Here*/
                   Container(
                       child: new Contacts(viewModel),
@@ -63,7 +64,7 @@ class ChatPageState extends State<ChatPage> {
   ScreenArguments(this.title, this.message, this.conversation);
 }*/
 
-/*class _ContactListItem extends StatelessWidget {
+class _ContactListItem extends StatelessWidget {
   String title, subtitle, documentID;
   IRoutes _routing = Routes();
 
@@ -86,7 +87,7 @@ class ChatPageState extends State<ChatPage> {
               route: _routing.chatScreenPage, widgetContext: context);
         });
   }
-}*/
+}
 
 class ContactList extends StatelessWidget {
   IRoutes _routing = Routes();
@@ -111,10 +112,10 @@ class ContactList extends StatelessWidget {
               viewModel.changeView(
                   route: _routing.chatScreenPage, widgetContext: context);
             });
-       /* return _ContactListItem(
+        return _ContactListItem(
             _contacts[index].fullName,
             _contacts[index].message,
-            _contacts[index].documentID);*/
+            _contacts[index].documentID);
       },
       itemCount: _contacts.length   ,
     );
