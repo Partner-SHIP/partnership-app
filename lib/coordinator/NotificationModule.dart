@@ -23,15 +23,15 @@ class NotificationModule implements INotification {
   StreamController<EnumNotification> _notificationController = StreamController<EnumNotification>();
   void _initialize() {
     firebaseMessaging.configure(
-      onLaunch: (Map<String, dynamic> msg) {
+      onLaunch: (Map<String, dynamic> msg) async {
         print("onLaunch called");
         _notificationController.add(EnumNotification.NOTIFICATION_LAUNCH);
       },
-      onResume: (Map<String, dynamic> msg) {
+      onResume: (Map<String, dynamic> msg) async {
         print("onResume called");
         //_notificationController.add(EnumNotification.NOTIFICATION_RESUME);
       },
-      onMessage: (Map<String, dynamic> msg) {
+      onMessage: (Map<String, dynamic> msg) async {
         print("onMessage called");
         print(_notificationController.hasListener);
         _notificationController.add(EnumNotification.NOTIFICATION_MESSAGE);
