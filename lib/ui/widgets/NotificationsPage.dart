@@ -40,26 +40,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
     //-------------------------------------------------------
     */
     super.initState();
-    /*_firebaseMessaging.configure(
-      onMessage: (Map<String, dynamic> firebaseNotificationMap) async {
-       // mySetState(firebaseNotificationMap);
-      },
-      onLaunch: (Map<String, dynamic> firebaseNotificationMap) async {
-      //  mySetState(firebaseNotificationMap);
-      },
-      onResume: (Map<String, dynamic> firebaseNotificationMap) async {
-      //  mySetState(firebaseNotificationMap);
-      },
-    );*/
   }
-
-  // void mySetState(Map<String, dynamic> firebaseNotificationMap) {
-  //   final notification = firebaseNotificationMap['notification'];
-  //   setState(() {
-  //     notificationsList.add(
-  //     Message(title: notification['title'], body: notification['body']));
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -95,22 +76,6 @@ class _NotificationsPageState extends State<NotificationsPage> {
       // );,
     );
   }
-
-  // Widget buildNotificationTile(Message message) {
-  //   Firestore.instance
-  //       .collection('notifications')
-  //       .document()
-  //       .setData({'body': 'body'});
-  //   return ListTile(
-  //     leading: Icon(
-  //       Icons.notifications_active,
-  //       color: Colors.lightBlue,
-  //     ),
-  //     title: Text(message.title),
-  //     subtitle: Text(message.body),
-  //     dense: false,
-  //   );
-  // }
 }
 
 class NotificationsList extends StatelessWidget {
@@ -220,32 +185,4 @@ class NotificationsList extends StatelessWidget {
     }
   }
 
-  // Future<String> _refreshNotificationsList() async {
-  //   //call to getNotif pour refresh la list de notif
-  //   print('refreshing listview...');
-  // }
-
-  // Future<String> _refreshNotificationsList() async {
-  //   //call to getNotif pour refresh la list de notif
-  //   print('refreshing listview...');
-  //   http.Response response = await http.post(
-  //       //Uri.encodeFull removes all the dashes or extra characters present in our Uri
-  //       Uri.encodeFull(
-  //           "https://us-central1-partnership-app-e8d99.cloudfunctions.net/getNotif"),
-  //       headers: {
-  //         //if your api require key then pass your key here as well e.g "key": "my-long-key"
-  //         "userId": "e2COxsRabKaD64DIhEp84l5qFNm2"
-  //       });
-  //   if (response != null) {
-  //     var toto = jsonDecode(response.statusCode.toString());
-
-  //     // List data = jsonDecode(response.statusCode.toString());
-  //     // print(data[1]["title"]);
-
-  //     Map<String, dynamic> data = jsonDecode(response.body);
-  //     print(data);
-
-  //     print(('statusCode = ' + toto.toString()));
-  //   }
-  // }
 }

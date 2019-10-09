@@ -15,6 +15,7 @@ enum EnumNotification {
 
 class NotificationModule implements INotification {
   static final NotificationModule _instance = NotificationModule._internal();
+  bool titi = false;
   factory NotificationModule() {
     return _instance;
   }
