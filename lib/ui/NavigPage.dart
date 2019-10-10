@@ -59,13 +59,29 @@ class NavigPageState extends State<NavigPage> with SingleTickerProviderStateMixi
       // Appbar
       // Set the TabBar view as the body of the Scaffold
       body:  Builder(builder: (BuildContext context) {
-      //  _scaffoldKey.currentState.showSnackBar(snackbar)
-       // return Center();
-       return TabBarView(
-          // Add tabs as widgets
-          children: <Widget>[ChatPage(), ContactsPage(), RecContactsPage(), GroupsPage()],
-          // set the controller
-          controller: controller,
+        //  _scaffoldKey.currentState.showSnackBar(snackbar)
+        // return Center();
+        return SafeArea(
+          top: false,
+          child: ThemeContainer(
+              context,
+              Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                   pageHeader(context, 'Messagerie'),
+                  //Other Widgets Here*/
+                  Container(
+                      child: new TabBarView(
+                        // Add tabs as widgets
+                        children: <Widget>[ChatPage(), ContactsPage(), RecContactsPage(), GroupsPage()],
+                        // set the controller
+                        controller: controller,
+                      ),
+                      height: MediaQuery.of(context).size.height - 158,
+                      width: MediaQuery.of(context).size.width),
+                ],
+              )),
         );
       }),
       // Set the bottom navigation bar

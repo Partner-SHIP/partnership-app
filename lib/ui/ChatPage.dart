@@ -42,7 +42,7 @@ class ChatPageState extends State<ChatPage> {
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                 pageHeader(context, 'Messages'),
+               //  pageHeader(context, 'Messages'),
                   //Other Widgets Here*/
                   Container(
                       child: new Contacts(viewModel),
@@ -112,7 +112,7 @@ class ContactList extends StatelessWidget {
               viewModel.changeView(
                   route: _routing.chatScreenPage, widgetContext: context);
             });
-        
+
         return _ContactListItem(
             _contacts[index].fullName,
             _contacts[index].message,
