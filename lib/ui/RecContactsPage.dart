@@ -80,8 +80,8 @@ class RecContactsPageState extends State<RecContactsPageStateful> {
                   borderOnForeground: false,
                   child: ListTile(
                     leading: Icon(Icons.album, size: 50),
-                    title: new Text("e"),
-                    subtitle: new Text("f"),
+                    title: new Text(contacts.documents.elementAt(index)["firstName"]),
+                    subtitle: new Text(contacts.documents.elementAt(index)["lastName"]),
                     trailing: IconButton(
                         icon: Icon(Icons.more_vert, color: Colors.indigo,),
                         onPressed: () =>
@@ -97,7 +97,7 @@ class RecContactsPageState extends State<RecContactsPageStateful> {
   @override
   Widget build(BuildContext context) {
     return new StreamBuilder<QuerySnapshot>(
-        stream: Firestore.instance.collection("relations").where("receiver", isEqualTo: myUid).where("accepted", isEqualTo: false).snapshots(),
+        stream: Firestore.instance.collection("profiles").where("send_contacts", arrayContains: myUid).snapshots(),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.none:

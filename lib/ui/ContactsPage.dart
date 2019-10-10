@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:partnership/coordinator/AppCoordinator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:partnership/utils/Routes.dart';
+import 'package:partnership/viewmodel/AViewModelFactory.dart';
+import 'package:partnership/viewmodel/GroupsPageViewModel.dart';
 
 class ContactsPage extends StatelessWidget {
   @override
@@ -22,6 +25,9 @@ class ContactsPageState extends State<ContactsPageStateful> {
   String myUid = coordinator.getLoggedInUser().uid;
 
   void  removeContact(DocumentSnapshot contact){
+    /*Firestore.instance.collection("profiles").document(myUid).snapshots().map((convert){
+      List list = convert.data[];
+    });*/
     Firestore.instance.collection("profiles").document(myUid).updateData({"contacts": FieldValue.arrayRemove([contact["uid"]])});
     Firestore.instance.collection("profiles").document(contact["uid"]).updateData({"contacts": FieldValue.arrayRemove([myUid])});
   }
@@ -61,6 +67,9 @@ class ContactsPageState extends State<ContactsPageStateful> {
   }
 
   Widget _contactsList(QuerySnapshot contacts){
+    IRoutes _routing = Routes();
+    GroupsPageViewModel viewModel = AViewModelFactory.register[_routing.groupsPage];
+
     return new Scrollbar (
         child: ListView.builder(
             itemCount: contacts.documents.length,
@@ -68,12 +77,25 @@ class ContactsPageState extends State<ContactsPageStateful> {
               return Card(
                 borderOnForeground: false,
                 child: ListTile(
-                  leading: Icon(Icons.album, size: 50),
-                  title: new Text(contacts.documents.elementAt(index)["firstName"]),
-                  subtitle: new Text(contacts.documents.elementAt(index)["lastName"]),
-                  trailing: IconButton(
-                      icon: Icon(Icons.more_vert, color: Colors.indigo,),
-                      onPressed: () => removeContactAlertDialog(contacts.documents.elementAt(index))),
+                    leading: Icon(Icons.album, size: 50),
+                    title: new Text(contacts.documents.elementAt(index)["firstName"]),
+                    subtitle: new Text(contacts.documents.elementAt(index)["lastName"]),
+                    trailing: new Wrap(
+                      children: <Widget>[
+                        IconButton(
+                            icon: Icon(Icons.message, color: Colors.indigo),
+                            onPressed: () {
+                              new Coordinator().setContactId(contacts.documents.elementAt(index).documentID);
+                              print(new Coordinator().getContactId());
+                              viewModel.changeView(
+                                  route: _routing.chatScreenPage, widgetContext: context);
+                            }),
+                        IconButton(
+                            icon: Icon(Icons.more_vert, color: Colors.indigo,),
+                            onPressed: () => removeContactAlertDialog(contacts.documents.elementAt(index)))
+                      ],
+                    )
+
                 ),
               );
             }

@@ -42,8 +42,8 @@ class ChatPageState extends State<ChatPage> {
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                //  pageHeader(context, 'Messages'),
-                  /*Other Widgets Here*/
+                 pageHeader(context, 'Messages'),
+                  //Other Widgets Here*/
                   Container(
                       child: new Contacts(viewModel),
                       height: MediaQuery.of(context).size.height - 158,
