@@ -29,7 +29,7 @@ class ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: true,
-     // appBar: PreferredSize(child: ThemeContainer(context, pageHeader(context, "")), preferredSize: Size(100,100)),
+      // appBar: PreferredSize(child: ThemeContainer(context, pageHeader(context, "")), preferredSize: Size(100,100)),
       endDrawer: Theme(
           data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
           child: buildEndDrawer(context: context, viewModel: viewModel)),
@@ -42,7 +42,7 @@ class ChatPageState extends State<ChatPage> {
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-               //  pageHeader(context, 'Messages'),
+                  //  pageHeader(context, 'Messages'),
                   //Other Widgets Here*/
                   Container(
                       child: new Contacts(viewModel),
@@ -102,17 +102,18 @@ class ContactList extends StatelessWidget {
     return ListView.builder(
       padding: new EdgeInsets.symmetric(vertical: 8.0),
       itemBuilder: (context, index) {
-        return  ListTile(
-            title: Text( _contacts[index].fullName ?? ''),
-            subtitle: Text( _contacts[index].message ?? ''),
-            leading: CircleAvatar(child: Text( _contacts[index].fullName ?? '')),
-            onTap: () {
-              new Coordinator().setContactId( _contacts[index].documentID);
-              print(new Coordinator().getContactId());
-              viewModel.changeView(
-                  route: _routing.chatScreenPage, widgetContext: context);
-            });
-
+        return Card(
+          child: ListTile(
+              title: Text( _contacts[index].fullName ?? ''),
+              subtitle: Text( _contacts[index].message ?? ''),
+              leading: CircleAvatar(child: Text( _contacts[index].fullName ?? '')),
+              onTap: () {
+                new Coordinator().setContactId( _contacts[index].documentID);
+                print(new Coordinator().getContactId());
+                viewModel.changeView(
+                    route: _routing.chatScreenPage, widgetContext: context);
+              }),
+        );
         return _ContactListItem(
             _contacts[index].fullName,
             _contacts[index].message,
@@ -158,15 +159,15 @@ class ContactsPageState extends State<Contacts> {
           .document(conversation.document.documentID)
           .snapshots()
           .listen((onData) {
-            if (mounted){
-        setState(() {
-          if (mounted) {
-            kContacts.add(Contact(
-                fullName: onData.data["firstName"],
-                message: "",
-                documentID: conversation.document.documentID));
-          }
-        });
+        if (mounted){
+          setState(() {
+            if (mounted) {
+              kContacts.add(Contact(
+                  fullName: onData.data["firstName"],
+                  message: "",
+                  documentID: conversation.document.documentID));
+            }
+          });
         }
 
       });
@@ -187,7 +188,7 @@ class ContactsPageState extends State<Contacts> {
             if (f.type != DocumentChangeType.removed && kContacts.length > 0) {
               List messages = f.document.data["messages"];
               kContacts[kContacts.indexWhere((contacts) =>
-                      contacts.documentID == f.document.documentID)]
+              contacts.documentID == f.document.documentID)]
                   .message = messages.last["message"];
             }
           });
