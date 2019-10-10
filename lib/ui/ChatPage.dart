@@ -112,6 +112,7 @@ class ContactList extends StatelessWidget {
               viewModel.changeView(
                   route: _routing.chatScreenPage, widgetContext: context);
             });
+        
         return _ContactListItem(
             _contacts[index].fullName,
             _contacts[index].message,
