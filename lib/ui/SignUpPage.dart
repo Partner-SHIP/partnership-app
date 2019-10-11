@@ -57,9 +57,9 @@ class _SignUpPageState extends State<SignUpPage> {
                       child: Column(
                         children: <Widget>[
                           Padding(
-                            child: Image.asset('assets/img/partnership_logo.png',
+                            child: Image.asset('assets/img/logo_white_partnership.png',
                                 width: 110, height: 110),
-                            padding: EdgeInsets.only(top: 0, bottom: 0),
+                            padding: EdgeInsets.only(top: 50, bottom: 20),
                           ),
                           Padding(
                             child: AutoSizeText(

@@ -3,10 +3,11 @@ import 'package:auto_size_text/auto_size_text.dart';
 
 Row pageHeader(BuildContext context, String title) {
   return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
     children: <Widget>[
-      Image.asset('assets/img/partnership_logo.png', width: 110, height: 110),
-      AutoSizeText(
+      Padding(padding: EdgeInsets.only(top: 120.0)),
+      Image.asset('assets/img/logo_white_partnership.png', width: 50, height: 50),
+      Text(
         title,
         maxLines: 1,
         style: TextStyle(

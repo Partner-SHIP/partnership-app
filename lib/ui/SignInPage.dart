@@ -56,8 +56,8 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
                             child: Column(
                               children: <Widget>[
                                 Padding(
-                                  child: Image.asset('assets/img/partnership_logo.png', width:110, height: 110),
-                                  padding: EdgeInsets.only(top: 15, bottom: 15),
+                                  child: Image.asset('assets/img/logo_white_partnership.png', width:110, height: 110),
+                                  padding: EdgeInsets.only(top: 50, bottom: 15),
                                 ),
                                 AutoSizeText(
                                   'Connexion',

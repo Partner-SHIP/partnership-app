@@ -162,8 +162,8 @@ class LoginPageState extends State<LoginPage> {
             child: ThemeContainer(context, Column(
               children: <Widget>[
                 Padding(
-                  child: Image.asset('assets/img/logo_partnership.png', width:50, height: 50),
-                  padding: EdgeInsets.only(top: 30, bottom: 30),
+                  child: Image.asset('assets/img/logo_white_partnership.png', width:70, height: 70),
+                  padding: EdgeInsets.only(top: 50, bottom: 30),
                 ),
                 titleWidget,
                 Padding(
