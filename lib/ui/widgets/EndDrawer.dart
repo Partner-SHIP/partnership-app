@@ -16,56 +16,68 @@ List<Widget> _buildRightDrawerButtons(
         @required bool projectSearch,
         @required bool projectCreation,
         @required bool notification,
-        @required bool navigPage,
         @required bool settings,
-        @required bool about
+        @required bool about,
+        @required bool chat,
     })
 {
   LabeledIconButton profileButton = LabeledIconButton(
     icon: Icon(Icons.account_circle, color: Colors.white),
     toolTip: 'Accéder à mon profil',
-    onPressed: () =>
-        viewModel.changeView(route: '/profile_page', widgetContext: context),
+    onPressed: () {
+      Navigator.of(context).pop();
+      viewModel.changeView(route: '/profile_page', widgetContext: context);
+    },
     text: "Accéder à mon profil",
     fullWidth: true,
   );
   LabeledIconButton searchMemberButton = LabeledIconButton(
     icon: Icon(Icons.search, color: Colors.white),
     toolTip: 'Rechercher un profil',
-    onPressed: () => viewModel.changeView(
-        route: '/search_member_page', widgetContext: context),
+    onPressed: () {
+      Navigator.of(context).pop();
+      viewModel.changeView(route: '/search_member_page', widgetContext: context);
+    },
     text: "Rechercher un profil",
     fullWidth: true,
   );
   LabeledIconButton projectSearchButton = LabeledIconButton(
     icon: Icon(Icons.youtube_searched_for, color: Colors.white),
     toolTip: 'Rechercher un projet',
-    onPressed: () => viewModel.changeView(
-        route: '/project_browsing_page', widgetContext: context),
+    onPressed: () {
+      Navigator.of(context).pop();
+      viewModel.changeView(route: '/project_browsing_page', widgetContext: context);
+    },
     text: "Rechercher un projet",
     fullWidth: true,
   );
   LabeledIconButton projectCreationButton = LabeledIconButton(
     icon: Icon(Icons.create, color: Colors.white),
     toolTip: 'Créer un projet',
-    onPressed: () =>
-        viewModel.changeView(route: '/creation_page', widgetContext: context),
+    onPressed: () {
+      Navigator.of(context).pop();
+      viewModel.changeView(route: '/creation_page', widgetContext: context);
+    },
     text: "Créer un projet",
     fullWidth: true,
   );
   LabeledIconButton notificationButton = LabeledIconButton(
     icon: Icon(Icons.notifications, color: Colors.white),
     toolTip: 'Accéder aux notifications',
-    onPressed: () => viewModel.changeView(
-        route: '/notifications_page', widgetContext: context),
+    onPressed: () {
+      Navigator.of(context).pop();
+      viewModel.changeView(route: '/notifications_page', widgetContext: context);
+    },
     text: "Mes notifications",
     fullWidth: true,
   );
   LabeledIconButton chatButton = LabeledIconButton(
     icon: Icon(Icons.email, color: Colors.white),
     toolTip: 'Chat',
-    onPressed: () =>
-        viewModel.changeView(route: '/navig_page', widgetContext: context),
+    onPressed: () {
+      Navigator.of(context).pop();
+      viewModel.changeView(route: '/navig_page', widgetContext: context);
+    },
     text: "Chat",
     fullWidth: true,
   );
@@ -99,7 +111,7 @@ List<Widget> _buildRightDrawerButtons(
   if (projectCreation) result.add(projectCreationButton);
   if (projectSearch) result.add(projectSearchButton);
   if (notification) result.add(notificationButton);
-  if (navigPage) result.add(chatButton);
+  if (chat) result.add(chatButton);
   if (settings) result.add(settingsButton);
   if (about) result.add(aboutButton);
   if (disconnect) result.add(disconnectButton);
@@ -140,7 +152,7 @@ Widget buildEndDrawer({
       bool projectSearch = true,
       bool projectCreation = true,
       bool notification = true,
-      bool navigPage = true,
+      bool chat = true,
       bool settings = true,
       bool about = true
     })
@@ -154,7 +166,7 @@ Widget buildEndDrawer({
       projectSearch: projectSearch,
       projectCreation: projectCreation,
       notification: notification,
-      navigPage: navigPage,
+      chat: chat,
       settings: settings,
       about: about,
   );

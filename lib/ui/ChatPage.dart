@@ -34,7 +34,7 @@ class ChatPageState extends State<ChatPage> {
       resizeToAvoidBottomPadding: true,
       endDrawer: Theme(
           data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
-          child: buildEndDrawer(context: context, viewModel: viewModel)),
+          child: buildEndDrawer(context: context, viewModel: viewModel, chat: false)),
       body: Builder(builder: (BuildContext context) {
         return SafeArea(
           top: false,

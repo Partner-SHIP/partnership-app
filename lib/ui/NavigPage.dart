@@ -50,7 +50,7 @@ class NavigPageState extends State<NavigPage> with SingleTickerProviderStateMixi
       resizeToAvoidBottomPadding: true,
       endDrawer: Theme(
           data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
-          child: buildEndDrawer(context: null, viewModel: viewModel)
+          child: buildEndDrawer(context: null, viewModel: viewModel, chat: false)
       ),
       // Appbar
       // Set the TabBar view as the body of the Scaffold

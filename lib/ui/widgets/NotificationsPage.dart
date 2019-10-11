@@ -86,7 +86,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
       ),
       endDrawer: Theme(
         data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
-        child: buildEndDrawer(context: context, viewModel: viewModel),
+        child: buildEndDrawer(context: context, viewModel: viewModel, notification: false),
       ),
       // return SizedBox(
       //   child: ListView(

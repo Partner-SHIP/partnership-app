@@ -25,7 +25,7 @@ class SearchMemberPageState extends State<SearchMemberPage> {
       resizeToAvoidBottomPadding: true,
       endDrawer: Theme(
         data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
-        child: buildEndDrawer(context: context, viewModel: viewModel),
+        child: buildEndDrawer(context: context, viewModel: viewModel, searchMember: false),
       ),
       body: Builder(builder: (BuildContext context){
         return SafeArea(

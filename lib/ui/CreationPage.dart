@@ -112,7 +112,7 @@ class CreationPageState extends State<CreationPage> {
         ),
       endDrawer: Theme(
         data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
-        child: buildEndDrawer(context: context, viewModel: viewModel),
+        child: buildEndDrawer(context: context, viewModel: viewModel, projectCreation: false),
       ),
     );
   }
