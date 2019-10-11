@@ -154,6 +154,10 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
     final formContainer = Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height / 2,
+      child: new Theme(
+        data: new ThemeData(
+          hintColor: Colors.white70
+        ),
       child: Form(
         key: _formKey,
         child: Column(
@@ -164,7 +168,6 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
                     keyboardType: TextInputType.emailAddress,
                     style: TextStyle(color: Colors.white),
                     maxLines: 1,
-                    maxLength: 30,
                     validator: (String value){
                       if (value.isEmpty) {
                         return ('Veuillez saisir une adresse email valide');
@@ -181,22 +184,29 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
                         hintText: 'Adresse email valide',
                         labelStyle: TextStyle(fontFamily: "Orkney"),
                         hintStyle: TextStyle(fontFamily: "Orkney"),
+                        enabledBorder: new OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(25.0),
+                          borderSide: new BorderSide(color: Colors.white70)
+                          ),
+            border: new OutlineInputBorder(
+              borderRadius: new BorderRadius.circular(25.0),
+              borderSide: new BorderSide()
+            ),
                         icon: Padding(
                             child: Icon(Icons.mail, size: 30, color: Colors.white),
-                            padding: EdgeInsets.only(top: 25)
+                            padding: EdgeInsets.only(top: 5)
                         )
                     )
                 ),
                 padding: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.width / 5,
-                    right: MediaQuery.of(context).size.width / 5
+                    left: MediaQuery.of(context).size.width / 8,
+                    right: MediaQuery.of(context).size.width / 8
                 )
             ),
             Padding(
                 child: TextFormField(
                   style: TextStyle(color: Colors.white),
                   maxLines: 1,
-                  maxLength: 30,
                   obscureText: true,
                   validator: (String value){
                     if (value.isEmpty) {
@@ -206,15 +216,23 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
                   onSaved: (value) => this._data.password = value,
                   decoration: InputDecoration(
                       hintText: 'Mot de passe',
+                                              enabledBorder: new OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(25.0),
+                          borderSide: new BorderSide(color: Colors.white70)
+                          ),
+            border: new OutlineInputBorder(
+              borderRadius: new BorderRadius.circular(25.0),
+              borderSide: new BorderSide()
+            ),
                       icon: Padding(
                           child: Icon(Icons.vpn_key, size: 30, color: Colors.white),
-                          padding: EdgeInsets.only(top: 25)
+                          padding: EdgeInsets.only(top: 5)
                       )
                   ),
                 ),
                 padding: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.width / 5,
-                    right: MediaQuery.of(context).size.width / 5
+                    left: MediaQuery.of(context).size.width / 8,
+                    right: MediaQuery.of(context).size.width / 8
                 )
             ),
             Padding(
@@ -262,6 +280,7 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
             ),
           ],
         ),
+      )
       ),
     );
     return formContainer;

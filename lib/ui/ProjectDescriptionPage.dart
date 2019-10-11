@@ -8,7 +8,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 
-final String lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+//final String lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 
 class ProjectDescriptionPage extends StatefulWidget {
   static _ProjectDescriptionPageState _state;
@@ -66,7 +66,7 @@ class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
         child: Stack(
           alignment: Alignment.center,
           children: <Widget>[
-            AutoSizeText("LOGO PLACEHOLDER"),
+            //AutoSizeText("LOGO PLACEHOLDER"),
             Image.network(args['project'].data['logoPath'], fit: BoxFit.fitHeight),
           ],
         )
@@ -99,7 +99,7 @@ class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
                 AutoSizeText(
                   args['project'].data['description'],
                   style: TextStyle(
-                    color: Colors.grey[500],
+                    color: Colors.white,
                     fontFamily: 'Orkney'
                   ),
                 ),
@@ -112,13 +112,12 @@ class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
   }
 
   Row _buildDescription (BuildContext context) {
-    AutoSizeText text = AutoSizeText(lorem, style: TextStyle(color: Colors.grey[500], fontSize: 18), softWrap: true,);
+    //AutoSizeText text = AutoSizeText(lorem, style: TextStyle(color: Colors.white, fontSize: 18), softWrap: true,);
     Row result = Row(
       children: <Widget>[
         Container(
           width: MediaQuery.of(context).size.width,
           padding: EdgeInsets.all(24),
-          child: text,
         )
       ],
       mainAxisSize: MainAxisSize.max,

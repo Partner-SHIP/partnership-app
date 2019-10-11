@@ -245,6 +245,10 @@ return Container(
   Widget _creationProjectDescWidget() {
     return Container(
       padding: const EdgeInsets.all(30.0),
+      child: new Theme(
+        data: new ThemeData(
+          hintColor: Colors.white70
+        ),
       child: new Center(
           child: new Column(children: [
         //new Padding(padding: EdgeInsets.only(top: 1.0)),
@@ -270,11 +274,15 @@ return Container(
             labelStyle: TextStyle(color: Colors.white),
             labelText: "Entrer une description",
             fillColor: Colors.white,
+            enabledBorder: new OutlineInputBorder(
+              borderRadius: new BorderRadius.circular(25.0),
+              borderSide: new BorderSide(color: Colors.white70)
+              ),
             border: new OutlineInputBorder(
               borderRadius: new BorderRadius.circular(25.0),
-              borderSide: new BorderSide(),
+              borderSide: new BorderSide()
+              )
             ),
-          ),
           maxLines: 5,
           keyboardType: TextInputType.text,
           style: new TextStyle(
@@ -283,12 +291,17 @@ return Container(
           ),
         ),
       ])),
+    )
     );
   }
 
   Widget _creationProjectNameWidget() {
     return Container(
       padding: const EdgeInsets.all(30.0),
+      child: new Theme(
+        data: new ThemeData(
+          hintColor: Colors.white70
+        ),
       child: new Center(
           child: new Column(children: [
         //new Padding(padding: EdgeInsets.only(top: 10.0)),
@@ -315,10 +328,14 @@ return Container(
             labelStyle: TextStyle(color: Colors.white),
             labelText: "Entrer un nom de projet",
             fillColor: Colors.white,
+            enabledBorder: new OutlineInputBorder(
+              borderRadius: new BorderRadius.circular(25.0),
+              borderSide: new BorderSide(color: Colors.white70)
+            ),
             border: new OutlineInputBorder(
               borderRadius: new BorderRadius.circular(25.0),
-              borderSide: new BorderSide(),
-            ),
+              borderSide: new BorderSide()
+            )
           ),
           keyboardType: TextInputType.text,
           style: new TextStyle(
@@ -327,6 +344,7 @@ return Container(
           ),
         ),
       ])),
+    )
     );
   }
 
