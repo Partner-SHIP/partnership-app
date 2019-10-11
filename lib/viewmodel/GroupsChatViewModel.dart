@@ -1,22 +1,23 @@
 import 'package:intl/intl.dart';
 import 'package:partnership/coordinator/AppCoordinator.dart';
+import 'package:partnership/model/GroupsChatModel.dart';
 import 'package:partnership/ui/ChatMessage.dart';
 import 'package:partnership/viewmodel/AViewModel.dart';
 import 'package:partnership/model/ChatScreenModel.dart';
 
-class ChatScreenViewModel extends AViewModel {
-  ChatScreenModel _model;
+class GroupsChatViewModel extends AViewModel {
+  GroupsChatModel _model;
   DateFormat dateFormat;
   Coordinator user;
 
-  ChatScreenViewModel(String route) {
+  GroupsChatViewModel(String route) {
     super.initModel(route);
     this._model = super.abstractModel;
     dateFormat = new DateFormat("dd/MM/yyyy 'à' HH:mm:ss");
     user = new Coordinator();
   }
 
-  ChatScreenModel get model => this._model;
+  GroupsChatModel get model => this._model;
 
   void init(){
     _model.init();
@@ -24,7 +25,7 @@ class ChatScreenViewModel extends AViewModel {
     _model.myId = user.getLoggedInUser().uid;
     _model.contactId = user.getContactId();
     if (_model.getMessages().isNotEmpty)
-    print(_model.getMessages());
+      print(_model.getMessages());
   }
 
   void initNames(){
@@ -83,13 +84,6 @@ class ChatScreenViewModel extends AViewModel {
               list.elementAt(i)["message"].toString(), _date);
         }
       }
-    }
-  }
-
-  void sendingMessages(String message) {
-    if (message.isNotEmpty) {
-      _model.sendMessage(getMyConvPath(), message);
-      _model.sendMessage(getContactConvPath(), message);
     }
   }
 }

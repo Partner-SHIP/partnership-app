@@ -5,12 +5,9 @@ import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/ui/widgets/ThemeContainer.dart';
 import 'package:partnership/ui/widgets/PageHeader.dart';
 import 'package:partnership/ui/widgets/EndDrawer.dart';
-import 'package:partnership/coordinator/AppCoordinator.dart';
 import 'package:partnership/ui/ContactData.dart';
-import 'package:partnership/ui/ChatConv.dart';
+import 'package:partnership/coordinator/AppCoordinator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:partnership/viewmodel/AViewModel.dart';
-import 'package:partnership/ui/ChatConv.dart';
 
 // CONTACT_VIEW
 
@@ -32,6 +29,7 @@ class ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: true,
+      // appBar: PreferredSize(child: ThemeContainer(context, pageHeader(context, "")), preferredSize: Size(100,100)),
       endDrawer: Theme(
           data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
           child: buildEndDrawer(context: context, viewModel: viewModel)),
@@ -44,10 +42,10 @@ class ChatPageState extends State<ChatPage> {
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  pageHeader(context, 'Messages'),
-                  /*Other Widgets Here*/
+                  //  pageHeader(context, 'Messages'),
+                  //Other Widgets Here*/
                   Container(
-                      child: new ContactsPage(viewModel),
+                      child: new Contacts(viewModel),
                       height: MediaQuery.of(context).size.height - 158,
                       width: MediaQuery.of(context).size.width),
                 ],
@@ -66,7 +64,7 @@ class ChatPageState extends State<ChatPage> {
   ScreenArguments(this.title, this.message, this.conversation);
 }*/
 
-/*class _ContactListItem extends StatelessWidget {
+class _ContactListItem extends StatelessWidget {
   String title, subtitle, documentID;
   IRoutes _routing = Routes();
 
@@ -89,7 +87,7 @@ class ChatPageState extends State<ChatPage> {
               route: _routing.chatScreenPage, widgetContext: context);
         });
   }
-}*/
+}
 
 class ContactList extends StatelessWidget {
   IRoutes _routing = Routes();
@@ -104,20 +102,22 @@ class ContactList extends StatelessWidget {
     return ListView.builder(
       padding: new EdgeInsets.symmetric(vertical: 8.0),
       itemBuilder: (context, index) {
-        return  ListTile(
-            title: Text( _contacts[index].fullName ?? ''),
-            subtitle: Text( _contacts[index].message ?? ''),
-            leading: CircleAvatar(child: Text( _contacts[index].fullName ?? '')),
-            onTap: () {
-              new Coordinator().setContactId( _contacts[index].documentID);
-              print(new Coordinator().getContactId());
-              viewModel.changeView(
-                  route: _routing.chatScreenPage, widgetContext: context);
-            });
-       /* return _ContactListItem(
+        return Card(
+          child: ListTile(
+              title: Text( _contacts[index].fullName ?? ''),
+              subtitle: Text( _contacts[index].message ?? ''),
+              leading: CircleAvatar(child: Text( _contacts[index].fullName ?? '')),
+              onTap: () {
+                new Coordinator().setContactId( _contacts[index].documentID);
+                print(new Coordinator().getContactId());
+                viewModel.changeView(
+                    route: _routing.chatScreenPage, widgetContext: context);
+              }),
+        );
+        return _ContactListItem(
             _contacts[index].fullName,
             _contacts[index].message,
-            _contacts[index].documentID);*/
+            _contacts[index].documentID);
       },
       itemCount: _contacts.length   ,
     );
@@ -131,10 +131,10 @@ class ContactList extends StatelessWidget {
   }*/
 }
 
-class ContactsPage extends StatefulWidget {
+class Contacts extends StatefulWidget {
   ChatPageViewModel _viewModel;
 
-  ContactsPage(ChatPageViewModel viewmodel) : _viewModel = viewmodel;
+  Contacts(ChatPageViewModel viewmodel) : _viewModel = viewmodel;
 
   @override
   State<StatefulWidget> createState() {
@@ -142,7 +142,7 @@ class ContactsPage extends StatefulWidget {
   }
 }
 
-class ContactsPageState extends State<ContactsPage> {
+class ContactsPageState extends State<Contacts> {
   ChatPageViewModel _viewModel;
 
   ContactsPageState(ChatPageViewModel viewModel) : _viewModel = viewModel;
@@ -159,12 +159,17 @@ class ContactsPageState extends State<ContactsPage> {
           .document(conversation.document.documentID)
           .snapshots()
           .listen((onData) {
-        setState(() {
-          kContacts.add(Contact(
-              fullName: onData.data["firstName"],
-              message: "",
-              documentID: conversation.document.documentID));
-        });
+        if (mounted){
+          setState(() {
+            if (mounted) {
+              kContacts.add(Contact(
+                  fullName: onData.data["firstName"],
+                  message: "",
+                  documentID: conversation.document.documentID));
+            }
+          });
+        }
+
       });
     });
   }
@@ -183,7 +188,7 @@ class ContactsPageState extends State<ContactsPage> {
             if (f.type != DocumentChangeType.removed && kContacts.length > 0) {
               List messages = f.document.data["messages"];
               kContacts[kContacts.indexWhere((contacts) =>
-                      contacts.documentID == f.document.documentID)]
+              contacts.documentID == f.document.documentID)]
                   .message = messages.last["message"];
             }
           });

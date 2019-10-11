@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:partnership/ui/ChatConv.dart';
 import 'package:partnership/viewmodel/ChatMessageViewModel.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/utils/Routes.dart';
@@ -27,22 +26,26 @@ class ChatMessage extends StatelessWidget {
               ),
             ),
           ),
-          Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                new AutoSizeText(name, overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.white),),
-                new Container(
-                  margin: const EdgeInsets.only(top: 5.0),
-                  child: new AutoSizeText(text, overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.white),),
+          new Wrap(
+            children: <Widget>[
+              Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    new AutoSizeText(name, style: TextStyle(color: Colors.white),),
+                    new Container(
+                      margin: const EdgeInsets.only(top: 5.0),
+                      child: new AutoSizeText(text, style: TextStyle(color: Colors.white),),
+                    ),
+                    new Container(
+                      margin: const EdgeInsets.only(top: 5.0),
+                      child: new AutoSizeText(date, style: TextStyle(color: Colors.white),),
+                    )
+                  ],
                 ),
-                new Container(
-                  margin: const EdgeInsets.only(top: 5.0),
-                  child: new AutoSizeText(date, overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.white),),
-                )
-              ],
-            ),
-            width: MediaQuery.of(context).size.width / 1.3,
+                width: MediaQuery.of(context).size.width / 1.3,
+              )
+            ],
           ),
 
         ],

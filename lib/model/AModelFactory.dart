@@ -20,6 +20,7 @@ import 'package:partnership/model/NavigPageModel.dart';
 import 'package:partnership/utils/Routes.dart';
 
 import 'ChatScreenModel.dart';
+import 'GroupsChatModel.dart';
 
 abstract class AModelFactory{
   static final Map<String, AModel>  register = <String, AModel>{};
@@ -103,10 +104,6 @@ abstract class AModelFactory{
           model = NotificationsPageModel();
           register[_routing.notificationsPage] = model;
           break;
-        case RoutesEnum.addContactPage:
-          model = AddContactModel();
-          register[_routing.addContactPage] = model;
-          break;
         case RoutesEnum.navigPage:
           model = NavigPageModel();
           register[_routing.navigPage] = model;
@@ -114,6 +111,10 @@ abstract class AModelFactory{
         case RoutesEnum.groupsPage:
           model = GroupsPageModel();
           register[_routing.groupsPage] = model;
+          break;
+        case RoutesEnum.groupsChat:
+          model = GroupsChatModel();
+          register[_routing.groupsChat] = model;
           break;
         default:
           throw Exception("Error while constructing Model: the route \"$route\" provided is unknown !");

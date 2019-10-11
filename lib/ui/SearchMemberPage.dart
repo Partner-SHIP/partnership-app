@@ -54,7 +54,8 @@ class SearchMemberPageState extends State<SearchMemberPage> {
                                     firstName: document['firstName'],
                                     lastName: document['lastName'],
                                     cityLocation: document['cityLocation'],
-                                    studies: document['studies']
+                                    studies: document['studies'],
+                                    uid: document['uid'],
                                   );
                                 }).toList(),
                               );
@@ -71,12 +72,13 @@ class SearchMemberPageState extends State<SearchMemberPage> {
 }
 
 class CustomCard extends StatelessWidget {
-  CustomCard({@required this.firstName, this.lastName, this.cityLocation, this.studies});
+  CustomCard({@required this.firstName, this.lastName, this.cityLocation, this.studies, this.uid});
 
   final firstName;
   final lastName;
   final cityLocation;
   final studies;
+  final uid;
 
 Widget get memberImage {
   return Container(
@@ -104,9 +106,9 @@ Widget get memberCard {
           bottom: 8.0,
           left: 64.0,
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+        child: Wrap(
+          //crossAxisAlignment: CrossAxisAlignment.start,
+          //mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             Text(firstName + ' ' + lastName, style: TextStyle(
             fontSize: 20,
@@ -120,8 +122,9 @@ Widget get memberCard {
             fontFamily: 'Orkney',
             fontWeight: FontWeight.normal,
             color: Colors.black87,
-          )
+          ),
            ),
+            IconButton(icon: Icon(Icons.add, color: Colors.indigo), onPressed: null),
           ],
         ),
       ),

@@ -13,11 +13,8 @@ import 'package:partnership/ui/ChatPage.dart';
 import 'package:partnership/ui/GroupsPage.dart';
 import 'package:partnership/ui/SearchMemberPage.dart';
 import 'package:partnership/ui/widgets/NotificationsPage.dart';
-import 'package:path/path.dart';
-import 'package:partnership/ui/ChatConv.dart';
-import 'package:partnership/ui/ChatPage.dart';
-import 'package:partnership/ui/AddContact.dart';
 import 'package:partnership/ui/NavigPage.dart';
+import 'package:partnership/ui/GroupsChat.dart';
 
 enum DynamicRoutesEnum {
   projectDescriptionPage,
@@ -37,12 +34,12 @@ enum RoutesEnum {
   ideaPage,
   chatPage,
   chatScreenPage,
-  addContactPage,
   chatConvPage,
   searchMemberPage,
   notificationsPage,
   groupsPage,
   navigPage,
+  groupsChat
 }
 
 abstract class  IRoutes {
@@ -60,10 +57,10 @@ abstract class  IRoutes {
   String        get chatScreenPage;
   String        get searchMemberPage;
   String        get notificationsPage;
-  String        get addContactPage;
   String        get chatConvPage;
   String        get navigPage;
   String        get groupsPage;
+  String        get groupsChat;
 
   dynamic            routeMap();
   Map<String, Widget> materialPagesMap();
@@ -97,10 +94,9 @@ class Routes implements IRoutes {
   static const String _chatScreenPage = "/chatScreen_page";
   static const String _searchMemberPage = "/search_member_page";
   static const String _notificationsPage = "/notifications_page";
-  static const String _addContactPage = "/addContact_page";
   static const String _navigPage = "/navig_page";
   static const String _groupsPage = "/groups_page";
-
+  static const String _groupsChat = "/groups_chat";
   /*
   * Dynamic Routes
   */
@@ -121,7 +117,8 @@ class Routes implements IRoutes {
       _chatPage:                  ChatPage(),
       _groupsPage:                GroupsPage(),
       _navigPage:                 NavigPage(),
-      _searchMemberPage:          SearchMemberPage(),
+      _groupsChat:                GroupsPage(),
+    _searchMemberPage:          SearchMemberPage(),
       _notificationsPage:         NotificationsPage(),
     };
   }
@@ -140,10 +137,10 @@ class Routes implements IRoutes {
       _chatScreenPage:            (BuildContext context) => ChatScreen(),
       _searchMemberPage:          (BuildContext context) => SearchMemberPage(),
       _notificationsPage:         (BuildContext context) => NotificationsPage(),
-      _addContactPage:            (BuildContext context) => AddContact(),
       _navigPage:                 (BuildContext context) => NavigPage(),
       _groupsPage:                (BuildContext context) => GroupsPage(),
-    };  
+      _groupsChat:                 (BuildContext context) => GroupsChat(),
+  };
   }
   Map<String, RoutesEnum> _routeEnumMap() {
     return <String, RoutesEnum>{
@@ -159,9 +156,9 @@ class Routes implements IRoutes {
       _chatScreenPage:          RoutesEnum.chatScreenPage,
       _searchMemberPage:        RoutesEnum.searchMemberPage,
       _notificationsPage:       RoutesEnum.notificationsPage,
-      _addContactPage:          RoutesEnum.addContactPage,
       _navigPage:               RoutesEnum.navigPage,
       _groupsPage:              RoutesEnum.groupsPage,
+      _groupsChat:              RoutesEnum.groupsChat,
     };
   }
 
@@ -178,9 +175,9 @@ class Routes implements IRoutes {
      _chatScreenPage,
      _searchMemberPage,
      _notificationsPage,
-     _addContactPage,
      _navigPage,
      _groupsPage,
+     _groupsChat,
    ];
 
   dynamic _getDynamicPage({@required String route, @required Map<String, dynamic> args}){
@@ -254,9 +251,6 @@ class Routes implements IRoutes {
   String get notificationsPage => _notificationsPage;
 
   @override
-  String get addContactPage => _addContactPage;
-
-  @override
   String get chatConvPage => _chatConvPage;
 
   @override
@@ -265,6 +259,8 @@ class Routes implements IRoutes {
   @override
   String get groupsPage => _groupsPage;
 
+  @override
+  String get groupsChat => _groupsChat;
 
   @override
   List<String> routeList() {
