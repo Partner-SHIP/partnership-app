@@ -387,7 +387,7 @@ class _SignUpPageState extends State<SignUpPage> {
               },
               increaseWidthBy: 80,
               increaseHeightBy: 10),
-          padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 20),
+          padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 100),
         )
     );
     return signUpButtonContainer;
