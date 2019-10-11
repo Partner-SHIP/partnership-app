@@ -106,11 +106,14 @@ class Gradients {
 class AppTheme {
   LinearGradient _bgGradient;
   LinearGradient _btnGradient;
+  enumTheme      _theme;
   LinearGradient get bgGradient => _bgGradient;
   LinearGradient get btnGradient => _btnGradient;
-  AppTheme({@required LinearGradient backgroundGradient, @required LinearGradient buttonGradient}){
+  enumTheme      get theme => _theme;
+  AppTheme({@required LinearGradient backgroundGradient, @required LinearGradient buttonGradient, @required enumTheme theme}){
     _bgGradient = backgroundGradient;
     _btnGradient = buttonGradient;
+    _theme = theme;
   }
 }
 
@@ -121,9 +124,9 @@ enum enumTheme {
 }
 
 abstract class AThemes {
-  static final AppTheme _dawnTheme = AppTheme(backgroundGradient: Gradients.verticalDawn, buttonGradient: Gradients.metallic);
-  static final AppTheme _oceanTheme = AppTheme(backgroundGradient: Gradients.verticalOcean, buttonGradient: Gradients.metallic);
-  static final AppTheme _marineTheme = AppTheme(backgroundGradient: Gradients.verticalMarine, buttonGradient: Gradients.metallic);
+  static final AppTheme _dawnTheme = AppTheme(backgroundGradient: Gradients.verticalDawn, buttonGradient: Gradients.metallic, theme: enumTheme.DAWN);
+  static final AppTheme _oceanTheme = AppTheme(backgroundGradient: Gradients.verticalOcean, buttonGradient: Gradients.metallic, theme: enumTheme.OCEAN);
+  static final AppTheme _marineTheme = AppTheme(backgroundGradient: Gradients.verticalMarine, buttonGradient: Gradients.metallic, theme: enumTheme.MARINE);
 
   static final Map<enumTheme, AppTheme> _themesMap = {
     enumTheme.DAWN: _dawnTheme,
