@@ -34,8 +34,8 @@ class GroupsChatModel extends AModel {
   set contactName(String name) => this._contactName = name;
 
   void  initContactName(){
-    Firestore.instance.document('profiles/' + this._contactId).snapshots().listen((onData){
-      this._contactName = onData.data['firstName'];
+    Firestore.instance.document('projects/' + this._contactId).snapshots().listen((onData){
+      this._contactName = onData.data['name'];
     });
   }
 
