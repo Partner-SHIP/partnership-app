@@ -7,6 +7,7 @@ import 'package:partnership/ui/widgets/PageHeader.dart';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/CreationPageViewModel.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:image_picker/image_picker.dart';
 
 class CreationPage extends StatefulWidget {
@@ -65,48 +66,53 @@ class CreationPageState extends State<CreationPage> {
   Widget build(BuildContext context) {
     _scaffoldContext = context;
     return Scaffold(
-        resizeToAvoidBottomPadding: false,
+        resizeToAvoidBottomPadding: true,
         body: Builder(
             builder: (BuildContext context) {
-              return SafeArea(
-                  top: false,
-                  child: ThemeContainer(
-                      context,
-                      SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            //_creationProjectHeaderWidget(),
-                            pageHeader(context, 'Création de projet'),
-                            SizedBox(width: 0, height: 10),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  left: (MediaQuery.of(context).size.width / 100)),
-                              child: _creationProjectRowImageWidget(),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  top: (MediaQuery.of(context).size.width / 10),
-                                  left: (MediaQuery.of(context).size.width / 100)),
-                              child: _creationProjectRowLogoWidget(),
-                            ),
-                            _form,
-                            Padding(
+              return InkWell(
+                onTap: (){
+                  FocusScope.of(context).requestFocus(FocusNode());
+                },
+                child: SafeArea(
+                    top: false,
+                    child: ThemeContainer(
+                        context,
+                        SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              //_creationProjectHeaderWidget(),
+                              pageHeader(context, 'Création de projet'),
+                              SizedBox(width: 0, height: 10),
+                              Padding(
                                 padding: EdgeInsets.only(
-                                    left: (MediaQuery.of(context).size.width / 2.5),
-                                    bottom: 35
-                                ),
-                                child: _validatingProject()),
-                          ],
-                        ),
-                      )
-                  )
+                                    left: (MediaQuery.of(context).size.width / 100)),
+                                child: _creationProjectRowImageWidget(),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    top: (MediaQuery.of(context).size.width / 10),
+                                    left: (MediaQuery.of(context).size.width / 100)),
+                                child: _creationProjectRowLogoWidget(),
+                              ),
+                              _form,
+                              Padding(
+                                  padding: EdgeInsets.only(
+                                      left: (MediaQuery.of(context).size.width / 2.5),
+                                      bottom: 35
+                                  ),
+                                  child: _validatingProject()),
+                            ],
+                          ),
+                        )
+                    )
+                ),
               );
             }
         ),
       endDrawer: Theme(
         data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
-        child: buildEndDrawer(context: context, viewModel: viewModel),
+        child: buildEndDrawer(context: context, viewModel: viewModel, projectCreation: false),
       ),
     );
   }
@@ -239,6 +245,10 @@ return Container(
   Widget _creationProjectDescWidget() {
     return Container(
       padding: const EdgeInsets.all(30.0),
+      child: new Theme(
+        data: new ThemeData(
+          hintColor: Colors.white70
+        ),
       child: new Center(
           child: new Column(children: [
         //new Padding(padding: EdgeInsets.only(top: 1.0)),
@@ -252,6 +262,7 @@ return Container(
         ),
         new Padding(padding: EdgeInsets.only(top: 15.0)),
         new TextFormField(
+          maxLength: 150,
           controller: _descriptionProject,
           validator: (_validateDesc) {
             if (_validateDesc.isEmpty) {
@@ -263,12 +274,16 @@ return Container(
             labelStyle: TextStyle(color: Colors.white),
             labelText: "Entrer une description",
             fillColor: Colors.white,
+            enabledBorder: new OutlineInputBorder(
+              borderRadius: new BorderRadius.circular(25.0),
+              borderSide: new BorderSide(color: Colors.white70)
+              ),
             border: new OutlineInputBorder(
               borderRadius: new BorderRadius.circular(25.0),
-              borderSide: new BorderSide(),
+              borderSide: new BorderSide()
+              )
             ),
-          ),
-          maxLines: 3,
+          maxLines: 5,
           keyboardType: TextInputType.text,
           style: new TextStyle(
             fontFamily: "Orkney",
@@ -276,12 +291,17 @@ return Container(
           ),
         ),
       ])),
+    )
     );
   }
 
   Widget _creationProjectNameWidget() {
     return Container(
       padding: const EdgeInsets.all(30.0),
+      child: new Theme(
+        data: new ThemeData(
+          hintColor: Colors.white70
+        ),
       child: new Center(
           child: new Column(children: [
         //new Padding(padding: EdgeInsets.only(top: 10.0)),
@@ -295,6 +315,8 @@ return Container(
         ),
         new Padding(padding: EdgeInsets.only(top: 15.0)),
         new TextFormField(
+          maxLines: 1,
+          maxLength: 30,
           controller: _nameProject,
           validator: (_validateDesc) {
             if (_validateDesc.isEmpty) {
@@ -306,12 +328,15 @@ return Container(
             labelStyle: TextStyle(color: Colors.white),
             labelText: "Entrer un nom de projet",
             fillColor: Colors.white,
+            enabledBorder: new OutlineInputBorder(
+              borderRadius: new BorderRadius.circular(25.0),
+              borderSide: new BorderSide(color: Colors.white70)
+            ),
             border: new OutlineInputBorder(
               borderRadius: new BorderRadius.circular(25.0),
-              borderSide: new BorderSide(),
-            ),
+              borderSide: new BorderSide()
+            )
           ),
-          maxLines: null,
           keyboardType: TextInputType.text,
           style: new TextStyle(
             fontFamily: "Orkney",
@@ -319,6 +344,7 @@ return Container(
           ),
         ),
       ])),
+    )
     );
   }
 
@@ -338,7 +364,25 @@ return Container(
 
   Widget _validatingProject() {
     return FloatingActionButton.extended(
-      onPressed: () {this.viewModel.postProject(context, _nameProject, _descriptionProject, _image);},
+      onPressed: () {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return Material(
+              type: MaterialType.transparency,
+              child: Center(
+                  child: FlareActor('assets/animations/Liquid Loader.flr', animation: 'Untitled')
+              ),
+            );
+          },
+        );
+        this.viewModel.postProject(context, _nameProject, _descriptionProject, _image, (String value){
+          print("COUCOU" + value);
+          Navigator.of(context).pop();
+          viewModel.changeView(route: _routing.homePage, widgetContext: context);
+        });
+        },
       heroTag: "postProject",
       label: Text("Créer"),
       tooltip: "Créer le projet",

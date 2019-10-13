@@ -15,23 +15,15 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateMixin {
-  final GlobalKey<ScaffoldState> _mainKey = GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final SignInData           _data = SignInData();
-  bool                        busy = false;
   bool                       _switch = false;
   StreamSubscription _connectivitySub;
-  //FocusNode _focusNode = FocusNode();
-  //MainAxisAlignment _formAlignment = MainAxisAlignment.center;
   IRoutes _routing = Routes();
   SignInPageViewModel get viewModel =>
       AViewModelFactory.register[_routing.signInPage];
 
-  void  displaySuccessSnackBar()
-    {
-      var snackbar = SnackBar(content: Text("SignIn successful!"), duration: Duration(milliseconds: 5000));
-                  this._mainKey.currentState.showSnackBar(snackbar);
-    }
+
   @override
   void initState(){
     super.initState();
@@ -41,7 +33,6 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
   @override
   void dispose(){
     this._connectivitySub.cancel();
-    //_focusNode.dispose();
     super.dispose();
   }
 
@@ -65,8 +56,8 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
                             child: Column(
                               children: <Widget>[
                                 Padding(
-                                  child: Image.asset('assets/img/partnership_logo.png', width:110, height: 110),
-                                  padding: EdgeInsets.only(top: 15, bottom: 15),
+                                  child: Image.asset('assets/img/logo_white_partnership.png', width:110, height: 110),
+                                  padding: EdgeInsets.only(top: 50, bottom: 15),
                                 ),
                                 AutoSizeText(
                                   'Connexion',
@@ -163,7 +154,10 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
     final formContainer = Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height / 2,
-      //color: Colors.blue,
+      child: new Theme(
+        data: new ThemeData(
+          hintColor: Colors.white70
+        ),
       child: Form(
         key: _formKey,
         child: Column(
@@ -172,9 +166,8 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
             Padding(
                 child: TextFormField(
                     keyboardType: TextInputType.emailAddress,
+                    style: TextStyle(color: Colors.white),
                     maxLines: 1,
-                    maxLength: 30,
-                    //focusNode: _focusNode,
                     validator: (String value){
                       if (value.isEmpty) {
                         return ('Veuillez saisir une adresse email valide');
@@ -191,23 +184,30 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
                         hintText: 'Adresse email valide',
                         labelStyle: TextStyle(fontFamily: "Orkney"),
                         hintStyle: TextStyle(fontFamily: "Orkney"),
+                        enabledBorder: new OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(25.0),
+                          borderSide: new BorderSide(color: Colors.white70)
+                          ),
+            border: new OutlineInputBorder(
+              borderRadius: new BorderRadius.circular(25.0),
+              borderSide: new BorderSide()
+            ),
                         icon: Padding(
                             child: Icon(Icons.mail, size: 30, color: Colors.white),
-                            padding: EdgeInsets.only(top: 25)
+                            padding: EdgeInsets.only(top: 5)
                         )
                     )
                 ),
                 padding: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.width / 5,
-                    right: MediaQuery.of(context).size.width / 5
+                    left: MediaQuery.of(context).size.width / 8,
+                    right: MediaQuery.of(context).size.width / 8
                 )
             ),
             Padding(
                 child: TextFormField(
+                  style: TextStyle(color: Colors.white),
                   maxLines: 1,
-                  maxLength: 30,
                   obscureText: true,
-                  //focusNode: _focusNode,
                   validator: (String value){
                     if (value.isEmpty) {
                       return ('Veuillez saisir un mot de passe');
@@ -216,15 +216,23 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
                   onSaved: (value) => this._data.password = value,
                   decoration: InputDecoration(
                       hintText: 'Mot de passe',
+                                              enabledBorder: new OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(25.0),
+                          borderSide: new BorderSide(color: Colors.white70)
+                          ),
+            border: new OutlineInputBorder(
+              borderRadius: new BorderRadius.circular(25.0),
+              borderSide: new BorderSide()
+            ),
                       icon: Padding(
                           child: Icon(Icons.vpn_key, size: 30, color: Colors.white),
-                          padding: EdgeInsets.only(top: 25)
+                          padding: EdgeInsets.only(top: 5)
                       )
                   ),
                 ),
                 padding: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.width / 5,
-                    right: MediaQuery.of(context).size.width / 5
+                    left: MediaQuery.of(context).size.width / 8,
+                    right: MediaQuery.of(context).size.width / 8
                 )
             ),
             Padding(
@@ -252,9 +260,6 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
                         },
                       );
                       this._formKey.currentState.save();
-                      setState(() {
-                        busy = true;
-                      });
                       this.viewModel.signInAction(this._data).then((value){
                         Navigator.of(context).pop();
                         if (value) {
@@ -265,9 +270,6 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
                             content: new Text("Connexion échouée, veuillez vérifier vos identifiants"),
                           ));
                         }
-                        setState(() {
-                          busy = false;
-                        });
                       });
                     }
                   },
@@ -276,9 +278,9 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
               ),
               padding: EdgeInsets.only(top: 40),
             ),
-            //SizedBox(height: _animation.value)
           ],
         ),
+      )
       ),
     );
     return formContainer;
@@ -288,7 +290,6 @@ class _SignInPageState extends State<SignInPage> with SingleTickerProviderStateM
     final providersContainer = Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height / 2,
-//      color: Colors.blue,
       child: Stack(
         children: <Widget>[
           Center(child: ClipRect(

@@ -6,7 +6,7 @@ class CreationPageModel extends AModel {
   CreationPageModel() : super();
   bool posting = false;
 
-  void _postProjectRequests(String name, String description, File image, String uid) {
+  void _postProjectRequests(String name, String description, File image, String uid, Function handler) {
     print('POST PROJECT UID : $uid');
     Map<String, String> args = {
       'name':name,
@@ -15,7 +15,9 @@ class CreationPageModel extends AModel {
     Map<String, String> header = {
       'uid':uid
     };
-    this.apiClient.postProject(header: header, args: args, onSuccess: onSuccess, onError: onError).then((value)=> print(value));
+    this.apiClient.postProject(header: header, args: args, onSuccess: onSuccess, onError: onError).then((value){
+      handler(value);
+    });
   }
 
   void onSuccess() {
@@ -35,10 +37,10 @@ class CreationPageModel extends AModel {
     if (body["value"] != null)
       print("success");
   }
-  void postProject(String name, String description, File image, String uid){
+  void postProject(String name, String description, File image, String uid, Function handler){
     if (posting == true)
       return ;
     posting = true;
-    _postProjectRequests(name, description, image, uid);
+    _postProjectRequests(name, description, image, uid, handler);
   }
 }

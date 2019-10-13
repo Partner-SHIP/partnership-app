@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/rendering.dart';
 import 'package:partnership/ui/widgets/PageHeader.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
+import 'package:tuple/tuple.dart';
 
 import 'dart:async';
 import 'dart:convert';
@@ -65,6 +66,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
     return Scaffold(
       body: Builder(
           builder: (BuildContext context) {
+            viewModel.setPageContext(Tuple2<BuildContext, String>(context, _routing.notificationsPage));
             return SafeArea(
                 top: false,
                 child: ThemeContainer(
@@ -84,7 +86,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
       ),
       endDrawer: Theme(
         data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
-        child: buildEndDrawer(context: context, viewModel: viewModel),
+        child: buildEndDrawer(context: context, viewModel: viewModel, notification: false),
       ),
       // return SizedBox(
       //   child: ListView(

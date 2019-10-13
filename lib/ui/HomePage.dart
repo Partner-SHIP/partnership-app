@@ -26,10 +26,13 @@ class _HomePageState extends State<HomePage> {
   void initState(){
     super.initState();
     this._connectivitySub = viewModel.subscribeToConnectivity(this._connectivityHandler);
+    viewModel.setStateHandler(this._reloadWidgets);
     viewModel.getStoryList(this._updateStoryList);
+    viewModel.pageExist = true;
   }
   @override
   void dispose(){
+    viewModel.pageExist = false;
     this._connectivitySub.cancel();
     super.dispose();
   }
@@ -38,6 +41,10 @@ class _HomePageState extends State<HomePage> {
     this.setState(() {
       this._stories = StoryList(items: viewModel.convertStoryModelToItems(data));
     });
+  }
+
+  void _reloadWidgets(){
+    setState(() {});
   }
 
   Container _buildActions(BuildContext context, double height) {
