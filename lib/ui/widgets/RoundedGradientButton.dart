@@ -6,7 +6,7 @@ Widget gradientContainer(BuildContext context, double incHeightBy, double incWid
   return Container(
     height: buttonTheme.height + incHeightBy,
     width: buttonTheme.minWidth + incWidthBy,
-    decoration: BoxDecoration(gradient: AThemes.selectedTheme.btnGradient),
+    decoration: BoxDecoration(/*gradient: AThemes.selectedTheme.btnGradient*/color: Colors.white70),
     child: Center(child: child),
   );
 }

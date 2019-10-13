@@ -48,7 +48,7 @@ class ProjectBrowsingPageState extends State<ProjectBrowsingPage> {
       resizeToAvoidBottomPadding: true,
       endDrawer: Theme(
         data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
-        child: buildEndDrawer(context: context, viewModel: viewModel),
+        child: buildEndDrawer(context: context, viewModel: viewModel, projectSearch: false),
       ),
       body: Builder(builder: (BuildContext context) {
         return SafeArea(

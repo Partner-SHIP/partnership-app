@@ -7,6 +7,6 @@
      <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/partnership_splashscreen" />
+            android:src="@drawable/logo_white_partnership" />
      </item>
 </layer-list>

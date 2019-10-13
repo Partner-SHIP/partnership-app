@@ -19,7 +19,7 @@ class SignUpPageViewModel extends AViewModel {
         };
         this.model.createProfile(args, user.uid);
       }
-      return (user == null);
+      return (user != null);
     });
     return (ret);
   }

@@ -9,6 +9,8 @@ import 'package:partnership/coordinator/NotificationModule.dart';
 import 'package:partnership/viewmodel/AViewModel.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 
+import 'package:tuple/tuple.dart';
+
 import 'ChatModule.dart';
 /*
     Head of the App, brings severals utility modules like Routing, internet connectivity etc...
@@ -27,6 +29,7 @@ abstract class ICoordinator{
   AssetBundle          getAssetBundle();
   String               getContactId();
   void                 setContactId(String contactId);
+  void                  setPageContext(Tuple2<BuildContext, String> newPageContext);
 }
 
 class Coordinator extends State<PartnershipApp> implements ICoordinator {
@@ -39,7 +42,10 @@ class Coordinator extends State<PartnershipApp> implements ICoordinator {
   final Map<String, AViewModel> _viewModels = AViewModelFactory.register;
   AssetBundle                   _assetBundle;
   StreamSubscription<bool>      _connectivitySub;
-
+  StreamSubscription<EnumNotification>      _notificationSub;
+  BuildContext        _context;
+  GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  Tuple2<BuildContext, String> _pageContext;
   Coordinator._internal(){
     _connectivity.initializeConnectivityModule();
     _notification.initializeNotificationModule();
@@ -58,17 +64,22 @@ class Coordinator extends State<PartnershipApp> implements ICoordinator {
   void initState(){
     super.initState();
     this._connectivitySub = this._connectivity.subscribeToConnectivity(this._connectivityHandler);
+    this._notificationSub = this._notification.subscribeToNotification(this._notificationHandler);
   }
 
   @override
   void dispose(){
     this._connectivitySub.cancel();
+    this._notificationSub.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext _context) {
+    this._context = _context;
     MaterialApp app = MaterialApp(
+      debugShowCheckedModeBanner: false,
+      navigatorKey: navigatorKey,
       onGenerateTitle: (context) {
       return 'PartnerSHIP';
       },
@@ -105,6 +116,7 @@ class Coordinator extends State<PartnershipApp> implements ICoordinator {
   void _setUpInitialRoutes(){
     this.fetchRegisterToNavigate(route: _router.routes.loginPage, context: null, navigate: false);
     this.fetchRegisterToNavigate(route: _router.routes.homePage, context: null, navigate: false);
+    this.fetchRegisterToNavigate(route: _router.routes.notificationsPage, context: null, navigate: false);
   }
 
   bool _fetchRegisterToNavigate({@required String route, @required BuildContext context, bool navigate = true, bool popStack = false}) {
@@ -150,7 +162,7 @@ class Coordinator extends State<PartnershipApp> implements ICoordinator {
 
   @override
   FirebaseUser getLoggedInUser() {
-    return this.authentication.getLoggedInUser();
+    return this._authentication.getLoggedInUser();
   }
 
   @override
@@ -165,6 +177,43 @@ class Coordinator extends State<PartnershipApp> implements ICoordinator {
 
   void _connectivityHandler(bool value) {
     // Do something involving internet connection's status
+  }
+
+  void _notificationHandler(EnumNotification notification){
+    print('NEW NOTIFICATION FROM COORDINATOR');
+    switch (notification) {
+      case EnumNotification.NOTIFICATION_MESSAGE:
+        if (this._authentication.getLoggedInUser() != null)
+          {
+            if (this._pageContext.item2 == _router.routes.notificationsPage)
+              Scaffold.of(this._pageContext.item1).showSnackBar(SnackBar(content: Text('une nouvelle notification est arrivée !')));
+            else
+              this.fetchRegisterToNavigate(route: _router.routes.notificationsPage, context: this._pageContext.item1, navigate: true, popStack: false);
+              //this.navigatorKey.currentState.pushNamed(_router.routes.notificationsPage);
+          }
+        else
+          print('PRB AVEC NOTIF MESSAGE');
+        break;
+      case EnumNotification.NOTIFICATION_RESUME:
+        if (this._authentication.getLoggedInUser() != null)
+        {
+            this.navigatorKey.currentState.pushNamed(_router.routes.notificationsPage).then((_) => Scaffold.of(this._pageContext.item1).showSnackBar(SnackBar(content: Text('une nouvelle notification est arrivée !'))));
+        }
+        else
+          print('PRB AVEC NOTIF RESUME');
+        break;
+      case EnumNotification.NOTIFICATION_LAUNCH:
+        if (this._authentication.getLoggedInUser() != null)
+        {
+          this.navigatorKey.currentState.pushNamed(_router.routes.notificationsPage);
+        }
+        else
+          print('PRB AVEC NOTIF LAUNCH');
+        break;
+
+      default:
+        break;
+    }
   }
 
   @override
@@ -192,6 +241,11 @@ class Coordinator extends State<PartnershipApp> implements ICoordinator {
   void setContactId(String contactId) {
     this._chat.setContactId(contactId);
     // TODO: implement setContactId
+  }
+
+  @override
+  void setPageContext(Tuple2<BuildContext, String> newPageContext) {
+    this._pageContext = newPageContext;
   }
 }
 

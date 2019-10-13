@@ -41,6 +41,24 @@ abstract class AViewModel implements AViewModelFactory
 
   AModel get abstractModel => this._abstractModel;
   String get route => this._route;
+  Function _reloadHandler;
+  bool     _pageExist = false;
+
+  set pageExist(bool exist) => _pageExist = exist;
+
+  void setPageContext(newPageContext) {
+    this._coordinator.setPageContext(newPageContext);
+  }
+
+
+  void setStateHandler(Function handler){
+    _reloadHandler = handler;
+  }
+
+  void reloadView(){
+    if (this._pageExist)
+      this._reloadHandler();
+  }
 
   bool changeView({@required String route,@required BuildContext widgetContext, bool popStack = false}){
       return this._coordinator.fetchRegisterToNavigate(route: route, context: widgetContext, popStack: popStack);

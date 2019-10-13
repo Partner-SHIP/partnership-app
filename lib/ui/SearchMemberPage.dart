@@ -23,15 +23,15 @@ class SearchMemberPageState extends State<SearchMemberPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomPadding: true,
-        endDrawer: Theme(
-          data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
-          child: buildEndDrawer(context: context, viewModel: viewModel),
-        ),
-        body: Builder(builder: (BuildContext context){
-          return SafeArea(
-            top: false,
-            child: ThemeContainer(context,
+      resizeToAvoidBottomPadding: true,
+      endDrawer: Theme(
+        data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
+        child: buildEndDrawer(context: context, viewModel: viewModel, searchMember: false),
+      ),
+      body: Builder(builder: (BuildContext context){
+        return SafeArea(
+          top: false,
+          child: ThemeContainer(context, 
               Column(
                 children: <Widget>[
                   pageHeader(context, 'recherche d\'utilisateurs'),
