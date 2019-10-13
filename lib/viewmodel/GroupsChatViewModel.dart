@@ -30,7 +30,7 @@ class GroupsChatViewModel extends AViewModel {
 
   void initNames(){
     this._model.initMyName();
-    //this._model.initContactName();
+    this._model.initContactName();
   }
 
   String getContactListPath() => 'chat/' + _model.myId + '/conversations';

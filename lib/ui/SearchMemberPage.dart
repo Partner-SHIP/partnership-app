@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:partnership/coordinator/AppCoordinator.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/viewmodel/SearchMemberPageViewModel.dart';
 import 'package:partnership/utils/Routes.dart';
@@ -48,106 +49,160 @@ class SearchMemberPageState extends State<SearchMemberPage> {
                             case ConnectionState.waiting:
                               return new Text('Loading...');
                             default:
-                              return new ListView(
-                                children: snapshot.data.documents.map((DocumentSnapshot document) {
-                                  return new CustomCard(
-                                    firstName: document['firstName'],
-                                    lastName: document['lastName'],
-                                    cityLocation: document['cityLocation'],
-                                    studies: document['studies'],
-                                    uid: document['uid'],
-                                  );
-                                }).toList(),
+                              return new Scrollbar (
+                                  child: ListView.builder(
+                                      itemCount: snapshot.data.documents.length,
+                                      itemBuilder: (context, index){
+                                        return new CustomCardState(snapshot.data.documents[index]);
+                                      }
+                                  )
                               );
                           }
                         },
                       ))
                 ],
               ),
-          ),
-        );
-      })
+            ),
+          );
+        })
     );
   }
 }
 
-class CustomCard extends StatelessWidget {
-  CustomCard({@required this.firstName, this.lastName, this.cityLocation, this.studies, this.uid});
+class CustomCardState extends StatefulWidget {
+  CustomCardState(this.document);
+  final DocumentSnapshot document;
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return new CustomCard(
+      firstName: document['firstName'],
+      lastName: document['lastName'],
+      cityLocation: document['cityLocation'],
+      studies: document['studies'],
+      uid: document['uid'],
+      rec_contacts: document['rec_contacts'],
+      contacts: document['contacts'],
+    );
+  }
+  }
+
+class CustomCard extends State<CustomCardState> {
+  CustomCard({@required this.firstName, this.lastName, this.cityLocation, this.studies, this.uid, this.rec_contacts, this.contacts});
+
+  static Coordinator coordinator = new Coordinator();
+  String myUid = coordinator.getLoggedInUser().uid;
 
   final firstName;
   final lastName;
   final cityLocation;
   final studies;
   final uid;
+  final rec_contacts;
+  final contacts;
 
-Widget get memberImage {
-  return Container(
-    width: 100.0,
-    height: 100.0,
-    decoration: BoxDecoration(
-      shape: BoxShape.circle,
-      image: DecorationImage(
-        fit: BoxFit.cover,
-        image: NetworkImage('https://marineprofessionals.com/wp-content/uploads/2018/12/anonymous.png'),
+  Widget get memberImage {
+    return Container(
+      width: 100.0,
+      height: 100.0,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        image: DecorationImage(
+          fit: BoxFit.cover,
+          image: NetworkImage('https://marineprofessionals.com/wp-content/uploads/2018/12/anonymous.png'),
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 
-Widget get memberCard {
-  return Container(
-    width: 290.0,
-    height: 115.0,
-    child: Card(
+  /*Wrap(
+  //crossAxisAlignment: CrossAxisAlignment.start,
+  //mainAxisAlignment: MainAxisAlignment.spaceAround,
+  children: <Widget>[
+  Text(firstName + ' ' + lastName, style: TextStyle(
+  fontSize: 20,
+  fontFamily: 'Orkney',
+  fontWeight: FontWeight.bold,
+  color: Colors.black87,
+  )
+  ),
+  Text(cityLocation + ' / ' + studies, style: TextStyle(
+  fontSize: 15,
+  fontFamily: 'Orkney',
+  fontWeight: FontWeight.normal,
+  color: Colors.black87,
+  ),
+  ),
+  IconButton(icon: Icon(Icons.add, color: Colors.indigo), onPressed: null),
+  ],
+  ),*/
+
+  Widget get memberCard {
+    Coordinator coordinator = new Coordinator();
+    String myUid = coordinator.getLoggedInUser().uid;
+    List rec = new List();
+    List contacts = this.contacts;
+    MaterialColor colors;
+
+    //rec.addAll();
+    /* if (rec.contains(this.uid) == true)
+      colors = Colors.indigo;
+    else
+      colors = Colors.transparent;*/
+      //return Container(
+    child: return new Card(
       color: Colors.white54,
-      child: Padding(
-        padding: const EdgeInsets.only(
-          top: 8.0,
-          bottom: 8.0,
-          left: 64.0,
+      child: ListTile(
+        title:  Text(firstName + ' ' + lastName, style: TextStyle(
+          fontSize: 20,
+          fontFamily: 'Orkney',
+          fontWeight: FontWeight.bold,
+          color: Colors.black87,
+        )
         ),
-        child: Wrap(
-          //crossAxisAlignment: CrossAxisAlignment.start,
-          //mainAxisAlignment: MainAxisAlignment.spaceAround,
+        subtitle: Text(cityLocation + ' / ' + studies, style: TextStyle(
+          fontSize: 15,
+          fontFamily: 'Orkney',
+          fontWeight: FontWeight.normal,
+          color: Colors.black87,
+        ),
+        ),
+        trailing: IconButton(
+            icon: Icon(Icons.add, color: Colors.indigoAccent),
+            onPressed: () {
+      //        if (rec.contains(myUid) == true) {
+        //        rec.remove(myUid);
+                Firestore.instance.collection("profiles")
+                    .document(myUid)
+                    .updateData(
+                    {"send_contacts": FieldValue.arrayUnion([this.uid])});
+                Firestore.instance.collection("profiles")
+                    .document(this.uid)
+                    .updateData(
+                    {"rec_contacts": FieldValue.arrayUnion([myUid])});
+          //    }
+            }
+        ),
+      ),
+    );
+    //);
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      child: Container(
+        //height: 115.0,
+        child: Stack(
           children: <Widget>[
-            Text(firstName + ' ' + lastName, style: TextStyle(
-            fontSize: 20,
-            fontFamily: 'Orkney',
-            fontWeight: FontWeight.bold,
-            color: Colors.black87,
-          )
-        ),
-           Text(cityLocation + ' / ' + studies, style: TextStyle(
-            fontSize: 15,
-            fontFamily: 'Orkney',
-            fontWeight: FontWeight.normal,
-            color: Colors.black87,
-          ),
-           ),
-            IconButton(icon: Icon(Icons.add, color: Colors.indigo), onPressed: null),
+            Positioned(
+              //left: 50.0,
+              child: memberCard,
+            ),
+            Positioned(top: 7.5, child: memberImage),
           ],
         ),
       ),
-      
-    ),
-  );
-}
- @override
-  Widget build(BuildContext context) {
- return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-    child: Container(
-      height: 115.0,
-      child: Stack(
-        children: <Widget>[
-          Positioned(
-            left: 50.0,
-            child: memberCard,
-          ),
-          Positioned(top: 7.5, child: memberImage),
-        ],
-      ),
-    ),
-  );
+    );
   }
 }
