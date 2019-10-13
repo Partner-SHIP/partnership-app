@@ -48,7 +48,7 @@ class NavigPageState extends State<NavigPage> with SingleTickerProviderStateMixi
       resizeToAvoidBottomPadding: true,
       endDrawer: Theme(
           data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
-          child: buildEndDrawer(context: null, viewModel: viewModel, chat: false)
+          child: buildEndDrawer(context: (context), viewModel: viewModel)
       ),
       /*appBar: new AppBar(
        actions: <Widget>[
@@ -69,7 +69,7 @@ class NavigPageState extends State<NavigPage> with SingleTickerProviderStateMixi
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                   pageHeader(context, 'Messagerie'),
+                  pageHeader(context, 'Messagerie'),
                   //Other Widgets Here*/
                   Container(
                       child: new TabBarView(

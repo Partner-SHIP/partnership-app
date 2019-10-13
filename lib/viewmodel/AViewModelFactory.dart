@@ -12,7 +12,6 @@ import 'package:partnership/viewmodel/ProjectDescriptionPageViewModel.dart';
 import 'package:partnership/viewmodel/ProjectBrowsingPageViewModel.dart';
 import 'package:partnership/viewmodel/ChatPageViewModel.dart';
 import 'package:partnership/viewmodel/GroupsPageViewModel.dart';
-import 'package:partnership/viewmodel/AddContactViewModel.dart';
 import 'package:partnership/viewmodel/ChatConvViewModel.dart';
 import 'package:partnership/viewmodel/NavigPageViewModel.dart';
 import 'package:partnership/viewmodel/SearchMemberPageViewModel.dart';

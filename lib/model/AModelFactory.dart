@@ -12,7 +12,6 @@ import 'package:partnership/model/ProjectDescriptionPageModel.dart';
 import 'package:partnership/model/ChatPageModel.dart';
 import 'package:partnership/model/GroupsPageModel.dart';
 import 'package:partnership/model/ChatConvModel.dart';
-import 'package:partnership/model/AddContactModel.dart';
 import 'package:partnership/model/HomePageModel.dart';
 import 'package:partnership/model/SearchMemberPageModel.dart';
 import 'package:partnership/model/NavigPageModel.dart';
