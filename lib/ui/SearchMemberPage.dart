@@ -93,11 +93,11 @@ class CustomCard extends State<CustomCardState> {
   static Coordinator coordinator = new Coordinator();
   String myUid = coordinator.getLoggedInUser().uid;
 
-  final firstName;
-  final lastName;
-  final cityLocation;
-  final studies;
-  final uid;
+  final String firstName;
+  final String lastName;
+  final String cityLocation;
+  final String studies;
+  final String uid;
   final rec_contacts;
   final contacts;
 
@@ -160,7 +160,7 @@ class CustomCard extends State<CustomCardState> {
           color: Colors.black87,
         )
         ),
-        subtitle: Text(cityLocation + ' / ' + studies, style: TextStyle(
+        subtitle: Text(this.formatCardInfo(), style: TextStyle(
           fontSize: 15,
           fontFamily: 'Orkney',
           fontWeight: FontWeight.normal,
@@ -187,6 +187,17 @@ class CustomCard extends State<CustomCardState> {
     );
     //);
   }
+
+  String formatCardInfo(){
+    String undefinedCity = 'Location non renseignée';
+    String undefinedStudies = 'Etudes non renseignées';
+    const String separator = ' / ';
+    String ret;
+    (this.cityLocation != null && this.cityLocation.isNotEmpty) ? ret = this.cityLocation+separator : ret = undefinedCity+separator;
+    (this.studies != null && this.studies.isNotEmpty) ? ret = this.studies+separator : ret = undefinedStudies+separator;
+    return ret;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
