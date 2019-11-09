@@ -1,12 +1,10 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:partnership/coordinator/AppCoordinator.dart';
 import 'package:partnership/ui/widgets/ThemeContainer.dart';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/ChatScreenViewModel.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
+import 'package:tuple/tuple.dart';
 
 class ChatScreen extends StatefulWidget {
   ChatScreen();
@@ -69,6 +67,7 @@ class ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     print(viewModel.getMyConvPath());
+    viewModel.setPageContext(Tuple2<BuildContext, String>(context, _routing.chatScreenPage));
     return StreamBuilder<DocumentSnapshot>(
       stream:
           Firestore.instance.document(viewModel.getMyConvPath()).snapshots(),

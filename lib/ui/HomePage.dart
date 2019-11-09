@@ -7,6 +7,7 @@ import 'package:partnership/ui/widgets/StoryList.dart';
 import 'package:partnership/ui/widgets/ThemeContainer.dart';
 import 'package:partnership/ui/widgets/EndDrawer.dart';
 import 'package:partnership/ui/widgets/PageHeader.dart';
+import 'package:tuple/tuple.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -76,6 +77,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Builder(
         builder: (BuildContext context) {
+          viewModel.setPageContext(Tuple2<BuildContext, String>(context, _routing.homePage));
           return SafeArea(
               top: false,
               child: ThemeContainer(

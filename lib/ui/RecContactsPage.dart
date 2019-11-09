@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:partnership/coordinator/AppCoordinator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:tuple/tuple.dart';
 
 class RecContactsPage extends StatelessWidget {
   @override

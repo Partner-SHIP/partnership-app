@@ -185,6 +185,7 @@ class Coordinator extends State<PartnershipApp> implements ICoordinator {
       case EnumNotification.NOTIFICATION_MESSAGE:
         if (this._authentication.getLoggedInUser() != null)
           {
+            print(this._pageContext);
             if (this._pageContext.item2 == _router.routes.notificationsPage)
               Scaffold.of(this._pageContext.item1).showSnackBar(SnackBar(content: Text('une nouvelle notification est arrivée !')));
             else

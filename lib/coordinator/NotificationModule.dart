@@ -55,7 +55,7 @@ class NotificationModule implements INotification {
   }
 
   void update(String token) {
-    print(token);
+    print("token : ["+token+"]");
   }
 
   @override

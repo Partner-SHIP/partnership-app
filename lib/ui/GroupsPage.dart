@@ -1,18 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:partnership/viewmodel/ChatMessageViewModel.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/utils/Routes.dart';
-
-import 'package:partnership/viewmodel/ChatPageViewModel.dart';
-import 'package:partnership/utils/Routes.dart';
-import 'package:partnership/ui/widgets/ThemeContainer.dart';
-import 'package:partnership/ui/widgets/PageHeader.dart';
-import 'package:partnership/ui/widgets/EndDrawer.dart';
-import 'package:partnership/ui/ContactData.dart';
 import 'package:partnership/coordinator/AppCoordinator.dart';
-import 'package:partnership/ui/GroupsChat.dart';
 import 'package:partnership/viewmodel/GroupsPageViewModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:tuple/tuple.dart';
 
 class GroupsPage extends StatelessWidget {
   @override
@@ -62,6 +54,7 @@ class GroupsPageState extends State<GroupsPageStateful> {
 
   @override
   Widget build(BuildContext context) {
+    viewModel.setPageContext(Tuple2<BuildContext, String>(context, _routing.groupsPage));
     return new StreamBuilder<QuerySnapshot>(
         stream: Firestore.instance.collection("projects/").where("joined_uid", arrayContains: myUid).snapshots(),
         builder: (context, snapshot) {

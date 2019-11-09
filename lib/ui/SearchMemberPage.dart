@@ -7,6 +7,7 @@ import 'package:partnership/ui/widgets/ThemeContainer.dart';
 import 'package:partnership/ui/widgets/EndDrawer.dart';
 import 'package:partnership/ui/widgets/PageHeader.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:tuple/tuple.dart';
 
 class SearchMemberPage extends StatefulWidget {
   @override
@@ -29,6 +30,7 @@ class SearchMemberPageState extends State<SearchMemberPage> {
         child: buildEndDrawer(context: context, viewModel: viewModel, searchMember: false),
       ),
       body: Builder(builder: (BuildContext context){
+        viewModel.setPageContext(Tuple2<BuildContext, String>(context, _routing.searchMemberPage));
         return SafeArea(
           top: false,
           child: ThemeContainer(context, 
