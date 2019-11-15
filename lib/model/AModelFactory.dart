@@ -1,22 +1,46 @@
+import 'package:flutter/foundation.dart';
 import 'package:partnership/model/AModel.dart';
 import 'package:partnership/model/LoginPageModel.dart';
-import 'package:partnership/model/ProjectModel.dart';
+import 'package:partnership/model/NotificationsPageModel.dart';
 import 'package:partnership/model/SignInPageModel.dart';
 import 'package:partnership/model/SignUpPageModel.dart';
 import 'package:partnership/model/ProfilePageModel.dart';
 import 'package:partnership/model/CreationPageModel.dart';
 import 'package:partnership/model/IdeaPageModel.dart';
 import 'package:partnership/model/ProjectBrowsingPageModel.dart';
+import 'package:partnership/model/ProjectDescriptionPageModel.dart';
+import 'package:partnership/model/ChatPageModel.dart';
+import 'package:partnership/model/GroupsPageModel.dart';
+import 'package:partnership/model/ChatConvModel.dart';
+import 'package:partnership/model/HomePageModel.dart';
+import 'package:partnership/model/SearchMemberPageModel.dart';
+import 'package:partnership/model/NavigPageModel.dart';
+
 import 'package:partnership/utils/Routes.dart';
 
-abstract class AModelFactory{
-  static final Map<String, AModel> register = <String, AModel>{};
+import 'ChatScreenModel.dart';
+import 'GroupsChatModel.dart';
 
-  static RoutesEnum fetchRoutes(String route, IRoutes routing){
+abstract class AModelFactory{
+  static final Map<String, AModel>  register = <String, AModel>{};
+  static final IRoutes              _routes = Routes();
+
+  static RoutesEnum fetchRoutes(String route){
     RoutesEnum target;
-    routing.routeList().forEach((value){
+    _routes.routeList().forEach((value){
       if (value == route){
-        target = routing.routeEnumMap()[value];
+        target = _routes.routeEnumMap()[value];
+        return target;
+      }
+    });
+    return target;
+  }
+
+  static DynamicRoutesEnum fetchDynamicRoutes(String route){
+    DynamicRoutesEnum target;
+    _routes.dynamicRouteList().forEach((value){
+      if (value == route){
+        target = _routes.dynamicRouteEnumMap()[value];
         return target;
       }
     });
@@ -29,7 +53,7 @@ abstract class AModelFactory{
     else {
       AModel model;
       IRoutes _routing = Routes();
-      RoutesEnum targetedRoute = fetchRoutes(route, _routing);
+      RoutesEnum targetedRoute = fetchRoutes(route);
       switch (targetedRoute){
         case RoutesEnum.loginPage:
           model = LoginPageModel();
@@ -52,7 +76,7 @@ abstract class AModelFactory{
           register[_routing.creationPage] = model;
           break;
         case RoutesEnum.homePage:
-          model = ProjectModel();
+          model = HomePageModel();
           register[_routing.homePage] = model;
           break;
         case RoutesEnum.projectBrowsingPage:
@@ -63,11 +87,56 @@ abstract class AModelFactory{
           model = IdeaPageModel();
           register[_routing.ideaPage] = model;
           break;
+        case RoutesEnum.chatPage:
+          model = ChatPageModel();
+          register[_routing.chatPage] = model;
+          break;
+        case RoutesEnum.chatScreenPage:
+          model = ChatScreenModel();
+          register[_routing.chatScreenPage] = model;
+          break;
+        case RoutesEnum.searchMemberPage:
+          model = SearchMemberPageModel();
+          register[_routing.searchMemberPage] = model;
+          break;
+        case RoutesEnum.notificationsPage:
+          model = NotificationsPageModel();
+          register[_routing.notificationsPage] = model;
+          break;
+        case RoutesEnum.navigPage:
+          model = NavigPageModel();
+          register[_routing.navigPage] = model;
+          break;
+        case RoutesEnum.groupsPage:
+          model = GroupsPageModel();
+          register[_routing.groupsPage] = model;
+          break;
+        case RoutesEnum.groupsChat:
+          model = GroupsChatModel();
+          register[_routing.groupsChat] = model;
+          break;
         default:
-          model = null;
+          throw Exception("Error while constructing Model: the route \"$route\" provided is unknown !");
           break;
       }
       return model;
     }
+  }
+
+  factory AModelFactory.createDynamicModel({@required String route}){
+    AModel model;
+    DynamicRoutesEnum targetedRoute = fetchDynamicRoutes(route);
+    switch (targetedRoute) {
+      case DynamicRoutesEnum.projectDescriptionPage:
+        model = ProjectDescriptionPageModel();
+        break;
+      case DynamicRoutesEnum.chatConvPage:
+        model = ChatConvModel();
+        break;
+      default:
+        throw Exception("Error while constructing dynamic Model: the route \"$route\" provided is unknown !");
+        break;
+    }
+    return model;
   }
 }

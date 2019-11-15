@@ -6,8 +6,10 @@ import 'package:partnership/utils/Routes.dart';
 */
 abstract class IRouting {
   void navigateTo({@required String route, @required BuildContext context, bool popStack = false});
+  void pushDynamicPage({@required String route, @required BuildContext context, @required Map<String, dynamic> args});
   dynamic  routeMap();
-  String get initialRoute;
+  Map<String, Widget> materialPageMap();
+  IRoutes get routes;
 }
 
 class RoutingModule implements IRouting {
@@ -31,9 +33,29 @@ class RoutingModule implements IRouting {
     }
   }
 
+  void _pushDynamicPage({@required String route, @required BuildContext context, @required Map<String, dynamic> args}){
+    try {
+      if (!this._routes.dynamicRouteList().contains(route)){
+        throw Exception("Routing error: trying to reach an unknown dynamic route: "+route);
+      }
+      else {
+        MaterialPageRoute page = MaterialPageRoute(builder: (context) => this._routes.getDynamicPage(route: route, args: args) as Widget);
+        Navigator.of(context).push(page);
+      }
+    }
+    catch(error){
+      rethrow;
+    }
+  }
+
   @override
   void navigateTo({String route, BuildContext context, bool popStack = false}) {
     this._navigateTo(route: route, context: context, popStack: popStack);
+  }
+
+  @override
+  void pushDynamicPage({@required String route, @required BuildContext context, @required Map<String, dynamic> args}) {
+    this._pushDynamicPage(route: route, context: context, args: args);
   }
 
   @override
@@ -42,5 +64,10 @@ class RoutingModule implements IRouting {
   }
 
   @override
-  String get initialRoute => this._routes.loginPage;
+  Map<String, Widget> materialPageMap() {
+    return this._routes.materialPagesMap();
+  }
+
+  @override
+  IRoutes get routes => this._routes;
 }

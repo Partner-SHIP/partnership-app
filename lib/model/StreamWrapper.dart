@@ -11,12 +11,12 @@ class StreamWrapper<T>{
 
   StreamWrapper(
       {
-        @required Stream<T>    stream,
         @required Function     listenCallback,
         @required Function     pauseCallback,
         @required Function     resumeCallback,
         @required Function     cancelCallback,
-        Function               errorCallback
+        Function               errorCallback,
+        Stream                 stream
       })
   {
     try{
@@ -31,8 +31,8 @@ class StreamWrapper<T>{
           onResume: resumeCallback,
           onCancel: cancelCallback
         );
-      _initDone = this._addStream(stream)
-                      .then((_) => this._streamController.sink.close());
+      if (stream != null)
+        _initDone = this._addStream(stream).then((_) => this._streamController.sink.close());
     }
     catch(error){
       if (errorCallback != null)
@@ -55,6 +55,14 @@ class StreamWrapper<T>{
 
   Stream<T> getStream(){
     return this._streamController.stream;
+  }
+
+  void addEvents(List<T> events){
+    events.forEach((event) => this._streamController.add(event));
+  }
+
+  void addEvent(T event){
+    this._streamController.add(event);
   }
 
   StreamSubscription<T> subscribeToStream({@required Function handler}){

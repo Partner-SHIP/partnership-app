@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:partnership/ui/widgets/LabeledIconButton.dart';
+import 'dart:ui';
 
 class LabeledIconButtonList extends StatelessWidget {
   final List<LabeledIconButton> _childs;
@@ -13,7 +14,9 @@ class LabeledIconButtonList extends StatelessWidget {
     Widget result = MaterialButton(onPressed: function, child: buttonContent, );
     return (result);
   }
-  Column _buildColumn() {
+
+
+  Column _buildColumn(BuildContext context) {
     List<Widget> rows = List<Widget>();
     for (LabeledIconButton elem in _childs)
       rows.add(_buildColumnElem(elem.buildRowContent(), elem.onPressed));
@@ -31,9 +34,14 @@ class LabeledIconButtonList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Column column = _buildColumn();
+    Column column = _buildColumn(context);
     Container container = Container(
-      child: column,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          column,
+        ],
+      ),
     );
     return (container);
   }

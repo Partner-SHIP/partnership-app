@@ -1,8 +1,7 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:partnership/model/AModel.dart';
-import 'package:partnership/model/StoriesModel.dart';
+import 'StreamWrapper.dart';
 import 'package:partnership/utils/FBCollections.dart';
 
 class StoryDataModel {
@@ -16,27 +15,21 @@ class StoryDataModel {
 }
 
 class HomePageModel extends AModel {
-  HomePageModel(): super();
-  StoriesModel _stories = StoriesModel(
-    useruid:"FALSE UID"
-  );
-  List<StoryDataModel> _debugMockupList() {
-    List<StoryDataModel> result = List<StoryDataModel>();
-    result.add(StoryDataModel(img_path: "assets/img/login_logo.png", title: "Titre1", description: "description1",));
-    result.add(StoryDataModel(img_path: "assets/img/logo_partnership.png", title: "Titre2", description: "description2 description2 description2 description2 description2 description2 description2 description2 description2",));
-    result.add(StoryDataModel(img_path: "assets/blue_texture.jpg", title: "Titre3 Titre3 Titre3 Titre3 Titre3 Titre3", description: "description3",));
-    result.add(StoryDataModel(img_path: "", title: "Titre4", description: "description4",));
-    result.add(StoryDataModel(img_path: "", title: "Titre5", description: "description5",));
-    result.add(StoryDataModel(img_path: "", title: "Titre6", description: "description6",));
-    result.add(StoryDataModel(img_path: "", title: "Titre7", description: "description7",));
-    result.add(StoryDataModel(img_path: "", title: "Titre8", description: "description8",));
-    return (result);
+  List<StoryDataModel> stories = List<StoryDataModel>();
+  HomePageModel();
+
+  void _updateStories(Map<String, dynamic> json, Function handler) {
+    List values = json["value"];
+    stories.clear();
+    values.forEach((value){
+      stories.add(StoryDataModel(img_path: value["imgPath"], title: value["title"], description: value["description"]));
+    });
+    handler(stories);
   }
-  Future<List<StoryDataModel>> getStories() async {
-    List<StoryDataModel> result;
-    await this._stories.fetch();
-    List<StoryModel> value = await this._stories.getStories();
-    result = value.map((item) => (StoryDataModel(description: item.description, title: item.title, img_path: item.imgPath))).toList();
-    return (result);
+
+  void getStories(Function handler) {
+    this.apiClient
+        .getStories(header: Map<String, String>(), onSuccess: null, onError: null)
+        .then((json) => (json != null) ? this._updateStories(json as Map<String, dynamic>, handler) : print('network error'));
   }
 }

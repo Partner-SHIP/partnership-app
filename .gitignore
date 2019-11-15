@@ -104,3 +104,4 @@ ios/Runner/GeneratedPluginRegistrant.h
 \.config
 
 !*.pbxproj
+ios/Flutter/flutter_export_environment.sh

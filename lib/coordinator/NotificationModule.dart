@@ -1,28 +1,59 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'dart:async';
+import 'dart:io';
+
+import 'package:tuple/tuple.dart';
 
 abstract class INotification {
   void initializeNotificationModule();
+  StreamSubscription subscribeToNotification(Function handler);
+}
+
+enum EnumNotification {
+  PROJECT_CREATION_NOTIFICATION,
+  PROJECT_DELETE_NOTIFICATION,
+  PROJECT_JOINED_NOTIFICATION,
+  PROJECT_LEAVED_NOTIFICATION,
+  CONTACT_ADD_NOTIFICATION,
+  PROJECT_COMMENT_ADD_NOTIFICATION,
+  MESSAGE_NOTIFICATION
 }
 
 class NotificationModule implements INotification {
   static final NotificationModule _instance = NotificationModule._internal();
+  bool titi = false;
   factory NotificationModule() {
     return _instance;
   }
   NotificationModule._internal();
-
   FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
-
+  // ignore: close_sinks
+  StreamController<Map<String, dynamic>> _notificationController
+                              = StreamController<Map<String, dynamic>>();
   void _initialize() {
     firebaseMessaging.configure(
-      onLaunch: (Map<String, dynamic> msg) {
+      onLaunch: (Map<String, dynamic> msg) async {
         print("onLaunch called");
+        msg.forEach((k, v){
+          print(k+" : "+v.toString());
+        });
+        //_notificationController.add(EnumNotification.NOTIFICATION_LAUNCH);
       },
-      onResume: (Map<String, dynamic> msg) {
+      onResume: (Map<String, dynamic> msg) async {
         print("onResume called");
+        msg.forEach((k, v){
+          print(k+" : "+v.toString());
+        });
+
+        //_notificationController.add(EnumNotification.NOTIFICATION_RESUME);
       },
-      onMessage: (Map<String, dynamic> msg) {
+      onMessage: (Map<String, dynamic> msg) async {
         print("onMessage called");
+        msg.forEach((k, v){
+          print(k+" : "+v.toString());
+        });
+        //_notificationController.add(EnumNotification.NOTIFICATION_MESSAGE);
+
       }
     );
     firebaseMessaging.requestNotificationPermissions(
@@ -41,12 +72,17 @@ class NotificationModule implements INotification {
   }
 
   void update(String token) {
-    print(token);
+    print("token : ["+token+"]");
   }
 
   @override
   void initializeNotificationModule() {
     this._initialize();
+  }
+
+  @override
+  StreamSubscription subscribeToNotification(Function handler) {
+    return _notificationController.stream.listen(handler);
   }
 }
 

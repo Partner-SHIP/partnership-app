@@ -4,6 +4,7 @@ import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/IdeaPageViewModel.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tuple/tuple.dart';
 
 class IdeaPage extends StatefulWidget {
   @override
@@ -47,6 +48,7 @@ class IdeaPageState extends State<IdeaPage> {
   }
   @override
   Widget build(BuildContext context) {
+    viewModel.setPageContext(Tuple2<BuildContext, String>(context, _routing.ideaPage));
     return Scaffold(
         body: SafeArea(
             child: SingleChildScrollView(

@@ -1,21 +1,21 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:partnership/model/AModel.dart';
 import 'package:partnership/model/AREST.dart';
 import 'dart:convert';
 
-abstract class ATableModel implements AModel {
+abstract class ATableModel {
   bool _upToDate = false;
   bool _working = false;
-  final int _updateDuration;
-  final String _path;
+  int _updateDuration;
+  String _path;
   Map requestedJSON;
   Map<String, String> _header;
-  ATableModel({int updateDurationInSeconds = 10, @required String path, @required header}) :
+
+/*  ATableModel({int updateDurationInSeconds = 10, @required String path, @required header}) :
     _updateDuration = updateDurationInSeconds,
     _header = header,
     _path = path;
+    */
   void updateHeader(Map<String, String> newHeader) {
     _header = newHeader;
   }
@@ -36,7 +36,8 @@ abstract class ATableModel implements AModel {
   Future<void> _getJSON() async {
     _working = true;
     requestedJSON = null;
-    await AREST.httpsGetRequest(
+    /*
+    await AREST.httpGetRequest(
       path: _path,
       header: _header,
       onError: (onErrorResult) {
@@ -49,13 +50,13 @@ abstract class ATableModel implements AModel {
         if (returnedJSON.keys.contains("error") || returnedJSON.keys.contains("Error"))
           this._upToDate = false;
         else {
-          requestedJSON = returnedJSON; 
+          requestedJSON = returnedJSON;
           readJSON();
           _handleDisupdating();
         }
         _working = false;
       }
-    );
+    );*/
   }
   void readJSON();
   Future<void> fetch() async {

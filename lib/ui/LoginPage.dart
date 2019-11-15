@@ -64,11 +64,11 @@ class LoginPageState extends State<LoginPage> {
             ),
             Text('PartnerShip',
                 style: TextStyle(
-                  //color: Colors.white,
+                  color: Colors.white70,
                   fontFamily: 'Copperplate',
                   fontSize: 35,
-                  foreground: Paint()
-                    ..shader = Gradients.verticalMetallic.createShader(Rect.fromLTWH(0, 150, 250, 40))
+                  //foreground: Paint()
+                    //..shader = Gradients.verticalMetallic.createShader(Rect.fromLTWH(0, 150, 250, 40))
               )
             ),
             ClipRect(
@@ -90,7 +90,7 @@ class LoginPageState extends State<LoginPage> {
 
     final logButtonsWidget = Container(
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height / 4,
+      height: MediaQuery.of(context).size.height / 5,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -162,8 +162,8 @@ class LoginPageState extends State<LoginPage> {
             child: ThemeContainer(context, Column(
               children: <Widget>[
                 Padding(
-                  child: Image.asset('assets/img/logo_partnership.png', width:50, height: 50),
-                  padding: EdgeInsets.only(top: 30, bottom: 30),
+                  child: Image.asset('assets/img/logo_white_partnership.png', width:70, height: 70),
+                  padding: EdgeInsets.only(top: 50, bottom: 30),
                 ),
                 titleWidget,
                 Padding(
