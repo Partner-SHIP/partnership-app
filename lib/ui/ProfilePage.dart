@@ -339,16 +339,16 @@ class ProfilePageState extends State<ProfilePage>
     return Container(
         width: MediaQuery.of(context).size.width,
         height: 120,
-        decoration: BoxDecoration(
-            border: Border(
-                bottom: BorderSide(
-                  width: 1.0,
-                  color: Colors.white,
-                ),
-                top: BorderSide(
-                  width: 1.0,
-                  color: Colors.white,
-                ))),
+        // decoration: BoxDecoration(
+        //     border: Border(
+        //         bottom: BorderSide(
+        //           width: 1.0,
+        //           color: Colors.white,
+        //         ),
+        //         top: BorderSide(
+        //           width: 1.0,
+        //           color: Colors.white,
+        //         ))),
         //color: Colors.cyan,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -383,13 +383,13 @@ class ProfilePageState extends State<ProfilePage>
     return Container(
         width: MediaQuery.of(context).size.width,
         height: 120,
-        decoration: BoxDecoration(
-            border: Border(
-          bottom: BorderSide(
-            width: 1.0,
-            color: Colors.white,
-          ),
-        )),
+        // decoration: BoxDecoration(
+        //     border: Border(
+        //   bottom: BorderSide(
+        //     width: 1.0,
+        //     color: Colors.white,
+        //   ),
+        // )),
         //color: Colors.cyan,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -424,13 +424,13 @@ class ProfilePageState extends State<ProfilePage>
     return Container(
         width: MediaQuery.of(context).size.width,
         height: 120,
-        decoration: BoxDecoration(
-            border: Border(
-          bottom: BorderSide(
-            width: 1.0,
-            color: Colors.white,
-          ),
-        )),
+        // decoration: BoxDecoration(
+        //     border: Border(
+        //   bottom: BorderSide(
+        //     width: 1.0,
+        //     color: Colors.white,
+        //   ),
+        // )),
         //color: Colors.cyan,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -465,13 +465,13 @@ class ProfilePageState extends State<ProfilePage>
     return Container(
         width: MediaQuery.of(context).size.width,
         height: 120,
-        decoration: BoxDecoration(
-            border: Border(
-          bottom: BorderSide(
-            width: 1.0,
-            color: Colors.white,
-          ),
-        )),
+        // decoration: BoxDecoration(
+        //     border: Border(
+        //   bottom: BorderSide(
+        //     width: 1.0,
+        //     color: Colors.white,
+        //   ),
+        // )),
         //color: Colors.cyan,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
