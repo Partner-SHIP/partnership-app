@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:partnership/ui/ChatPage.dart';
 import 'package:partnership/ui/GroupsPage.dart';
-import 'package:partnership/ui/ChatMessage.dart';
 import 'package:partnership/ui/ContactsPage.dart';
 import 'package:partnership/ui/RecContactsPage.dart';
 import 'package:partnership/ui/widgets/EndDrawer.dart';
@@ -10,6 +9,7 @@ import 'package:partnership/ui/widgets/ThemeContainer.dart';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/viewmodel/NavigPageViewModel.dart';
+import 'package:tuple/tuple.dart';
 
 
 class NavigPage extends StatefulWidget {
@@ -61,6 +61,7 @@ class NavigPageState extends State<NavigPage> with SingleTickerProviderStateMixi
       body:  Builder(builder: (BuildContext context) {
         //  _scaffoldKey.currentState.showSnackBar(snackbar)
         // return Center();
+        viewModel.setPageContext(Tuple2<BuildContext, String>(context, _routing.navigPage));
         return SafeArea(
           top: false,
           child: ThemeContainer(

@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/viewmodel/GroupsPageViewModel.dart';
+import 'package:tuple/tuple.dart';
 
 class ContactsPage extends StatelessWidget {
   @override
@@ -69,7 +70,7 @@ class ContactsPageState extends State<ContactsPageStateful> {
   Widget _contactsList(QuerySnapshot contacts){
     IRoutes _routing = Routes();
     GroupsPageViewModel viewModel = AViewModelFactory.register[_routing.groupsPage];
-
+    viewModel.setPageContext(Tuple2<BuildContext, String>(context, _routing.groupsPage));
     return new Scrollbar (
         child: ListView.builder(
             itemCount: contacts.documents.length,

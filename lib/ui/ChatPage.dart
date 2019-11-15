@@ -3,11 +3,11 @@ import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/viewmodel/ChatPageViewModel.dart';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/ui/widgets/ThemeContainer.dart';
-import 'package:partnership/ui/widgets/PageHeader.dart';
 import 'package:partnership/ui/widgets/EndDrawer.dart';
 import 'package:partnership/ui/ContactData.dart';
 import 'package:partnership/coordinator/AppCoordinator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:tuple/tuple.dart';
 
 // CONTACT_VIEW
 
@@ -34,6 +34,7 @@ class ChatPageState extends State<ChatPage> {
           data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
           child: buildEndDrawer(context: context, viewModel: viewModel, chat: false)),
       body: Builder(builder: (BuildContext context) {
+        viewModel.setPageContext(Tuple2<BuildContext, String>(context, _routing.chatPage));
         return SafeArea(
           top: false,
           child: ThemeContainer(

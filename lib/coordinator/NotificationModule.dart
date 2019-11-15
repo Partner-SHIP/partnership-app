@@ -2,15 +2,21 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'dart:async';
 import 'dart:io';
 
+import 'package:tuple/tuple.dart';
+
 abstract class INotification {
   void initializeNotificationModule();
   StreamSubscription subscribeToNotification(Function handler);
 }
 
 enum EnumNotification {
-  NOTIFICATION_MESSAGE,
-  NOTIFICATION_LAUNCH,
-  NOTIFICATION_RESUME
+  PROJECT_CREATION_NOTIFICATION,
+  PROJECT_DELETE_NOTIFICATION,
+  PROJECT_JOINED_NOTIFICATION,
+  PROJECT_LEAVED_NOTIFICATION,
+  CONTACT_ADD_NOTIFICATION,
+  PROJECT_COMMENT_ADD_NOTIFICATION,
+  MESSAGE_NOTIFICATION
 }
 
 class NotificationModule implements INotification {
@@ -21,21 +27,32 @@ class NotificationModule implements INotification {
   }
   NotificationModule._internal();
   FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
-  StreamController<EnumNotification> _notificationController = StreamController<EnumNotification>();
+  // ignore: close_sinks
+  StreamController<Map<String, dynamic>> _notificationController
+                              = StreamController<Map<String, dynamic>>();
   void _initialize() {
     firebaseMessaging.configure(
       onLaunch: (Map<String, dynamic> msg) async {
         print("onLaunch called");
-        _notificationController.add(EnumNotification.NOTIFICATION_LAUNCH);
+        msg.forEach((k, v){
+          print(k+" : "+v.toString());
+        });
+        //_notificationController.add(EnumNotification.NOTIFICATION_LAUNCH);
       },
       onResume: (Map<String, dynamic> msg) async {
         print("onResume called");
+        msg.forEach((k, v){
+          print(k+" : "+v.toString());
+        });
+
         //_notificationController.add(EnumNotification.NOTIFICATION_RESUME);
       },
       onMessage: (Map<String, dynamic> msg) async {
         print("onMessage called");
-        print(_notificationController.hasListener);
-        _notificationController.add(EnumNotification.NOTIFICATION_MESSAGE);
+        msg.forEach((k, v){
+          print(k+" : "+v.toString());
+        });
+        //_notificationController.add(EnumNotification.NOTIFICATION_MESSAGE);
 
       }
     );
@@ -55,7 +72,7 @@ class NotificationModule implements INotification {
   }
 
   void update(String token) {
-    print(token);
+    print("token : ["+token+"]");
   }
 
   @override

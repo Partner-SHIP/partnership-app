@@ -6,6 +6,7 @@ import 'package:partnership/ui/widgets/ThemeContainer.dart';
 import 'package:partnership/style/theme.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:tuple/tuple.dart';
 import 'dart:async';
 
 //final String lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
@@ -182,7 +183,8 @@ class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Builder(builder: (BuildContext context) {
+      body: Builder(builder: (BuildContext context){
+        viewModel.setPageContext(Tuple2<BuildContext, String>(context, _routing.projectDescriptionPage));
         return SafeArea(
           top: false,
           child: ThemeContainer(

@@ -9,6 +9,7 @@ import 'package:partnership/viewmodel/CreationPageViewModel.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tuple/tuple.dart';
 
 class CreationPage extends StatefulWidget {
   @override
@@ -69,6 +70,7 @@ class CreationPageState extends State<CreationPage> {
         resizeToAvoidBottomPadding: true,
         body: Builder(
             builder: (BuildContext context) {
+              viewModel.setPageContext(Tuple2<BuildContext, String>(context, _routing.creationPage));
               return InkWell(
                 onTap: (){
                   FocusScope.of(context).requestFocus(FocusNode());

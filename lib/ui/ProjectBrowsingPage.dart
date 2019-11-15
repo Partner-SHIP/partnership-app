@@ -9,6 +9,7 @@ import 'package:partnership/ui/widgets/SearchBar.dart';
 import 'package:partnership/ui/widgets/ThemeContainer.dart';
 import 'package:partnership/ui/widgets/EndDrawer.dart';
 import 'package:partnership/ui/widgets/PageHeader.dart';
+import 'package:tuple/tuple.dart';
 
 class ProjectBrowsingPage extends StatefulWidget {
   @override
@@ -52,6 +53,7 @@ class ProjectBrowsingPageState extends State<ProjectBrowsingPage> {
         child: buildEndDrawer(context: context, viewModel: viewModel, projectSearch: false),
       ),
       body: Builder(builder: (BuildContext context) {
+        viewModel.setPageContext(Tuple2<BuildContext, String>(context, _routing.projectBrowsingPage));
         return SafeArea(
           top: false,
           child: ThemeContainer(
