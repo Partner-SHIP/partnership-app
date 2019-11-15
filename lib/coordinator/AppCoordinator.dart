@@ -42,7 +42,7 @@ class Coordinator extends State<PartnershipApp> implements ICoordinator {
   final Map<String, AViewModel> _viewModels = AViewModelFactory.register;
   AssetBundle                   _assetBundle;
   StreamSubscription<bool>      _connectivitySub;
-  StreamSubscription<EnumNotification>      _notificationSub;
+  StreamSubscription<Map<String, dynamic>>      _notificationSub;
   BuildContext        _context;
   GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   Tuple2<BuildContext, String> _pageContext;
@@ -179,34 +179,31 @@ class Coordinator extends State<PartnershipApp> implements ICoordinator {
     // Do something involving internet connection's status
   }
 
-  void _notificationHandler(EnumNotification notification){
+  void _notificationHandler(Map<String,dynamic> msg){
     print('NEW NOTIFICATION FROM COORDINATOR');
+    /*
     switch (notification) {
-      case EnumNotification.NOTIFICATION_MESSAGE:
+      case EnumNotification.CONTACT_ADD_NOTIFICATION:
         if (this._authentication.getLoggedInUser() != null)
           {
-            print(this._pageContext);
-            if (this._pageContext.item2 == _router.routes.notificationsPage)
-              Scaffold.of(this._pageContext.item1).showSnackBar(SnackBar(content: Text('une nouvelle notification est arrivée !')));
-            else
-              this.fetchRegisterToNavigate(route: _router.routes.notificationsPage, context: this._pageContext.item1, navigate: true, popStack: false);
-              //this.navigatorKey.currentState.pushNamed(_router.routes.notificationsPage);
+            print("coucou1");
           }
         else
           print('PRB AVEC NOTIF MESSAGE');
         break;
-      case EnumNotification.NOTIFICATION_RESUME:
+      case EnumNotification.MESSAGE_NOTIFICATION:
         if (this._authentication.getLoggedInUser() != null)
         {
-            this.navigatorKey.currentState.pushNamed(_router.routes.notificationsPage).then((_) => Scaffold.of(this._pageContext.item1).showSnackBar(SnackBar(content: Text('une nouvelle notification est arrivée !'))));
+          print("coucou2");
+            //this.navigatorKey.currentState.pushNamed(_router.routes.notificationsPage).then((_) => Scaffold.of(this._pageContext.item1).showSnackBar(SnackBar(content: Text('une nouvelle notification est arrivée !'))));
         }
         else
           print('PRB AVEC NOTIF RESUME');
         break;
-      case EnumNotification.NOTIFICATION_LAUNCH:
+      case EnumNotification.PROJECT_DELETE_NOTIFICATION:
         if (this._authentication.getLoggedInUser() != null)
         {
-          this.navigatorKey.currentState.pushNamed(_router.routes.notificationsPage);
+          print("coucou3");
         }
         else
           print('PRB AVEC NOTIF LAUNCH');
@@ -215,6 +212,7 @@ class Coordinator extends State<PartnershipApp> implements ICoordinator {
       default:
         break;
     }
+     */
   }
 
   @override
