@@ -113,7 +113,14 @@ class ContactList extends StatelessWidget {
                 print(new Coordinator().getContactId());
                 viewModel.changeView(
                     route: _routing.chatScreenPage, widgetContext: context);
-              }),
+              },
+            trailing: IconButton(
+                icon: Icon(Icons.delete, color: Colors.indigo,),
+                onPressed: () {
+                  Firestore.instance.collection("chat/" +  new Coordinator().getLoggedInUser().uid + "/conversations").document(_contacts[index].documentID).delete();
+                  Firestore.instance.collection("chat/" + _contacts[index].documentID + "/conversations").document(new Coordinator().getLoggedInUser().uid).delete();
+                }),
+              ),
         );
         return _ContactListItem(
             _contacts[index].fullName,
@@ -154,6 +161,7 @@ class ContactsPageState extends State<Contacts> {
   }
 
   void setConversationsList(List<DocumentChange> conversations) {
+    kContacts.clear();
     conversations.forEach((conversation) {
       Firestore.instance
           .collection("profiles")
@@ -170,7 +178,6 @@ class ContactsPageState extends State<Contacts> {
             }
           });
         }
-
       });
     });
   }
@@ -180,7 +187,44 @@ class ContactsPageState extends State<Contacts> {
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance.collection("chat/" + new Coordinator().getLoggedInUser().uid + "/conversations").snapshots(),
       builder: (context, snapshot) {
-        if (!snapshot.hasError &&
+        switch (snapshot.connectionState) {
+          case ConnectionState.none:
+          case ConnectionState.waiting:
+            return Center(child: CircularProgressIndicator(backgroundColor: Colors.deepPurple));
+            break;
+          case ConnectionState.active:
+          //  if (kContacts.isEmpty)
+            //  kContacts.clear();
+          //if (kContacts.length > 0)
+          //kContacts.clear();
+            if (snapshot.data.documents.length > kContacts.length)
+              setConversationsList(snapshot.data.documentChanges);
+            snapshot.data.documentChanges.forEach((f) {
+              if (f.type == DocumentChangeType.removed){
+                kContacts.removeWhere((contacts) =>
+                contacts.documentID == f.document.documentID);
+              }
+             else if (kContacts.length > 0)
+            {
+              //else {
+              List messages = f.document.data["messages"];
+              kContacts[kContacts.indexWhere((contacts) =>
+              contacts.documentID == f.document.documentID)]
+                  .message = messages.last["message"];
+              }
+            });
+            if (kContacts.isEmpty)
+              return Center(child: Text("Aucune conversation"));
+            print("active");
+            break;
+          case ConnectionState.done:
+            return Text("DONE");
+            break;
+          default:
+            return Text('Erreur');
+        }
+
+        /*if (!snapshot.hasError &&
             snapshot.connectionState == ConnectionState.active &&
             snapshot.hasData) {
           if (snapshot.data.documents.length > kContacts.length)
@@ -193,7 +237,7 @@ class ContactsPageState extends State<Contacts> {
                   .message = messages.last["message"];
             }
           });
-        }
+        }*/
         return Scaffold(
           body: ContactList(kContacts),
         );

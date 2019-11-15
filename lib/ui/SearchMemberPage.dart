@@ -153,7 +153,7 @@ class CustomCard extends State<CustomCardState> {
       colors = Colors.transparent;*/
       //return Container(
     child: return new Card(
-      color: Colors.white54,
+      color: Colors.white,
       child: ListTile(
         title:  Text(firstName + ' ' + lastName, style: TextStyle(
           fontSize: 20,

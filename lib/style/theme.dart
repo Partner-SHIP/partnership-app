@@ -133,7 +133,7 @@ abstract class AThemes {
     enumTheme.OCEAN: _oceanTheme,
     enumTheme.MARINE: _marineTheme
   };
-  static AppTheme selectedTheme = _themesMap[enumTheme.MARINE];
+  static AppTheme selectedTheme = _themesMap[enumTheme.OCEAN];
   static AppTheme getTheme({@required enumTheme theme}) => _themesMap[theme];
   static changeTheme({@required enumTheme newTheme}) => selectedTheme = _themesMap[newTheme];
 

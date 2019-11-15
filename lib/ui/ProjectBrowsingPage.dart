@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:partnership/utils/Routes.dart';
@@ -131,30 +132,56 @@ class CustomCard extends StatelessWidget {
   Text _buildTitle() {
     return (Text(
       _project['name'] ?? 'title not found',
-      textAlign: TextAlign.left,
+      //textAlign: TextAlign.center,
+      style: TextStyle(color: Colors.white, fontSize: 20),
       //style: storyHeaderTextStyle,
       maxLines: 1,
       overflow: TextOverflow.fade,
     ));
   }
 
-  Text _buildDescription() {
-    return (Text(_project['description'] ?? 'description not found',
-        textAlign: TextAlign.right,
-        //style: storyDescriptionTextStyle,
-        maxLines: 2,
-        overflow: TextOverflow.fade));
-  }
+  // Text _buildDescription() {
+  //   return (Text(_project['description'] ?? 'description not found',
+  //       textAlign: TextAlign.right,
+  //       //style: storyDescriptionTextStyle,
+  //       maxLines: 2,
+  //       overflow: TextOverflow.fade));
+  // }
+
+    Widget _creationProjectRowLogoWidget(BuildContext context) {
+  return Row(
+    children: <Widget>[
+      Expanded(
+        child: Stack(
+          //alignment: Alignment.centerLeft,
+          children: <Widget>[
+            _creationProjectLogoWidget(context)
+          ],
+        ),
+      ),
+    ],
+  );
+}
+
+  Widget _creationProjectLogoWidget(BuildContext context) {
+return Container(
+        width: (MediaQuery.of(context).size.width / 5),
+        height: 70,
+        decoration: BoxDecoration(
+        color: Colors.red,
+        borderRadius: BorderRadius.all(Radius.circular(80.0))),
+    );
+}
 
   Widget _buildContainer({double width, BuildContext context}) {
-    DecorationImage image = DecorationImage(
-        image: NetworkImage(_project['bannerPath'] ?? null),
-        fit: BoxFit.cover,
-        alignment: Alignment.topCenter);
-    BoxDecoration decoration = BoxDecoration(
-        color: Colors.lightBlue[200],
-        borderRadius: BorderRadius.all(Radius.circular(5)),
-        image: image);
+    // DecorationImage image = DecorationImage(
+    //     image: NetworkImage(_project['bannerPath'] ?? null),
+    //     fit: BoxFit.cover,
+    //     alignment: Alignment.topCenter);
+    // BoxDecoration decoration = BoxDecoration(
+    //     color: Colors.transparent,
+    //     borderRadius: BorderRadius.all(Radius.circular(5)));
+        //image: image);
     final double sidePadding = 10;
     Widget result = GestureDetector(
         onTap: () {
@@ -165,16 +192,17 @@ class CustomCard extends StatelessWidget {
             );
         },
         child: Container(
-          decoration: decoration,
-          height: 120,
+          //decoration: decoration,
+          height: MediaQuery.of(context).size.height / 7,
           width: width,
           padding: EdgeInsets.only(
               bottom: 10, top: 10, left: sidePadding, right: sidePadding),
-          child: Column(
+          child: Row(
             children: <Widget>[
-              Container(width: width - sidePadding * 2, child: _buildTitle()),
-              Container(width: width - 10, child: _buildDescription())
-            ],
+              Container(padding: EdgeInsets.only(left: sidePadding * 2), width: (MediaQuery.of(context).size.width / 3), child: _creationProjectRowLogoWidget(context)),
+              Container(padding: EdgeInsets.only(right: sidePadding * 5), child: _buildTitle())
+              //Container(width: width - 10, child: _buildDescription())
+              ],
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
           ),
         ));
