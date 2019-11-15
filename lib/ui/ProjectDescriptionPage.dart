@@ -26,21 +26,24 @@ class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
   StreamSubscription _connectivitySub;
   ProjectDescriptionPageViewModel viewModel;
   Map<String, dynamic> args;
-
-  _ProjectDescriptionPageState(Map<String, dynamic> parameters) : args = parameters;
+  final _idProject = TextEditingController();
+  _ProjectDescriptionPageState(Map<String, dynamic> parameters)
+      : args = parameters;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     DocumentSnapshot project = args['project'];
     var data = project.data;
     print('ARGUMENT : $data');
-    viewModel = AViewModelFactory.createDynamicViewModel(route: _routing.projectDescriptionPage);
-    this._connectivitySub = viewModel.subscribeToConnectivity(this._connectivityHandler);
+    viewModel = AViewModelFactory.createDynamicViewModel(
+        route: _routing.projectDescriptionPage);
+    this._connectivitySub =
+        viewModel.subscribeToConnectivity(this._connectivityHandler);
   }
 
   @override
-  void dispose(){
+  void dispose() {
     this._connectivitySub.cancel();
     super.dispose();
   }
@@ -57,25 +60,23 @@ class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
   Widget _buildLogo() {
     return ClipPath(
       child: Container(
-        margin: EdgeInsets.only(top: 0),
-        width: MediaQuery.of(context).size.width,
-        height: 60,
-        decoration: BoxDecoration(
-          gradient: AThemes.selectedTheme.bgGradient
-        ),
-        child: Stack(
-          alignment: Alignment.center,
-          children: <Widget>[
-            //AutoSizeText("LOGO PLACEHOLDER"),
-            Image.network(args['project'].data['logoPath'], fit: BoxFit.fitHeight),
-          ],
-        )
-      ),
+          margin: EdgeInsets.only(top: 0),
+          width: MediaQuery.of(context).size.width,
+          height: 60,
+          decoration: BoxDecoration(gradient: AThemes.selectedTheme.bgGradient),
+          child: Stack(
+            alignment: Alignment.center,
+            children: <Widget>[
+              //AutoSizeText("LOGO PLACEHOLDER"),
+              Image.network(args['project'].data['logoPath'],
+                  fit: BoxFit.fitHeight),
+            ],
+          )),
       clipper: LogoClipper(),
     );
   }
 
-  Container _buildTitle () {
+  Container _buildTitle() {
     return Container(
       padding: const EdgeInsets.all(25),
       child: Row(
@@ -89,19 +90,15 @@ class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
                   child: AutoSizeText(
                     args['project'].data['name'],
                     style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Orkney',
-                      fontSize: 20
-                    ),
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Orkney',
+                        fontSize: 20),
                   ),
                 ),
                 AutoSizeText(
                   args['project'].data['description'],
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'Orkney'
-                  ),
+                  style: TextStyle(color: Colors.white, fontFamily: 'Orkney'),
                 ),
               ],
             ),
@@ -111,7 +108,7 @@ class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
     );
   }
 
-  Row _buildDescription (BuildContext context) {
+  Row _buildDescription(BuildContext context) {
     //AutoSizeText text = AutoSizeText(lorem, style: TextStyle(color: Colors.white, fontSize: 18), softWrap: true,);
     Row result = Row(
       children: <Widget>[
@@ -126,58 +123,66 @@ class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
     return (result);
   }
 
-  Widget _buildButtonColumn(Color color, IconData icon, String label, BuildContext context) {
+  Widget _buildButtonColumn(
+      Color color, IconData icon, String label, BuildContext context) {
     return InkWell(
-      onTap: () => Scaffold.of(context).showSnackBar(SnackBar(content: Text("BUTTON PUSHED"))),
-      child: ShaderMask(
-        blendMode: BlendMode.srcATop,
-        shaderCallback: (Rect bounds){
-          return AThemes.selectedTheme.btnGradient.createShader(bounds);
+        onTap: () {
+          Scaffold.of(context)
+              .showSnackBar(SnackBar(content: Text("BUTTON PUSHED")));
+          this.viewModel.addLike(args['project'].data['pid'], (String value) {
+            print("COUCOU" + value);
+            Navigator.of(context).pop();
+            viewModel.changeView(
+                route: _routing.homePage, widgetContext: context);
+          });
         },
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, color: color, size: 50),
-            Container(
-              child: Text(
-                label,
-                style: TextStyle(
-                  fontSize: 12,
-                  fontFamily: 'Orkney',
-                  color: color,
+        child: ShaderMask(
+          blendMode: BlendMode.srcATop,
+          shaderCallback: (Rect bounds) {
+            return AThemes.selectedTheme.btnGradient.createShader(bounds);
+          },
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, color: color, size: 50),
+              Container(
+                child: Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontFamily: 'Orkney',
+                    color: color,
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-      )
-    );
+            ],
+          ),
+        ));
   }
 
-  Widget _buildButtons(BuildContext context){
+  Widget _buildButtons(BuildContext context) {
     return Container(
       margin: EdgeInsets.all(8),
       padding: EdgeInsets.all(8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          _buildButtonColumn(Colors.white, Icons.loyalty, 'SUIVRE', context),
-          _buildButtonColumn(Colors.white, Icons.people, 'REJOINDRE', context),
-          _buildButtonColumn(Colors.white, Icons.share, 'PARTAGER', context),
+          _buildButtonColumn(Colors.white, Icons.loyalty, 'AIMER', context),
+          _buildButtonColumn(Colors.white, Icons.people, 'SUIVRE', context),
+          _buildButtonColumn(Colors.white, Icons.share, 'REJOINDRE', context),
         ],
       ),
       decoration: BoxDecoration(
           border: Border.all(color: Colors.white, style: BorderStyle.solid),
-          borderRadius: BorderRadius.all(Radius.circular(10))
-      ),
+          borderRadius: BorderRadius.all(Radius.circular(10))),
     );
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Builder(builder: (BuildContext context){
+      body: Builder(builder: (BuildContext context) {
         return SafeArea(
           top: false,
           child: ThemeContainer(
@@ -190,16 +195,13 @@ class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
                   _buildButtons(context),
                   _buildDescription(context)
                 ],
-              )
-          ),
+              )),
         );
       }),
     );
   }
 
-  void _connectivityHandler(bool value) {
-
-  }
+  void _connectivityHandler(bool value) {}
 }
 
 class LogoClipper extends CustomClipper<Path> {
