@@ -13,9 +13,8 @@ class ProjectDescriptionPageViewModel extends AViewModel {
   File getBannerFile({@required String user, @required String project, @required Function onUpdate}) {
   }
 
-  void addLike(TextEditingController idProject, Function handler) {
-    String pid = idProject.text;
-    this._projectModel.addLike(pid, this.loggedInUser().uid, handler);
+  void addLike(String idProject, Function handler) {
+    this._projectModel.addLike(idProject, this.loggedInUser().uid, handler);
   }
   
 }

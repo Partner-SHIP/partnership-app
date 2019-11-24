@@ -27,7 +27,6 @@ class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
   StreamSubscription _connectivitySub;
   ProjectDescriptionPageViewModel viewModel;
   Map<String, dynamic> args;
-  final _idProject = TextEditingController();
   _ProjectDescriptionPageState(Map<String, dynamic> parameters)
       : args = parameters;
 
