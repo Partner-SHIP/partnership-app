@@ -50,6 +50,9 @@ abstract class AViewModel implements AViewModelFactory
     this._coordinator.setPageContext(newPageContext);
   }
 
+  String getToken(){
+    return this._coordinator.getToken();
+  }
 
   void setStateHandler(Function handler){
     _reloadHandler = handler;

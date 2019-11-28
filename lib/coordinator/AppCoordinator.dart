@@ -30,6 +30,7 @@ abstract class ICoordinator{
   String               getContactId();
   void                 setContactId(String contactId);
   void                  setPageContext(Tuple2<BuildContext, String> newPageContext);
+  String                getToken();
 }
 
 class Coordinator extends State<PartnershipApp> implements ICoordinator {
@@ -245,6 +246,11 @@ class Coordinator extends State<PartnershipApp> implements ICoordinator {
   @override
   void setPageContext(Tuple2<BuildContext, String> newPageContext) {
     this._pageContext = newPageContext;
+  }
+
+  @override
+  String getToken() {
+    return this._notification.getToken();
   }
 }
 

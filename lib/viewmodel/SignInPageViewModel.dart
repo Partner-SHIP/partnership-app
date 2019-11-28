@@ -1,9 +1,11 @@
 import 'package:partnership/viewmodel/AViewModel.dart';
 import 'package:partnership/model/SignInPageModel.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class SignInPageViewModel extends AViewModel {
   SignInPageModel                 _model;
+  Firestore                       _firestore = Firestore.instance;
   SignInPageModel get model => this._model;
 
   SignInPageViewModel(String route) {
@@ -13,10 +15,6 @@ class SignInPageViewModel extends AViewModel {
   Future<bool> signInAction(SignInData inputs) {
     Future<bool> ret = this.signIn(email: inputs.email, password: inputs.password).then((result){
       if (result != null){
-        /*
-        this.getSharedPrefs().setString('account_mail', inputs.email);
-        this.getSharedPrefs().setString('account_mdp', inputs.password);
-        */
         return true;
       }
       else
@@ -26,12 +24,13 @@ class SignInPageViewModel extends AViewModel {
   }
 
   void afterSignIn(BuildContext context) {
-    print("after signin $context");
     this.changeView(
       route:"/home_page",
       widgetContext: context,
       popStack: true
     );
+    print("LE NOUVEAU TOKEN UPDATE : ["+this.getToken()+"]");
+    this._firestore.collection('profiles').document(this.loggedInUser().uid).updateData({'token':this.getToken()});
   }
 }
 
