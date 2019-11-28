@@ -19,6 +19,7 @@ List<Widget> _buildRightDrawerButtons(
         @required bool settings,
         @required bool about,
         @required bool chat,
+        @required bool projectManagement,
     })
 {
   LabeledIconButton profileButton = LabeledIconButton(
@@ -104,9 +105,20 @@ List<Widget> _buildRightDrawerButtons(
     text: "Me déconnecter",
     fullWidth: true,
   );
+  LabeledIconButton projectManagementButton = LabeledIconButton(
+    icon: Icon(Icons.assignment, color: Colors.white),
+    toolTip: 'Mes projets',
+    onPressed: () {
+      Navigator.of(context).pop();
+      viewModel.changeView(route: '/project_management', widgetContext: context);
+    },
+    text: "Mes projets",
+    fullWidth: true,
+  );
 
   List<LabeledIconButton> result = new List<LabeledIconButton>();
   if (profile) result.add(profileButton);
+  if (projectManagement) result.add(projectManagementButton);
   if (searchMember) result.add(searchMemberButton);
   if (projectCreation) result.add(projectCreationButton);
   if (projectSearch) result.add(projectSearchButton);
@@ -147,6 +159,7 @@ Widget buildEndDrawer({
       @required BuildContext context,
       @required AViewModel viewModel,
       bool profile = true,
+      bool projectManagement = true,
       bool disconnect = true,
       bool searchMember = true,
       bool projectSearch = true,
@@ -154,7 +167,7 @@ Widget buildEndDrawer({
       bool notification = true,
       bool chat = true,
       bool settings = true,
-      bool about = true
+      bool about = true,
     })
 {
   List<Widget> buttonsList = _buildRightDrawerButtons(
@@ -169,6 +182,7 @@ Widget buildEndDrawer({
       chat: chat,
       settings: settings,
       about: about,
+      projectManagement: projectManagement,
   );
   return _buildRightDrawer(context: context, buttonsList: buttonsList);
 }
