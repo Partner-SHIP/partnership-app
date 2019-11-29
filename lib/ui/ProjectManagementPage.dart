@@ -46,7 +46,7 @@ class _ProjectManagementPageState extends State<ProjectManagementPage> {
     final Size screenSize = MediaQuery.of(context).size;
     final double paddedHeight = screenSize.height - 24;
     List<Widget> list = [];
-    this.viewModel.projectList.forEach((value) => list.add(PartnershipCard(this.viewModel.dummy.imgUrl, this.viewModel.dummy.projectName, this.viewModel.dummy.metrics, viewModel)));
+    this.viewModel.projectList.forEach((value) => list.add(PartnershipCard(this.viewModel.dummy, viewModel)));
     return Scaffold(
       resizeToAvoidBottomPadding: true,
       endDrawer: Theme(

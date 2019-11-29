@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:partnership/viewmodel/AViewModel.dart';
+import 'package:partnership/viewmodel/ProjectManagementPageViewModel.dart';
 import 'package:partnership/viewmodel/ProjectManagementTabsViewModel.dart';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
@@ -28,14 +29,14 @@ class _ProjectManagementTabsState extends State<ProjectManagementTabs> {
   StreamSubscription _connectivitySub;
   ProjectManagementTabsViewModel viewModel;
   Map<String, dynamic> args;
+  Project _project;
   _ProjectManagementTabsState(Map<String, dynamic> parameters)
       : args = parameters;
 
   @override
   void initState() {
     super.initState();
-    //DocumentSnapshot project = args['project'];
-    //var data = project.data;
+    _project = args['project'];
     viewModel = AViewModelFactory.createDynamicViewModel(
         route: _routing.projectManagementTabs);
     this._connectivitySub =
@@ -73,9 +74,9 @@ class _ProjectManagementTabsState extends State<ProjectManagementTabs> {
             return ThemeContainer(context, SafeArea(
               child: TabBarView(
                 children: [
-                  EditProjectTab(viewModel),
-                  EditMembersTab(viewModel),
-                  CommentaryTab(viewModel)
+                  EditProjectTab(viewModel, _project),
+                  EditMembersTab(viewModel, _project),
+                  CommentaryTab(viewModel, _project)
                 ],
               ),
             ));

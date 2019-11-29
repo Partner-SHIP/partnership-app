@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:partnership/viewmodel/AViewModel.dart';
+import 'package:partnership/viewmodel/ProjectManagementPageViewModel.dart';
 class PartnershipCard extends StatelessWidget {
-  String  img;
-  String  name;
-  int     metrics;
+  Project  project;
   AViewModel viewModel;
-  PartnershipCard(String img, String name, int metrics, AViewModel viewModel): img = img, name = name, metrics = metrics, viewModel = viewModel;
+  PartnershipCard(Project project, AViewModel viewModel): project = project, viewModel = viewModel;
 
   Container _buildImageContainer(BuildContext context){
     return Container(
@@ -16,7 +15,7 @@ class PartnershipCard extends StatelessWidget {
           decoration: BoxDecoration(
               color: Colors.red,
               image: DecorationImage(
-                  image: NetworkImage(img),
+                  image: NetworkImage(project.imgUrl),
                   fit: BoxFit.cover),
               borderRadius: BorderRadius.all(Radius.circular(45.0)),
               boxShadow: [
@@ -31,14 +30,14 @@ class PartnershipCard extends StatelessWidget {
     return Container(
       child: Column(
         children: <Widget>[
-          AutoSizeText(name,style: TextStyle(
+          AutoSizeText(project.projectName,style: TextStyle(
           fontSize: 15,
           fontFamily: 'Orkney',
           fontWeight: FontWeight.bold,
           color: Colors.white)),
           Padding(
             padding: EdgeInsets.only(top: 10),
-            child: AutoSizeText(metrics.toString()+" vues | "+metrics.toString()+" follow | "+metrics.toString()+" likes", style: TextStyle(
+            child: AutoSizeText(project.metrics.toString()+" vues | "+project.metrics.toString()+" follow | "+project.metrics.toString()+" likes", style: TextStyle(
                 fontSize: 15,
                 fontFamily: 'Orkney',
                 fontWeight: FontWeight.normal,
@@ -64,7 +63,7 @@ class PartnershipCard extends StatelessWidget {
     );
     return InkWell(
       child: card,
-      onTap: () => viewModel.pushDynamicPage(route: '/project_management_tabs', widgetContext: context, args: {}),
+      onTap: () => viewModel.pushDynamicPage(route: '/project_management_tabs', widgetContext: context, args: {"project": project}),
     );
   }
 
