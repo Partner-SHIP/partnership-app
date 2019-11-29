@@ -16,6 +16,7 @@ import 'package:partnership/model/HomePageModel.dart';
 import 'package:partnership/model/SearchMemberPageModel.dart';
 import 'package:partnership/model/NavigPageModel.dart';
 import 'package:partnership/model/ProjectManagementPageModel.dart';
+import 'package:partnership/model/ProjectManagementTabsModel.dart';
 
 import 'package:partnership/utils/Routes.dart';
 
@@ -137,6 +138,9 @@ abstract class AModelFactory{
         break;
       case DynamicRoutesEnum.chatConvPage:
         model = ChatConvModel();
+        break;
+      case DynamicRoutesEnum.projectManagementTabs:
+        model = ProjectManagementTabsModel();
         break;
       default:
         throw Exception("Error while constructing dynamic Model: the route \"$route\" provided is unknown !");

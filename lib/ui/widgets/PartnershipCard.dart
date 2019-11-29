@@ -64,7 +64,7 @@ class PartnershipCard extends StatelessWidget {
     );
     return InkWell(
       child: card,
-      onTap: () => viewModel.pushDynamicPage(route: null, widgetContext: context, args: null),
+      onTap: () => viewModel.pushDynamicPage(route: '/project_management_tabs', widgetContext: context, args: {}),
     );
   }
 

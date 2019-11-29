@@ -14,12 +14,14 @@ import 'package:partnership/ui/GroupsPage.dart';
 import 'package:partnership/ui/SearchMemberPage.dart';
 import 'package:partnership/ui/widgets/NotificationsPage.dart';
 import 'package:partnership/ui/ProjectManagementPage.dart';
+import 'package:partnership/ui/ProjectManagementTabs/ProjectManagementTabs.dart';
 import 'package:partnership/ui/NavigPage.dart';
 import 'package:partnership/ui/GroupsChat.dart';
 
 enum DynamicRoutesEnum {
   projectDescriptionPage,
   chatConvPage,
+  projectManagementTabs
 }
 
 enum RoutesEnum {
@@ -42,6 +44,7 @@ enum RoutesEnum {
   navigPage,
   groupsChat,
   projectManagement,
+  projectManagementTabs
 }
 
 abstract class  IRoutes {
@@ -64,6 +67,7 @@ abstract class  IRoutes {
   String        get groupsPage;
   String        get groupsChat;
   String        get projectManagement;
+  String        get projectManagementTabs;
 
   dynamic            routeMap();
   Map<String, Widget> materialPagesMap();
@@ -107,7 +111,7 @@ class Routes implements IRoutes {
   */
   static const String _projectDescriptionPage = "/project_description_page";
   static const String _chatConvPage = "/chatConv_page";
-
+  static const String _projectManagementTabs = "/project_management_tabs";
 
   Map<String, Widget> _materialPagesMap() {
     return {
@@ -198,6 +202,9 @@ class Routes implements IRoutes {
       case _chatPage:
         view = ChatPage();
         break;
+      case _projectManagementTabs:
+        view = ProjectManagementTabs(args);
+        break;
       default:
         throw Exception('Dynamic Page not found');
         break;
@@ -209,12 +216,14 @@ class Routes implements IRoutes {
     return <String, DynamicRoutesEnum>{
       _projectDescriptionPage: DynamicRoutesEnum.projectDescriptionPage,
       _chatConvPage: DynamicRoutesEnum.chatConvPage,
+      _projectManagementTabs: DynamicRoutesEnum.projectManagementTabs,
     };
   }
 
   List<String> _dynamicRoutesList() => <String>[
     _projectDescriptionPage,
     _chatConvPage,
+    _projectManagementTabs,
   ];
 
   @override
@@ -237,6 +246,8 @@ class Routes implements IRoutes {
 
   @override
   String get projectDescriptionPage => _projectDescriptionPage;
+
+  String get projectManagementTabs => _projectManagementTabs;
 
   @override
   String get projectBrowsingPage => _projectBrowsingPage;
