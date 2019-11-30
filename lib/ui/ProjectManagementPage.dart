@@ -65,7 +65,6 @@ class _ProjectManagementPageState extends State<ProjectManagementPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         pageHeader(context, 'Mes Projets'),
-                        //SearchBar(select: null, defaultValue: null, onQuery: null, validate: null),
                         Container(
                           width: screenSize.width,
                           height: screenSize.height - 75,

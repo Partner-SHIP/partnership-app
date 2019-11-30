@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:partnership/ui/widgets/EndDrawer.dart';
 import 'package:partnership/viewmodel/AViewModel.dart';
 import 'package:partnership/viewmodel/ProjectManagementPageViewModel.dart';
 import 'package:partnership/viewmodel/ProjectManagementTabsViewModel.dart';
@@ -55,6 +56,7 @@ class _ProjectManagementTabsState extends State<ProjectManagementTabs> {
         length: 3,
         child: Scaffold(
           resizeToAvoidBottomPadding: true,
+          endDrawer: buildEndDrawer(context: context, viewModel: viewModel),
           bottomNavigationBar: Material(
             color: AThemes.selectedTheme.bgGradient.colors[0],
             child: TabBar(
