@@ -11,29 +11,47 @@ class RemoveMemberCard extends StatelessWidget {
       : memberRemove = memberRemove,
         viewModel = viewModel;
   @override
+  Widget _buildCircleAvatar(BuildContext context) {
+    return GestureDetector(
+      child: CircleAvatar(
+          radius: 40, backgroundImage: NetworkImage(this.memberRemove.imgUrl)),
+      onTap: () => {print('RemoveCard Image Click')},
+    );
+  }
+
+  Widget _buildTextName(BuildContext context) {
+    return GestureDetector(
+      child: AutoSizeText(this.memberRemove.name,
+          style: TextStyle(
+              fontSize: 25,
+              fontFamily: 'Orkney',
+              fontWeight: FontWeight.bold,
+              color: Colors.white)),
+      onTap: () => {print('RemoveCard Name Click')},
+    );
+  }
+
+  Widget _buildDeclineIcon(BuildContext context) {
+    return GestureDetector(
+      child: Icon(
+        Icons.clear,
+        color: Colors.red,
+        size: 45,
+      ),
+      onTap: () => {print('RemoveCard Uncheck Click')},
+    );
+  }
+
   Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        Image.network(
-          this.memberRemove.imgUrl,
-          height: 80,
-          width: 80,
-        ),
-        AutoSizeText(this.memberRemove.name,
-            style: TextStyle(
-                fontSize: 15,
-                fontFamily: 'Orkney',
-                fontWeight: FontWeight.bold,
-                color: Colors.white)),
-                Icon(
-      Icons.check,
-      color: Colors.green,
-    ),
-    Icon(
-      Icons.clear,
-      color: Colors.red,
-    ),
-      ],
+    return Container(
+      margin: EdgeInsets.all(5),
+      child: Row(
+        children: <Widget>[
+          _buildCircleAvatar(context),
+          _buildTextName(context),
+          _buildDeclineIcon(context),
+        ],
+      ),
     );
   }
 }

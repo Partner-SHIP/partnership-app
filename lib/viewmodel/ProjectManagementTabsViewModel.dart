@@ -12,6 +12,9 @@ class MemberRemove {
 }
 
 class MemberAccept {
+  MemberAccept(String name, String imgUrl)
+      : name = name,
+        imgUrl = imgUrl;
   String name;
   String imgUrl;
 }
@@ -26,8 +29,19 @@ class ProjectManagementTabsViewModel extends AViewModel {
   ProjectManagementTabsViewModel(String route) {
     super.initModel(route);
     _projectModel = super.abstractModel;
-    this.dummyRemove = MemberRemove('Jeff Jefferson', 'https://avatarfiles.alphacoders.com/151/151140.jpg');
+    this.dummyRemove = MemberRemove(
+        'Jeff Jefferson', 'https://avatarfiles.alphacoders.com/151/151140.jpg');
     this.dummyRemoveList.add(this.dummyRemove);
     this.dummyRemoveList.add(this.dummyRemove);
+    this.dummyAccept =
+        MemberAccept('Toto titi', 'https://picsum.photos/250?image=9');
+    this.dummyAcceptList.add(this.dummyAccept);
+    this.dummyAcceptList.add(this.dummyAccept);
+    this.dummyAcceptList.add(this.dummyAccept);
+    this.dummyAcceptList.add(this.dummyAccept);
+    this.dummyAcceptList.add(this.dummyAccept);
+    this.dummyAcceptList.add(this.dummyAccept);
+    this.dummyAcceptList.add(this.dummyAccept);
+    this.dummyAcceptList.add(this.dummyAccept);
   }
 }
