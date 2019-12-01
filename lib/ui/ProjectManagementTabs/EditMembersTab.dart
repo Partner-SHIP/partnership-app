@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:partnership/ui/widgets/EditMembersWidgets/RemoveMemberCard.dart';
 import 'package:partnership/ui/widgets/ThemeContainer.dart';
 import 'package:partnership/viewmodel/ProjectManagementPageViewModel.dart';
 import 'package:partnership/viewmodel/ProjectManagementTabsViewModel.dart';
@@ -12,22 +13,12 @@ class EditMembersTab extends StatelessWidget {
         project = project;
   @override
   Widget build(BuildContext context) {
-    // return AutoSizeText("Edit Members Tab");
-    return ListView(
-      children: <Widget>[
-        Row(
-          children: <Widget>[
-            Text('data'),
-            Text('toto'),
-          ],
-        ),
-        ListTile(
-          title: Text('Moon'),
-        ),
-        ListTile(
-          title: Text('Star'),
-        ),
-      ],
-    );
+    List<Widget> widgetList = [];
+    this
+        .viewModel
+        .dummyRemoveList
+        .forEach((value) => widgetList.add(RemoveMemberCard(value, viewModel)));
+
+    return ListView(children: widgetList);
   }
 }
