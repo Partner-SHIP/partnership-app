@@ -88,7 +88,7 @@ class ChatScreenState extends State<ChatScreen> {
             snapshot.connectionState == ConnectionState.active &&
             snapshot.hasData &&
             snapshot.data.data != null) {
-          viewModel.messagesChanges(snapshot);
+          viewModel.messagesChanges(snapshot, viewModel.getMyId());
         }
         return new Scaffold(
             appBar: new AppBar(
