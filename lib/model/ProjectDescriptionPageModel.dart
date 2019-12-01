@@ -10,7 +10,7 @@ class ProjectDescriptionPageModel extends AModel {
   void _addLikeRequests(String pid, String uid, Function handler) {
     print('ADD LIKE BY : $uid');
     Map<String, String> args = {
-      'pid':pid,
+      'projectUid':pid,
       'uid':uid,
     };
     Map<String, String> header ={
