@@ -1,10 +1,14 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:partnership/coordinator/AppCoordinator.dart';
 import 'package:partnership/ui/widgets/ThemeContainer.dart';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/ChatScreenViewModel.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
-import 'package:tuple/tuple.dart';
+
+//viewModel.getContactId()
 
 class ChatScreen extends StatefulWidget {
   ChatScreen();
@@ -15,6 +19,8 @@ class ChatScreen extends StatefulWidget {
 
 class ChatScreenState extends State<ChatScreen> {
   IRoutes _routing = Routes();
+
+  String status;
 
   ChatScreenViewModel get viewModel =>
       AViewModelFactory.register[_routing.chatScreenPage];
@@ -40,9 +46,9 @@ class ChatScreenState extends State<ChatScreen> {
             new Flexible(
               child: new TextField(
                 decoration:
-                    new InputDecoration.collapsed(hintText: "Envoyer un message",
-                        fillColor: Colors.transparent
-                    ),
+                new InputDecoration.collapsed(hintText: "Envoyer un message",
+                    fillColor: Colors.transparent
+                ),
                 controller: _textController,
                 onSubmitted: viewModel.sendingMessages,
               ),
@@ -51,7 +57,7 @@ class ChatScreenState extends State<ChatScreen> {
               margin: const EdgeInsets.symmetric(horizontal: 4.0),
               child: new IconButton(
                 icon: new Icon(Icons.send ,
-                  color: Colors.deepPurple),
+                    color: Colors.deepPurple),
                 onPressed: () {
                   viewModel.sendingMessages(_textController.text);
                   _textController.clear();
@@ -67,10 +73,16 @@ class ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     print(viewModel.getMyConvPath());
-    viewModel.setPageContext(Tuple2<BuildContext, String>(context, _routing.chatScreenPage));
+    Firestore.instance.collection("profiles").document(viewModel.getContactId()).snapshots().listen((onData){
+      bool test = onData.data['status'];
+      if (test == true)
+        status = ": en ligne";
+      else
+        status = ": hors ligne";
+    });
     return StreamBuilder<DocumentSnapshot>(
       stream:
-          Firestore.instance.document(viewModel.getMyConvPath()).snapshots(),
+      Firestore.instance.document(viewModel.getMyConvPath()).snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasError &&
             snapshot.connectionState == ConnectionState.active &&
@@ -82,9 +94,10 @@ class ChatScreenState extends State<ChatScreen> {
             appBar: new AppBar(
               backgroundColor: Colors.indigo,
               title: new Text(
-                  viewModel.getContactName() != null
-                  ? viewModel.getContactName()
-                  : '',
+
+                viewModel.getContactName() != null
+                    ? viewModel.getContactName() + status
+                    : '',
                 style: TextStyle(color: Colors.white),
               ),
             ),
