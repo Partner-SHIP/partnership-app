@@ -6,6 +6,7 @@ class ProjectDescriptionPageModel extends AModel {
   ProjectDescriptionPageModel(): super();
   
   bool adding = false;
+  bool following = false;
 
   void _addLikeRequests(String pid, String uid, Function handler) {
     print('ADD LIKE BY : $uid');
@@ -21,20 +22,21 @@ class ProjectDescriptionPageModel extends AModel {
       handler(value);
     });
   }
+  
 
   void onSuccess(){
-    print("SUCCESS ADD LIKE");
+    print("SUCCESS");
   }
 
   void onError(){
-    print("ERROR ADD LIKE");
+    print("ERROR");
   }
 
-  void _cantAddLike() {
+  void cantAddLike() {
     adding = false;
   }
   
-  void _addedLike(String result) {
+  void addedLike(String result) {
     Map body = jsonDecode(result);
     if (body["value"] != null)
       print("success");
@@ -45,5 +47,36 @@ class ProjectDescriptionPageModel extends AModel {
       return ;
     adding = true;
     _addLikeRequests(pid, uid, handler);
+  }
+
+  void _addFollowRequests(String pid, String uid, Function handler) {
+    print('ADD FOLLOW BY : $uid');
+    Map<String, String> args = {
+      'projectUid':pid,
+      'uid':uid,
+    };
+    Map<String, String> header ={
+      'Follow':uid
+    };
+
+    this.apiClient.addFollow(header: header, args: args, onSuccess: onSuccess, onError: onError).then((value){
+      handler(value);
+    });
+  }
+  void cantAddFollow() {
+    adding = false;
+  }
+  
+  void addedFollow(String result) {
+    Map body = jsonDecode(result);
+    if (body["value"] != null)
+      print("success");
+  }
+
+  void addFollow(String pid, String uid, Function handler){
+    if (adding == true)
+      return ;
+    adding = true;
+    _addFollowRequests(pid, uid, handler);
   }
 }

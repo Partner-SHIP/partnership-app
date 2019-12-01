@@ -113,6 +113,7 @@ class ApiREST implements IApiREST {
   }
   @override
   Future<dynamic> addFollow({Map<String, String> header, Map<String, String> args, Function onSuccess, Function onError}) {
+    print(ApiRoutes.addFollow+this._formatParameters(args));
     return _httpPostRequest(path: ApiRoutes.addLike+this._formatParameters(args), header: header, onSuccess: onSuccess, onError: onError);
   }
   @override

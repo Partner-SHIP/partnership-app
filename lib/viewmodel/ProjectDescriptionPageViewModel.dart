@@ -17,4 +17,8 @@ class ProjectDescriptionPageViewModel extends AViewModel {
     this._projectModel.addLike(idProject, this.loggedInUser().uid, handler);
   }
   
+  void addFollow(String idProject, Function handler) {
+    this._projectModel.addFollow(idProject, this.loggedInUser().uid, handler);
+  }
+  
 }
