@@ -129,7 +129,7 @@ class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
         onTap: () {
           Scaffold.of(context)
               .showSnackBar(SnackBar(content: Text("VOUS AIMEZ CE PROJET")));
-          this.viewModel.addLike(args['project'].data['pid'], (String value) {
+          this.viewModel.postLike(args['project'].data['pid'], (String value) {
             print("COUCOU" + value);
             Navigator.of(context).pop();
             viewModel.changeView(
@@ -167,7 +167,7 @@ class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
         onTap: () {
           Scaffold.of(context)
               .showSnackBar(SnackBar(content: Text("BUTTON PUSHED")));
-          this.viewModel.addLike(args['project'].data['pid'], (String value) {
+          this.viewModel.postLike(args['project'].data['pid'], (String value) {
             print("COUCOU" + value);
             Navigator.of(context).pop();
             viewModel.changeView(
@@ -205,7 +205,7 @@ class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
         onTap: () {
           Scaffold.of(context)
               .showSnackBar(SnackBar(content: Text("VOUS SUIVEZ CE PROJET")));
-          this.viewModel.addFollow(args['project'].data['pid'], (String value) {
+          this.viewModel.postFollow(args['project'].data['pid'], (String value) {
             print("COUCOU" + value);
             Navigator.of(context).pop();
             viewModel.changeView(
@@ -243,7 +243,45 @@ class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
         onTap: () {
           Scaffold.of(context)
               .showSnackBar(SnackBar(content: Text("BUTTON PUSHED")));
-          this.viewModel.addLike(args['project'].data['pid'], (String value) {
+          this.viewModel.postLike(args['project'].data['pid'], (String value) {
+            print("COUCOU" + value);
+            Navigator.of(context).pop();
+            viewModel.changeView(
+                route: _routing.homePage, widgetContext: context);
+          });
+        },
+        child: ShaderMask(
+          blendMode: BlendMode.srcATop,
+          shaderCallback: (Rect bounds) {
+            return AThemes.selectedTheme.btnGradient.createShader(bounds);
+          },
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, color: color, size: 50),
+              Container(
+                child: Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontFamily: 'Orkney',
+                    color: color,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ));
+  }
+
+   Widget _buildButtonColumnJoin(
+      Color color, IconData icon, String label, BuildContext context) {
+    return InkWell(
+        onTap: () {
+          Scaffold.of(context)
+              .showSnackBar(SnackBar(content: Text("CANDIDATURE ENVOYE")));
+          this.viewModel.postProjectInscription(args['project'].data['pid'], "coucou", (String value) {
             print("COUCOU" + value);
             Navigator.of(context).pop();
             viewModel.changeView(
@@ -284,6 +322,7 @@ class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
         children: [
           _buildButtonColumnLike(Colors.white, Icons.loyalty, 'AIMER', context),
           _buildButtonColumnFollow(Colors.white, Icons.people, 'SUIVRE', context),
+          _buildButtonColumnJoin(Colors.white, Icons.add, 'REJOINDRE', context),
                   ],
       ),
       decoration: BoxDecoration(
@@ -291,6 +330,7 @@ class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
           borderRadius: BorderRadius.all(Radius.circular(10))),
     );
   }
+
 
   @override
   Widget build(BuildContext context) {

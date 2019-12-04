@@ -13,12 +13,16 @@ class ProjectDescriptionPageViewModel extends AViewModel {
   File getBannerFile({@required String user, @required String project, @required Function onUpdate}) {
   }
 
-  void addLike(String idProject, Function handler) {
-    this._projectModel.addLike(idProject, this.loggedInUser().uid, handler);
+  void postLike(String idProject, Function handler) {
+    this._projectModel.postLike(idProject, this.loggedInUser().uid, handler);
   }
   
-  void addFollow(String idProject, Function handler) {
-    this._projectModel.addFollow(idProject, this.loggedInUser().uid, handler);
+  void postFollow(String idProject, Function handler) {
+    this._projectModel.postFollow(idProject, this.loggedInUser().uid, handler);
+  }
+  
+   void postProjectInscription(String idProject, String message, Function handler) {
+    this._projectModel.postProjectInscription(idProject, this.loggedInUser().uid, message, handler);
   }
   
 }
