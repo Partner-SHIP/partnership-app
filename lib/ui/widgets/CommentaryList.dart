@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 
-Container commentaryList(context,pid) {
+Container commentaryList(context, pid) {
   return Container(
       child: Column(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -11,7 +11,10 @@ Container commentaryList(context,pid) {
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height - 110,
           child: StreamBuilder<QuerySnapshot>(
-              stream: Firestore.instance.collection('projects').snapshots(),
+              stream: Firestore.instance
+                  .collection('projects')
+                  .where('pid', isEqualTo: pid)
+                  .snapshots(),
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.hasError)
@@ -26,12 +29,18 @@ Container commentaryList(context,pid) {
                         itemBuilder: (_, int index) {
                           final DocumentSnapshot document =
                               snapshot.data.documents[index];
-                          //print(document['commentaire'][index]['message']);
+                          //print(document['commentaire']);
                           return new ListTile(
-                            title: Text(document['commentaire'][0]
+                            title: Text(document['commentaire'][index]
+                                        ['firstName'] +
+                                    ' ' +
+                                    document['commentaire'][index]
+                                        ['lastName'] ??
+                                'user not found'),
+                            subtitle: new Text(document['commentaire'][index]
                                     ['message'] ??
                                 'title not found'),
-                            subtitle: new Text(document['name']),
+                            //subtitle: new Text(document['name']),
                           );
                         });
                 }

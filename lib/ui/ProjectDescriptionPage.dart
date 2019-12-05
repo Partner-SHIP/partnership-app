@@ -162,7 +162,7 @@ class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
         ));
   }
 
-    Widget _buildButtonColumnUnLike(
+  Widget _buildButtonColumnUnLike(
       Color color, IconData icon, String label, BuildContext context) {
     return InkWell(
         onTap: () {
@@ -199,14 +199,15 @@ class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
           ),
         ));
   }
-  
-    Widget _buildButtonColumnFollow(
+
+  Widget _buildButtonColumnFollow(
       Color color, IconData icon, String label, BuildContext context) {
     return InkWell(
         onTap: () {
           Scaffold.of(context)
               .showSnackBar(SnackBar(content: Text("VOUS SUIVEZ CE PROJET")));
-          this.viewModel.postFollow(args['project'].data['pid'], (String value) {
+          this.viewModel.postFollow(args['project'].data['pid'],
+              (String value) {
             print("COUCOU" + value);
             Navigator.of(context).pop();
             viewModel.changeView(
@@ -276,13 +277,14 @@ class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
         ));
   }
 
-   Widget _buildButtonColumnJoin(
+  Widget _buildButtonColumnJoin(
       Color color, IconData icon, String label, BuildContext context) {
     return InkWell(
         onTap: () {
           Scaffold.of(context)
               .showSnackBar(SnackBar(content: Text("CANDIDATURE ENVOYE")));
-          this.viewModel.postProjectInscription(args['project'].data['pid'], "coucou", (String value) {
+          this.viewModel.postProjectInscription(
+              args['project'].data['pid'], "coucou", (String value) {
             print("COUCOU" + value);
             Navigator.of(context).pop();
             viewModel.changeView(
@@ -322,9 +324,10 @@ class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           _buildButtonColumnLike(Colors.white, Icons.loyalty, 'AIMER', context),
-          _buildButtonColumnFollow(Colors.white, Icons.people, 'SUIVRE', context),
+          _buildButtonColumnFollow(
+              Colors.white, Icons.people, 'SUIVRE', context),
           _buildButtonColumnJoin(Colors.white, Icons.add, 'REJOINDRE', context),
-                  ],
+        ],
       ),
       decoration: BoxDecoration(
           border: Border.all(color: Colors.white, style: BorderStyle.solid),
@@ -332,13 +335,13 @@ class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
-    String pid = 'DZuqwgxqsWNP4n6zy1Y6';
+    String pid = args['project'].data['pid'];
     return Scaffold(
-      body: Builder(builder: (BuildContext context){
-        viewModel.setPageContext(Tuple2<BuildContext, String>(context, _routing.projectDescriptionPage));
+      body: Builder(builder: (BuildContext context) {
+        viewModel.setPageContext(Tuple2<BuildContext, String>(
+            context, _routing.projectDescriptionPage));
         return SafeArea(
           top: false,
           child: ThemeContainer(
