@@ -9,24 +9,28 @@ class AcceptMemberCard extends StatelessWidget {
   AcceptMemberCard(MemberAccept memberAccept, AViewModel viewModel)
       : memberAccept = memberAccept,
         viewModel = viewModel;
-  @override
+
   Widget _buildCircleAvatar(BuildContext context) {
     return GestureDetector(
       child: CircleAvatar(
-          radius: 40, backgroundImage: NetworkImage(this.memberAccept.imgUrl)),
+          radius: 32, backgroundImage: NetworkImage(this.memberAccept.imgUrl)),
       onTap: () => {print('AcceptCard Image Click')},
+      //call afficher le profil de l'user ? ou afficher l'image en grand
     );
   }
 
   Widget _buildTextName(BuildContext context) {
     return GestureDetector(
-        child: AutoSizeText(this.memberAccept.name,
+        child: AutoSizeText(
+            this.memberAccept.firstName + ' ' + this.memberAccept.lastName,
             style: TextStyle(
                 fontSize: 25,
                 fontFamily: 'Orkney',
                 fontWeight: FontWeight.bold,
                 color: Colors.white)),
-        onTap: () => {print('AcceptCard Name Click')});
+        onTap: () => {print('AcceptCard Name Click ' + this.memberAccept.pid)}
+        //call afficher le profil de l'user ?
+        );
   }
 
   Widget _buildAcceptIcon(BuildContext context) {
@@ -37,6 +41,7 @@ class AcceptMemberCard extends StatelessWidget {
         size: 45,
       ),
       onTap: () => {print('AcceptCard Check Icon Click')},
+      //call ajouter le membre au projet
     );
   }
 
@@ -48,6 +53,7 @@ class AcceptMemberCard extends StatelessWidget {
         size: 45,
       ),
       onTap: () => {print('Accept Card Uncheck Icon Click')},
+      //call refuser le membre au projet
     );
   }
 
@@ -55,6 +61,7 @@ class AcceptMemberCard extends StatelessWidget {
     return Container(
       margin: EdgeInsets.all(5),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           _buildCircleAvatar(context),
           _buildTextName(context),

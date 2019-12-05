@@ -14,20 +14,23 @@ class RemoveMemberCard extends StatelessWidget {
   Widget _buildCircleAvatar(BuildContext context) {
     return GestureDetector(
       child: CircleAvatar(
-          radius: 40, backgroundImage: NetworkImage(this.memberRemove.imgUrl)),
-      onTap: () => {print('RemoveCard Image Click')},
+          radius: 32, backgroundImage: NetworkImage(this.memberRemove.imgUrl)),
+      onTap: () =>
+          {print('RemoveCard Image Click of ' + this.memberRemove.firstName)},
     );
   }
 
   Widget _buildTextName(BuildContext context) {
     return GestureDetector(
-      child: AutoSizeText(this.memberRemove.name,
+      child: AutoSizeText(
+          this.memberRemove.firstName + ' ' + this.memberRemove.lastName,
           style: TextStyle(
               fontSize: 25,
               fontFamily: 'Orkney',
               fontWeight: FontWeight.bold,
               color: Colors.white)),
-      onTap: () => {print('RemoveCard Name Click')},
+      onTap: () =>
+          {print('RemoveCard Name Click of ' + this.memberRemove.firstName)},
     );
   }
 
@@ -38,7 +41,9 @@ class RemoveMemberCard extends StatelessWidget {
         color: Colors.red,
         size: 45,
       ),
-      onTap: () => {print('RemoveCard Uncheck Click')},
+      onTap: () =>
+          {print('RemoveCard Uncheck Click of ' + this.memberRemove.firstName)},
+    //call kicker le membre du projet + envoi de notif à l'utilisateur ?
     );
   }
 
@@ -46,9 +51,14 @@ class RemoveMemberCard extends StatelessWidget {
     return Container(
       margin: EdgeInsets.all(5),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           _buildCircleAvatar(context),
           _buildTextName(context),
+          Container(
+            height: 45,
+            width: 45,
+          ),
           _buildDeclineIcon(context),
         ],
       ),
