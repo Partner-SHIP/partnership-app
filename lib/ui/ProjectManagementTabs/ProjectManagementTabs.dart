@@ -30,7 +30,7 @@ class _ProjectManagementTabsState extends State<ProjectManagementTabs> {
   StreamSubscription _connectivitySub;
   ProjectManagementTabsViewModel viewModel;
   Map<String, dynamic> args;
-  Project _project;
+  DocumentSnapshot _project;
   _ProjectManagementTabsState(Map<String, dynamic> parameters)
       : args = parameters;
 

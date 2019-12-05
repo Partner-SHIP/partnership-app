@@ -1,3 +1,5 @@
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:partnership/utils/Routes.dart';
@@ -45,8 +47,6 @@ class _ProjectManagementPageState extends State<ProjectManagementPage> {
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
     final double paddedHeight = screenSize.height - 24;
-    List<Widget> list = [];
-    this.viewModel.projectList.forEach((value) => list.add(PartnershipCard(this.viewModel.dummy, viewModel)));
     return Scaffold(
       resizeToAvoidBottomPadding: true,
       endDrawer: Theme(
@@ -69,7 +69,21 @@ class _ProjectManagementPageState extends State<ProjectManagementPage> {
                           width: screenSize.width,
                           height: screenSize.height - 75,
                           child:  ListView(
-                              children: list
+                              children: [
+                                  StreamBuilder(
+                                  stream: this.viewModel.model.firestore.collection('projects').where("creator", isEqualTo: viewModel.loggedInUser().uid).snapshots(),
+                                    builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                                      if (snapshot.hasData)
+                                        return Column(
+                                            children: snapshot.data.documents.map((doc){
+                                              return PartnershipCard(doc, viewModel);
+                                            }).toList()
+                                        );
+                                      else
+                                        return AutoSizeText("aucun projet trouvé");
+                                    }
+                                ),
+                              ]
                           ),
                         ),
                       ],

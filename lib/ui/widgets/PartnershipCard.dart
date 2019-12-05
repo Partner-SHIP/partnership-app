@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:partnership/viewmodel/AViewModel.dart';
 import 'package:partnership/viewmodel/ProjectManagementPageViewModel.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class PartnershipCard extends StatelessWidget {
-  Project  project;
+  DocumentSnapshot  document;
   AViewModel viewModel;
-  PartnershipCard(Project project, AViewModel viewModel): project = project, viewModel = viewModel;
+  PartnershipCard(DocumentSnapshot document, AViewModel viewModel): document = document, viewModel = viewModel;
 
   Container _buildImageContainer(BuildContext context){
     return Container(
@@ -15,7 +17,7 @@ class PartnershipCard extends StatelessWidget {
           decoration: BoxDecoration(
               color: Colors.red,
               image: DecorationImage(
-                  image: NetworkImage(project.imgUrl),
+                  image: NetworkImage(document["bannerPath"]),
                   fit: BoxFit.cover),
               borderRadius: BorderRadius.all(Radius.circular(45.0)),
               boxShadow: [
@@ -30,14 +32,14 @@ class PartnershipCard extends StatelessWidget {
     return Container(
       child: Column(
         children: <Widget>[
-          AutoSizeText(project.projectName,style: TextStyle(
+          AutoSizeText(document["name"],style: TextStyle(
           fontSize: 15,
           fontFamily: 'Orkney',
           fontWeight: FontWeight.bold,
           color: Colors.white)),
           Padding(
             padding: EdgeInsets.only(top: 10),
-            child: AutoSizeText(project.metrics.toString()+" vues | "+project.metrics.toString()+" follow | "+project.metrics.toString()+" likes", style: TextStyle(
+            child: AutoSizeText(document["viewNumber"].toString()+" vues | "+document["followNumber"].toString()+" follow | "+document["likeNumber"].toString()+" likes", style: TextStyle(
                 fontSize: 15,
                 fontFamily: 'Orkney',
                 fontWeight: FontWeight.normal,
@@ -63,7 +65,7 @@ class PartnershipCard extends StatelessWidget {
     );
     return InkWell(
       child: card,
-      onTap: () => viewModel.pushDynamicPage(route: '/project_management_tabs', widgetContext: context, args: {"project": project}),
+      onTap: () => viewModel.pushDynamicPage(route: '/project_management_tabs', widgetContext: context, args: {"project": document}),
     );
   }
 
