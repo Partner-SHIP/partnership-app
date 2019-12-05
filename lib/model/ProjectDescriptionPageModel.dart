@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:partnership/model/AModel.dart';
 
 class ProjectDescriptionPageModel extends AModel {
@@ -116,5 +117,38 @@ class ProjectDescriptionPageModel extends AModel {
       return ;
     adding = true;
     _postProjectInscriptionRequests(pid, uid, message, handler);
+  }
+
+    /////////////////////////////////////Adding a comment////////////////////////////////////////////////////
+void _postAddCommentRequest(String pid, String uid, String message, Function handler) {
+    print('ADDING COMMENT OF : $uid');
+    Map<String, String> args = {
+      'uid':uid,
+      'pid':pid,
+      'message' :message,
+    };
+    Map<String, String> header ={
+      'AddCommentaire':uid
+    };
+
+    this.apiClient.postComment(header: header, args: args, onSuccess: onSuccess, onError: onError).then((value){
+      handler(value);
+    });
+  }
+  void cantPostAddComment() {
+    adding = false;
+  }
+  
+  void postedAddComment(String result) {
+    Map body = jsonDecode(result);
+    if (body["value"] != null)
+      print("success");
+  }
+
+  void postAddComment(String pid, String uid, String message, Function handler){
+    if (adding == true)
+      return ;
+    adding = true;
+    _postAddCommentRequest(pid, uid, message, handler);
   }
 }

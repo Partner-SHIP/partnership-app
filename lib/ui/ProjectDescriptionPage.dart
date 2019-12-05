@@ -1,3 +1,4 @@
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:partnership/ui/widgets/CommentaryList.dart';
 import 'package:partnership/utils/Routes.dart';
@@ -30,10 +31,16 @@ class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
   Map<String, dynamic> args;
   _ProjectDescriptionPageState(Map<String, dynamic> parameters)
       : args = parameters;
+  Form _form;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool _validateComment = false;
+  final _comment = TextEditingController();
+
 
   @override
   void initState() {
     super.initState();
+    _form = _buildForm();
     DocumentSnapshot project = args['project'];
     var data = project.data;
     print('ARGUMENT : $data');
@@ -45,6 +52,7 @@ class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
 
   @override
   void dispose() {
+    _comment.dispose();
     this._connectivitySub.cancel();
     super.dispose();
   }
@@ -335,28 +343,113 @@ class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
     );
   }
 
+Form _buildForm() {
+    Form result = Form(
+      child: Column(
+        children: <Widget>[
+          SizedBox(width: 0, height: 5),
+          _buildWriteComment(context),
+          SizedBox(width: 0, height: 5),
+        ],
+      ),
+    );
+    return (result);
+  }
+  
+  Widget _buildWriteComment(context){
+       return Container(
+        padding: const EdgeInsets.all(30.0),
+        child: new Theme(
+          data: new ThemeData(hintColor: Colors.white70),
+          child: new Center(
+              child: new Column(children: [
+            new Text(
+              'Commentaire',
+              style: new TextStyle(
+                color: Colors.white,
+                fontSize: 25.0,
+                fontFamily: "Orkney",
+              ),
+            ),
+            new Padding(padding: EdgeInsets.only(top: 15.0)),
+            new TextFormField(
+              maxLength: 150,
+              controller: _comment,
+              validator: (_validateComment) {
+                if (_validateComment.isEmpty) {
+                  return "Veuillez entrer un commentaire";
+                }
+                return null;
+              },
+              decoration: new InputDecoration(
+                  errorText:
+                      _validateComment ? "Ce champ ne peut être vide" : null,
+                  labelStyle: TextStyle(color: Colors.white),
+                  labelText: "Entrer un commentaire",
+                  fillColor: Colors.white,
+                  enabledBorder: new OutlineInputBorder(
+                      borderRadius: new BorderRadius.circular(25.0),
+                      borderSide: new BorderSide(color: Colors.white70)),
+                  border: new OutlineInputBorder(
+                      borderRadius: new BorderRadius.circular(25.0),
+                      borderSide: new BorderSide())),
+              maxLines: 5,
+              keyboardType: TextInputType.text,
+              style: new TextStyle(
+                fontFamily: "Orkney",
+                color: Colors.white,
+              ),
+            ),
+          ])),
+        ));
+  }
+
+   Widget _validatingComment() {
+    return FloatingActionButton.extended(
+      onPressed: () {
+        this.viewModel.postComment(args['project'].data['pid'], _comment,  (String value) {
+          print("COUCOU" + value);
+          Navigator.of(context).pop();
+        });
+      },
+      heroTag: "addComment",
+      label: Text("Envoyer votre commentaire"),
+      tooltip: "Ajouter un commentaire",
+      backgroundColor: Colors.blue,
+      foregroundColor: Colors.white,
+    );
+  }
   @override
   Widget build(BuildContext context) {
     String pid = args['project'].data['pid'];
     return Scaffold(
+      resizeToAvoidBottomPadding: true,
       body: Builder(builder: (BuildContext context) {
         viewModel.setPageContext(Tuple2<BuildContext, String>(
             context, _routing.projectDescriptionPage));
-        return SafeArea(
+             return InkWell(
+          onTap: () {
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+        child: SafeArea(
           top: false,
           child: ThemeContainer(
               context,
-              ListView(
-                children: <Widget>[
+              SingleChildScrollView(
+              child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
                   _buildBanner(context),
                   _buildLogo(),
                   _buildTitle(),
                   _buildButtons(context),
                   _buildDescription(context),
-                  commentaryList(context, pid)
+                  commentaryList(context, pid),
+                  _form,
+                  _validatingComment()
                 ],
               )),
-        );
+        )));
       }),
     );
   }

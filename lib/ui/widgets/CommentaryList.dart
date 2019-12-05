@@ -31,7 +31,7 @@ Container commentaryList(context, pid) {
                           return new ListTile(
                             leading: Image.network(document['commentaire'][index]['picture']),
                             subtitle: Text(document['commentaire'][index]['firstName'] +  ' ' +  document['commentaire'][index]['lastName']  ?? 'user not found'),
-                            title: new Text(document['commentaire'][index]['message'] ?? 'title not found'),
+                            title: Text(document['commentaire'][index]['message'] ?? 'title not found'),
                           );
                         });
                 }
