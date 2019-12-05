@@ -43,6 +43,7 @@ class RemoveMemberCard extends StatelessWidget {
       ),
       onTap: () =>
           {print('RemoveCard Uncheck Click of ' + this.memberRemove.firstName)},
+    //call kicker le membre du projet + envoi de notif à l'utilisateur ?
     );
   }
 

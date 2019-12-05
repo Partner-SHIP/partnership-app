@@ -19,10 +19,17 @@ class MemberRemove {
 }
 
 class MemberAccept {
-  MemberAccept(String name, String imgUrl)
-      : name = name,
+  MemberAccept(
+      String firstName, String lastName, String pid, String uid, String imgUrl)
+      : firstName = firstName,
+        lastName = lastName,
+        pid = pid,
+        uid = uid,
         imgUrl = imgUrl;
-  String name;
+  String firstName;
+  String lastName;
+  String pid;
+  String uid;
   String imgUrl;
 }
 
@@ -41,31 +48,31 @@ class ProjectManagementTabsViewModel extends AViewModel {
         'Jeffius',
         "DZuqwgxqsWNP4n6zy1Y6",
         "eXAjrxnchQPCE4nPhqRMv46Cj7J2",
-        'https://avatarfiles.alphacoders.com/151/151140.jpg');
+        'https://firebasestorage.googleapis.com/v0/b/partnership-app-e8d99.appspot.com/o/unknowprofilepicture.png?alt=media&token=80d8fd66-ab70-4c8a-bd9f-bed1897e3234');
     var dummyRemove2 = MemberRemove(
         'Jeff2',
         'Jeffius',
         "DZuqwgxqsWNP4n6zy1Y6",
         "eXAjrxnchQPCE4nPhqRMv46Cj7J2",
-        'https://avatarfiles.alphacoders.com/151/151140.jpg');
+        'https://firebasestorage.googleapis.com/v0/b/partnership-app-e8d99.appspot.com/o/unknowprofilepicture.png?alt=media&token=80d8fd66-ab70-4c8a-bd9f-bed1897e3234');
     var dummyRemove3 = MemberRemove(
         'Jeff3',
         'Jeffius',
         "DZuqwgxqsWNP4n6zy1Y6",
         "eXAjrxnchQPCE4nPhqRMv46Cj7J2",
-        'https://avatarfiles.alphacoders.com/151/151140.jpg');
+        'https://firebasestorage.googleapis.com/v0/b/partnership-app-e8d99.appspot.com/o/unknowprofilepicture.png?alt=media&token=80d8fd66-ab70-4c8a-bd9f-bed1897e3234');
     var dummyRemove4 = MemberRemove(
         'Jeff4',
         'Jeffius',
         "DZuqwgxqsWNP4n6zy1Y6",
         "eXAjrxnchQPCE4nPhqRMv46Cj7J2",
-        'https://avatarfiles.alphacoders.com/151/151140.jpg');
+        'https://firebasestorage.googleapis.com/v0/b/partnership-app-e8d99.appspot.com/o/unknowprofilepicture.png?alt=media&token=80d8fd66-ab70-4c8a-bd9f-bed1897e3234');
     this.dummyRemoveList.add(dummyRemove1);
     this.dummyRemoveList.add(dummyRemove2);
     this.dummyRemoveList.add(dummyRemove3);
     this.dummyRemoveList.add(dummyRemove4);
-    this.dummyAccept =
-        MemberAccept('Toto titi', 'https://picsum.photos/250?image=9');
+    this.dummyAccept = MemberAccept('Toto', 'titi', "DZuqwgxqsWNP4n6zy1Y6",
+        "eXAjrxnchQPCE4nPhqRMv46Cj7J2", 'https://picsum.photos/250?image=9');
     this.dummyAcceptList.add(this.dummyAccept);
     this.dummyAcceptList.add(this.dummyAccept);
     this.dummyAcceptList.add(this.dummyAccept);
