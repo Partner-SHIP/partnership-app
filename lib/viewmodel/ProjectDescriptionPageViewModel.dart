@@ -26,7 +26,7 @@ class ProjectDescriptionPageViewModel extends AViewModel {
   }
   
   void postComment(String idProject, TextEditingController message, Function handler) {
-    String msg = message.toString();
+    String msg = message.text;
     this._projectModel.postAddComment(idProject, this.loggedInUser().uid, msg, handler);
   }
   

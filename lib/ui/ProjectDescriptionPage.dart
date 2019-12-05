@@ -410,7 +410,9 @@ Form _buildForm() {
         this.viewModel.postComment(args['project'].data['pid'], _comment,  (String value) {
           print("COUCOU" + value);
           Navigator.of(context).pop();
-        });
+          viewModel.changeView(
+              route: _routing.projectBrowsingPage, widgetContext: context);        
+              });
       },
       heroTag: "addComment",
       label: Text("Envoyer votre commentaire"),
