@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 
-Container commentaryList(context) {
+Container commentaryList(context,pid) {
   return Container(
       child: Column(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -26,9 +26,9 @@ Container commentaryList(context) {
                         itemBuilder: (_, int index) {
                           final DocumentSnapshot document =
                               snapshot.data.documents[index];
-                          print(document['commentaire'][index]['message']);
+                          //print(document['commentaire'][index]['message']);
                           return new ListTile(
-                            title: Text(document['commentaire'][index]
+                            title: Text(document['commentaire'][0]
                                     ['message'] ??
                                 'title not found'),
                             subtitle: new Text(document['name']),
