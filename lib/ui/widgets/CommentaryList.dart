@@ -9,7 +9,7 @@ Container commentaryList(context, pid) {
     children: <Widget>[
       Container(
           width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height - 110,
+          height: MediaQuery.of(context).size.height / 3,
           child: StreamBuilder<QuerySnapshot>(
               stream: Firestore.instance
                   .collection('projects')
@@ -23,15 +23,36 @@ Container commentaryList(context, pid) {
                   case ConnectionState.waiting:
                     return new Text('Loading...');
                   default:
-                    final int messageCount = snapshot.data.documents[0].data['commentaire'].length;
+                    final int messageCount =
+                        snapshot.data.documents[0].data['commentaire'].length;
                     return new ListView.builder(
                         itemCount: messageCount,
                         itemBuilder: (_, int index) {
-                          final DocumentSnapshot document = snapshot.data.documents[0];
+                          final DocumentSnapshot document =
+                              snapshot.data.documents[0];
                           return new ListTile(
-                            leading: Image.network(document['commentaire'][index]['picture']),
-                            subtitle: Text(document['commentaire'][index]['firstName'] +  ' ' +  document['commentaire'][index]['lastName']  ?? 'user not found'),
-                            title: Text(document['commentaire'][index]['message'] ?? 'title not found'),
+                            leading: Image.network(
+                                document['commentaire'][index]['picture']),
+                            subtitle: Text(
+                                document['commentaire'][index]['firstName'] +
+                                        ' ' +
+                                        document['commentaire'][index]
+                                            ['lastName'] ??
+                                    'user not found',
+                                style: new TextStyle(
+                                  color: Colors.white54,
+                                  fontSize: 15.0,
+                                  fontFamily: "Orkney",
+                                )),
+                            title: Text(
+                              document['commentaire'][index]['message'] ??
+                                  'title not found',
+                              style: new TextStyle(
+                                color: Colors.white,
+                                fontSize: 15.0,
+                                fontFamily: "Orkney",
+                              ),
+                            ),
                           );
                         });
                 }
