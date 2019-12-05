@@ -67,19 +67,20 @@ class ProjectManagementTabsViewModel extends AViewModel {
         "DZuqwgxqsWNP4n6zy1Y6",
         "eXAjrxnchQPCE4nPhqRMv46Cj7J2",
         'https://firebasestorage.googleapis.com/v0/b/partnership-app-e8d99.appspot.com/o/unknowprofilepicture.png?alt=media&token=80d8fd66-ab70-4c8a-bd9f-bed1897e3234');
-    this.dummyRemoveList.add(dummyRemove1);
-    this.dummyRemoveList.add(dummyRemove2);
-    this.dummyRemoveList.add(dummyRemove3);
-    this.dummyRemoveList.add(dummyRemove4);
-    this.dummyAccept = MemberAccept('Toto', 'titi', "DZuqwgxqsWNP4n6zy1Y6",
+    // this.dummyRemoveList.add(dummyRemove1);
+    // this.dummyRemoveList.add(dummyRemove2);
+    // this.dummyRemoveList.add(dummyRemove3);
+    // this.dummyRemoveList.add(dummyRemove4);
+    var dummyAccept = MemberAccept('Toto', 'titi', "DZuqwgxqsWNP4n6zy1Y6",
         "eXAjrxnchQPCE4nPhqRMv46Cj7J2", 'https://picsum.photos/250?image=9');
-    this.dummyAcceptList.add(this.dummyAccept);
-    this.dummyAcceptList.add(this.dummyAccept);
-    this.dummyAcceptList.add(this.dummyAccept);
-    this.dummyAcceptList.add(this.dummyAccept);
-    this.dummyAcceptList.add(this.dummyAccept);
-    this.dummyAcceptList.add(this.dummyAccept);
-    this.dummyAcceptList.add(this.dummyAccept);
-    this.dummyAcceptList.add(this.dummyAccept);
+    this.dummyAcceptList.add(dummyAccept);
+    this.dummyAcceptList.add(dummyAccept);
+    this.dummyAcceptList.add(dummyAccept);
+    this.dummyAcceptList.add(dummyAccept);
+    this.dummyAcceptList.add(dummyAccept);
+    this.dummyAcceptList.add(dummyAccept);
+    this.dummyAcceptList.add(dummyAccept);
+    this.dummyAcceptList.add(dummyAccept);
+    this.dummyAcceptList.add(dummyAccept);
   }
 }
