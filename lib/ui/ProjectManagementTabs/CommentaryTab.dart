@@ -12,6 +12,22 @@ class CommentaryTab extends StatelessWidget {
         project = project;
   @override
   Widget build(BuildContext context) {
-    return AutoSizeText("Commentary Tab");
+    return ListView.builder(
+        itemCount: project["commentaire"].length,
+        itemBuilder: (_, int index) {
+          return new ListTile(
+            leading: Image.network(
+                project['commentaire'][index]['picture']),
+            subtitle: Text(project['commentaire'][index]
+            ['firstName'] +
+                ' ' +
+                project['commentaire'][index]
+                ['lastName'] ??
+                'user not found'),
+            title: Text(project['commentaire'][index]
+            ['message'] ??
+                'title not found'),
+          );
+        });
   }
 }
