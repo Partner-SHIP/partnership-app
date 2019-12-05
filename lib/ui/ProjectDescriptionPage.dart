@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:partnership/ui/widgets/CommentaryList.dart';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
 import 'package:partnership/viewmodel/ProjectDescriptionPageViewModel.dart';
@@ -347,7 +348,8 @@ class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
                   _buildLogo(),
                   _buildTitle(),
                   _buildButtons(context),
-                  _buildDescription(context)
+                  _buildDescription(context),
+                  commentaryList(context)
                 ],
               )),
         );
