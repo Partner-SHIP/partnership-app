@@ -4,7 +4,7 @@ import 'package:path/path.dart';
 
 Container commentaryList(context){
   return Container(
-    Column(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Container(
                     width: MediaQuery.of(context).size.width,
@@ -24,17 +24,17 @@ Container commentaryList(context){
                               return new ListView(
                                 children: snapshot.data.documents
                                     .map((DocumentSnapshot document) {
-                                  return Padding(
-                                      child: CustomCard(
-                                          viewModel: viewModel,
-                                          routing: _routing,
-                                          project: document),
-                                      padding: EdgeInsets.all(10));
-                                }).toList(),
+                                     print(document.data['commentaire'][0]['message']);
+                                      return new ListTile(
+                                        title:  Text(document.data['commentaire'][0]['message'] ?? 'title not found'),
+                                        //subtitle: new Text(document['name']),
+                                      );
+                                    }).toList(),
                               );
                           }
                         }))
       ]
     ,)
   );
+
 }
