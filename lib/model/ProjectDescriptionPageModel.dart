@@ -90,8 +90,8 @@ class ProjectDescriptionPageModel extends AModel {
     print('INSCRIPTION FOR : $uid');
     Map<String, String> args = {
       'uid':uid,
-      'projectId':pid,
-      'messgae' :message,
+      'pid':pid,
+      'message' :message,
     };
     Map<String, String> header ={
       'InscriptionProject':uid
