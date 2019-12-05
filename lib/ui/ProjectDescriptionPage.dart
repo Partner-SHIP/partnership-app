@@ -349,7 +349,7 @@ class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
                   _buildTitle(),
                   _buildButtons(context),
                   _buildDescription(context),
-                  commentaryList(context)
+                  // commentaryList(context)
                 ],
               )),
         );
