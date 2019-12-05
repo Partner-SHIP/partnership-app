@@ -9,11 +9,11 @@ class AcceptMemberCard extends StatelessWidget {
   AcceptMemberCard(MemberAccept memberAccept, AViewModel viewModel)
       : memberAccept = memberAccept,
         viewModel = viewModel;
-  @override
+
   Widget _buildCircleAvatar(BuildContext context) {
     return GestureDetector(
       child: CircleAvatar(
-          radius: 40, backgroundImage: NetworkImage(this.memberAccept.imgUrl)),
+          radius: 32, backgroundImage: NetworkImage(this.memberAccept.imgUrl)),
       onTap: () => {print('AcceptCard Image Click')},
     );
   }
@@ -55,6 +55,7 @@ class AcceptMemberCard extends StatelessWidget {
     return Container(
       margin: EdgeInsets.all(5),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           _buildCircleAvatar(context),
           _buildTextName(context),
