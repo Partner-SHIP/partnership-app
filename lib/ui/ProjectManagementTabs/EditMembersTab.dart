@@ -8,29 +8,21 @@ import 'package:partnership/ui/widgets/ThemeContainer.dart';
 import 'package:partnership/viewmodel/ProjectManagementPageViewModel.dart';
 import 'package:partnership/viewmodel/ProjectManagementTabsViewModel.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:path/path.dart';
 
 class EditMembersTab extends StatelessWidget {
   final ProjectManagementTabsViewModel viewModel;
   final DocumentSnapshot project;
+  List<MemberAccept> memberAcceptList = [];
+  List<MemberRemove> memberRemoveList = [];
   EditMembersTab(ProjectManagementTabsViewModel vm, DocumentSnapshot project)
       : viewModel = vm,
         project = project;
-
-  sortMembersList(toto) {
-// on parcourt la list des membres, et on tri ceux qui sont "en attente" et ceux "membre"
-  }
+  List<DocumentSnapshot> membersSnapshotList = [];
 
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size.height;
-    List<Widget> widgetRemoveList = [];
-    this.viewModel.dummyRemoveList.forEach(
-        (value) => widgetRemoveList.add(RemoveMemberCard(value, viewModel)));
-
-    List<Widget> widgetAcceptList = [];
-    this.viewModel.dummyAcceptList.forEach(
-        (value) => widgetAcceptList.add(AcceptMemberCard(value, viewModel)));
-
     return Column(
       children: <Widget>[
         AutoSizeText("Candidatures en attente",
@@ -43,20 +35,44 @@ class EditMembersTab extends StatelessWidget {
           width: 10,
           height: 10,
         ),
-        widgetAcceptList.isEmpty
-            ? Container(
-              height: screenSize / 2.7,
-              child: AutoSizeText("Il n'y a aucune demande",
-                  style: TextStyle(
-                      fontSize: 20,
-                      fontFamily: 'Orkney',
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white)),
+        Container(
+          child: ListView(children: [
+            StreamBuilder(
+              stream: this
+                  .project
+                  .reference
+                  .collection('membres')
+                  .where("status", isEqualTo: "En attente")
+                  .snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                print('en attente snapshot');
+                print(snapshot.hasData);
+                if (snapshot.hasData) {
+                  return Column(
+                    children: snapshot.data.documents.map((doc) {
+                      MemberRemove member = MemberRemove(
+                          doc.data['firstName'],
+                          doc.data['lastName'],
+                          doc.data['pid'],
+                          doc.data['uid'],
+                          'https://firebasestorage.googleapis.com/v0/b/partnership-app-e8d99.appspot.com/o/unknowprofilepicture.png?alt=media&token=80d8fd66-ab70-4c8a-bd9f-bed1897e3234');
+                      return RemoveMemberCard(member, viewModel);
+                    }).toList(),
+                  );
+                } else {
+                  return AutoSizeText("Il n'y a aucune demande",
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontFamily: 'Orkney',
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white));
+                }
+              },
             )
-            : Container(
-                child: ListView(children: widgetAcceptList),
-                height: screenSize / 2.7,
-              ),
+          ]),
+          height: screenSize / 2.7,
+        ),
         SizedBox(
           width: 10,
           height: 10,
@@ -82,21 +98,45 @@ class EditMembersTab extends StatelessWidget {
                 fontFamily: 'Orkney',
                 fontWeight: FontWeight.bold,
                 color: Colors.white)),
-        widgetRemoveList.isEmpty
-            ? Container(
-              height: screenSize / 5.7,
-              child: AutoSizeText("Il n'y a aucun membre",
-                  style: TextStyle(
-                      fontSize: 20,
-                      fontFamily: 'Orkney',
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white)),
-            )
-            : Container(
-                child: ListView(children: widgetRemoveList),
-                margin: EdgeInsets.all(5),
-                height: screenSize / 2.7,
-              ),
+        Container(
+          child: ListView(children: [
+            StreamBuilder(
+              stream: this
+                  .project
+                  .reference
+                  .collection('membres')
+                  .where("status", isEqualTo: "Membre")
+                  .snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                print('membre has data');
+                print(snapshot.hasData);
+                if (snapshot.hasData) {
+                  return Column(
+                    children: snapshot.data.documents.map((doc) {
+                      MemberRemove member = MemberRemove(
+                          doc.data['firstName'],
+                          doc.data['lastName'],
+                          doc.data['pid'],
+                          doc.data['uid'],
+                          'https://firebasestorage.googleapis.com/v0/b/partnership-app-e8d99.appspot.com/o/unknowprofilepicture.png?alt=media&token=80d8fd66-ab70-4c8a-bd9f-bed1897e3234');
+                      return RemoveMemberCard(member, viewModel);
+                    }).toList(),
+                  );
+                } else {
+                  return AutoSizeText("Il n'y a aucun membre",
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontFamily: 'Orkney',
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white));
+                }
+              },
+            ),
+          ]),
+          margin: EdgeInsets.all(5),
+          height: screenSize / 2.7,
+        ),
       ],
     );
   }

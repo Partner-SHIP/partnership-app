@@ -3,6 +3,8 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/rendering.dart';
 import 'package:partnership/viewmodel/AViewModel.dart';
 import 'package:partnership/viewmodel/ProjectManagementTabsViewModel.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class RemoveMemberCard extends StatelessWidget {
   AViewModel viewModel;
@@ -20,7 +22,23 @@ class RemoveMemberCard extends StatelessWidget {
     );
   }
 
+// Future<Post> fetchPost() async {
+//   final response =
+//       await http.get('https://jsonplaceholder.typicode.com/posts/1');
+
+// print(response);
+//   if (response.statusCode == 200) {
+//     // If the call to the server was successful, parse the JSON.
+//     // return Post.fromJson(json.decode(response.body));
+//   } 
+//   else {
+//     // If that call was not successful, throw an error.
+//     throw Exception('Failed to load post');
+//   }
+// }
+
   Widget _buildTextName(BuildContext context) {
+
     return GestureDetector(
       child: AutoSizeText(
           this.memberRemove.firstName + ' ' + this.memberRemove.lastName,
