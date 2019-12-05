@@ -4,28 +4,30 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 abstract class ApiRoutes {
+  static const String postFollow = "https://us-central1-partnership-app-e8d99.cloudfunctions.net/Follow";
+  static const String postLike = "https://us-central1-partnership-app-e8d99.cloudfunctions.net/Like";
+  static const String postUnFollow = "https://us-central1-partnership-app-e8d99.cloudfunctions.net/Unfollow"; 
+  static const String postUnLike = "https://us-central1-partnership-app-e8d99.cloudfunctions.net/Unlike";
   static const String getProjectQueryResult = "https://us-central1-partnership-app-e8d99.cloudfunctions.net/getProjectQueryResult";
   static const String getStories = "https://us-central1-partnership-app-e8d99.cloudfunctions.net/getStories";
-  static const String helloWorld = "https://us-central1-partnership-app-e8d99.cloudfunctions.net/helloWorld";
   static const String getProfile = "https://us-central1-partnership-app-e8d99.cloudfunctions.net/getProfile2";
+  static const String helloWorld = "https://us-central1-partnership-app-e8d99.cloudfunctions.net/helloWorld";
+  static const String postProjectInscription = "https://us-central1-partnership-app-e8d99.cloudfunctions.net/InscriptionProject";
   static const String postProfile = "https://us-central1-partnership-app-e8d99.cloudfunctions.net/postProfiles";
   static const String postProject = "https://us-central1-partnership-app-e8d99.cloudfunctions.net/postProject2";
-  static const String addLike = "https://us-central1-partnership-app-e8d99.cloudfunctions.net/Like";
-  static const String deleteLike = "https://us-central1-partnership-app-e8d99.cloudfunctions.net/Unlike";
-  static const String addFollow = "https://us-central1-partnership-app-e8d99.cloudfunctions.net/Follow";
-  static const String deleteFollow = "https://us-central1-partnership-app-e8d99.cloudfunctions.net/Unfollow"; 
 }
 
 abstract class IApiREST {
+  Future<dynamic> postFollow({@required Map<String, String> header, @required Map<String, String> args, Function onSuccess, Function onError});
+  Future<dynamic> postLike({@required Map<String, String> header, @required Map<String, String> args, Function onSuccess, Function onError});
+  Future<dynamic> postUnFollow({@required Map<String, String> header, @required Map<String, String> args, Function onSuccess, Function onError});  
+  Future<dynamic> postUnLike({@required Map<String, String> header, @required Map<String, String> args, Function onSuccess, Function onError});
+  Future<dynamic> getProfile({@required Map<String, String> header, @required Map<String, String> args, Function onSuccess, Function onError});
   Future<dynamic> getProjectQueryResult({@required Map<String, String> header, Function onSuccess, Function onError});
   Future<dynamic> getStories({@required Map<String, String> header, Function onSuccess, Function onError});
-  Future<dynamic> getProfile({@required Map<String, String> header, @required Map<String, String> args, Function onSuccess, Function onError});
+  Future<dynamic> postProjectInscription({@required Map<String, String> header, @required Map<String, String> args, Function onSuccess, Function onError});
   Future<dynamic> postProfile({@required Map<String, String> header, @required Map<String, String> args, Function onSuccess, Function onError});
   Future<dynamic> postProject({@required Map<String, String> header, @required Map<String, String> args, Function onSuccess, Function onError});
-  Future<dynamic> addLike({@required Map<String, String> header, @required Map<String, String> args, Function onSuccess, Function onError});
-  Future<dynamic> deleteLike({@required Map<String, String> header, @required Map<String, String> args, Function onSuccess, Function onError});
-  Future<dynamic> addFollow({@required Map<String, String> header, @required Map<String, String> args, Function onSuccess, Function onError});
-  Future<dynamic> deleteFollow({@required Map<String, String> header, @required Map<String, String> args, Function onSuccess, Function onError});  
 }
 
 class ApiREST implements IApiREST {
@@ -103,20 +105,27 @@ class ApiREST implements IApiREST {
   }
 
   @override
-  Future<dynamic> addLike({Map<String, String> header, Map<String, String> args, Function onSuccess, Function onError}) {
-    print(ApiRoutes.addLike+this._formatParameters(args));
-    return _httpPostRequest(path: ApiRoutes.addLike+this._formatParameters(args), header: header, onSuccess: onSuccess, onError: onError);
+  Future<dynamic> postLike({Map<String, String> header, Map<String, String> args, Function onSuccess, Function onError}) {
+    print(ApiRoutes.postLike+this._formatParameters(args));
+    return _httpPostRequest(path: ApiRoutes.postLike+this._formatParameters(args), header: header, onSuccess: onSuccess, onError: onError);
   }
   @override
-  Future<dynamic> deleteLike({Map<String, String> header, Map<String, String> args, Function onSuccess, Function onError}) {
-    return _httpPostRequest(path: ApiRoutes.addLike+this._formatParameters(args), header: header, onSuccess: onSuccess, onError: onError);
+  Future<dynamic> postUnLike({Map<String, String> header, Map<String, String> args, Function onSuccess, Function onError}) {
+    return _httpPostRequest(path: ApiRoutes.postLike+this._formatParameters(args), header: header, onSuccess: onSuccess, onError: onError);
   }
   @override
-  Future<dynamic> addFollow({Map<String, String> header, Map<String, String> args, Function onSuccess, Function onError}) {
-    return _httpPostRequest(path: ApiRoutes.addLike+this._formatParameters(args), header: header, onSuccess: onSuccess, onError: onError);
+  Future<dynamic> postFollow({Map<String, String> header, Map<String, String> args, Function onSuccess, Function onError}) {
+    print(ApiRoutes.postFollow+this._formatParameters(args));
+    return _httpPostRequest(path: ApiRoutes.postFollow+this._formatParameters(args), header: header, onSuccess: onSuccess, onError: onError);
   }
   @override
-  Future<dynamic> deleteFollow({Map<String, String> header, Map<String, String> args, Function onSuccess, Function onError}) {
-    return _httpPostRequest(path: ApiRoutes.addLike+this._formatParameters(args), header: header, onSuccess: onSuccess, onError: onError);
+  Future<dynamic> postUnFollow({Map<String, String> header, Map<String, String> args, Function onSuccess, Function onError}) {
+    return _httpPostRequest(path: ApiRoutes.postUnFollow+this._formatParameters(args), header: header, onSuccess: onSuccess, onError: onError);
+  }
+  
+  @override
+  Future<dynamic> postProjectInscription({Map<String, String> header, Map<String, String> args, Function onSuccess, Function onError}) {
+    print(ApiRoutes.postProjectInscription+this._formatParameters(args));
+    return _httpPostRequest(path: ApiRoutes.postProjectInscription+this._formatParameters(args), header: header, onSuccess: onSuccess, onError: onError);
   }
 }

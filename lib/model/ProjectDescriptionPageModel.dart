@@ -6,44 +6,115 @@ class ProjectDescriptionPageModel extends AModel {
   ProjectDescriptionPageModel(): super();
   
   bool adding = false;
+  bool following = false;
 
-  void _addLikeRequests(String pid, String uid, Function handler) {
+  //////////////////////////////////////Like///////////////////////////////////////////////////
+
+  void _postLikeRequests(String pid, String uid, Function handler) {
     print('ADD LIKE BY : $uid');
     Map<String, String> args = {
-      'pid':pid,
+      'projectUid':pid,
       'uid':uid,
     };
     Map<String, String> header ={
       'Like':uid
     };
 
-    this.apiClient.addLike(header: header, args: args, onSuccess: onSuccess, onError: onError).then((value){
+    this.apiClient.postLike(header: header, args: args, onSuccess: onSuccess, onError: onError).then((value){
       handler(value);
     });
   }
+  
 
   void onSuccess(){
-    print("SUCCESS ADD LIKE");
+    print("SUCCESS");
   }
 
   void onError(){
-    print("ERROR ADD LIKE");
+    print("ERROR");
   }
 
-  void _cantAddLike() {
+  void cantPostLike() {
     adding = false;
   }
   
-  void _addedLike(String result) {
+  void postedLike(String result) {
     Map body = jsonDecode(result);
     if (body["value"] != null)
       print("success");
   }
 
-  void addLike(String pid, String uid, Function handler){
+  void postLike(String pid, String uid, Function handler){
     if (adding == true)
       return ;
     adding = true;
-    _addLikeRequests(pid, uid, handler);
+    _postLikeRequests(pid, uid, handler);
+  }
+
+  ////////////////////////////////////Follow//////////////////////////////////////////////
+
+  void _postFollowRequests(String pid, String uid, Function handler) {
+    print('ADD FOLLOW BY : $uid');
+    Map<String, String> args = {
+      'projectUid':pid,
+      'uid':uid,
+    };
+    Map<String, String> header ={
+      'Follow':uid
+    };
+
+    this.apiClient.postFollow(header: header, args: args, onSuccess: onSuccess, onError: onError).then((value){
+      handler(value);
+    });
+  }
+  void cantPostFollow() {
+    adding = false;
+  }
+  
+  void postedFollow(String result) {
+    Map body = jsonDecode(result);
+    if (body["value"] != null)
+      print("success");
+  }
+
+  void postFollow(String pid, String uid, Function handler){
+    if (adding == true)
+      return ;
+    adding = true;
+    _postFollowRequests(pid, uid, handler);
+  }
+
+  /////////////////////////////////////Project Inscription////////////////////////////////////////////////////
+  
+  void _postProjectInscriptionRequests(String pid, String uid, String message, Function handler) {
+    print('INSCRIPTION FOR : $uid');
+    Map<String, String> args = {
+      'uid':uid,
+      'pid':pid,
+      'message' :message,
+    };
+    Map<String, String> header ={
+      'InscriptionProject':uid
+    };
+
+    this.apiClient.postProjectInscription(header: header, args: args, onSuccess: onSuccess, onError: onError).then((value){
+      handler(value);
+    });
+  }
+  void cantPostProjectInscription() {
+    adding = false;
+  }
+  
+  void postedProjectInscription(String result) {
+    Map body = jsonDecode(result);
+    if (body["value"] != null)
+      print("success");
+  }
+
+  void postProjectInscription(String pid, String uid, String message, Function handler){
+    if (adding == true)
+      return ;
+    adding = true;
+    _postProjectInscriptionRequests(pid, uid, message, handler);
   }
 }
