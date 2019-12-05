@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:partnership/model/AModel.dart';
 import 'package:partnership/utils/FBCollections.dart';
@@ -48,12 +49,19 @@ class ProfilePageModel extends AModel {
     if (uid != null) {
       args['uid'] = uid;
       this.apiClient.getProfile(header: header, args: args, onSuccess: null, onError: null)
-          .then((json) => (json != null) ? this._updateProfile(json[0] as Map<String, dynamic>, handler) : print("network error"));
+          .then((json) {
+            (json != null) ? this._updateProfile(json[0] as Map<String, dynamic>, handler) : print("network error");
+            final StorageReference storageReference = FirebaseStorage().ref().child("profiles/" + uid + "/photo_de_profile");
+          });
     }
   }
 
-  void postProfile(String uid, Map<String, String> args, Function handler){
+  void postProfile(String uid, Map<String, String> args, Function handler, File imagePickerFile){
     this.apiClient.postProfile(header: <String, String>{'uid':uid}, args: args).then((_) {
+      print("OKKKK22222222222");
+      final StorageReference storageReference = FirebaseStorage().ref().child('profiles/$uid/photo_de_profile');
+      StorageUploadTask uploadTask = storageReference.putFile(imagePickerFile);
+      //storageReference.getDownloadURL().
       this.getUserProfile(uid: uid, handler: handler);
     });
   }

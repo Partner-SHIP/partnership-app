@@ -1,3 +1,4 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/ProfilePageViewModel.dart';
@@ -155,6 +156,12 @@ class ProfilePageState extends State<ProfilePage>
       this.location = newProfile['cityLocation'] ?? 'ville de résidence';
       this.workLocation = newProfile['workLocation'] ?? 'Employeur';
       this.studies = newProfile['studies'] ?? 'études réalisées';
+      final StorageReference storageReference = FirebaseStorage().ref().child("profiles/" + viewModel.loggedInUser().uid + "/photo_de_profile");
+      storageReference.getDownloadURL().then((onValue){
+        setState(() {
+          this.photoUrl = onValue;
+        });
+      });
       //this.photoUrl = newProfile['photoUrl'] ?? 'https://pixel.nymag.com/imgs/daily/vulture/2017/06/14/14-tom-cruise.w700.h700.jpg' ;
       //this.photoUrl = newProfile['photoUrl'] ?? 'https://firebasestorage.googleapis.com/v0/b/partnership-app-e8d99.appspot.com/o/Jeff.png?alt=media&token=eca3cf05-67ce-415f-adab-5f989911ef75' ;
       //dans le else, image par défaut si l'utilisateur n'en a pas uploadé une
@@ -273,7 +280,7 @@ class ProfilePageState extends State<ProfilePage>
               'firstName': this.firstName,
               'lastName': this.lastName
             };
-            viewModel.postProfile(args, this._updateProfile);
+            viewModel.postProfile(args, this._updateProfile, imagePickerFile);
           }
         }
         this.setState(() {

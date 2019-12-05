@@ -379,7 +379,7 @@ return Container(
             );
           },
         );
-        this.viewModel.postProject(context, _nameProject, _descriptionProject, _image, (String value){
+        this.viewModel.postProject(context, _nameProject, _descriptionProject, _image, _logo, (String value){
           print("COUCOU" + value);
           Navigator.of(context).pop();
           viewModel.changeView(route: _routing.homePage, widgetContext: context);

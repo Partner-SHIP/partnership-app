@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:partnership/coordinator/AppCoordinator.dart';
@@ -21,6 +22,7 @@ class ChatScreenState extends State<ChatScreen> {
   IRoutes _routing = Routes();
 
   String status;
+  String photoUrl;
 
   ChatScreenViewModel get viewModel =>
       AViewModelFactory.register[_routing.chatScreenPage];
@@ -34,6 +36,18 @@ class ChatScreenState extends State<ChatScreen> {
     setState(() {
       this.viewModel.initNames();
     });
+    if (viewModel.getContactId().isNotEmpty) {
+      print("OKKKKKKKKKKKKKKKKKKKKK");
+      final StorageReference storageReference = FirebaseStorage.instance
+          .ref().child("profiles/" + viewModel.getContactId() + "/photo_de_profile");
+      storageReference.getDownloadURL().then((onValue) {
+        setState(() {
+          this.photoUrl = onValue;
+          print(onValue);
+          //this.imagePickerFile = File(onValue);
+        });
+      });
+    }
   }
 
   Widget _textComposerWidget() {
@@ -93,12 +107,19 @@ class ChatScreenState extends State<ChatScreen> {
         return new Scaffold(
             appBar: new AppBar(
               backgroundColor: Colors.indigo,
-              title: new Text(
+              title: new Row(
+                children: <Widget>[
+              new CircleAvatar(
+              backgroundImage: NetworkImage(photoUrl ?? ''),
+            ),
+                  new Text(
 
-                viewModel.getContactName() != null
-                    ? viewModel.getContactName() + status
-                    : '',
-                style: TextStyle(color: Colors.white),
+                    viewModel.getContactName() != null
+                        ? viewModel.getContactName() + status
+                        : '',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ],
               ),
             ),
             body:  ThemeContainer(

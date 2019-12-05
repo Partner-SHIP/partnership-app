@@ -129,7 +129,7 @@ class NotificationsList extends StatelessWidget {
                           _setIsReadToTrue(document);
                         },
                         child: Icon(
-                          Icons.notifications_active,
+                          Icons.remove_red_eye,
                           color: document['isRead'] == false
                               ? Colors.lightBlue
                               : Colors.grey,
