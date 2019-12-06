@@ -41,7 +41,6 @@ abstract class IApiREST {
   Future<dynamic> getProjectQueryResult({@required Map<String, String> header, Function onSuccess, Function onError});
   Future<dynamic> getStories({@required Map<String, String> header, Function onSuccess, Function onError});
   Future<dynamic> getProjects({@required Map<String, String> header, @required Map<String, String> args, Function onSuccess, Function onError});
-  Future<dynamic> getProfile({@required Map<String, String> header, @required Map<String, String> args, Function onSuccess, Function onError});
   Future<dynamic> postProfile({@required Map<String, String> header, @required Map<String, String> args, Function onSuccess, Function onError});
   Future<dynamic> postProject({@required Map<String, String> header, @required Map<String, String> args, Function onSuccess, Function onError});
   Future<dynamic> addLike({@required Map<String, String> header, @required Map<String, String> args, Function onSuccess, Function onError});
@@ -163,8 +162,13 @@ class ApiREST implements IApiREST {
   @override
   Future addTag({Map<String, String> header, Map<String, String> args, Function onSuccess, Function onError}) {
     // PID ET TAG
-    return _httpPostRequest(path: ApiRoutes.addTag+this._formatParameters(args), header: header, onSuccess: onSuccess, onError: onError);
-
+    return _httpPostRequest(
+        path: ApiRoutes.addTag + this._formatParameters(args),
+        header: header,
+        onSuccess: onSuccess,
+        onError: onError);
+  }
+  @override
   Future<dynamic> postUnLike({Map<String, String> header, Map<String, String> args, Function onSuccess, Function onError}) {
     return _httpPostRequest(path: ApiRoutes.postLike+this._formatParameters(args), header: header, onSuccess: onSuccess, onError: onError);
   }
@@ -236,5 +240,15 @@ class ApiREST implements IApiREST {
     if (args.length > 0)
       return _httpGetRequest(path: ApiRoutes.getDemandeProjet+this._formatParameters(args), header: header, onSuccess: onSuccess, onError: onError);
     return _httpGetRequest(path: ApiRoutes.getDemandeProjet, header: header, onSuccess: onSuccess, onError: onError);
+  }
+
+  @override
+  Future addLike({Map<String, String> header, Map<String, String> args, Function onSuccess, Function onError}) {
+    // PID ET TAG
+    return _httpPostRequest(
+        path: ApiRoutes.addLike + this._formatParameters(args),
+        header: header,
+        onSuccess: onSuccess,
+        onError: onError);
   }
 }
