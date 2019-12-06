@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:partnership/viewmodel/AViewModel.dart';
 import 'package:partnership/model/ProfilePageModel.dart';
 
@@ -23,13 +24,15 @@ class ProfilePageViewModel extends AViewModel {
   updateProfileInformations(List<String> data, File image){
     if (image != null)
       {
+        final StorageReference storageReference = FirebaseStorage().ref().child("profiles/" + this.loggedInUser().uid + "/photo_de_profile");
+
         // Upload image on storage
         // Get the URL and add it to payload
       }
   }
 
-  void postProfile(Map<String, String> args, Function handler){
-    this.model.postProfile(this.loggedInUser().uid, args, handler);
+  void postProfile(Map<String, String> args, Function handler, File imagePickerFile){
+    this.model.postProfile(this.loggedInUser().uid, args, handler, imagePickerFile);
   }
 
   void getCurrentUserProfile(Function handler){

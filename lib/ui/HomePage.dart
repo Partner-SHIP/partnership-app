@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:partnership/coordinator/AppCoordinator.dart';
 import 'dart:async';
 import 'package:partnership/utils/Routes.dart';
 import 'package:partnership/viewmodel/AViewModelFactory.dart';
@@ -7,7 +9,6 @@ import 'package:partnership/ui/widgets/StoryList.dart';
 import 'package:partnership/ui/widgets/ThemeContainer.dart';
 import 'package:partnership/ui/widgets/EndDrawer.dart';
 import 'package:partnership/ui/widgets/PageHeader.dart';
-import 'package:tuple/tuple.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -27,13 +28,14 @@ class _HomePageState extends State<HomePage> {
   void initState(){
     super.initState();
     this._connectivitySub = viewModel.subscribeToConnectivity(this._connectivityHandler);
-    viewModel.setStateHandler(this._reloadWidgets);
     viewModel.getStoryList(this._updateStoryList);
-    viewModel.pageExist = true;
+    Coordinator coordinator = new Coordinator();
+    print(coordinator.getLoggedInUser().uid);
+    Firestore.instance.collection("profiles").document(coordinator.getLoggedInUser().uid).setData({"status" : true}, merge: true);
+    //Firestore.instance.collection("profiles").document(coordinator.getLoggedInUser().uid)
   }
   @override
   void dispose(){
-    viewModel.pageExist = false;
     this._connectivitySub.cancel();
     super.dispose();
   }
@@ -44,19 +46,15 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void _reloadWidgets(){
-    setState(() {});
-  }
-
   Container _buildActions(BuildContext context, double height) {
     FloatingActionButton createProjectAction = FloatingActionButton(heroTag: "add", child:Icon(Icons.add), onPressed: () {this.viewModel.goToCreateProjectPage(context);}, backgroundColor: Colors.grey[700],);
     FloatingActionButton joinProjectAction = FloatingActionButton(heroTag: "join", child:Icon(Icons.file_download), onPressed: () {this.viewModel.goToBrowsingProjectPage(context);}, backgroundColor: Colors.grey[700]);
     Row actionsRow = Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          Padding(child: createProjectAction, padding:EdgeInsets.symmetric(horizontal: 5)),
-          Padding(child: joinProjectAction, padding: EdgeInsets.only(left: 5)),
-        ],
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: <Widget>[
+        Padding(child: createProjectAction, padding:EdgeInsets.symmetric(horizontal: 5)),
+        Padding(child: joinProjectAction, padding: EdgeInsets.only(left: 5)),
+      ],
     );
     Container actions = Container(child:actionsRow);
     return (actions);
@@ -76,22 +74,21 @@ class _HomePageState extends State<HomePage> {
         child: buildEndDrawer(context: context, viewModel: viewModel),
       ),
       body: Builder(
-        builder: (BuildContext context) {
-          viewModel.setPageContext(Tuple2<BuildContext, String>(context, _routing.homePage));
-          return SafeArea(
-              top: false,
-              child: ThemeContainer(
-                  context,
-                  Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      pageHeader(context, 'Votre fil d\'actualités'),
-                      _stories
-                    ],
-                  ))
-          );
-        }
+          builder: (BuildContext context) {
+            return SafeArea(
+                top: false,
+                child: ThemeContainer(
+                    context,
+                    Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        pageHeader(context, 'Votre fil d\'actualités'),
+                        _stories
+                      ],
+                    ))
+            );
+          }
       ),
     );
     return (WillPopScope(onWillPop: null, child: view));

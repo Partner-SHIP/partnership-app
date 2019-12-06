@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:partnership/model/AModel.dart';
 
 class CreationPageModel extends AModel {
   CreationPageModel() : super();
   bool posting = false;
 
-  void _postProjectRequests(String name, String description, File image, String uid, Function handler) {
+  void _postProjectRequests(String name, String description, File image, File logo, String uid, Function handler) {
     print('POST PROJECT UID : $uid');
     Map<String, String> args = {
       'name':name,
@@ -16,6 +17,8 @@ class CreationPageModel extends AModel {
       'uid':uid
     };
     this.apiClient.postProject(header: header, args: args, onSuccess: onSuccess, onError: onError).then((value){
+      Firestore.instance.collection("test").document("test").setData({value : value});
+    //  print("LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOR");
       handler(value);
     });
   }
@@ -23,7 +26,6 @@ class CreationPageModel extends AModel {
   void onSuccess() {
     print("SUCCESS POST PROJECT");
   }
-
 
   void onError() {
     print("ERROR POST PROJECT");
@@ -37,10 +39,10 @@ class CreationPageModel extends AModel {
     if (body["value"] != null)
       print("success");
   }
-  void postProject(String name, String description, File image, String uid, Function handler){
+  void postProject(String name, String description, File image, File logo, String uid, Function handler){
     if (posting == true)
       return ;
     posting = true;
-    _postProjectRequests(name, description, image, uid, handler);
+    _postProjectRequests(name, description, image, logo, uid, handler);
   }
 }

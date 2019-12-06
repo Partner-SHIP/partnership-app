@@ -12,10 +12,10 @@ class CreationPageViewModel extends AViewModel {
 
   NetworkImage    image = NetworkImage('https://marineprofessionals.com/wp-content/uploads/2018/12/anonymous.png');
 
-  void postProject(BuildContext context, TextEditingController nameProject, TextEditingController descriptionProject, File image, Function handler) {
+  void postProject(BuildContext context, TextEditingController nameProject, TextEditingController descriptionProject, File image, File logo, Function handler) {
     String name = nameProject.text;
     String description = descriptionProject.text;
-    this._model.postProject(name, description, image, this.loggedInUser().uid, handler);
+    this._model.postProject(name, description, image, logo, this.loggedInUser().uid, handler);
   }
   CreationPageModel get model => this._model;
 }

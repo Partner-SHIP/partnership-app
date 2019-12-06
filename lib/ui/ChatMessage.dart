@@ -6,22 +6,38 @@ import 'package:auto_size_text/auto_size_text.dart';
 
 class ChatMessage extends StatelessWidget {
   final String text;
-  final String name;
+  String name;
   final String date;
+  final String uid;
+  final String myUid;
 
-  ChatMessage({this.name, this.text, this.date});
+  ChatMessage({this.name, this.text, this.date, this.uid, this.myUid});
+
+  Color color1;
+  Color colorName;
 
   @override
   Widget build(BuildContext context) {
 
+    if (this.myUid == this.uid) {
+      this.name = "Moi";
+      colorName = Colors.indigo;
+      color1 = Colors.blueGrey;
+    }
+    else {
+      colorName = Colors.black;
+      color1 = Colors.white;
+    }
+
     return new Scrollbar(
       child: Card(
+        color: color1,
         child: new Wrap(
           // crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               ListTile(
-                title: new AutoSizeText(name, style: TextStyle(color: Colors.black),),
-                trailing: new AutoSizeText(date, style: TextStyle(color: Colors.indigoAccent, fontSize: 12,),),
+                title: new AutoSizeText(name, style: TextStyle(color: colorName),),
+                trailing: new AutoSizeText(date, style: TextStyle(color: Colors.indigo, fontSize: 14,),),
               ),
               Container(
                 padding: EdgeInsets.all(15),

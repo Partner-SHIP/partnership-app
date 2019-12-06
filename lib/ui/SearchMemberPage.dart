@@ -24,16 +24,16 @@ class SearchMemberPageState extends State<SearchMemberPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: true,
-      endDrawer: Theme(
-        data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
-        child: buildEndDrawer(context: context, viewModel: viewModel, searchMember: false),
-      ),
-      body: Builder(builder: (BuildContext context){
-        viewModel.setPageContext(Tuple2<BuildContext, String>(context, _routing.searchMemberPage));
-        return SafeArea(
-          top: false,
-          child: ThemeContainer(context, 
+        resizeToAvoidBottomPadding: true,
+        endDrawer: Theme(
+          data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
+          child: buildEndDrawer(context: context, viewModel: viewModel, searchMember: false),
+        ),
+        body: Builder(builder: (BuildContext context){
+          viewModel.setPageContext(Tuple2<BuildContext, String>(context, _routing.searchMemberPage));
+          return SafeArea(
+            top: false,
+            child: ThemeContainer(context,
               Column(
                 children: <Widget>[
                   pageHeader(context, 'recherche d\'utilisateurs'),
@@ -87,7 +87,7 @@ class CustomCardState extends StatefulWidget {
       contacts: document['contacts'],
     );
   }
-  }
+}
 
 class CustomCard extends State<CustomCardState> {
   CustomCard({@required this.firstName, this.lastName, this.cityLocation, this.studies, this.uid, this.rec_contacts, this.contacts});
@@ -102,6 +102,154 @@ class CustomCard extends State<CustomCardState> {
   final String uid;
   final rec_contacts;
   final contacts;
+  String status = "4";
+  Icon icons = new Icon(Icons.refresh);
+
+  @override
+  void initState() {
+    super.initState();
+
+    Firestore.instance.collection("profiles").document(coordinator.getLoggedInUser().uid).snapshots().listen((onValue){
+      List contactsList = onValue.data["contacts"];
+      List recContactsList = onValue.data["rec_contacts"];
+      List sendContactsList = onValue.data["send_contacts"];
+      setState(() {
+        if (contactsList != null && contactsList.contains(this.uid)) {
+          status = "0";
+        }
+        else if (recContactsList != null && recContactsList.contains(this.uid)) {
+          status = "1";
+        }
+        else if (sendContactsList != null && sendContactsList.contains(this.uid)) {
+          status = "2";
+        }
+        else {
+          status = "3";
+        }
+      });
+    });
+  }
+
+  void  acceptContact(String userUid){
+    Firestore.instance.collection("profiles").document(myUid).updateData({"rec_contacts": FieldValue.arrayRemove([userUid])}).then((onValue){
+      Firestore.instance.collection("profiles").document(myUid).updateData({"contacts": FieldValue.arrayUnion([userUid])});
+    });
+    Firestore.instance.collection("profiles").document(userUid).updateData({"send_contacts": FieldValue.arrayRemove([myUid])}).then((onValue){
+      Firestore.instance.collection("profiles").document(userUid).updateData({"contacts": FieldValue.arrayUnion([myUid])});
+    });
+  }
+
+  void  removeContact(String userUid){
+    /*Firestore.instance.collection("profiles").document(myUid).snapshots().map((convert){
+      List list = convert.data[];
+    });*/
+    Firestore.instance.collection("profiles").document(myUid).updateData({"contacts": FieldValue.arrayRemove([userUid])});
+    Firestore.instance.collection("profiles").document(userUid).updateData({"contacts": FieldValue.arrayRemove([myUid])});
+  }
+
+  Future<void> cancelContactAlertDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Ajout de contact'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text("Voulez vous annuler l'invitation avec " + firstName + " " + lastName + " ?"),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Oui'),
+              onPressed: () {
+                Firestore.instance.collection("profiles").document(myUid).updateData({"send_contacts": FieldValue.arrayRemove([this.uid])});
+                Firestore.instance.collection("profiles").document(this.uid).updateData({"rec_contacts": FieldValue.arrayRemove([myUid])});
+                Navigator.of(context).pop();
+              },
+            ),
+            FlatButton(
+              child: Text('Non'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> acceptContactAlertDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Ajout de contact'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Voulez vous ajouter ' + firstName + " " + lastName + " à vos contacts ?"),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Accepter'),
+              onPressed: () {
+                acceptContact(this.uid);
+                Navigator.of(context).pop();
+              },
+            ),
+            FlatButton(
+              child: Text('Refuser'),
+              onPressed: () {
+                Firestore.instance.collection("profiles").document(myUid).updateData({"rec_contacts": FieldValue.arrayRemove([this.uid])});
+                Firestore.instance.collection("profiles").document(this.uid).updateData({"send_contacts": FieldValue.arrayRemove([myUid])});                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> removeContactAlertDialog(String userUid) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Suppression de contact'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Voulez vous supprimer ' + firstName + " " + lastName + " de vos contacts ?"),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Oui'),
+              onPressed: () {
+                removeContact(this.uid);
+                Navigator.of(context).pop();
+              },
+            ),
+            FlatButton(
+              child: Text('Non'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   Widget get memberImage {
     return Container(
@@ -145,13 +293,12 @@ class CustomCard extends State<CustomCardState> {
     List rec = new List();
     List contacts = this.contacts;
     MaterialColor colors;
-
     //rec.addAll();
     /* if (rec.contains(this.uid) == true)
       colors = Colors.indigo;
     else
       colors = Colors.transparent;*/
-      //return Container(
+    //return Container(
     child: return new Card(
       color: Colors.white,
       child: ListTile(
@@ -170,10 +317,18 @@ class CustomCard extends State<CustomCardState> {
         ),
         ),
         trailing: IconButton(
-            icon: Icon(Icons.add, color: Colors.indigoAccent),
+            icon: Icon(icons.icon, color: Colors.indigoAccent),
             onPressed: () {
-      //        if (rec.contains(myUid) == true) {
-        //        rec.remove(myUid);
+              if (status == "0") {
+                removeContactAlertDialog(this.uid);
+              }
+              else if (status == "1") {
+                acceptContactAlertDialog();
+              }
+              else if (status == "2") {
+                cancelContactAlertDialog();
+              }
+              else if (status == "3"){
                 Firestore.instance.collection("profiles")
                     .document(myUid)
                     .updateData(
@@ -182,7 +337,7 @@ class CustomCard extends State<CustomCardState> {
                     .document(this.uid)
                     .updateData(
                     {"rec_contacts": FieldValue.arrayUnion([myUid])});
-          //    }
+              }
             }
         ),
       ),
@@ -202,6 +357,18 @@ class CustomCard extends State<CustomCardState> {
 
   @override
   Widget build(BuildContext context) {
+    if (status == "0") {
+      icons = new Icon(Icons.contacts);
+    }
+    else if (status == "1") {
+      icons = new Icon(Icons.undo);
+    }
+    else if (status == "2") {
+      icons = new Icon(Icons.send);
+    }
+    else if (status == "3"){
+      icons = new Icon(Icons.add);
+    }
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Container(

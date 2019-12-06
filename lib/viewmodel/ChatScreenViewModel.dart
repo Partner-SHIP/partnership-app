@@ -68,7 +68,7 @@ class ChatScreenViewModel extends AViewModel {
     return _model.getMessages();
   }
 
-  void messagesChanges(var snapshot) {
+  void messagesChanges(var snapshot, String myUid) {
     if (snapshot.data.data.containsValue("messages") != null) {
       List list = snapshot.data.data["messages"];
       if (list != null) var value = list.last["message"];
@@ -79,8 +79,9 @@ class ChatScreenViewModel extends AViewModel {
           DateTime dateTime = list.elementAt(i)["timestamp"].toDate();
           dateTime = dateTime.toUtc().add(new Duration(hours: 2));
           String _date = dateFormat.format(dateTime);
+          String uid = list.elementAt(i)["uid"];
           _model.addMessage(list.elementAt(i)["name"].toString(),
-              list.elementAt(i)["message"].toString(), _date);
+              list.elementAt(i)["message"].toString(), _date, uid, myUid);
         }
       }
     }
@@ -88,8 +89,8 @@ class ChatScreenViewModel extends AViewModel {
 
   void sendingMessages(String message) {
     if (message.isNotEmpty) {
-      _model.sendMessage(getMyConvPath(), message);
-      _model.sendMessage(getContactConvPath(), message);
+      _model.sendMessage(getMyConvPath(), message, this.getMyId());
+      _model.sendMessage(getContactConvPath(), message, this.getMyId());
     }
   }
 }

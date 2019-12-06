@@ -47,7 +47,7 @@ class ChatScreenModel extends AModel {
 
   set contactId(String id) => this._contactId = id;
 
-  void addMessage(String name, String message, String date) {
+  void addMessage(String name, String message, String date, String uid, String myUid) {
     if (message != null && message.length > 0) {
       messages.insert(
           0,
@@ -55,6 +55,8 @@ class ChatScreenModel extends AModel {
             name: name,
             text: message,
             date: date,
+            uid: uid,
+            myUid: myUid,
           ));
     }
   }
@@ -67,13 +69,14 @@ class ChatScreenModel extends AModel {
     this.messages = message;
   }*/
 
-  void sendMessage(String path_conversation, String message) {
+  void sendMessage(String path_conversation, String message, String myId) {
     Firestore.instance.document(path_conversation).setData({
       'messages': FieldValue.arrayUnion([
         {
           'name': myName,
           'message': message,
           'timestamp': DateTime.now(),
+          'uid' : myId,
           'hasSeen': false
         }
       ])
