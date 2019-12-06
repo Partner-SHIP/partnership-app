@@ -43,23 +43,21 @@ class NotificationModule implements INotification {
         msg.forEach((k, v){
           print(k+" : "+v.toString());
         });
-        //_notificationController.add(EnumNotification.NOTIFICATION_LAUNCH);
+        _notificationController.add(msg);
       },
       onResume: (Map<String, dynamic> msg) async {
         print("onResume called");
         msg.forEach((k, v){
           print(k+" : "+v.toString());
         });
-
-        //_notificationController.add(EnumNotification.NOTIFICATION_RESUME);
+        _notificationController.add(msg);
       },
       onMessage: (Map<String, dynamic> msg) async {
         print("onMessage called");
         msg.forEach((k, v){
           print(k+" : "+v.toString());
         });
-        //_notificationController.add(EnumNotification.NOTIFICATION_MESSAGE);
-
+        _notificationController.add(msg);
       }
     );
     firebaseMessaging.requestNotificationPermissions(
