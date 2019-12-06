@@ -15,6 +15,8 @@ import 'package:partnership/viewmodel/GroupsPageViewModel.dart';
 import 'package:partnership/viewmodel/ChatConvViewModel.dart';
 import 'package:partnership/viewmodel/NavigPageViewModel.dart';
 import 'package:partnership/viewmodel/SearchMemberPageViewModel.dart';
+import 'package:partnership/viewmodel/ProjectManagementPageViewModel.dart';
+import 'package:partnership/viewmodel/ProjectManagementTabsViewModel.dart';
 import 'package:partnership/utils/Routes.dart';
 
 import 'ChatScreenViewModel.dart';
@@ -117,6 +119,10 @@ abstract class AViewModelFactory
           viewModel = GroupsChatViewModel(_routes.groupsChat);
           register[_routes.groupsChat] = viewModel;
           break;
+        case RoutesEnum.projectManagement:
+          viewModel = ProjectManagementPageViewModel(_routes.projectManagement);
+          register[_routes.projectManagement] = viewModel;
+          break;
         case RoutesEnum.navigPage:
           viewModel = NavigPageViewModel(_routes.navigPage);
           register[_routes.navigPage] = viewModel;
@@ -142,6 +148,9 @@ abstract class AViewModelFactory
         break;
       case DynamicRoutesEnum.chatConvPage:
         viewModel = ChatConvViewModel(_routes.chatConvPage);
+        break;
+      case DynamicRoutesEnum.projectManagementTabs:
+        viewModel = ProjectManagementTabsViewModel(_routes.projectManagementTabs);
         break;
       default:
         throw Exception("Error while constructing dynamic ViewModel: the dynamic route \"$route\" provided is unknown !");
