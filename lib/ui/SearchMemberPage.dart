@@ -302,7 +302,7 @@ class CustomCard extends State<CustomCardState> {
     child: return new Card(
       color: Colors.white,
       child: ListTile(
-        title:  Text(firstName + ' ' + lastName, style: TextStyle(
+        title:  Text((firstName ?? 'undefined') + ' ' + (lastName ?? 'undefined'), style: TextStyle(
           fontSize: 20,
           fontFamily: 'Orkney',
           fontWeight: FontWeight.bold,

@@ -34,7 +34,7 @@ Container commentaryList(context, pid) {
                             leading: CircleAvatar(
                               radius: 30.0,
                               backgroundImage:
-                              NetworkImage("${document['commentaire'][index]['picture']}"),
+                              NetworkImage("${Uri.decodeComponent(document['commentaire'][index]['picture'])}"),
                               backgroundColor: Colors.transparent,
                             ),
                             subtitle: Text(
