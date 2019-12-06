@@ -30,6 +30,7 @@ abstract class ICoordinator{
   String               getContactId();
   void                 setContactId(String contactId);
   void                  setPageContext(Tuple2<BuildContext, String> newPageContext);
+  String                getToken();
 }
 
 class Coordinator extends State<PartnershipApp> implements ICoordinator {
@@ -181,8 +182,8 @@ class Coordinator extends State<PartnershipApp> implements ICoordinator {
 
   void _notificationHandler(Map<String,dynamic> msg){
     print('NEW NOTIFICATION FROM COORDINATOR');
-    /*
-    switch (notification) {
+
+    switch (EnumNotification.CONTACT_ADD_NOTIFICATION) {
       case EnumNotification.CONTACT_ADD_NOTIFICATION:
         if (this._authentication.getLoggedInUser() != null)
           {
@@ -212,7 +213,7 @@ class Coordinator extends State<PartnershipApp> implements ICoordinator {
       default:
         break;
     }
-     */
+
   }
 
   @override
@@ -245,6 +246,11 @@ class Coordinator extends State<PartnershipApp> implements ICoordinator {
   @override
   void setPageContext(Tuple2<BuildContext, String> newPageContext) {
     this._pageContext = newPageContext;
+  }
+
+  @override
+  String getToken() {
+    return this._notification.getToken();
   }
 }
 

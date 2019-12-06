@@ -8,7 +8,6 @@ abstract class IAuthentication {
   Future<FirebaseUser> getCurrentUser();
   Future<void>         logOut();
   FirebaseUser         getLoggedInUser();
-
 }
 
 class AuthenticationModule implements IAuthentication {

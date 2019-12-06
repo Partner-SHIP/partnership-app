@@ -50,10 +50,12 @@ class ProjectBrowsingPageState extends State<ProjectBrowsingPage> {
       resizeToAvoidBottomPadding: true,
       endDrawer: Theme(
         data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
-        child: buildEndDrawer(context: context, viewModel: viewModel, projectSearch: false),
+        child: buildEndDrawer(
+            context: context, viewModel: viewModel, projectSearch: false),
       ),
       body: Builder(builder: (BuildContext context) {
-        viewModel.setPageContext(Tuple2<BuildContext, String>(context, _routing.projectBrowsingPage));
+        viewModel.setPageContext(Tuple2<BuildContext, String>(
+            context, _routing.projectBrowsingPage));
         return SafeArea(
           top: false,
           child: ThemeContainer(
@@ -80,7 +82,10 @@ class ProjectBrowsingPageState extends State<ProjectBrowsingPage> {
                                 children: snapshot.data.documents
                                     .map((DocumentSnapshot document) {
                                   return Padding(
-                                      child: CustomCard(viewModel: viewModel, routing: _routing, project: document),
+                                      child: CustomCard(
+                                          viewModel: viewModel,
+                                          routing: _routing,
+                                          project: document),
                                       padding: EdgeInsets.all(10));
                                 }).toList(),
                               );
@@ -95,11 +100,16 @@ class ProjectBrowsingPageState extends State<ProjectBrowsingPage> {
 
 class CustomCard extends StatelessWidget {
   ProjectBrowsingPageViewModel _viewModel;
-  DocumentSnapshot  _project;
-  IRoutes           _routing;
+  DocumentSnapshot _project;
+  IRoutes _routing;
 
-  CustomCard({@required ProjectBrowsingPageViewModel viewModel, @required IRoutes routing, @required DocumentSnapshot project})
-      : _viewModel = viewModel, _routing = routing, _project = project;
+  CustomCard(
+      {@required ProjectBrowsingPageViewModel viewModel,
+      @required IRoutes routing,
+      @required DocumentSnapshot project})
+      : _viewModel = viewModel,
+        _routing = routing,
+        _project = project;
 
   @override
   Widget build(BuildContext context) {
@@ -126,13 +136,14 @@ class CustomCard extends StatelessWidget {
     //                 }),
     //           ],
     //         )));
-    return (_buildContainer(width: MediaQuery.of(context).size.width, context: context));
+    return (_buildContainer(
+        width: MediaQuery.of(context).size.width, context: context));
   }
 
   Text _buildTitle() {
     return (Text(
       _project['name'] ?? 'title not found',
-      //textAlign: TextAlign.center,
+      textAlign: TextAlign.center,
       style: TextStyle(color: Colors.white, fontSize: 20),
       //style: storyHeaderTextStyle,
       maxLines: 1,
@@ -148,30 +159,33 @@ class CustomCard extends StatelessWidget {
   //       overflow: TextOverflow.fade));
   // }
 
-    Widget _creationProjectRowLogoWidget(BuildContext context) {
-  return Row(
-    children: <Widget>[
-      Expanded(
-        child: Stack(
-          //alignment: Alignment.centerLeft,
-          children: <Widget>[
-            _creationProjectLogoWidget(context)
-          ],
+  Widget _creationProjectRowLogoWidget(BuildContext context) {
+    return Row(
+      children: <Widget>[
+        Expanded(
+          child: Stack(
+            //alignment: Alignment.centerLeft,
+            children: <Widget>[_creationProjectLogoWidget(context)],
+          ),
         ),
-      ),
-    ],
-  );
-}
+      ],
+    );
+  }
 
   Widget _creationProjectLogoWidget(BuildContext context) {
-return Container(
-        width: (MediaQuery.of(context).size.width / 5),
-        height: 70,
+    DecorationImage image = DecorationImage(
+        image: NetworkImage(Uri.decodeComponent(_project["logoPath"]) ??
+            'https://i.gyazo.com/c017f72af3cb6d43756563752f41310c.png'),
+        fit: BoxFit.cover,
+        alignment: Alignment.topCenter);
+    return Container(
+        width: (MediaQuery.of(context).size.width / 5.5),
+        height: (MediaQuery.of(context).size.height / 3),
         decoration: BoxDecoration(
-        color: Colors.red,
-        borderRadius: BorderRadius.all(Radius.circular(80.0))),
-    );
-}
+            color: Colors.red,
+            borderRadius: BorderRadius.all(Radius.circular(60.0)),
+            image: image));
+  }
 
   Widget _buildContainer({double width, BuildContext context}) {
     // DecorationImage image = DecorationImage(
@@ -181,29 +195,38 @@ return Container(
     // BoxDecoration decoration = BoxDecoration(
     //     color: Colors.transparent,
     //     borderRadius: BorderRadius.all(Radius.circular(5)));
-        //image: image);
+    //image: image);
     final double sidePadding = 10;
     Widget result = GestureDetector(
         onTap: () {
+          Firestore.instance
+              .collection('projects')
+              .document(_project['pid'])
+              .updateData(
+                  <String, dynamic>{'viewNumber': FieldValue.increment(1)});
           this._viewModel.pushDynamicPage(
-              route: _routing.projectDescriptionPage,
-              widgetContext: context,
-              args: <String, dynamic>{'project': this._project}
-            );
+            route: _routing.projectDescriptionPage,
+            widgetContext: context,
+            args: <String, dynamic>{'project': this._project},
+          );
         },
         child: Container(
           //decoration: decoration,
           height: MediaQuery.of(context).size.height / 7,
           width: width,
-          padding: EdgeInsets.only(
-              bottom: 10, top: 10, left: sidePadding, right: sidePadding),
+          padding: EdgeInsets.only(bottom: 10, top: 10),
           child: Row(
             children: <Widget>[
-              Container(padding: EdgeInsets.only(left: sidePadding * 2), width: (MediaQuery.of(context).size.width / 3), child: _creationProjectRowLogoWidget(context)),
-              Container(padding: EdgeInsets.only(right: sidePadding * 5), child: _buildTitle())
+              Container(
+                  padding: EdgeInsets.only(left: sidePadding * 3.5),
+                  width: (MediaQuery.of(context).size.width / 3),
+                  child: _creationProjectRowLogoWidget(context)),
+              Container(
+                  padding: EdgeInsets.only(left: sidePadding * 1.5),
+                  child: _buildTitle())
               //Container(width: width - 10, child: _buildDescription())
-              ],
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            ],
+            mainAxisAlignment: MainAxisAlignment.start,
           ),
         ));
     return (result);
@@ -233,7 +256,7 @@ class SecondPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Image.network(
-                      bannerPath,
+                      Uri.decodeComponent(bannerPath),
                     ),
                     Text(title),
                     Text(description),

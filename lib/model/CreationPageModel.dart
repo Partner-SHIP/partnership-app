@@ -1,6 +1,11 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'package:firebase_storage/firebase_storage.dart';
+
 import 'package:partnership/model/AModel.dart';
 
 class CreationPageModel extends AModel {
@@ -16,14 +21,23 @@ class CreationPageModel extends AModel {
     Map<String, String> header = {
       'uid':uid
     };
-    this.apiClient.postProject(header: header, args: args, onSuccess: onSuccess, onError: onError).then((value){
-      Firestore.instance.collection("test").document("test").setData({value : value});
-    //  print("LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOR");
-      handler(value);
+    this.storage.ref().child('projects/').child(DateTime.now().toIso8601String()).putFile(logo).onComplete.then((StorageTaskSnapshot snapshot){
+      snapshot.ref.getDownloadURL().then((url){
+        args["logoPath"] = Uri.encodeComponent(url);
+        this.storage.ref().child("projects/").child(DateTime.now().toIso8601String()).putFile(image).onComplete.then((StorageTaskSnapshot snapshot){
+          snapshot.ref.getDownloadURL().then((url){
+            args["bannerPath"] = Uri.encodeComponent(url);
+            print("URL IMAGE UPLOAD = ["+args["bannerPath"]+"]");
+            this.apiClient.postProject(header: header, args: args, onSuccess: onSuccess, onError: onError).then((value){
+              handler(value);
+            });
+          });
+        });
+      });
     });
   }
 
-  void onSuccess() {
+  void onSuccess(Object obj) {
     print("SUCCESS POST PROJECT");
   }
 
