@@ -8,6 +8,7 @@ import 'package:partnership/model/AModelFactory.dart';
 import 'package:partnership/model/AModel.dart';
 import 'package:partnership/coordinator/AppCoordinator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:tuple/tuple.dart';
 
 /*
     Abstract class defining all ViewModels, destined to be instanciated within the Coordinator by AViewModelFactory.
@@ -18,6 +19,7 @@ abstract class AViewModel implements AViewModelFactory
   final ICoordinator _coordinator = Coordinator();
   AModel            _abstractModel;
   String            _route;
+  BuildContext      _pageContext;
 
   AViewModel();
 
@@ -46,10 +48,18 @@ abstract class AViewModel implements AViewModelFactory
 
   set pageExist(bool exist) => _pageExist = exist;
 
-  void setPageContext(newPageContext) {
+  void setPageContext(Tuple2<BuildContext, String> newPageContext) {
+    this._pageContext = newPageContext.item1;
     this._coordinator.setPageContext(newPageContext);
   }
 
+  BuildContext getPageContext(){
+    return this._pageContext;
+  }
+
+  String getToken(){
+    return this._coordinator.getToken();
+  }
 
   void setStateHandler(Function handler){
     _reloadHandler = handler;

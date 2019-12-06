@@ -7,6 +7,7 @@ import 'package:tuple/tuple.dart';
 abstract class INotification {
   void initializeNotificationModule();
   StreamSubscription subscribeToNotification(Function handler);
+  String getToken();
 }
 
 enum EnumNotification {
@@ -22,6 +23,7 @@ enum EnumNotification {
 class NotificationModule implements INotification {
   static final NotificationModule _instance = NotificationModule._internal();
   bool titi = false;
+  String token = "";
   factory NotificationModule() {
     return _instance;
   }
@@ -31,29 +33,31 @@ class NotificationModule implements INotification {
   StreamController<Map<String, dynamic>> _notificationController
                               = StreamController<Map<String, dynamic>>();
   void _initialize() {
+    firebaseMessaging.getToken().then((token){
+      print("YOLO JAI LE TOKEN : ["+token+"]");
+      this.token = token;
+    });
     firebaseMessaging.configure(
       onLaunch: (Map<String, dynamic> msg) async {
         print("onLaunch called");
         msg.forEach((k, v){
           print(k+" : "+v.toString());
         });
-        //_notificationController.add(EnumNotification.NOTIFICATION_LAUNCH);
+        _notificationController.add(msg);
       },
       onResume: (Map<String, dynamic> msg) async {
         print("onResume called");
         msg.forEach((k, v){
           print(k+" : "+v.toString());
         });
-
-        //_notificationController.add(EnumNotification.NOTIFICATION_RESUME);
+        _notificationController.add(msg);
       },
       onMessage: (Map<String, dynamic> msg) async {
         print("onMessage called");
         msg.forEach((k, v){
           print(k+" : "+v.toString());
         });
-        //_notificationController.add(EnumNotification.NOTIFICATION_MESSAGE);
-
+        _notificationController.add(msg);
       }
     );
     firebaseMessaging.requestNotificationPermissions(
@@ -66,13 +70,6 @@ class NotificationModule implements INotification {
     firebaseMessaging.onIosSettingsRegistered.listen((IosNotificationSettings setting){
       print ('IOS Setting Registed');
     });
-    firebaseMessaging.getToken().then((token){
-      update(token);
-    });
-  }
-
-  void update(String token) {
-    print("token : ["+token+"]");
   }
 
   @override
@@ -83,6 +80,11 @@ class NotificationModule implements INotification {
   @override
   StreamSubscription subscribeToNotification(Function handler) {
     return _notificationController.stream.listen(handler);
+  }
+
+  @override
+  String getToken() {
+    return this.token;
   }
 }
 

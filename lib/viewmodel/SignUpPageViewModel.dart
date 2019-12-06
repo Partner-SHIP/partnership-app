@@ -12,10 +12,12 @@ class SignUpPageViewModel extends AViewModel {
   Future<bool> signUpAction(SignUpData inputs){
     Future<bool> ret = this.signUp(email: inputs.email, password: inputs.password).then((user) {
       if (user != null){
+        print('INSCRIPTION NEW TOKEN = ['+this.getToken()+']');
         Map<String, String> args = {
           'firstName':inputs.firstName,
           'lastName':inputs.lastName,
           'email':inputs.email,
+          'token':this.getToken()
         };
         this.model.createProfile(args, user.uid);
       }

@@ -15,6 +15,8 @@ import 'package:partnership/model/ChatConvModel.dart';
 import 'package:partnership/model/HomePageModel.dart';
 import 'package:partnership/model/SearchMemberPageModel.dart';
 import 'package:partnership/model/NavigPageModel.dart';
+import 'package:partnership/model/ProjectManagementPageModel.dart';
+import 'package:partnership/model/ProjectManagementTabsModel.dart';
 
 import 'package:partnership/utils/Routes.dart';
 
@@ -115,6 +117,10 @@ abstract class AModelFactory{
           model = GroupsChatModel();
           register[_routing.groupsChat] = model;
           break;
+        case RoutesEnum.projectManagement:
+          model = ProjectManagementPageModel();
+          register[_routing.projectManagement] = model;
+          break;
         default:
           throw Exception("Error while constructing Model: the route \"$route\" provided is unknown !");
           break;
@@ -132,6 +138,9 @@ abstract class AModelFactory{
         break;
       case DynamicRoutesEnum.chatConvPage:
         model = ChatConvModel();
+        break;
+      case DynamicRoutesEnum.projectManagementTabs:
+        model = ProjectManagementTabsModel();
         break;
       default:
         throw Exception("Error while constructing dynamic Model: the route \"$route\" provided is unknown !");
