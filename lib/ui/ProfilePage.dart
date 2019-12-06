@@ -159,7 +159,7 @@ class ProfilePageState extends State<ProfilePage>
       //this.photoUrl = newProfile['photoUrl'] ?? 'https://pixel.nymag.com/imgs/daily/vulture/2017/06/14/14-tom-cruise.w700.h700.jpg' ;
       //this.photoUrl = newProfile['photoUrl'] ?? 'https://firebasestorage.googleapis.com/v0/b/partnership-app-e8d99.appspot.com/o/Jeff.png?alt=media&token=eca3cf05-67ce-415f-adab-5f989911ef75' ;
       //dans le else, image par défaut si l'utilisateur n'en a pas uploadé une
-      this.photoUrl = newProfile['photoUrl'] ?? 'https://firebasestorage.googleapis.com/v0/b/partnership-app-e8d99.appspot.com/o/unknowprofilepicture.png?alt=media&token=80d8fd66-ab70-4c8a-bd9f-bed1897e3234';
+      this.photoUrl = newProfile['picture'] ?? 'https://firebasestorage.googleapis.com/v0/b/partnership-app-e8d99.appspot.com/o/unknowprofilepicture.png?alt=media&token=80d8fd66-ab70-4c8a-bd9f-bed1897e3234';
     });
   }
 
