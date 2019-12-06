@@ -174,7 +174,7 @@ class CustomCard extends StatelessWidget {
 
   Widget _creationProjectLogoWidget(BuildContext context) {
     DecorationImage image = DecorationImage(
-        image: NetworkImage(Uri.decodeComponent(_project["bannerPath"]) ??
+        image: NetworkImage(Uri.decodeComponent(_project["logoPath"]) ??
             'https://i.gyazo.com/c017f72af3cb6d43756563752f41310c.png'),
         fit: BoxFit.cover,
         alignment: Alignment.topCenter);
@@ -199,11 +199,15 @@ class CustomCard extends StatelessWidget {
     final double sidePadding = 10;
     Widget result = GestureDetector(
         onTap: () {
-          Firestore.instance.collection('projects').document(_project['pid']).updateData(<String, dynamic>{'viewNumber': FieldValue.increment(1)});
+          Firestore.instance
+              .collection('projects')
+              .document(_project['pid'])
+              .updateData(
+                  <String, dynamic>{'viewNumber': FieldValue.increment(1)});
           this._viewModel.pushDynamicPage(
-              route: _routing.projectDescriptionPage,
-              widgetContext: context,
-              args: <String,dynamic>{'project': this._project},
+            route: _routing.projectDescriptionPage,
+            widgetContext: context,
+            args: <String, dynamic>{'project': this._project},
           );
         },
         child: Container(
