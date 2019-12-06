@@ -17,7 +17,7 @@ class PartnershipCard extends StatelessWidget {
           decoration: BoxDecoration(
               color: Colors.red,
               image: DecorationImage(
-                  image: NetworkImage(document["bannerPath"]),
+                  image: NetworkImage(Uri.decodeComponent(document["bannerPath"])),
                   fit: BoxFit.cover),
               borderRadius: BorderRadius.all(Radius.circular(45.0)),
               boxShadow: [
