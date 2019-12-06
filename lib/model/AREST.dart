@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 abstract class ApiRoutes {
+  static const String postComment = "https://us-central1-partnership-app-e8d99.cloudfunctions.net/addCommentaire";
   static const String postFollow = "https://us-central1-partnership-app-e8d99.cloudfunctions.net/Follow";
   static const String postLike = "https://us-central1-partnership-app-e8d99.cloudfunctions.net/Like";
   static const String postUnFollow = "https://us-central1-partnership-app-e8d99.cloudfunctions.net/Unfollow"; 
@@ -31,6 +32,7 @@ abstract class ApiRoutes {
 }
 
 abstract class IApiREST {
+  Future<dynamic> postComment({@required Map<String, String> header, @required Map<String, String> args, Function onSuccess, Function onError});
   Future<dynamic> postFollow({@required Map<String, String> header, @required Map<String, String> args, Function onSuccess, Function onError});
   Future<dynamic> postLike({@required Map<String, String> header, @required Map<String, String> args, Function onSuccess, Function onError});
   Future<dynamic> postUnFollow({@required Map<String, String> header, @required Map<String, String> args, Function onSuccess, Function onError});  
@@ -181,6 +183,12 @@ class ApiREST implements IApiREST {
     print(ApiRoutes.postProjectInscription+this._formatParameters(args));
     return _httpPostRequest(path: ApiRoutes.postProjectInscription+this._formatParameters(args), header: header, onSuccess: onSuccess, onError: onError);
   }
+   
+  @override
+  Future<dynamic> postComment({Map<String, String> header, Map<String, String> args, Function onSuccess, Function onError}) {
+    print(ApiRoutes.postComment+this._formatParameters(args));
+    return _httpPostRequest(path: ApiRoutes.postComment+this._formatParameters(args), header: header, onSuccess: onSuccess, onError: onError);
+  }
 
   @override
   Future addContact({Map<String, String> header, Map<String, String> args, Function onSuccess, Function onError}) {
@@ -229,5 +237,4 @@ class ApiREST implements IApiREST {
       return _httpGetRequest(path: ApiRoutes.getDemandeProjet+this._formatParameters(args), header: header, onSuccess: onSuccess, onError: onError);
     return _httpGetRequest(path: ApiRoutes.getDemandeProjet, header: header, onSuccess: onSuccess, onError: onError);
   }
-
 }

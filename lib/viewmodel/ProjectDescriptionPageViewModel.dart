@@ -25,4 +25,9 @@ class ProjectDescriptionPageViewModel extends AViewModel {
     this._projectModel.postProjectInscription(idProject, this.loggedInUser().uid, message, handler);
   }
   
+  void postComment(String idProject, TextEditingController message, Function handler) {
+    String msg = message.text;
+    this._projectModel.postAddComment(idProject, this.loggedInUser().uid, msg, handler);
+  }
+  
 }

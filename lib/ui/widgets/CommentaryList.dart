@@ -33,15 +33,26 @@ Container commentaryList(context, pid) {
                           return new ListTile(
                             leading: Image.network(
                                 document['commentaire'][index]['picture']),
-                            subtitle: Text(document['commentaire'][index]
-                                        ['firstName'] +
-                                    ' ' +
-                                    document['commentaire'][index]
-                                        ['lastName'] ??
-                                'user not found'),
-                            title: Text(document['commentaire'][index]
-                                    ['message'] ??
-                                'title not found'),
+                            subtitle: Text(
+                                document['commentaire'][index]['firstName'] +
+                                        ' ' +
+                                        document['commentaire'][index]
+                                            ['lastName'] ??
+                                    'user not found',
+                                style: new TextStyle(
+                                  color: Colors.white54,
+                                  fontSize: 15.0,
+                                  fontFamily: "Orkney",
+                                )),
+                            title: Text(
+                              document['commentaire'][index]['message'] ??
+                                  'title not found',
+                              style: new TextStyle(
+                                color: Colors.white,
+                                fontSize: 15.0,
+                                fontFamily: "Orkney",
+                              ),
+                            ),
                           );
                         });
                 }
