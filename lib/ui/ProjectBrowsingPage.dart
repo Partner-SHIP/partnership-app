@@ -174,7 +174,7 @@ class CustomCard extends StatelessWidget {
 
   Widget _creationProjectLogoWidget(BuildContext context) {
     DecorationImage image = DecorationImage(
-        image: NetworkImage(_project['logoPath'] ??
+        image: NetworkImage(Uri.decodeComponent(_project["bannerPath"]) ??
             'https://i.gyazo.com/c017f72af3cb6d43756563752f41310c.png'),
         fit: BoxFit.cover,
         alignment: Alignment.topCenter);
@@ -250,7 +250,7 @@ class SecondPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Image.network(
-                      bannerPath,
+                      Uri.decodeComponent(bannerPath),
                     ),
                     Text(title),
                     Text(description),

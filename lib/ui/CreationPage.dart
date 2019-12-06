@@ -368,7 +368,7 @@ class CreationPageState extends State<CreationPage> {
           },
         );
         this.viewModel.postProject(
-            context, _nameProject, _descriptionProject, _image, _handlerCreation);
+            context, _nameProject, _descriptionProject, _image, _logo, _handlerCreation);
       },
       heroTag: "postProject",
       label: Text("Créer"),
