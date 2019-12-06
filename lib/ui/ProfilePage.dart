@@ -159,7 +159,9 @@ class ProfilePageState extends State<ProfilePage>
       final StorageReference storageReference = FirebaseStorage().ref().child("profiles/" + viewModel.loggedInUser().uid + "/photo_de_profile");
       storageReference.getDownloadURL().then((onValue){
         setState(() {
-          this.photoUrl = onValue;
+          if (onValue.toString() != null) {
+            this.photoUrl = onValue;
+          }
         });
       });
       //this.photoUrl = newProfile['photoUrl'] ?? 'https://pixel.nymag.com/imgs/daily/vulture/2017/06/14/14-tom-cruise.w700.h700.jpg' ;
