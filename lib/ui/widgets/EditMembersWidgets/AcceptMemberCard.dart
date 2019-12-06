@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:partnership/viewmodel/AViewModel.dart';
 import 'package:partnership/viewmodel/ProjectManagementTabsViewModel.dart';
+import 'package:http/http.dart' as http;
 
 class AcceptMemberCard extends StatelessWidget {
   AViewModel viewModel;
@@ -40,7 +41,20 @@ class AcceptMemberCard extends StatelessWidget {
         color: Colors.green,
         size: 45,
       ),
-      onTap: () => {print('AcceptCard Check Icon Click')},
+      onTap: () {
+        String request =
+            'https://us-central1-partnership-app-e8d99.cloudfunctions.net/ReponseMembreProject?pid=' +
+                this.memberAccept.pid +
+                '&uid=' +
+                this.memberAccept.uid +
+                '&result' +
+                'true';
+        print('Accept Card Uncheck Icon Click');
+        http
+            .post(request)
+            .then((result) => {print(result)})
+            .catchError((onError) => {print(onError)});
+      },
       //call ajouter le membre au projet
     );
   }
@@ -52,7 +66,20 @@ class AcceptMemberCard extends StatelessWidget {
         color: Colors.red,
         size: 45,
       ),
-      onTap: () => {print('Accept Card Uncheck Icon Click')},
+      onTap: () {
+        String request =
+            'https://us-central1-partnership-app-e8d99.cloudfunctions.net/ReponseMembreProject?pid=' +
+                this.memberAccept.pid +
+                '&uid=' +
+                this.memberAccept.uid +
+                '&result' +
+                'false';
+        print('Accept Card Uncheck Icon Click');
+        http
+            .post(request)
+            .then((result) => {print(result)})
+            .catchError((onError) => {print(onError)});
+      },
       //call refuser le membre au projet
     );
   }
