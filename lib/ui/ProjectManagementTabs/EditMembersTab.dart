@@ -4,11 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:partnership/ui/widgets/EditMembersWidgets/AcceptMemberCard.dart';
 import 'package:partnership/ui/widgets/EditMembersWidgets/RemoveMemberCard.dart';
-import 'package:partnership/ui/widgets/ThemeContainer.dart';
-import 'package:partnership/viewmodel/ProjectManagementPageViewModel.dart';
 import 'package:partnership/viewmodel/ProjectManagementTabsViewModel.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:path/path.dart';
 
 class EditMembersTab extends StatelessWidget {
   final ProjectManagementTabsViewModel viewModel;
@@ -44,27 +41,30 @@ class EditMembersTab extends StatelessWidget {
                   .snapshots(),
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
-                print('en attente snapshot');
-                print(snapshot.hasData);
-                if (snapshot.hasData) {
+                if (snapshot.data.documents.length > 0) {
                   return Column(
                     children: snapshot.data.documents.map((doc) {
-                      MemberRemove member = MemberRemove(
+                      MemberAccept member = MemberAccept(
                           doc.data['firstName'],
                           doc.data['lastName'],
                           doc.data['pid'],
                           doc.data['uid'],
                           'https://firebasestorage.googleapis.com/v0/b/partnership-app-e8d99.appspot.com/o/unknowprofilepicture.png?alt=media&token=80d8fd66-ab70-4c8a-bd9f-bed1897e3234');
-                      return RemoveMemberCard(member, viewModel);
+                      return AcceptMemberCard(member, viewModel);
                     }).toList(),
                   );
                 } else {
-                  return AutoSizeText("Il n'y a aucune demande",
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontFamily: 'Orkney',
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white));
+                  return Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(80),
+                      child: AutoSizeText("Il n'y a aucune demande",
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontFamily: 'Orkney',
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white)),
+                    ),
+                  );
                 }
               },
             )
@@ -103,13 +103,11 @@ class EditMembersTab extends StatelessWidget {
                   .project
                   .reference
                   .collection('membres')
-                  .where("status", isEqualTo: "Membre")
+                  .where("status", isEqualTo: "membre")
                   .snapshots(),
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
-                print('membre has data');
-                print(snapshot.hasData);
-                if (snapshot.hasData) {
+                if (snapshot.data.documents.length > 0) {
                   return Column(
                     children: snapshot.data.documents.map((doc) {
                       MemberRemove member = MemberRemove(
@@ -122,12 +120,17 @@ class EditMembersTab extends StatelessWidget {
                     }).toList(),
                   );
                 } else {
-                  return AutoSizeText("Il n'y a aucun membre",
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontFamily: 'Orkney',
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white));
+                  return Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(80),
+                      child: AutoSizeText("Il n'y a aucun membre",
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontFamily: 'Orkney',
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white)),
+                    ),
+                  );
                 }
               },
             ),
