@@ -174,7 +174,9 @@ class ContactsPageState extends State<Contacts> {
               kContacts.add(Contact(
                   fullName: onData.data["firstName"],
                   message: "",
-                  documentID: conversation.document.documentID));
+                  documentID: conversation.document.documentID,
+                ),
+              );
             }
           });
         }

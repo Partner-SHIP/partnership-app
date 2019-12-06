@@ -1,5 +1,6 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
+
 export "FLUTTER_ROOT=D:\Coding Installation\flutter"
 export "FLUTTER_APPLICATION_PATH=D:\MyCodingStuff\Partnership\partnership-app"
 export "FLUTTER_TARGET=lib\main.dart"

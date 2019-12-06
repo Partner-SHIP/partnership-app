@@ -1,7 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:firebase_storage/firebase_storage.dart';
+
 import 'package:partnership/model/AModel.dart';
 
 class CreationPageModel extends AModel {
@@ -36,7 +40,6 @@ class CreationPageModel extends AModel {
   void onSuccess(Object obj) {
     print("SUCCESS POST PROJECT");
   }
-
 
   void onError() {
     print("ERROR POST PROJECT");
