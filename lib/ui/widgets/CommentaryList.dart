@@ -31,8 +31,12 @@ Container commentaryList(context, pid) {
                           final DocumentSnapshot document =
                               snapshot.data.documents[0];
                           return new ListTile(
-                            leading: Image.network(
-                                document['commentaire'][index]['picture']),
+                            leading: CircleAvatar(
+                              radius: 30.0,
+                              backgroundImage:
+                              NetworkImage("${document['commentaire'][index]['picture']}"),
+                              backgroundColor: Colors.transparent,
+                            ),
                             subtitle: Text(
                                 document['commentaire'][index]['firstName'] +
                                         ' ' +
