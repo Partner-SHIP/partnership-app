@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:ui';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:partnership/ui/widgets/ThemeContainer.dart';
 import 'package:partnership/ui/widgets/EndDrawer.dart';
@@ -24,6 +25,7 @@ class CreationPageState extends State<CreationPage> {
 
   File _image;
   File _logo;
+  String _uploadedFileURL;
 
   Future _getImage() async {
     var image = await ImagePicker.pickImage(
@@ -33,7 +35,7 @@ class CreationPageState extends State<CreationPage> {
     });
   }
 
-    Future _getLogo() async {
+  Future _getLogo() async {
     var logo = await ImagePicker.pickImage(
         source: ImageSource.gallery, maxHeight: 250, maxWidth: 250);
     setState(() {
@@ -67,54 +69,51 @@ class CreationPageState extends State<CreationPage> {
   Widget build(BuildContext context) {
     _scaffoldContext = context;
     return Scaffold(
-        resizeToAvoidBottomPadding: true,
-        body: Builder(
-            builder: (BuildContext context) {
-              viewModel.setPageContext(Tuple2<BuildContext, String>(context, _routing.creationPage));
-              return InkWell(
-                onTap: (){
-                  FocusScope.of(context).requestFocus(FocusNode());
-                },
-                child: SafeArea(
-                    top: false,
-                    child: ThemeContainer(
-                        context,
-                        SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              //_creationProjectHeaderWidget(),
-                              pageHeader(context, 'Création de projet'),
-                              SizedBox(width: 0, height: 10),
-                              Padding(
-                                padding: EdgeInsets.only(
-                                    left: (MediaQuery.of(context).size.width / 100)),
-                                child: _creationProjectRowImageWidget(),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(
-                                    top: (MediaQuery.of(context).size.width / 10),
-                                    left: (MediaQuery.of(context).size.width / 100)),
-                                child: _creationProjectRowLogoWidget(),
-                              ),
-                              _form,
-                              Padding(
-                                  padding: EdgeInsets.only(
-                                      left: (MediaQuery.of(context).size.width / 2.5),
-                                      bottom: 35
-                                  ),
-                                  child: _validatingProject()),
-                            ],
-                          ),
-                        )
-                    )
-                ),
-              );
-            }
-        ),
+      resizeToAvoidBottomPadding: true,
+      body: Builder(builder: (BuildContext context) {
+        viewModel.setPageContext(
+            Tuple2<BuildContext, String>(context, _routing.creationPage));
+        return InkWell(
+          onTap: () {
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+          child: SafeArea(
+              top: false,
+              child: ThemeContainer(
+                  context,
+                  SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        //_creationProjectHeaderWidget(),
+                        pageHeader(context, 'Création de projet'),
+                        SizedBox(width: 0, height: 10),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: (MediaQuery.of(context).size.width / 100)),
+                          child: _creationProjectRowImageWidget(),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              top: (MediaQuery.of(context).size.width / 10),
+                              left: (MediaQuery.of(context).size.width / 100)),
+                          child: _creationProjectRowLogoWidget(),
+                        ),
+                        _form,
+                        Padding(
+                            padding: EdgeInsets.only(
+                                left: (MediaQuery.of(context).size.width / 2.5),
+                                bottom: 35),
+                            child: _validatingProject()),
+                      ],
+                    ),
+                  ))),
+        );
+      }),
       endDrawer: Theme(
         data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
-        child: buildEndDrawer(context: context, viewModel: viewModel, projectCreation: false),
+        child: buildEndDrawer(
+            context: context, viewModel: viewModel, projectCreation: false),
       ),
     );
   }
@@ -166,10 +165,7 @@ class CreationPageState extends State<CreationPage> {
             alignment: Alignment.center,
             children: <Widget>[
               _creationProjectImageWidget(),
-              Positioned (
-                bottom: 0,
-                right: 10,
-                child: this._changePhotoButton())
+              Positioned(bottom: 0, right: 10, child: this._changePhotoButton())
             ],
           ),
         ),
@@ -202,152 +198,139 @@ class CreationPageState extends State<CreationPage> {
   }
 
   Widget _creationProjectRowLogoWidget() {
-  return Row(
-    children: <Widget>[
-      Expanded(
-        child: Stack(
-          alignment: Alignment.center,
-          children: <Widget>[
-            _creationProjectLogoWidget(),
-            Positioned (
-              bottom: 0,
-              right: 100,
-              child: this._changeLogo())
-          ],
+    return Row(
+      children: <Widget>[
+        Expanded(
+          child: Stack(
+            alignment: Alignment.center,
+            children: <Widget>[
+              _creationProjectLogoWidget(),
+              Positioned(bottom: 0, right: 100, child: this._changeLogo())
+            ],
+          ),
         ),
-      ),
-    ],
-  );
-}
+      ],
+    );
+  }
 
   Widget _creationProjectLogoWidget() {
-  if (_logo == null) {
-    return Container(
-      width: (MediaQuery.of(context).size.width / 3.5),
-      height: 100,
-      decoration: BoxDecoration(
-        color: Colors.red,
-        image: DecorationImage(image: image, fit: BoxFit.cover),
-        borderRadius: BorderRadius.all(Radius.circular(80.0)),
-        boxShadow: [BoxShadow(blurRadius: 7.0, color: Colors.black)]),
-  );
-} else {
-return Container(
+    if (_logo == null) {
+      return Container(
         width: (MediaQuery.of(context).size.width / 3.5),
         height: 100,
         decoration: BoxDecoration(
-        color: Colors.red,
-        image: DecorationImage(image: FileImage(_logo), fit: BoxFit.cover),
-        borderRadius: BorderRadius.all(Radius.circular(80.0)),
-        boxShadow: [BoxShadow(blurRadius: 7.0, color: Colors.black)]),
-    );
+            color: Colors.red,
+            image: DecorationImage(image: image, fit: BoxFit.cover),
+            borderRadius: BorderRadius.all(Radius.circular(80.0)),
+            boxShadow: [BoxShadow(blurRadius: 7.0, color: Colors.black)]),
+      );
+    } else {
+      return Container(
+        width: (MediaQuery.of(context).size.width / 3.5),
+        height: 100,
+        decoration: BoxDecoration(
+            color: Colors.red,
+            image: DecorationImage(image: FileImage(_logo), fit: BoxFit.cover),
+            borderRadius: BorderRadius.all(Radius.circular(80.0)),
+            boxShadow: [BoxShadow(blurRadius: 7.0, color: Colors.black)]),
+      );
+    }
   }
-}
 
   Widget _creationProjectDescWidget() {
     return Container(
-      padding: const EdgeInsets.all(30.0),
-      child: new Theme(
-        data: new ThemeData(
-          hintColor: Colors.white70
-        ),
-      child: new Center(
-          child: new Column(children: [
-        //new Padding(padding: EdgeInsets.only(top: 1.0)),
-        new Text(
-          'Description',
-          style: new TextStyle(
-            color: Colors.white,
-            fontSize: 25.0,
-            fontFamily: "Orkney",
-          ),
-        ),
-        new Padding(padding: EdgeInsets.only(top: 15.0)),
-        new TextFormField(
-          maxLength: 150,
-          controller: _descriptionProject,
-          validator: (_validateDesc) {
-            if (_validateDesc.isEmpty) {
-              return "Veuillez entrer une description";
-            }
-          },
-          decoration: new InputDecoration(
-            errorText: _validateDesc ? "Ce champ ne peut être vide" : null,
-            labelStyle: TextStyle(color: Colors.white),
-            labelText: "Entrer une description",
-            fillColor: Colors.white,
-            enabledBorder: new OutlineInputBorder(
-              borderRadius: new BorderRadius.circular(25.0),
-              borderSide: new BorderSide(color: Colors.white70)
+        padding: const EdgeInsets.all(30.0),
+        child: new Theme(
+          data: new ThemeData(hintColor: Colors.white70),
+          child: new Center(
+              child: new Column(children: [
+            //new Padding(padding: EdgeInsets.only(top: 1.0)),
+            new Text(
+              'Description',
+              style: new TextStyle(
+                color: Colors.white,
+                fontSize: 25.0,
+                fontFamily: "Orkney",
               ),
-            border: new OutlineInputBorder(
-              borderRadius: new BorderRadius.circular(25.0),
-              borderSide: new BorderSide()
-              )
             ),
-          maxLines: 5,
-          keyboardType: TextInputType.text,
-          style: new TextStyle(
-            fontFamily: "Orkney",
-            color: Colors.white,
-          ),
-        ),
-      ])),
-    )
-    );
+            new Padding(padding: EdgeInsets.only(top: 15.0)),
+            new TextFormField(
+              maxLength: 150,
+              controller: _descriptionProject,
+              validator: (_validateDesc) {
+                if (_validateDesc.isEmpty) {
+                  return "Veuillez entrer une description";
+                }
+              },
+              decoration: new InputDecoration(
+                  errorText:
+                      _validateDesc ? "Ce champ ne peut être vide" : null,
+                  labelStyle: TextStyle(color: Colors.white),
+                  labelText: "Entrer une description",
+                  fillColor: Colors.white,
+                  enabledBorder: new OutlineInputBorder(
+                      borderRadius: new BorderRadius.circular(25.0),
+                      borderSide: new BorderSide(color: Colors.white70)),
+                  border: new OutlineInputBorder(
+                      borderRadius: new BorderRadius.circular(25.0),
+                      borderSide: new BorderSide())),
+              maxLines: 5,
+              keyboardType: TextInputType.text,
+              style: new TextStyle(
+                fontFamily: "Orkney",
+                color: Colors.white,
+              ),
+            ),
+          ])),
+        ));
   }
 
   Widget _creationProjectNameWidget() {
     return Container(
-      padding: const EdgeInsets.all(30.0),
-      child: new Theme(
-        data: new ThemeData(
-          hintColor: Colors.white70
-        ),
-      child: new Center(
-          child: new Column(children: [
-        //new Padding(padding: EdgeInsets.only(top: 10.0)),
-        new Text(
-          'Nom du projet',
-          style: new TextStyle(
-            color: Colors.white,
-            fontSize: 25.0,
-            fontFamily: "Orkney",
-          ),
-        ),
-        new Padding(padding: EdgeInsets.only(top: 15.0)),
-        new TextFormField(
-          maxLines: 1,
-          maxLength: 30,
-          controller: _nameProject,
-          validator: (_validateDesc) {
-            if (_validateDesc.isEmpty) {
-              return "Veuillez entrer une description";
-            }
-          },
-          decoration: new InputDecoration(
-            errorText: _validateDesc ? "Ce champ ne peut être vide" : null,
-            labelStyle: TextStyle(color: Colors.white),
-            labelText: "Entrer un nom de projet",
-            fillColor: Colors.white,
-            enabledBorder: new OutlineInputBorder(
-              borderRadius: new BorderRadius.circular(25.0),
-              borderSide: new BorderSide(color: Colors.white70)
+        padding: const EdgeInsets.all(30.0),
+        child: new Theme(
+          data: new ThemeData(hintColor: Colors.white70),
+          child: new Center(
+              child: new Column(children: [
+            //new Padding(padding: EdgeInsets.only(top: 10.0)),
+            new Text(
+              'Nom du projet',
+              style: new TextStyle(
+                color: Colors.white,
+                fontSize: 25.0,
+                fontFamily: "Orkney",
+              ),
             ),
-            border: new OutlineInputBorder(
-              borderRadius: new BorderRadius.circular(25.0),
-              borderSide: new BorderSide()
-            )
-          ),
-          keyboardType: TextInputType.text,
-          style: new TextStyle(
-            fontFamily: "Orkney",
-            color: Colors.white,
-          ),
-        ),
-      ])),
-    )
-    );
+            new Padding(padding: EdgeInsets.only(top: 15.0)),
+            new TextFormField(
+              maxLines: 1,
+              maxLength: 30,
+              controller: _nameProject,
+              validator: (_validateDesc) {
+                if (_validateDesc.isEmpty) {
+                  return "Veuillez entrer une description";
+                }
+              },
+              decoration: new InputDecoration(
+                  errorText:
+                      _validateDesc ? "Ce champ ne peut être vide" : null,
+                  labelStyle: TextStyle(color: Colors.white),
+                  labelText: "Entrer un nom de projet",
+                  fillColor: Colors.white,
+                  enabledBorder: new OutlineInputBorder(
+                      borderRadius: new BorderRadius.circular(25.0),
+                      borderSide: new BorderSide(color: Colors.white70)),
+                  border: new OutlineInputBorder(
+                      borderRadius: new BorderRadius.circular(25.0),
+                      borderSide: new BorderSide())),
+              keyboardType: TextInputType.text,
+              style: new TextStyle(
+                fontFamily: "Orkney",
+                color: Colors.white,
+              ),
+            ),
+          ])),
+        ));
   }
 
   Widget _changePhotoButton() {
@@ -374,17 +357,19 @@ return Container(
             return Material(
               type: MaterialType.transparency,
               child: Center(
-                  child: FlareActor('assets/animations/Liquid Loader.flr', animation: 'Untitled')
-              ),
+                  child: FlareActor('assets/animations/Liquid Loader.flr',
+                      animation: 'Untitled')),
             );
           },
         );
-        this.viewModel.postProject(context, _nameProject, _descriptionProject, _image, (String value){
+        this.viewModel.postProject(
+            context, _nameProject, _descriptionProject, _image, (String value) {
           print("COUCOU" + value);
           Navigator.of(context).pop();
-          viewModel.changeView(route: _routing.homePage, widgetContext: context);
+          viewModel.changeView(
+              route: _routing.homePage, widgetContext: context);
         });
-        },
+      },
       heroTag: "postProject",
       label: Text("Créer"),
       tooltip: "Créer le projet",
@@ -392,4 +377,18 @@ return Container(
       foregroundColor: Colors.white,
     );
   }
+
+//   Future uploadFile() async {
+//    StorageReference storageReference = FirebaseStorage.instance
+//        .ref()
+//        .child('chats/${Path.basename(_image.path)}}');
+//    StorageUploadTask uploadTask = storageReference.putFile(_image);
+//    await uploadTask.onComplete;
+//    print('File Uploaded');
+//    storageReference.getDownloadURL().then((fileURL) {
+//      setState(() {
+//        _uploadedFileURL = fileURL;
+//      });
+//    });
+//  }
 }
