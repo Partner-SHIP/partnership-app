@@ -43,6 +43,7 @@ class ProfilePageState extends State<ProfilePage>
   bool isEditing = false;
   bool isBusy = false;
   File imagePickerFile;
+  String urlImage;
   /////////////////////////////////////GETTERS
   String firstName = viewModel.firstName;
   String lastName = viewModel.lastName;
@@ -158,8 +159,7 @@ class ProfilePageState extends State<ProfilePage>
       //this.photoUrl = newProfile['photoUrl'] ?? 'https://pixel.nymag.com/imgs/daily/vulture/2017/06/14/14-tom-cruise.w700.h700.jpg' ;
       //this.photoUrl = newProfile['photoUrl'] ?? 'https://firebasestorage.googleapis.com/v0/b/partnership-app-e8d99.appspot.com/o/Jeff.png?alt=media&token=eca3cf05-67ce-415f-adab-5f989911ef75' ;
       //dans le else, image par défaut si l'utilisateur n'en a pas uploadé une
-      this.photoUrl = newProfile['photoUrl'] ??
-          'https://firebasestorage.googleapis.com/v0/b/partnership-app-e8d99.appspot.com/o/unknowprofilepicture.png?alt=media&token=80d8fd66-ab70-4c8a-bd9f-bed1897e3234';
+      this.photoUrl = newProfile['photoUrl'] ?? 'https://firebasestorage.googleapis.com/v0/b/partnership-app-e8d99.appspot.com/o/unknowprofilepicture.png?alt=media&token=80d8fd66-ab70-4c8a-bd9f-bed1897e3234';
     });
   }
 
@@ -178,7 +178,7 @@ class ProfilePageState extends State<ProfilePage>
                     image: DecorationImage(
                         image: imagePickerFile != null
                             ? Image.file(imagePickerFile).image
-                            : NetworkImage(this.photoUrl),
+                            : NetworkImage(Uri.decodeComponent(this.photoUrl)),
                         fit: BoxFit.cover),
                     borderRadius: BorderRadius.all(Radius.circular(45.0)),
                     boxShadow: [
@@ -271,7 +271,8 @@ class ProfilePageState extends State<ProfilePage>
               'workLocation': values[2],
               'job': values[3],
               'firstName': this.firstName,
-              'lastName': this.lastName
+              'lastName': this.lastName,
+              'picture': this.urlImage
             };
             viewModel.postProfile(args, this._updateProfile);
           }
@@ -523,6 +524,11 @@ class ProfilePageState extends State<ProfilePage>
       File image = await ImagePicker.pickImage(source: ImageSource.gallery);
       setState(() {
         this.imagePickerFile = image;
+        viewModel.model.storage.ref().child("profiles/").child(DateTime.now().toIso8601String()).putFile(image).onComplete.then((task){
+          task.ref.getDownloadURL().then((url){
+            this.urlImage = Uri.encodeComponent(url);
+          });
+        });
       });
     }
   }
@@ -536,7 +542,7 @@ class ProfilePageState extends State<ProfilePage>
           image: DecorationImage(
               image: imagePickerFile != null
                   ? Image.file(imagePickerFile).image
-                  : NetworkImage(this.photoUrl),
+                  : NetworkImage(Uri.decodeComponent(this.photoUrl)),
               fit: BoxFit.cover),
           borderRadius: BorderRadius.all(Radius.circular(75.0)),
           boxShadow: [BoxShadow(blurRadius: 7.0, color: Colors.black)]),

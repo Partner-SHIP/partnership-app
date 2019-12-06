@@ -61,7 +61,7 @@ class EditProjectTab extends StatelessWidget {
           decoration: BoxDecoration(
               color: Colors.red,
               borderRadius: BorderRadius.all(Radius.circular(15)),
-              image: DecorationImage(image: NetworkImage(project["bannerPath"]), fit: BoxFit.cover)
+              image: DecorationImage(image: NetworkImage(Uri.decodeComponent(project["bannerPath"])), fit: BoxFit.cover)
           ),
         ),
         Positioned(left: 0, right: 0, top: 0, bottom: 0, child: Center(
@@ -89,7 +89,7 @@ class EditProjectTab extends StatelessWidget {
           decoration: BoxDecoration(
               color: Colors.red,
               borderRadius: BorderRadius.all(Radius.circular(15)),
-              image: DecorationImage(image: NetworkImage(project["logoPath"]), fit: BoxFit.cover)
+              image: DecorationImage(image: NetworkImage(Uri.decodeComponent(project["logoPath"])), fit: BoxFit.cover)
           ),
         ),
         Positioned(left: 80, right: 0, top: 80, bottom: 0, child: Center(

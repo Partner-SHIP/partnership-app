@@ -59,7 +59,7 @@ class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
 
   Image _buildBanner(BuildContext context) {
     return Image.network(
-      args['project'].data['bannerPath'],
+      Uri.decodeComponent(args['project'].data['bannerPath']),
       width: MediaQuery.of(context).size.width,
       height: 250,
       fit: BoxFit.cover,
@@ -77,7 +77,7 @@ class _ProjectDescriptionPageState extends State<ProjectDescriptionPage> {
             alignment: Alignment.center,
             children: <Widget>[
               //AutoSizeText("LOGO PLACEHOLDER"),
-              Image.network(args['project'].data['logoPath'],
+              Image.network(Uri.decodeComponent(args['project'].data['logoPath']),
                   fit: BoxFit.fitHeight),
             ],
           )),

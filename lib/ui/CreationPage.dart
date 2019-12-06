@@ -347,6 +347,11 @@ class CreationPageState extends State<CreationPage> {
         child: Icon(Icons.photo_camera, size: 35));
   }
 
+  void _handlerCreation(bool value){
+      Navigator.of(viewModel.getPageContext()).pop();
+      viewModel.changeView(route: _routing.homePage, widgetContext: context);
+  }
+
   Widget _validatingProject() {
     return FloatingActionButton.extended(
       onPressed: () {
@@ -363,12 +368,7 @@ class CreationPageState extends State<CreationPage> {
           },
         );
         this.viewModel.postProject(
-            context, _nameProject, _descriptionProject, _image, (String value) {
-          print("COUCOU" + value);
-          Navigator.of(context).pop();
-          viewModel.changeView(
-              route: _routing.homePage, widgetContext: context);
-        });
+            context, _nameProject, _descriptionProject, _image, _logo, _handlerCreation);
       },
       heroTag: "postProject",
       label: Text("Créer"),

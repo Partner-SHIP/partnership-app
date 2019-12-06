@@ -1,12 +1,14 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:partnership/model/AModel.dart';
 
 class CreationPageModel extends AModel {
   CreationPageModel() : super();
   bool posting = false;
 
-  void _postProjectRequests(String name, String description, File image, String uid, Function handler) {
+  void _postProjectRequests(String name, String description, File image, File logo, String uid, Function handler) {
     print('POST PROJECT UID : $uid');
     Map<String, String> args = {
       'name':name,
@@ -15,12 +17,23 @@ class CreationPageModel extends AModel {
     Map<String, String> header = {
       'uid':uid
     };
-    this.apiClient.postProject(header: header, args: args, onSuccess: onSuccess, onError: onError).then((value){
-      handler(value);
+    this.storage.ref().child('projects/').child(DateTime.now().toIso8601String()).putFile(logo).onComplete.then((StorageTaskSnapshot snapshot){
+      snapshot.ref.getDownloadURL().then((url){
+        args["logoPath"] = Uri.encodeComponent(url);
+        this.storage.ref().child("projects/").child(DateTime.now().toIso8601String()).putFile(image).onComplete.then((StorageTaskSnapshot snapshot){
+          snapshot.ref.getDownloadURL().then((url){
+            args["bannerPath"] = Uri.encodeComponent(url);
+            print("URL IMAGE UPLOAD = ["+args["bannerPath"]+"]");
+            this.apiClient.postProject(header: header, args: args, onSuccess: onSuccess, onError: onError).then((value){
+              handler(value);
+            });
+          });
+        });
+      });
     });
   }
 
-  void onSuccess() {
+  void onSuccess(Object obj) {
     print("SUCCESS POST PROJECT");
   }
 
@@ -37,10 +50,10 @@ class CreationPageModel extends AModel {
     if (body["value"] != null)
       print("success");
   }
-  void postProject(String name, String description, File image, String uid, Function handler){
+  void postProject(String name, String description, File image, File logo, String uid, Function handler){
     if (posting == true)
       return ;
     posting = true;
-    _postProjectRequests(name, description, image, uid, handler);
+    _postProjectRequests(name, description, image, logo, uid, handler);
   }
 }

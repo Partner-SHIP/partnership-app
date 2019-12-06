@@ -34,10 +34,10 @@ class MemberAccept {
 }
 
 class ProjectManagementTabsViewModel extends AViewModel {
-  ProjectManagementTabsModel _projectModel;
+  ProjectManagementTabsModel model;
 
   ProjectManagementTabsViewModel(String route) {
     super.initModel(route);
-    _projectModel = super.abstractModel;
+    model = super.abstractModel;
   }
 }
