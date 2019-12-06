@@ -35,52 +35,9 @@ class MemberAccept {
 
 class ProjectManagementTabsViewModel extends AViewModel {
   ProjectManagementTabsModel _projectModel;
-  MemberRemove dummyRemove;
-  MemberAccept dummyAccept;
-  List<MemberRemove> dummyRemoveList = [];
-  List<MemberAccept> dummyAcceptList = [];
 
   ProjectManagementTabsViewModel(String route) {
     super.initModel(route);
     _projectModel = super.abstractModel;
-    var dummyRemove1 = MemberRemove(
-        'Jeff1',
-        'Jeffius',
-        "DZuqwgxqsWNP4n6zy1Y6",
-        "eXAjrxnchQPCE4nPhqRMv46Cj7J2",
-        'https://firebasestorage.googleapis.com/v0/b/partnership-app-e8d99.appspot.com/o/unknowprofilepicture.png?alt=media&token=80d8fd66-ab70-4c8a-bd9f-bed1897e3234');
-    var dummyRemove2 = MemberRemove(
-        'Jeff2',
-        'Jeffius',
-        "DZuqwgxqsWNP4n6zy1Y6",
-        "eXAjrxnchQPCE4nPhqRMv46Cj7J2",
-        'https://firebasestorage.googleapis.com/v0/b/partnership-app-e8d99.appspot.com/o/unknowprofilepicture.png?alt=media&token=80d8fd66-ab70-4c8a-bd9f-bed1897e3234');
-    var dummyRemove3 = MemberRemove(
-        'Jeff3',
-        'Jeffius',
-        "DZuqwgxqsWNP4n6zy1Y6",
-        "eXAjrxnchQPCE4nPhqRMv46Cj7J2",
-        'https://firebasestorage.googleapis.com/v0/b/partnership-app-e8d99.appspot.com/o/unknowprofilepicture.png?alt=media&token=80d8fd66-ab70-4c8a-bd9f-bed1897e3234');
-    var dummyRemove4 = MemberRemove(
-        'Jeff4',
-        'Jeffius',
-        "DZuqwgxqsWNP4n6zy1Y6",
-        "eXAjrxnchQPCE4nPhqRMv46Cj7J2",
-        'https://firebasestorage.googleapis.com/v0/b/partnership-app-e8d99.appspot.com/o/unknowprofilepicture.png?alt=media&token=80d8fd66-ab70-4c8a-bd9f-bed1897e3234');
-    // this.dummyRemoveList.add(dummyRemove1);
-    // this.dummyRemoveList.add(dummyRemove2);
-    // this.dummyRemoveList.add(dummyRemove3);
-    // this.dummyRemoveList.add(dummyRemove4);
-    var dummyAccept = MemberAccept('Toto', 'titi', "DZuqwgxqsWNP4n6zy1Y6",
-        "eXAjrxnchQPCE4nPhqRMv46Cj7J2", 'https://picsum.photos/250?image=9');
-    this.dummyAcceptList.add(dummyAccept);
-    this.dummyAcceptList.add(dummyAccept);
-    this.dummyAcceptList.add(dummyAccept);
-    this.dummyAcceptList.add(dummyAccept);
-    this.dummyAcceptList.add(dummyAccept);
-    this.dummyAcceptList.add(dummyAccept);
-    this.dummyAcceptList.add(dummyAccept);
-    this.dummyAcceptList.add(dummyAccept);
-    this.dummyAcceptList.add(dummyAccept);
   }
 }

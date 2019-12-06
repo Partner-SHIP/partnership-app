@@ -13,8 +13,6 @@ import 'package:path/path.dart';
 class EditMembersTab extends StatelessWidget {
   final ProjectManagementTabsViewModel viewModel;
   final DocumentSnapshot project;
-  List<MemberAccept> memberAcceptList = [];
-  List<MemberRemove> memberRemoveList = [];
   EditMembersTab(ProjectManagementTabsViewModel vm, DocumentSnapshot project)
       : viewModel = vm,
         project = project;
