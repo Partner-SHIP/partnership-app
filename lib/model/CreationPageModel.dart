@@ -16,11 +16,12 @@ class CreationPageModel extends AModel {
       'uid':uid
     };
     this.apiClient.postProject(header: header, args: args, onSuccess: onSuccess, onError: onError).then((value){
+      print("VALUE CREATION PROJET :"+value.toString());
       handler(value);
     });
   }
 
-  void onSuccess() {
+  void onSuccess(Object obj) {
     print("SUCCESS POST PROJECT");
   }
 
