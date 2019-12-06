@@ -16,17 +16,31 @@ class CommentaryTab extends StatelessWidget {
         itemCount: project["commentaire"].length,
         itemBuilder: (_, int index) {
           return new ListTile(
-            leading: Image.network(
-                project['commentaire'][index]['picture']),
+            leading: CircleAvatar(
+                radius: 30.0,
+                backgroundImage:
+                    NetworkImage("${project['commentaire'][index]['picture']}"),
+                backgroundColor: Colors.transparent,
+              ),
             subtitle: Text(project['commentaire'][index]
             ['firstName'] +
                 ' ' +
                 project['commentaire'][index]
                 ['lastName'] ??
-                'user not found'),
+                'user not found',
+                style: new TextStyle(
+                                  color: Colors.white54,
+                                  fontSize: 15.0,
+                                  fontFamily: "Orkney",
+                                )),
             title: Text(project['commentaire'][index]
             ['message'] ??
-                'title not found'),
+                'title not found',
+                style: new TextStyle(
+                                color: Colors.white,
+                                fontSize: 15.0,
+                                fontFamily: "Orkney",
+                              )),
           );
         });
   }

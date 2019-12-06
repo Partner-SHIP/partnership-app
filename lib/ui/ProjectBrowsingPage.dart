@@ -199,10 +199,12 @@ class CustomCard extends StatelessWidget {
     final double sidePadding = 10;
     Widget result = GestureDetector(
         onTap: () {
+          Firestore.instance.collection('projects').document(_project['pid']).updateData(<String, dynamic>{'viewNumber': FieldValue.increment(1)});
           this._viewModel.pushDynamicPage(
               route: _routing.projectDescriptionPage,
               widgetContext: context,
-              args: <String, dynamic>{'project': this._project});
+              args: <String,dynamic>{'project': this._project},
+          );
         },
         child: Container(
           //decoration: decoration,
