@@ -19,7 +19,7 @@ class CommentaryTab extends StatelessWidget {
             leading: CircleAvatar(
                 radius: 30.0,
                 backgroundImage:
-                    NetworkImage("${project['commentaire'][index]['picture']}"),
+                    NetworkImage("${Uri.decodeComponent(project['commentaire'][index]['picture'])}"),
                 backgroundColor: Colors.transparent,
               ),
             subtitle: Text(project['commentaire'][index]
