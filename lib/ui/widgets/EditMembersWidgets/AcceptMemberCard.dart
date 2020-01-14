@@ -47,7 +47,7 @@ class AcceptMemberCard extends StatelessWidget {
                 this.memberAccept.pid +
                 '&uid=' +
                 this.memberAccept.uid +
-                '&result' +
+                '&result=' +
                 'true';
         print('Accept Card Uncheck Icon Click');
         http
@@ -67,13 +67,13 @@ class AcceptMemberCard extends StatelessWidget {
         size: 45,
       ),
       onTap: () {
-        //this.viewModel.abstractModel.apiClient.
+        //this.viewModel.abstractModel.apiClient.postResponseMemberProject(header: null, args: null)
         String request =
             'https://us-central1-partnership-app-e8d99.cloudfunctions.net/ReponseMembreProject?pid=' +
                 this.memberAccept.pid +
                 '&uid=' +
                 this.memberAccept.uid +
-                '&result' +
+                '&result=' +
                 'false';
         print('Accept Card Uncheck Icon Click');
         http
