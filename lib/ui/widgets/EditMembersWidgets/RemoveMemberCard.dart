@@ -30,7 +30,7 @@ class RemoveMemberCard extends StatelessWidget {
 //   if (response.statusCode == 200) {
 //     // If the call to the server was successful, parse the JSON.
 //     // return Post.fromJson(json.decode(response.body));
-//   } 
+//   }
 //   else {
 //     // If that call was not successful, throw an error.
 //     throw Exception('Failed to load post');
@@ -38,7 +38,6 @@ class RemoveMemberCard extends StatelessWidget {
 // }
 
   Widget _buildTextName(BuildContext context) {
-
     return GestureDetector(
       child: AutoSizeText(
           this.memberRemove.firstName + ' ' + this.memberRemove.lastName,
@@ -59,9 +58,19 @@ class RemoveMemberCard extends StatelessWidget {
         color: Colors.red,
         size: 45,
       ),
-      onTap: () =>
-          {print('RemoveCard Uncheck Click of ' + this.memberRemove.firstName)},
-    //call kicker le membre du projet + envoi de notif à l'utilisateur ?
+      onTap: () {
+        print('RemoveCard Uncheck Click of ' + this.memberRemove.firstName);
+        String request =
+            'https://us-central1-partnership-app-e8d99.cloudfunctions.net/deleteMembreProject?pid=' +
+                this.memberRemove.pid +
+                '&uid=' +
+                this.memberRemove.uid;
+                http
+            .post(request)
+            .then((result) => {print(result)})
+            .catchError((onError) => {print(onError)});
+      },
+      //call kicker le membre du projet + envoi de notif à l'utilisateur ?
     );
   }
 
