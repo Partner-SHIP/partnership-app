@@ -67,6 +67,7 @@ class AcceptMemberCard extends StatelessWidget {
         size: 45,
       ),
       onTap: () {
+        //this.viewModel.abstractModel.apiClient.
         String request =
             'https://us-central1-partnership-app-e8d99.cloudfunctions.net/ReponseMembreProject?pid=' +
                 this.memberAccept.pid +
