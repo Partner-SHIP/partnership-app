@@ -29,6 +29,7 @@ abstract class ApiRoutes {
   static const String sendNewNotification = "https://us-central1-partnership-app-e8d99.cloudfunctions.net/sendNewNotification";
   static const String inscriptionProjet = "https://us-central1-partnership-app-e8d99.cloudfunctions.net/InscriptionProjet";
   static const String getDemandeProjet = "https://us-central1-partnership-app-e8d99.cloudfunctions.net/getDemandeProjet";
+  static const String postResponseMemberProject = "https://us-central1-partnership-app-e8d99.cloudfunctions.net/ReponseMembreProject";
 }
 
 abstract class IApiREST {
@@ -56,6 +57,7 @@ abstract class IApiREST {
   Future<dynamic> inscriptionProjet({@required Map<String, String> header, @required Map<String, String> args, Function onSuccess, Function onError});
   Future<dynamic> getDemandeProjet({@required Map<String, String> header, @required Map<String, String> args, Function onSuccess, Function onError});
   Future<dynamic> postProjectInscription({@required Map<String, String> header, @required Map<String, String> args, Function onSuccess, Function onError});
+  Future<dynamic> postResponseMemberProject({@required Map<String, String> header, @required Map<String, String> args, Function onSuccess, Function onError});
 }
 
 class ApiREST implements IApiREST {
@@ -250,5 +252,10 @@ class ApiREST implements IApiREST {
         header: header,
         onSuccess: onSuccess,
         onError: onError);
+  }
+
+  @override
+  Future postResponseMemberProject({Map<String, String> header, Map<String, String> args, Function onSuccess, Function onError}) {
+    return _httpPostRequest(path: ApiRoutes.postResponseMemberProject, header: null);
   }
 }

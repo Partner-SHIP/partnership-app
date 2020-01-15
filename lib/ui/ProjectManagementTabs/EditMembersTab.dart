@@ -41,6 +41,8 @@ class EditMembersTab extends StatelessWidget {
                   .snapshots(),
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.hasData == false)
+                  return SizedBox(width: 0);
                 if (snapshot.data.documents.length > 0) {
                   return Column(
                     children: snapshot.data.documents.map((doc) {
@@ -107,6 +109,8 @@ class EditMembersTab extends StatelessWidget {
                   .snapshots(),
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.hasData == false)
+                  return SizedBox(width: 0);
                 if (snapshot.data.documents.length > 0) {
                   return Column(
                     children: snapshot.data.documents.map((doc) {
