@@ -25,9 +25,9 @@ class ChatScreenModel extends AModel {
 
   void  initMyName(){
     Firestore.instance.document('profiles/' + this._myId).snapshots().listen((onData){
-      this._myName = onData.data['firstName'];
+      this._myName = onData.data['firstName'] + " " + onData.data["lastName"];
     });
-}
+  }
 
   String get contactName => this._contactName;
 
@@ -36,7 +36,14 @@ class ChatScreenModel extends AModel {
   void  initContactName(){
     Firestore.instance.document('profiles/' + this._contactId).snapshots().listen((onData){
       this._contactName = onData.data['firstName'];
-    });
+      Firestore.instance.document("chat/" + myId + "/conversations/" + contactId).setData({
+        'contactName': this._contactName + " " + onData.data["lastName"],
+      }, merge: false);
+      Firestore.instance.document("chat/" + contactId + "/conversations/" + myId).setData({
+        'contactName': this.myName,
+      }, merge: false);
+    }
+    );
   }
 
   String get myId => this._myId;

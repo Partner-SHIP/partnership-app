@@ -88,7 +88,7 @@ class ContactsPageState extends State<Contacts> {
               List list = contacts.documents.elementAt(index).data["messages"];
               return Card(
                 child: ListTile(
-                  title: Text(list.last["name"] ?? ''),
+                  title: Text(contacts.documents.elementAt(index).data["contactName"] ?? ''),
                   subtitle: Text(list.last["message"] ?? ''),
                   leading: CircleAvatar(child: Text(list.last["name"][0] ?? '')),
                   onTap: () {
