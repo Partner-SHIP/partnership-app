@@ -36,12 +36,6 @@ class ChatScreenModel extends AModel {
   void  initContactName(){
     Firestore.instance.document('profiles/' + this._contactId).snapshots().listen((onData){
       this._contactName = onData.data['firstName'];
-      Firestore.instance.document("chat/" + myId + "/conversations/" + contactId).setData({
-        'contactName': this._contactName + " " + onData.data["lastName"],
-      }, merge: false);
-      Firestore.instance.document("chat/" + contactId + "/conversations/" + myId).setData({
-        'contactName': this.myName,
-      }, merge: false);
     }
     );
   }
@@ -77,6 +71,7 @@ class ChatScreenModel extends AModel {
   }*/
 
   void sendMessage(String path_conversation, String message, String myId) {
+
     Firestore.instance.document(path_conversation).setData({
       'messages': FieldValue.arrayUnion([
         {
@@ -88,5 +83,14 @@ class ChatScreenModel extends AModel {
         }
       ])
     }, merge: true);
+
+    Firestore.instance.document('profiles/' + this._contactId).get().then((onData){
+      Firestore.instance.document("chat/" + myId + "/conversations/" + contactId).setData({
+        'contactName': this._contactName + " " + onData.data["lastName"],
+      }, merge: true);
+      Firestore.instance.document("chat/" + contactId + "/conversations/" + myId).setData({
+        'contactName': this.myName,
+      }, merge: true);
+    });
   }
 }
