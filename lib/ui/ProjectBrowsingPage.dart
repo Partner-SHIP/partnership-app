@@ -68,7 +68,7 @@ class ProjectBrowsingPageState extends State<ProjectBrowsingPage> {
                     child: StreamBuilder<QuerySnapshot>(
                         stream: Firestore.instance
                             .collection('projects')
-                            .orderBy('dateOfCreation', descending: true)
+                            .orderBy('likeNumber', descending: true)
                             .snapshots(),
                         builder: (BuildContext context,
                             AsyncSnapshot<QuerySnapshot> snapshot) {
